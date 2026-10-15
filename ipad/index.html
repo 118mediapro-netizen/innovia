@@ -72,6 +72,8 @@ html,body{overscroll-behavior:none}
 @keyframes shineA{0%,100%{box-shadow:0 0 0 0 rgba(91,184,245,.0)}50%{box-shadow:0 0 0 6px rgba(91,184,245,.25)}}
 .missionb{animation:shineA 2.4s ease-in-out infinite}
 .hqbtn{transition:transform .08s ease}
+@keyframes inboxPulse{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55),0 8px 22px rgba(14,58,87,.35)}70%{box-shadow:0 0 0 16px rgba(229,72,77,0),0 8px 22px rgba(14,58,87,.35)}100%{box-shadow:0 0 0 0 rgba(229,72,77,0),0 8px 22px rgba(14,58,87,.35)}}
+.inboxb{animation:inboxPulse 1.6s ease-out infinite}
 @keyframes newGlow{0%{box-shadow:0 0 0 0 rgba(91,184,245,.75)}70%{box-shadow:0 0 0 16px rgba(91,184,245,0)}100%{box-shadow:0 0 0 0 rgba(91,184,245,0)}}
 .newf{animation:newGlow 1.3s ease-out 3, inUp .5s ease-out both;border-radius:22px}
 @keyframes hintBob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-6px)}}
@@ -289,7 +291,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </span>
 <sc-if value="{{g.f.agents}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.info.credits}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></sc-if>
 </div>
-<sc-if value="{{g.f.world}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 44px; padding: 0 14px; border: none; border-radius: 20px; font-family: inherit; font-weight: 800; color: #0E3A57; cursor: pointer; background: #E3F2FD; display: flex; align-items: center; gap: 6px; font-size: 14px; flex: 0 0 auto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>Mon monde</button></sc-if>
+<button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 44px; padding: 0 14px; border: none; border-radius: 20px; font-family: inherit; font-weight: 800; color: #0E3A57; cursor: pointer; background: #E3F2FD; display: flex; align-items: center; gap: 6px; font-size: 14px; flex: 0 0 auto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>Mon monde</button>
 </div>
 <sc-if value="{{g.showWealth}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{g.openWealth}}" style="margin-top: 8px; margin-right: 6px; height: 30px; padding: 0 12px; border: 1.5px solid #CFE8FA; border-radius: 15px; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 800; color: #4F7590; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; vertical-align: top"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4F7590" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>Patrimoine · {{g.patLabel}}</button></sc-if>
 <sc-if value="{{g.hasBoost}}" hint-placeholder-val="{{ false }}">
@@ -354,7 +356,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 
 </div></sc-if><sc-if value="{{g.f.actions}}" hint-placeholder-val="{{ true }}"><div style="margin-top: 12px; display: flex; gap: 8px">
 <sc-if value="{{g.f.actu}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.actu}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.newsQuiz}}" aria-label="Actu du jour" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="15" height="15" rx="2" fill="#FFFFFF"></rect><path d="M18 9h3v9a2 2 0 0 1-2 2"></path><path d="M6 9h9M6 13h9M6 16h6"></path></svg><span style="font-size: 12px; font-weight: 800">Actu</span><span style="{{g.newsBadge}}">×2</span></button><button class="tap" type="button" onClick="{{g.info.actu}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div></sc-if>
-<sc-if value="{{g.f.ctrl}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.ctrl}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.train}}" aria-label="S’entraîner" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a3 3 0 0 0-3-1z" fill="#FFFFFF"></path><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1V5a3 3 0 0 1 3-1z" fill="#FFFFFF"></path></svg><span style="font-size: 12px; font-weight: 800">Entraîne</span><span style="position: absolute; top: 6px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #5BB8F5; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{g.trainLeft}}</span></button><button class="tap" type="button" onClick="{{g.info.train}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div></sc-if>
+<sc-if value="{{g.f.train}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.train}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.train}}" aria-label="S’entraîner" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a3 3 0 0 0-3-1z" fill="#FFFFFF"></path><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1V5a3 3 0 0 1 3-1z" fill="#FFFFFF"></path></svg><span style="font-size: 12px; font-weight: 800">Entraîne</span><span style="position: absolute; top: 6px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #5BB8F5; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{g.trainLeft}}</span></button><button class="tap" type="button" onClick="{{g.info.train}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div></sc-if>
 <sc-if value="{{g.f.price}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.price}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.cyclePrice}}" aria-label="Changer le prix" style="width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z" fill="#FFFFFF"></path><circle cx="7.5" cy="8.5" r="1.6" fill="#0E3A57"></circle></svg><span style="font-size: 12px; font-weight: 800">{{g.priceLabel}}</span></button><button class="tap" type="button" onClick="{{g.info.price}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div></sc-if>
 </div></sc-if>
 
@@ -410,6 +412,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 </div></div>
 </div>
 <canvas id="inoFly" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5"></canvas>
+<sc-if value="{{g.showInbox}}" hint-placeholder-val="{{ false }}"><button class="tap inboxb" type="button" onClick="{{g.openInbox}}" aria-label="{{g.inboxAria}}" style="position: absolute; right: 12px; top: 330px; z-index: 6; width: 60px; height: 60px; border: 3px solid #FFFFFF; border-radius: 30px; background: #0E3A57; box-shadow: 0 8px 22px rgba(14,58,87,0.35); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"></path><path d="M8 9h8M8 12.5h5"></path></svg><span style="position: absolute; top: -6px; right: -6px; min-width: 24px; height: 24px; padding: 0 6px; box-sizing: border-box; border-radius: 12px; background: #E5484D; color: #FFFFFF; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid #FFFFFF">{{g.inboxN}}</span></button></sc-if>
+<sc-if value="{{g.showCard}}" hint-placeholder-val="{{ false }}"><div class="sheet" style="position: absolute; left: 14px; right: 14px; bottom: 132px; z-index: 85; max-width: 520px; margin: 0 auto; padding: 16px 16px 14px; border-radius: 24px; background: #FFFFFF; border: 2px solid #5BB8F5; box-shadow: 0 14px 34px rgba(14,58,87,0.22); display: flex; flex-direction: column; gap: 6px"><span style="align-self: flex-start; padding: 4px 10px; border-radius: 10px; background: #5BB8F5; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase">Nouveau</span><span style="font-size: 19px; font-weight: 800">{{g.cardTitle}}</span><span style="font-size: 15px; line-height: 1.45; color: #4F7590">{{g.cardText}}</span><button class="tap" type="button" onClick="{{g.closeCard}}" style="margin-top: 6px; height: 46px; border: none; border-radius: 23px; background: #0E3A57; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">J’ai compris</button></div></sc-if>
 </sc-if>
 
 <sc-if value="{{showChrome}}" hint-placeholder-val="{{ false }}">
@@ -986,6 +990,7 @@ window.Component = class Component extends DCLogic {
     this.pl = pl;
     this.gs = gs;
     if (!gs.feat) { gs.feat = {}; if (gs.total > 0) this.featCheck(true); }
+    if (gs.feat.ctrl && !gs.feat.train && gs.total >= 1500) gs.feat.train = 1; if (gs.feat.price && !gs.feat.premium && gs.total >= 5e4) gs.feat.premium = 1;
     if (pl.cos.length > 1) this.featDefs().forEach(d => { gs.feat[d[0]] = 1; });
     this.pops = []; this.fx = []; this.sheet = null; this.toast = null; this.combo = 0; this.lastTap = 0; this.boost = null;
     this.orderNext = Date.now() + 40000; this.repNext = Date.now() + 20000; this.rogueNext = Date.now() + 25000;
@@ -1474,16 +1479,16 @@ window.Component = class Component extends DCLogic {
     const j = this.jauge();
     const tapping = now - this.lastTap < 4000;
     if (j < 60 && this.totalAgents() > 0 && now > this.rogueNext && !tapping) { this.rogueNext = now + 25000; gs.rep = Math.max(0, gs.rep - 3); this.say('Ton IA a pris une décision seule : un client mécontent (− 3 réputation). Apprends pour reprendre le contrôle.'); this.buzz([20, 50, 20]); }
-    if (this.state.screen === 'jeu' && !this.state.world && !this.state.mission && !this.state.open && !this.state.info && !this.state.wealth && !this.hackFx && !this.sheet && !tapping && this.totalAgents() >= 3 && now > this.orderNext) { if (Math.random() < 0.5) this.openDecision(); else this.openOrder(); }
+    if (this.state.screen !== 'intro' && this.totalAgents() >= 3 && now > this.orderNext) this.queueEvent(now, tapping);
     const s = this.sheet;
     if (s && s.status === 'play') {
-      if (s.kind === 'order' && now > s.deadline) this.finish(false, 'Trop tard : la commande est partie chez un concurrent.');
+      if (s.kind === 'order' && s.deadline && now > s.deadline) this.finish(false, 'Trop tard : la commande est partie chez un concurrent.');
       else if (s.g.type === 'swipe' && now > s.r.end) this.finish(false, 'Temps écoulé ! ' + s.r.score + ' bonne(s) réponse(s) sur ' + s.g.need + ' demandées.');
     }
     if (now - this.lastTap > 1100) this.combo = 0;
     if (this.netFullAt && now - this.netFullAt > 3000) { this.netFullAt = null; const nt = gs.net || { n: 0, lvl: 0 }; gs.net = { n: 0, lvl: (nt.lvl || 0) + 1 }; if (this.pe) this.pe.cables = []; this.save(); }
     this.featCheck(false);
-    if (this.featQ && this.featQ.length && (!this.toast || this.toast.until < now) && now - this.lastTap > 700) { this.toast = { text: this.featQ.shift(), until: now + 4500 }; this.sfx('spark', 1.2); }
+    if (this.featQ && this.featQ.length && !this.newCard && !this.sheet && this.state.screen === 'jeu' && now - this.lastTap > 900 && now > (this.cardNext || 0)) { const it = this.featQ.shift(); this.newCard = it; (this.nfUntil = this.nfUntil || {})[it.k] = now + 6000; this.sfx('spark', 1.2); }
     if (this.pops.length && now - this.pops[this.pops.length - 1].t > 900) this.pops = [];
     if (this.fx.length && now - this.fx[this.fx.length - 1].t > 900) this.fx = [];
     if (now > this.saveNext) { this.saveNext = now + 5000; this.save(); }
@@ -1510,6 +1515,26 @@ window.Component = class Component extends DCLogic {
     this.openSheet('order', { kicker: big ? 'Gros contrat · ' + secs + ' s pour réfléchir' : 'Commande client', title: big ? 'Un grand compte te consulte' : 'Un client a besoin de toi', lesson: '', deadline: Date.now() + secs * 1000, big: big, tier: tier }, { type: 'qcm', qs: [{ q: o.q, o: o.o, a: o.a }], reveal: true });
     this.buzz([15, 40, 15]);
   }
+  // Les demandes s'accumulent dans la bulle : on répond quand on veut. Seules les vraies urgences s'affichent tout de suite.
+  queueEvent(now, tapping) {
+    const gs = this.gs; if (!gs.inbox) gs.inbox = [];
+    this.orderNext = now + 35000 + Math.random() * 25000;
+    const free = this.state.screen === 'jeu' && !this.state.world && !this.state.mission && !this.state.open && !this.state.info && !this.state.wealth && !this.hackFx && !this.sheet && !tapping && !this.newCard;
+    if (free && Math.random() < 0.06) {
+      for (let k = 0; k < 15; k++) { const d = this.genDecision(); if (/panne|fuite|pirate|rançon/i.test(d.q)) { this.sfx('alert'); this.openSheet('decision', { kicker: 'Urgent', title: 'À toi de trancher, vite', lesson: '' }, { type: 'decision', q: d.q, ch: d.ch }); this.buzz([15, 40, 15]); return; } }
+    }
+    if (gs.inbox.length >= 12) return;
+    const id = 'm' + now.toString(36) + Math.floor(Math.random() * 1e4);
+    if (Math.random() < 0.5) { const d = this.genDecision(); gs.inbox.push({ id: id, kind: 'decision', q: d.q, ch: d.ch }); }
+    else { const tier = this.wealthTier(); const big = tier >= 2 ? Math.random() < Math.min(0.8, 0.3 + 0.15 * tier) : tier === 1 && Math.random() < 0.2; const o = big ? this.genBigOrder() : this.genOrder(); gs.inbox.push({ id: id, kind: 'order', q: o.q, o: o.o, a: o.a, big: big, tier: tier }); }
+    this.inboxPing = now; this.sfx('tap', 1.4); this.save();
+  }
+  openInbox() {
+    const gs = this.gs; const it = (gs.inbox || [])[0]; if (!it) return; this.buzz();
+    if (it.kind === 'order') this.openSheet('order', { kicker: it.big ? 'Gros contrat' : 'Commande client', title: it.big ? 'Un grand compte te consulte' : 'Un client a besoin de toi', lesson: '', deadline: 0, big: it.big, tier: it.tier, inboxId: it.id }, { type: 'qcm', qs: [{ q: it.q, o: it.o, a: it.a }], reveal: true });
+    else this.openSheet('decision', { kicker: 'Décision de patron', title: 'À toi de trancher', lesson: '', inboxId: it.id }, { type: 'decision', q: it.q, ch: it.ch });
+  }
+  inboxDone(s) { if (s && s.inboxId && this.gs.inbox) this.gs.inbox = this.gs.inbox.filter(x => x.id !== s.inboxId); }
   openDecision() {
     const d = this.genDecision(); this.sfx('alert');
     this.orderNext = Date.now() + 35000 + Math.random() * 20000;
@@ -1522,7 +1547,7 @@ window.Component = class Component extends DCLogic {
     if (c.rep) { gs.rep = Math.max(0, Math.min(100, gs.rep + c.rep)); parts.push((c.rep > 0 ? '+ ' : '− ') + Math.abs(c.rep) + ' réputation'); }
     if (c.comp) { gs.comp = Math.max(0, gs.comp + c.comp); parts.push((c.comp > 0 ? '+ ' : '− ') + Math.abs(c.comp) + ' compétence'); }
     if (c.boost) this.boost = { mult: c.boost[0], until: Date.now() + c.boost[1] * 1000 };
-    this.stat('decisions', 1);
+    this.stat('decisions', 1); this.inboxDone(s);
     if (c.act === 'sec') { this.sheet = null; this.buySec(); return; }
     s.picked = k; s.status = 'won'; s.feedback = c.res + (parts.length ? ' (' + parts.join(', ') + ')' : '');
     this.buzz(c.rep < 0 || (c.boost && c.boost[0] < 1) ? [20, 50, 20] : [15, 40, 25]); this.save(); this.refresh();
@@ -1538,7 +1563,7 @@ window.Component = class Component extends DCLogic {
     this.openSheet('news', { kicker: 'Quiz de l’actu du jour', title: 'Fausses écoutes, vraie prison', lesson: '' }, { type: 'qcm', qs: [{ q: 'D’après l’actu du jour, pourquoi Michael Smith a-t-il été condamné à 18 mois de prison ?', o: ['Il a créé des chansons avec l’IA', 'Il a gonflé ses écoutes avec de faux comptes', 'Il a copié une star'], a: 1 }], reveal: true });
   }
   finish(won, why) {
-    const s = this.sheet; const gs = this.gs; if (!s || s.status !== 'play') return;
+    const s = this.sheet; const gs = this.gs; if (!s || s.status !== 'play') return; this.inboxDone(s);
     s.status = won ? 'won' : 'lost';
     if (s.kind === 'module') {
       if (won) { gs.unlocked[s.agent] = true; gs.comp += 10; s.feedback = this.AG[s.agent].n + ' débloqué ! + 10 compétence'; this.buzz([15, 40, 25, 40, 35]); }
@@ -1602,7 +1627,7 @@ window.Component = class Component extends DCLogic {
       const v = this.tapValue() * 50; gs.credits += v; gs.total += v; pe.bonus = null; pe.nextBonus = pe.t + 20 + Math.random() * 20;
       pe.texts.push({ x: pt.x, y: pt.y - 10, vy: -1.2, a: 1.4, txt: 'ÉTOILE +' + this.fmt(v), big: true });
       this.planetBurst(pt, 22, [255, 200, 80], true); pe.flash = 0.6; pe.flashCol = '255,224,150';
-      this.addNet(10); this.sfx('cash'); this.sfx('spark', 1.2); this.buzz([15, 40, 25]); this.refresh(); return;
+      this.addNet(10); this.sfx('click', 1); this.buzz([15, 40, 25]); this.refresh(); return;
     }
     const crit = Math.random() < 1 / 40;
     const v = this.tapValue() * (crit ? 10 : 1); gs.credits += v; gs.total += v;
@@ -1618,10 +1643,10 @@ window.Component = class Component extends DCLogic {
       if (this.combo === 10 || this.combo === 25 || this.combo === 50) pe.waves.push({ r: this.planetR(), a: 0.9, col: [[139, 124, 246], [245, 170, 40], [255, 206, 90]][[10, 25, 50].indexOf(this.combo)], w: 8 });
     }
     this.addNet(crit ? 5 : 1);
-    if (crit) { this.sfx('success', 1.5); this.sfx('spark', 1); this.buzz([20, 30, 40]); }
-    else if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('success', this.combo === 10 ? 1 : this.combo === 25 ? 1.122 : 1.26); this.sfx('spark', 1); this.buzz([15, 30, 30]); }
+    if (crit) { this.sfx('combo', 1.5); this.buzz([20, 30, 40]); }
+    else if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('combo', this.combo === 10 ? 1 : this.combo === 25 ? 1.122 : 1.335); this.buzz([15, 30, 30]); }
     else { const k = (this.combo - 1) % 10; const semi = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21][k] + [0, 2, 4, 7][tier];
-      this.sfx('click', 0.95 + Math.random() * 0.1); if (tier >= 2 && this.combo % 4 === 0) this.sfx('spark', Math.pow(2, (semi % 12) / 24)); this.buzz(9); }
+      this.sfx('click', 0.97 + Math.random() * 0.06); this.buzz(9); }
     this.featCheck(false);
     this.refresh();
   }
@@ -1760,23 +1785,25 @@ window.Component = class Component extends DCLogic {
   }
   // ----- découverte progressive du jeu -----
   featDefs() {
-    const gs = this.gs, n = this.totalAgents(), t = gs.total || 0;
+    const gs = this.gs, n = this.totalAgents(), t = gs.total || 0, F = gs.feat || {};
     return [
-      ['agents', t >= 10, 'Nouveau : tes agents IA ! Ils gagnent de l’argent pour toi, même quand tu ne cliques pas.'],
-      ['nextag', gs.counts[0] >= 1 && !gs.unlocked[1], 'Nouveau : l’Agent rédaction ! Réussis son mini-jeu « Jouer » pour le débloquer.'],
-      ['ups', t >= 80, 'Nouveau : les améliorations. Elles rendent chaque clic plus rentable.'],
-      ['ctrl', n >= 3, 'Nouveau : la jauge de contrôle et l’entraînement. Plus tu as d’agents, plus il faut apprendre pour les maîtriser.'],
-      ['rep', t >= 300, 'Nouveau : ta réputation. Plus elle est haute, plus tu gagnes.'],
-      ['actu', t >= 500, 'Nouveau : l’actu du jour. Un quiz rapide pour gagner un bonus.'],
-      ['price', t >= 1000, 'Nouveau : ton prix. Gagne plus, ou soigne ta réputation.'],
-      ['world', n >= 5, 'Nouveau : Mon monde. Va voir ta ville grandir en 3D.'],
-      ['sec', t >= 1e4, 'Nouveau : la sécurité. Ta société vaut cher, les pirates s’intéressent à toi.'],
-      ['stats', t >= 2e4, 'Nouveau : tes statistiques.']
+      ['agents', t >= 10, 'Tes agents', 'Ils gagnent de l’argent pour toi, même quand tu ne cliques pas.'],
+      ['nextag', gs.counts[0] >= 1 && !gs.unlocked[1], 'Un nouvel agent', 'Réussis son mini-jeu « Jouer » pour le débloquer.'],
+      ['ups', t >= 80, 'Améliorations', 'Achète-les une seule fois : chaque clic rapporte plus.'],
+      ['actu', t >= 400, 'Actu', 'Réponds au quiz sur l’actu IA du jour et gagne un bonus.'],
+      ['ctrl', n >= 3, 'Contrôle', 'Plus tu as d’agents, plus il faut les maîtriser. En dessous de 60 %, tu gagnes moins.'],
+      ['train', !!F.ctrl && t >= 1500, 'Entraîne', 'Fais un petit jeu pour apprendre l’IA : ta jauge de contrôle remonte.'],
+      ['rep', t >= 2500, 'Réputation', 'C’est ce que tes clients pensent de toi. Plus elle est haute, plus tu gagnes.'],
+      ['inbox', (gs.inbox || []).length > 0, 'Demandes clients', 'Tes clients t’écrivent dans la bulle à droite. Réponds quand tu veux pour gagner de l’argent.'],
+      ['price', t >= 6000, 'Ton prix', 'Prix bas : tu gagnes un peu moins, mais ta réputation monte.'],
+      ['sec', t >= 1e4, 'Sécurité', 'Ta société vaut cher : des pirates peuvent t’attaquer. Protège-toi.'],
+      ['stats', t >= 2e4, 'Statistiques', 'Tout ce que tu as accompli depuis le début.'],
+      ['premium', t >= 5e4, 'Prix premium', 'Tu gagnes × 1,5, mais ta réputation baisse.']
     ];
   }
   featCheck(silent) {
     const gs = this.gs; if (!gs) return; if (!gs.feat) gs.feat = {};
-    this.featDefs().forEach(d => { if (d[1] && !gs.feat[d[0]]) { gs.feat[d[0]] = 1; if (!silent) { (this.featQ = this.featQ || []).push(d[2]); (this.nfUntil = this.nfUntil || {})[d[0]] = Date.now() + 5000; } } });
+    this.featDefs().forEach(d => { if (d[1] && !gs.feat[d[0]]) { gs.feat[d[0]] = 1; if (!silent) { (this.featQ = this.featQ || []).push({ k: d[0], t: d[2], d: d[3] }); } } });
   }
   buyAgent(i) {
     const gs = this.gs; const c = this.cost(i);
@@ -1816,12 +1843,15 @@ window.Component = class Component extends DCLogic {
       drones: Array.from({ length: Math.min(4, Math.ceil(nA / 3)) }, (_, k) => ({ style: 'left:' + [40, 270, 70, 240][k] + 'px;top:' + [60, 50, 120, 110][k] + 'px;animation-delay:-' + (k * 0.8) + 's' })),
       newsBadge: gs.newsDone ? 'display:none' : 'position:absolute;top:6px;right:8px;padding:2px 6px;border-radius:9px;background:#0E3A57;color:#FFFFFF;font-size:11px;font-weight:800',
       priceLabel: gs.price === 'bas' ? 'Bas' : gs.price === 'premium' ? 'Premium' : 'Normal',
-      cyclePrice: () => { const nx = { bas: 'normal', normal: 'premium', premium: 'bas' }[gs.price]; gs.price = nx; this.buzz(); this.say(nx === 'bas' ? 'Prix bas : gains × 0,8, ta réputation monte' : nx === 'premium' ? 'Prix premium : gains × 1,5, ta réputation baisse' : 'Prix normal : gains × 1'); this.save(); this.refresh(); },
+      cyclePrice: () => { const nx = (gs.feat && gs.feat.premium) ? { bas: 'normal', normal: 'premium', premium: 'bas' }[gs.price] : (gs.price === 'normal' ? 'bas' : 'normal'); gs.price = nx; this.buzz(); this.say(nx === 'bas' ? 'Prix bas : gains × 0,8, ta réputation monte' : nx === 'premium' ? 'Prix premium : gains × 1,5, ta réputation baisse' : 'Prix normal : gains × 1'); this.save(); this.refresh(); },
       coName: (this.pl && this.pl.cos[this.pl.act].name) || 'Neo Corp',
-      f: (() => { const F = gs.feat || {}; const o = {}; ['agents', 'ups', 'ctrl', 'rep', 'actu', 'price', 'world', 'sec', 'stats'].forEach(k => { o[k] = !!F[k]; }); o.actions = o.actu || o.ctrl || o.price; return o; })(),
-      nf: (() => { const o = {}; const U = this.nfUntil || {}, nw = Date.now(); ['agents', 'ups', 'ctrl', 'rep', 'actu', 'price', 'world', 'sec', 'stats'].forEach(k => { o[k] = (U[k] || 0) > nw ? 'newf' : ''; }); return o; })(),
+      f: (() => { const F = gs.feat || {}; const o = {}; ['agents', 'ups', 'ctrl', 'train', 'rep', 'actu', 'price', 'sec', 'stats', 'premium'].forEach(k => { o[k] = !!F[k]; }); o.actions = o.actu || o.train || o.price; return o; })(),
+      nf: (() => { const o = {}; const U = this.nfUntil || {}, nw = Date.now(); ['agents', 'ups', 'ctrl', 'train', 'rep', 'actu', 'price', 'sec', 'stats', 'premium'].forEach(k => { o[k] = (U[k] || 0) > nw ? 'newf' : ''; }); return o; })(),
       netLabel: this.netFullAt ? 'Planète connectée' : 'Réseau ' + Math.floor((((gs.net && gs.net.n) || 0) / this.netMax()) * 100) + ' %',
       showHint: ((gs.stats && gs.stats.taps) || 0) < 6,
+      showInbox: (gs.inbox || []).length > 0 && !this.sheet && !this.newCard, inboxN: String((gs.inbox || []).length), inboxAria: (gs.inbox || []).length + ' demande(s) de clients', openInbox: () => this.openInbox(),
+      showCard: !!this.newCard && !this.sheet, cardTitle: this.newCard ? this.newCard.t : '', cardText: this.newCard ? this.newCard.d : '',
+      closeCard: () => { this.newCard = null; this.cardNext = Date.now() + 2500; this.buzz(); this.refresh(); },
       showWealth: !!this.pl && (gs.total >= 1e4 || this.pl.pat > 0 || this.pl.cos.length > 1), patLabel: this.fmt((this.pl && this.pl.pat) || 0) + ' €',
       openWealth: () => { this.buzz(); this.setState({ wealth: true }); },
       info: ['credits', 'steps', 'qg', 'ctrl', 'actu', 'train', 'price', 'rep', 'agents', 'ups', 'wgain', 'wagents', 'wctrl', 'sec', 'stats'].reduce((o, k) => { o[k] = () => this.openInfo(k); return o; }, {}),
@@ -1898,7 +1928,7 @@ window.Component = class Component extends DCLogic {
     if (!s) return empty;
     const g = s.g, r = s.r, play = s.status === 'play', t = g.type;
     let timer = '';
-    if (play && s.kind === 'order') timer = Math.max(0, Math.ceil((s.deadline - Date.now()) / 1000)) + ' s';
+    if (play && s.kind === 'order' && s.deadline) timer = Math.max(0, Math.ceil((s.deadline - Date.now()) / 1000)) + ' s';
     else if (play && t === 'swipe') timer = Math.max(0, Math.ceil((r.end - Date.now()) / 1000)) + ' s';
     const v = Object.assign({}, empty, {
       kicker: s.kicker, timer: timer, title: s.title, hasLesson: !!s.lesson, lesson: s.lesson, flash: play ? s.flash : '', feedback: s.feedback,
@@ -2087,16 +2117,20 @@ window.Component = class Component extends DCLogic {
   const cloud = (m, x, y, z, sc, shadow) => { const g = new T.Group(); const n = 4 + Math.floor(rnd() * 3); for (let p = 0; p < n; p++) { const o = new T.Mesh(puffG, m); o.position.set((p - n / 2) * 0.75 + rnd() * 0.3, rnd() * 0.35, (rnd() - 0.5) * 0.7); o.scale.set(0.9 + rnd() * 0.5, 0.55 + rnd() * 0.3, 0.8 + rnd() * 0.4); o.castShadow = shadow; g.add(o); } g.position.set(x, y, z); g.scale.setScalar(sc); S.add(g); clouds.push(g); };
   /* ---------- synchronisation avec la partie ---------- */
   let red = false, sig = '';
+  const deco = [];
   const update = (st) => {
     const counts = st.counts || [];
-    const s2 = JSON.stringify([st.stage, counts.map(c => Math.min(3, Math.ceil(c / 4))), !!st.red]); if (s2 === sig) return; const first = !sig; sig = s2;
+    const s2 = JSON.stringify([st.stage, counts.map(c => Math.min(3, Math.ceil(c / 4))), !!st.red, st.grow || 0]); if (s2 === sig) return; const first = !sig; sig = s2;
     if (!hqGrp || hqGrp.userData.stage !== st.stage) { if (hqGrp) city.remove(hqGrp); hqGrp = new T.Group(); hqGrp.userData.stage = st.stage; hqTop = HQ[Math.max(0, Math.min(3, st.stage))](hqGrp); hqGrp.position.set(0, 0.1, 0); city.add(hqGrp); grow(hqGrp, first ? 0.1 : 0); }
     const want = {}; let delay = first ? 0.35 : 0;
     for (let t = 0; t < 10; t++) { const n = Math.min(3, Math.ceil((counts[t] || 0) / 4)); for (let k = 0; k < n; k++) want[t + '_' + k] = [t, k]; }
     lots.forEach((lot, li) => { const t = 9 - Math.floor(li / 3), k = li % 3, key = t + '_' + k;
       if (want[key] && !built[key]) { if (parks[key]) { city.remove(parks[key]); delete parks[key]; } const g = new T.Group(); const fp = BUILD[t](g); ao(g, fp[0], fp[1]); g.position.set(lot.x, 0.07, lot.z); g.rotation.y = (Math.round(Math.atan2(-lot.x, -lot.z) / (Math.PI / 2)) * Math.PI / 2); city.add(g); built[key] = g; grow(g, delay); delay += first ? 0.07 : 0; }
       if (!want[key] && !built[key] && !parks[key]) parks[key] = parkOn(lot); });
-    const nA = st.nA || 0; const nCars = Math.min(12, 3 + Math.ceil(nA / 6)), nDr = Math.min(8, Math.ceil(nA / 4));
+    // chaque palier de clics ajoute quelque chose autour du QG : arbres, puis lampadaires, puis voitures et drones
+    const gw = st.grow || 0; const SPOTS = [[0.82, 0.82], [-0.82, 0.82], [0.82, -0.82], [-0.82, -0.82], [0, 0.88], [0.88, 0], [0, -0.88], [-0.88, 0]];
+    for (let k = 0; k < Math.min(gw, 16); k++) { if (deco[k]) continue; const sp = SPOTS[k % 8], g = new T.Group(); if (k < 8) tree(g, 0, 0, 0.55); else { g.add(mesh(lampG, poleM, 0, 0.28, 0)); g.add(mesh(headG, poleM, 0, 0.55, 0)); } const off = k < 8 ? 1 : 0.86; g.position.set(sp[0] * off, 0, sp[1] * off); city.add(g); deco[k] = g; grow(g, first ? 0.4 + k * 0.05 : 0); }
+    const nA = st.nA || 0; const nCars = Math.min(14, 2 + Math.ceil(nA / 6) + Math.floor(gw / 3)), nDr = Math.min(10, Math.ceil(nA / 4) + Math.floor(Math.max(0, gw - 6) / 4));
     while (cars.length < nCars) cars.push(makeCar(cars.length));
     while (drones.length < nDr) drones.push(makeDrone(drones.length));
     red = !!st.red; S.background = red ? skyRed : skyBlue; sun.color.copy(C(red ? 0xFFB4A6 : 0xFFF0DD)); ring.material.color.copy(C(red ? 0xE5484D : 0x5BB8F5)); drones.forEach(d => d.led.material.color.copy(C(red ? 0xE5484D : 0x5BB8F5)));
@@ -2144,7 +2178,7 @@ window.Component = class Component extends DCLogic {
 }
   worldState() {
     const gs = this.gs; if (!gs) return {}; const th = [0, 1e4, 1e7, 1e10]; let st = 0; for (let i = 0; i < 4; i++) if (gs.total >= th[i]) st = i;
-    const nA = this.totalAgents(); return { stage: st, counts: gs.counts.slice(), nA: nA, red: this.jauge() < 60 && nA > 0 };
+    const nA = this.totalAgents(); return { stage: st, counts: gs.counts.slice(), nA: nA, red: this.jauge() < 60 && nA > 0, grow: Math.min(30, Math.floor(Math.log2(1 + (gs.total || 0) / 10))) };
   }
   startWorld(n) {
     this.worldT = null; const T = window.THREE; const cv = document.getElementById('inoWorld');
@@ -2269,7 +2303,7 @@ window.Component = class Component extends DCLogic {
   }
   synth(name, sr) {
     // Sons générés par le code (aucun fichier à charger) : même recette pour le web et pour l'appli.
-    const D = { tap: 0.06, click: 0.09, pluck: 0.22, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3, alert: 0.75, spark: 0.22, alarm: 0.9 }[name] || 0.06;
+    const D = { tap: 0.06, click: 0.09, combo: 0.45, pluck: 0.22, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3, alert: 0.75, spark: 0.22, alarm: 0.9 }[name] || 0.06;
     const n = Math.floor(D * sr), out = new Float32Array(n), TAU = Math.PI * 2;
     const note = (t0, f, len, amp, harm, dec) => {
       const a = Math.floor(t0 * sr), L = Math.floor(len * sr); let ph = 0;
@@ -2280,12 +2314,13 @@ window.Component = class Component extends DCLogic {
     };
     if (name === 'tap') {
       let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 680 + 520 * Math.exp(-t * 60); ph += TAU * f / sr; out[i] = 0.42 * Math.min(1, t / 0.002) * Math.exp(-t * 70) * Math.sin(ph); }
-    } else if (name === 'click') {
-      // clic de souris : un « clac » sec à l'appui, puis un petit relâchement
-      let sd = 11; const rnd = () => { sd = (sd * 16807) % 2147483647; return sd / 2147483647 * 2 - 1; };
-      const hit = (t0, amp, f1, f2) => { const a = Math.floor(t0 * sr); let prev = 0; for (let i = 0; i < Math.floor(0.03 * sr) && a + i < n; i++) { const t = i / sr; const w = rnd(), hp = w - prev; prev = w;
-        out[a + i] += amp * (0.9 * hp * Math.exp(-t * 1100) + 0.55 * Math.sin(TAU * f1 * t) * Math.exp(-t * 520) + 0.3 * Math.sin(TAU * f2 * t) * Math.exp(-t * 900)); } };
-      hit(0, 1, 2350, 5200); hit(0.052, 0.45, 2950, 6100);
+    } else if (name === 'click' || name === 'combo') {
+      // clic de souris : un « tic » très bref à l'appui, puis un « tic » plus léger au relâchement
+      let sd = 17; const rnd = () => { sd = (sd * 16807) % 2147483647; return sd / 2147483647 * 2 - 1; };
+      const tick = (t0, amp, f1, f2) => { const a = Math.floor(t0 * sr); let p1 = 0, p2 = 0; for (let i = 0; i < Math.floor(0.012 * sr) && a + i < n; i++) { const t = i / sr; const w = rnd(); const hp = w - 2 * p1 + p2; p2 = p1; p1 = w;
+        out[a + i] += amp * (0.55 * hp * Math.exp(-t * 2600) + 0.5 * Math.sin(TAU * f1 * t) * Math.exp(-t * 900) + 0.32 * Math.sin(TAU * f2 * t) * Math.exp(-t * 1500) + 0.25 * Math.sin(TAU * 950 * t) * Math.exp(-t * 600)); } };
+      tick(0, 1, 3400, 7800); tick(0.072, 0.5, 3900, 8600);
+      if (name === 'combo') { note(0.012, 1567.98, 0.42, 0.2, 0.1, 9); note(0.012, 2349.32, 0.36, 0.13, 0.05, 11); note(0.09, 3135.96, 0.3, 0.08, 0, 14); }
     } else if (name === 'pluck') {
       note(0, 523.25, 0.22, 0.34, 0.16, 15); note(0, 1046.5, 0.12, 0.08, 0, 32);
     } else if (name === 'coin') {
@@ -2306,7 +2341,7 @@ window.Component = class Component extends DCLogic {
       let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 240 - 70 * Math.min(1, t / 0.2); ph += TAU * f / sr; out[i] = 0.3 * Math.min(1, t / 0.006) * Math.exp(-t * 11) * (Math.sin(ph) + 0.25 * Math.sin(ph * 3)); }
     }
     let pk = 0; for (let i = 0; i < n; i++) pk = Math.max(pk, Math.abs(out[i]));
-    const target = name === 'tap' ? 0.5 : name === 'click' ? 0.75 : name === 'pluck' ? 0.58 : name === 'coin' ? 0.6 : name === 'spark' ? 0.32 : name === 'alert' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
+    const target = name === 'tap' ? 0.5 : name === 'click' ? 0.8 : name === 'combo' ? 0.72 : name === 'pluck' ? 0.58 : name === 'coin' ? 0.6 : name === 'spark' ? 0.32 : name === 'alert' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
     const fade = Math.floor(0.004 * sr); for (let i = 0; i < fade && i < n; i++) out[n - 1 - i] *= i / fade;
     return out;
   }

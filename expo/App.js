@@ -4,26 +4,29 @@ import React, { useEffect, useRef } from 'react';
 import { View, StatusBar, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as Haptics from 'expo-haptics';
-import { Audio } from 'expo-av';
 
 const URL = 'https://118mediapro-netizen.github.io/innovia/';
 
 // Sons : mêmes fichiers que la version web, joués par l'iPhone (même en mode silencieux).
+// Chargés avec précaution : si le module audio manque, l'appli marche quand même, sans son.
+let ExpoAudio = null;
+try { ExpoAudio = require('expo-audio'); } catch (e) { ExpoAudio = null; }
+
 const SOUNDS = { tap: 4, coin: 6, cash: 2, success: 2, error: 2 };
 const pool = {};
 const next = {};
 
 async function loadSounds() {
-  try {
-    await Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: false, shouldDuckAndroid: true });
-  } catch (e) {}
+  if (!ExpoAudio) return;
+  try { await ExpoAudio.setAudioModeAsync({ playsInSilentMode: true }); } catch (e) {}
   for (const name of Object.keys(SOUNDS)) {
     pool[name] = [];
     next[name] = 0;
     for (let i = 0; i < SOUNDS[name]; i++) {
       try {
-        const { sound } = await Audio.Sound.createAsync({ uri: URL + 'sfx/' + name + '.wav' }, { volume: 1 });
-        pool[name].push(sound);
+        const p = ExpoAudio.createAudioPlayer({ uri: URL + 'sfx/' + name + '.wav' });
+        try { p.shouldCorrectPitch = false; } catch (e) {}
+        pool[name].push(p);
       } catch (e) {}
     }
   }
@@ -32,11 +35,19 @@ async function loadSounds() {
 function play(name, rate) {
   const list = pool[name];
   if (!list || !list.length) return;
-  const s = list[next[name] % list.length];
+  const p = list[next[name] % list.length];
   next[name] += 1;
-  const r = Math.max(0.5, Math.min(2, Number(rate) || 1));
-  s.setRateAsync(r, false).catch(() => {});
-  s.replayAsync().catch(() => {});
+  try {
+    const r = Math.max(0.5, Math.min(2, Number(rate) || 1));
+    try { p.setPlaybackRate(r); } catch (e) {}
+    const go = () => { try { p.play(); } catch (e) {} };
+    const sk = p.seekTo(0);
+    if (sk && sk.then) sk.then(go, go); else go();
+  } catch (e) {}
+}
+
+function unloadSounds() {
+  Object.values(pool).forEach((l) => l.forEach((p) => { try { p.remove(); } catch (e) {} }));
 }
 
 // Dans la page, navigator.vibrate n'existe pas sur iPhone : on le remplace
@@ -70,9 +81,7 @@ export default function App() {
   const web = useRef(null);
   useEffect(() => {
     loadSounds();
-    return () => {
-      Object.values(pool).forEach((l) => l.forEach((x) => x.unloadAsync().catch(() => {})));
-    };
+    return unloadSounds;
   }, []);
   return (
     <View style={styles.root}>

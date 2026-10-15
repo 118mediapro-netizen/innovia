@@ -1022,7 +1022,43 @@ window.Component = class Component extends DCLogic {
   comboMult() { const c = this.combo; return c >= 50 ? 3 : c >= 25 ? 2 : c >= 10 ? 1.5 : 1; }
   tapValue() { const u = this.gs.ups; return ((u[0] ? 2 : 1) + this.perSec() * (u[3] ? 0.1 : u[2] ? 0.05 : u[1] ? 0.01 : 0)) * this.comboMult(); }
   cost(i) { return Math.ceil(this.AG[i].c * Math.pow(1.17, this.gs.counts[i])); }
-  save() { try { this.gs.savedAt = Date.now(); window.localStorage.setItem('inoviaNeoV2', JSON.stringify(this.gs)); } catch (e) {} }
+  save() { try { this.gs.savedAt = Date.now(); window.localStorage.setItem('inoviaNeoV2', JSON.stringify(this.gs)); } catch (e) {} this.cloudDirty = true; }
+  // Sauvegarde liée au compte Claude (version Claude uniquement) : la partie survit à la fermeture de la page.
+  async cloudInit() {
+    if (this.cloudStarted) return; this.cloudStarted = true;
+    try {
+      const c = window.claude; if (!c || !c.use) return;
+      const [db, user] = await Promise.all([c.use('db'), c.use('user')]);
+      if (!db || !user) return;
+      const uid = await user.id(); if (!uid) return;
+      const ref = db.doc('data/users/' + uid + '/save');
+      const snap = await ref.get();
+      if (snap.exists) {
+        const d = snap.data() || {}; const g = d.game;
+        if (g && Array.isArray(g.counts) && g.counts.length === 10 && (Number(g.total) || 0) > (Number(this.gs && this.gs.total) || 0)) {
+          this.gs = JSON.parse(JSON.stringify(g));
+          if (!this.gs.missions) this.gs.missions = {}; if (this.gs.realBonus == null) this.gs.realBonus = 0;
+          try { window.localStorage.setItem('inoviaNeoV2', JSON.stringify(this.gs)); } catch (e) {}
+          if (d.account && d.account.email) { this.saveAccount(d.account); }
+          this.say('Partie retrouvée : ta progression est sauvegardée sur ton compte.'); this.refresh();
+        }
+      }
+      this.cloudRef = ref; this.cloudDirty = true;
+      this.cloudTimer = setInterval(() => this.cloudFlush(), 8000);
+      const bye = () => { if (document.visibilityState === 'hidden') this.cloudFlush(); };
+      document.addEventListener('visibilitychange', bye); window.addEventListener('pagehide', () => this.cloudFlush());
+      this.cloudFlush();
+    } catch (e) { this.cloudRef = null; }
+  }
+  async cloudFlush() {
+    if (!this.cloudRef || !this.cloudDirty || this.cloudBusy || !this.gs) return;
+    this.cloudBusy = true; this.cloudDirty = false;
+    try {
+      const acc = this.loadAccount ? this.loadAccount() : null;
+      await this.cloudRef.set({ v: 1, at: Date.now(), game: JSON.parse(JSON.stringify(this.gs)), account: acc ? { name: acc.name || '', email: acc.email || '', provider: acc.provider || 'email', signedIn: acc.signedIn !== false } : null });
+    } catch (e) { this.cloudDirty = true; if (e && (e.code === 'revoked' || e.code === 'not_granted' || e.code === 'invalid_argument')) { this.cloudRef = null; clearInterval(this.cloudTimer); } }
+    this.cloudBusy = false;
+  }
   infoTexts() {
     return {
       credits: { t: 'Tes crédits', d: 'C’est l’argent fictif de ta société. Il monte tout seul grâce à tes agents. Le petit chiffre « /s » montre ce que tu gagnes chaque seconde.', tip: 'Dépense-les pour embaucher des agents et acheter des améliorations.' },
@@ -1340,7 +1376,7 @@ window.Component = class Component extends DCLogic {
       v.items = rd.items.map((it, i) => ({ txt: it, pick: () => this.pickSpot(i), style: optBase + 'border:2px solid #CFE8FA;background:#FFFFFF;' })); }
     return v;
   }
-  componentDidMount() { this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
+  componentDidMount() { this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
   componentDidUpdate(pp, ps) { if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
@@ -1570,7 +1606,7 @@ window.Component = class Component extends DCLogic {
     try { this.worldEng = this.inoWorld(T, cv, this.worldState()); } catch (e) { this.worldEng = null; }
   }
   stopWorld() { clearTimeout(this.worldT); this.worldT = null; if (this.worldEng) { try { this.worldEng.dispose(); } catch (e) {} this.worldEng = null; } }
-  componentWillUnmount() { clearInterval(this.tickT); if (this.gs) this.save(); this.stopIntro(); this.stopWorld(); }
+  componentWillUnmount() { clearInterval(this.tickT); clearInterval(this.cloudTimer); if (this.gs) { this.save(); this.cloudFlush(); } this.stopIntro(); this.stopWorld(); }
   startIntro() {
     this.stopIntro();
     this.introTimer = setTimeout(() => this.runIntro(), 40);

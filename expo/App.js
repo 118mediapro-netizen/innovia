@@ -51,6 +51,10 @@ export default function App() {
           } catch (err) {}
         }}
         bounces={false}
+        scrollEnabled={false}
+        contentInsetAdjustmentBehavior="never"
+        automaticallyAdjustContentInsets={false}
+        contentInset={{ top: 0, left: 0, bottom: 0, right: 0 }}
         overScrollMode="never"
         allowsInlineMediaPlayback
         mediaPlaybackRequiresUserAction={false}

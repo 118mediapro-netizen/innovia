@@ -1,11 +1,43 @@
 // Inovia — appli de test pour Expo Go
 // Affiche la version web d'Inovia en plein écran et branche les vraies vibrations de l'iPhone.
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, StatusBar, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as Haptics from 'expo-haptics';
+import { Audio } from 'expo-av';
 
 const URL = 'https://118mediapro-netizen.github.io/innovia/';
+
+// Sons : mêmes fichiers que la version web, joués par l'iPhone (même en mode silencieux).
+const SOUNDS = { tap: 4, coin: 6, cash: 2, success: 2, error: 2 };
+const pool = {};
+const next = {};
+
+async function loadSounds() {
+  try {
+    await Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: false, shouldDuckAndroid: true });
+  } catch (e) {}
+  for (const name of Object.keys(SOUNDS)) {
+    pool[name] = [];
+    next[name] = 0;
+    for (let i = 0; i < SOUNDS[name]; i++) {
+      try {
+        const { sound } = await Audio.Sound.createAsync({ uri: URL + 'sfx/' + name + '.wav' }, { volume: 1 });
+        pool[name].push(sound);
+      } catch (e) {}
+    }
+  }
+}
+
+function play(name, rate) {
+  const list = pool[name];
+  if (!list || !list.length) return;
+  const s = list[next[name] % list.length];
+  next[name] += 1;
+  const r = Math.max(0.5, Math.min(2, Number(rate) || 1));
+  s.setRateAsync(r, false).catch(() => {});
+  s.replayAsync().catch(() => {});
+}
 
 // Dans la page, navigator.vibrate n'existe pas sur iPhone : on le remplace
 // par un message envoyé à l'appli, qui déclenche le moteur de vibration.
@@ -36,6 +68,12 @@ function vibrate(p) {
 
 export default function App() {
   const web = useRef(null);
+  useEffect(() => {
+    loadSounds();
+    return () => {
+      Object.values(pool).forEach((l) => l.forEach((x) => x.unloadAsync().catch(() => {})));
+    };
+  }, []);
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" />
@@ -48,6 +86,7 @@ export default function App() {
           try {
             const m = JSON.parse(e.nativeEvent.data);
             if (m && m.t === 'vib') vibrate(m.p);
+            if (m && m.t === 'snd') play(m.n, m.r);
           } catch (err) {}
         }}
         bounces={false}

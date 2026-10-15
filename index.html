@@ -707,6 +707,10 @@ Apprends à le faire
 <label for="vib" style="font-size: 16px; font-weight: 700">Vibrations</label>
 <button id="vib" class="tap" type="button" onClick="{{toggleHapt}}" aria-pressed="{{haptOn}}" style="{{toggleStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(14,58,87,0.25)"></span></button>
 </div>
+<div style="height: 52px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<label for="snd" style="font-size: 16px; font-weight: 700">Sons</label>
+<button id="snd" class="tap" type="button" onClick="{{toggleSound}}" aria-pressed="{{soundOn}}" style="{{soundStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(14,58,87,0.25)"></span></button>
+</div>
 <button class="tap" type="button" onClick="{{buzzOnly}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #0E3A57; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Aide</button>
 <button class="tap" type="button" onClick="{{replayIntro}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #0E3A57; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Revoir l’intro</button>
 </div>
@@ -785,7 +789,7 @@ Apprends à le faire
 window.Component = class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { screen: 'intro', menu: false, quiz: null, open: null, level: null, theme: 'Tout', q: '', auth: null, saved: {}, hapt: true, font: 0, fonts: false };
+    this.state = { screen: 'intro', menu: false, quiz: null, open: null, level: null, theme: 'Tout', q: '', auth: null, sound: (() => { try { return window.localStorage.getItem('inoviaSound') !== '0'; } catch (e) { return true; } })(), saved: {}, hapt: true, font: 0, fonts: false };
     this.bank = [
       [
         { q: 'Qu’est-ce qu’une IA comme ChatGPT ?', o: ['Une personne qui répond en direct', 'Un programme qui génère des réponses à partir de ta demande', 'Un moteur de recherche classique'], a: 1 },
@@ -949,7 +953,7 @@ window.Component = class Component extends DCLogic {
   }
   rewardMission(m, demo) {
     const gs = this.gs; const r = Math.max(20000, this.perSec() * 3600);
-    gs.credits += r; gs.total += r; gs.realBonus += 0.15; gs.missions[m.id] = Date.now(); this.save();
+    gs.credits += r; gs.total += r; gs.realBonus += 0.15; this.sfx('cash'); gs.missions[m.id] = Date.now(); this.save();
     this.buzz([20, 40, 30, 40, 60]);
     return this.fmt(r) + ' ₵';
   }
@@ -1168,10 +1172,10 @@ window.Component = class Component extends DCLogic {
       if (won) { gs.comp += 1; s.feedback = 'Réussi ! + 1 compétence'; this.buzz([15, 40, 25]); } else { s.feedback = (why || 'Raté !'); this.buzz([20, 60, 20]); }
     } else if (s.kind === 'news') {
       gs.newsDone = true;
-      if (won) { const r = Math.max(50, this.perSec() * 300); gs.credits += r; gs.total += r; gs.comp += 2; s.feedback = 'Bien vu ! + ' + this.fmt(r) + ' ₵ et + 2 compétence'; this.buzz([15, 40, 25]); }
+      if (won) { const r = Math.max(50, this.perSec() * 300); gs.credits += r; gs.total += r; gs.comp += 2; this.sfx('cash'); s.feedback = 'Bien vu ! + ' + this.fmt(r) + ' ₵ et + 2 compétence'; this.buzz([15, 40, 25]); }
       else { s.feedback = 'Raté. Lis l’actu pour la prochaine fois !'; this.buzz([20, 60, 20]); }
     } else if (s.kind === 'order') {
-      if (won) { const r = Math.max(25, this.perSec() * 120); gs.credits += r; gs.total += r; gs.rep = Math.min(100, gs.rep + 5); gs.comp += 1; s.feedback = 'Client ravi ! + ' + this.fmt(r) + ' ₵, + 5 réputation'; this.buzz([15, 40, 25]); }
+      if (won) { const r = Math.max(25, this.perSec() * 120); gs.credits += r; gs.total += r; gs.rep = Math.min(100, gs.rep + 5); gs.comp += 1; this.sfx('cash'); s.feedback = 'Client ravi ! + ' + this.fmt(r) + ' ₵, + 5 réputation'; this.buzz([15, 40, 25]); }
       else { gs.rep = Math.max(0, gs.rep - 3); s.feedback = (why || 'Mauvais choix.') + ' − 3 réputation.'; this.buzz([20, 60, 20]); }
     }
     this.save(); this.refresh();
@@ -1217,13 +1221,13 @@ window.Component = class Component extends DCLogic {
     const v = this.tapValue(); gs.credits += v; gs.total += v;
     this.tapN = (this.tapN || 0) + 1; this.lastVal = this.fmt(v);
     this.sparkDirs = Array.from({ length: 6 }, () => { const an = Math.random() * Math.PI * 2, d = 90 + Math.random() * 50; return [Math.cos(an) * d, Math.sin(an) * d]; });
-    if (this.combo === 10 || this.combo === 25 || this.combo === 50) this.buzz([15, 30, 30]); else this.buzz(9);
+    if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('success'); this.buzz([15, 30, 30]); } else { this.sfx('coin', 1 + Math.min(0.35, this.combo * 0.007)); this.buzz(9); }
     this.refresh();
   }
   buyAgent(i) {
     const gs = this.gs; const c = this.cost(i);
     if (gs.credits < c) { this.buzz([10, 30, 10]); this.say('Pas assez de crédits pour l’instant.'); this.refresh(); return; }
-    gs.credits -= c; gs.counts[i] += 1; this.buzz(15);
+    gs.credits -= c; gs.counts[i] += 1; this.sfx('cash'); this.buzz(15);
     const n = gs.counts[i]; if (n === 25 || n === 50 || n === 100) this.say(this.AG[i].n + ' : palier de ' + n + ' atteint, gains doublés !');
     this.save(); this.refresh();
   }
@@ -1231,7 +1235,7 @@ window.Component = class Component extends DCLogic {
     const gs = this.gs; const c = this.UPS[k].c;
     if (gs.ups[k]) { this.buzz(); this.say(this.UPS[k].n + ' : ' + this.UPS[k].eff); this.refresh(); return; }
     if (gs.credits < c) { this.buzz([10, 30, 10]); this.say(this.UPS[k].n + ' (' + this.fmt(c) + ' ₵) : ' + this.UPS[k].eff); this.refresh(); return; }
-    gs.credits -= c; gs.ups[k] = true; this.buzz([15, 40, 25]); this.say(this.UPS[k].n + ' activé : ' + this.UPS[k].eff); this.save(); this.refresh();
+    gs.credits -= c; gs.ups[k] = true; this.sfx('cash'); this.buzz([15, 40, 25]); this.say(this.UPS[k].n + ' activé : ' + this.UPS[k].eff); this.save(); this.refresh();
   }
   unplug() {
     const gs = this.gs; let refund = 0;
@@ -1334,7 +1338,7 @@ window.Component = class Component extends DCLogic {
       v.items = rd.items.map((it, i) => ({ txt: it, pick: () => this.pickSpot(i), style: optBase + 'border:2px solid #CFE8FA;background:#FFFFFF;' })); }
     return v;
   }
-  componentDidMount() { if (!this.gs) this.initGame(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
+  componentDidMount() { this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
   componentDidUpdate(pp, ps) { if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
@@ -1677,7 +1681,55 @@ window.Component = class Component extends DCLogic {
       renderer.render(scene, camera); };
     this.introRaf = requestAnimationFrame(loop);
   }
+  synth(name, sr) {
+    // Sons générés par le code (aucun fichier à charger) : même recette pour le web et pour l'appli.
+    const D = { tap: 0.06, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3 }[name] || 0.06;
+    const n = Math.floor(D * sr), out = new Float32Array(n), TAU = Math.PI * 2;
+    const note = (t0, f, len, amp, harm, dec) => {
+      const a = Math.floor(t0 * sr), L = Math.floor(len * sr); let ph = 0;
+      for (let i = 0; i < L && a + i < n; i++) {
+        const t = i / sr; const env = Math.min(1, t / 0.004) * Math.exp(-t * dec);
+        ph += TAU * f / sr; out[a + i] += amp * env * (Math.sin(ph) + harm * Math.sin(ph * 2) + harm * 0.4 * Math.sin(ph * 3));
+      }
+    };
+    if (name === 'tap') {
+      let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 680 + 520 * Math.exp(-t * 60); ph += TAU * f / sr; out[i] = 0.42 * Math.min(1, t / 0.002) * Math.exp(-t * 70) * Math.sin(ph); }
+    } else if (name === 'coin') {
+      note(0, 1567.98, 0.07, 0.22, 0.25, 38); note(0.055, 2093.0, 0.145, 0.26, 0.25, 22);
+    } else if (name === 'cash') {
+      let seedN = 7; const rnd = () => { seedN = (seedN * 16807) % 2147483647; return seedN / 2147483647 * 2 - 1; };
+      let prev = 0; for (let i = 0; i < Math.floor(0.07 * sr); i++) { const t = i / sr; const w = rnd(); const hp = w - prev; prev = w; out[i] += 0.16 * Math.exp(-t * 45) * hp; }
+      note(0.02, 1318.51, 0.3, 0.2, 0.2, 14); note(0.09, 1760.0, 0.3, 0.2, 0.2, 13); note(0.16, 2637.02, 0.46, 0.22, 0.15, 9);
+    } else if (name === 'success') {
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, k) => note(k * 0.085, f, 0.7 - k * 0.085, 0.2, 0.3, 7 + k));
+    } else if (name === 'error') {
+      let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 240 - 70 * Math.min(1, t / 0.2); ph += TAU * f / sr; out[i] = 0.3 * Math.min(1, t / 0.006) * Math.exp(-t * 11) * (Math.sin(ph) + 0.25 * Math.sin(ph * 3)); }
+    }
+    let pk = 0; for (let i = 0; i < n; i++) pk = Math.max(pk, Math.abs(out[i]));
+    const target = name === 'tap' ? 0.5 : name === 'coin' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
+    const fade = Math.floor(0.004 * sr); for (let i = 0; i < fade && i < n; i++) out[n - 1 - i] *= i / fade;
+    return out;
+  }
+  sfxUnlock() {
+    if (window.ReactNativeWebView) return;
+    try {
+      if (this.sfxCtx === undefined) { const AC = window.AudioContext || window.webkitAudioContext; this.sfxCtx = AC ? new AC() : null; this.sfxBuf = {}; }
+      if (this.sfxCtx && this.sfxCtx.state === 'suspended') this.sfxCtx.resume();
+    } catch (e) { this.sfxCtx = null; }
+  }
+  sfx(name, rate) {
+    if (this.state.sound === false) return;
+    this.lastSfx = Date.now();
+    if (window.ReactNativeWebView) { try { window.ReactNativeWebView.postMessage(JSON.stringify({ t: 'snd', n: name, r: rate || 1 })); } catch (e) {} return; }
+    this.sfxUnlock(); const c = this.sfxCtx; if (!c) return;
+    try {
+      let b = this.sfxBuf[name];
+      if (!b) { const d = this.synth(name, c.sampleRate); b = c.createBuffer(1, d.length, c.sampleRate); b.getChannelData(0).set(d); this.sfxBuf[name] = b; }
+      const src = c.createBufferSource(); src.buffer = b; src.playbackRate.value = rate || 1; src.connect(c.destination); src.start();
+    } catch (e) {}
+  }
   buzz(ms) {
+    if (Date.now() - (this.lastSfx || 0) > 80) this.sfx(Array.isArray(ms) ? (ms.indexOf(60) >= 0 ? 'error' : (ms[0] >= 15 ? 'success' : 'tap')) : 'tap');
     if (!this.state.hapt) return;
     try { if (navigator.vibrate) navigator.vibrate(ms || 12); } catch (e) {}
   }
@@ -1850,6 +1902,9 @@ window.Component = class Component extends DCLogic {
       resultName: resultName,
       resultDesc: resultDesc,
       haptOn: s.hapt ? 'true' : 'false',
+      soundOn: s.sound === false ? 'false' : 'true',
+      soundStyle: 'width:56px;height:32px;padding:3px;border:none;border-radius:16px;cursor:pointer;display:flex;transition:background .2s ease;background:' + (s.sound !== false ? '#5BB8F5' : '#DCEEFB') + ';justify-content:' + (s.sound !== false ? 'flex-end' : 'flex-start'),
+      toggleSound: () => { const on = s.sound === false; try { window.localStorage.setItem('inoviaSound', on ? '1' : '0'); } catch (e) {} this.setState({ sound: on }, () => {}); if (on) { this.state.sound = true; this.sfx('success'); } },
       toggleStyle: 'width:56px;height:32px;padding:3px;border:none;border-radius:16px;cursor:pointer;display:flex;transition:background .2s ease;background:' + (s.hapt ? '#5BB8F5' : '#DCEEFB') + ';justify-content:' + (s.hapt ? 'flex-end' : 'flex-start'),
       startQuiz: () => this.startQuiz(),
       closeQuiz: () => { this.buzz(); this.setState({ quiz: null, screen: s.screen === 'onb' ? 'actu' : s.screen }); },

@@ -12,34 +12,42 @@ const URL = 'https://118mediapro-netizen.github.io/innovia/';
 let ExpoAudio = null;
 try { ExpoAudio = require('expo-audio'); } catch (e) { ExpoAudio = null; }
 
-const SOUNDS = { tap: 4, coin: 6, cash: 2, success: 2, error: 2 };
+const PRELOAD = ['tap', 'coin', 'cash', 'success', 'error', 'alert', 'spark', 'alarm'];
+const COPIES = { tap: 4, coin: 6, spark: 3 };
 const pool = {};
 const next = {};
+
+function makePlayers(name) {
+  if (!ExpoAudio || pool[name]) return;
+  pool[name] = [];
+  next[name] = 0;
+  const n = COPIES[name] || 2;
+  for (let i = 0; i < n; i++) {
+    try {
+      const p = ExpoAudio.createAudioPlayer({ uri: URL + 'sfx/' + name + '.wav' });
+      try { p.shouldCorrectPitch = false; } catch (e) {}
+      pool[name].push(p);
+    } catch (e) {}
+  }
+}
 
 async function loadSounds() {
   if (!ExpoAudio) return false;
   try { await ExpoAudio.setAudioModeAsync({ playsInSilentMode: true }); } catch (e) {}
-  for (const name of Object.keys(SOUNDS)) {
-    pool[name] = [];
-    next[name] = 0;
-    for (let i = 0; i < SOUNDS[name]; i++) {
-      try {
-        const p = ExpoAudio.createAudioPlayer({ uri: URL + 'sfx/' + name + '.wav' });
-        try { p.shouldCorrectPitch = false; } catch (e) {}
-        pool[name].push(p);
-      } catch (e) {}
-    }
-  }
+  PRELOAD.forEach(makePlayers);
   return Object.values(pool).some((l) => l.length > 0);
 }
 
+// Un son inconnu (ajouté plus tard dans l'appli) se charge tout seul au premier usage.
 function play(name, rate) {
+  if (!/^[a-z0-9]+$/.test(String(name))) return;
+  makePlayers(name);
   const list = pool[name];
   if (!list || !list.length) return;
   const p = list[next[name] % list.length];
   next[name] += 1;
   try {
-    const r = Math.max(0.5, Math.min(2, Number(rate) || 1));
+    const r = Math.max(0.5, Math.min(3, Number(rate) || 1));
     try { p.setPlaybackRate(r); } catch (e) {}
     const go = () => { try { p.play(); } catch (e) {} };
     const sk = p.seekTo(0);

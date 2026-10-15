@@ -61,6 +61,9 @@ a{color:#0E3A57}a:hover{color:#0E3A57}
 @keyframes comboPop{0%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.12)}100%{transform:translateX(-50%) scale(1)}}
 .combo{animation:comboPop .5s ease-in-out infinite}
 @keyframes spinA{to{transform:rotate(360deg)}}
+html,body{overscroll-behavior:none}
+.screen{overscroll-behavior:contain;overflow-x:hidden;touch-action:pan-y}
+.hscroll{touch-action:pan-x pan-y;overscroll-behavior-x:contain}
 .authsheet > *{flex-shrink:0}
 @keyframes whintA{0%,70%{opacity:1}100%{opacity:0}}
 .whint{animation:whintA 5s ease forwards}
@@ -95,8 +98,10 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 #stage { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top, 0px); bottom: env(safe-area-inset-bottom, 0px); background: #FFFFFF; overflow: hidden }
 #app { position: absolute; top: 0; width: 390px; height: 844px; transform-origin: 0 0; overflow: hidden }
 #root, #root > div { height: 100% }
-#app, #app * { touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none }
+#app, #app * { touch-action: pan-y; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none }
 #app canvas#inoWorld { touch-action: none }
+#app .hscroll, #app .hscroll * { touch-action: pan-x pan-y }
+html, body, #stage, #app { overscroll-behavior: none }
 .in-app #stage { top: 0 !important; bottom: 0 !important }
 #app input, #app textarea { -webkit-user-select: auto; user-select: auto }
 </style>
@@ -128,7 +133,7 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 <p style="margin: 14px 0 0; font-size: 24px; font-weight: 700; line-height: 1.25">L’IA, c’est ton avenir.<br>Apprends-la dès aujourd’hui.</p>
 <p style="margin: 12px 0 0; font-size: 15px; color: #4F7590; line-height: 1.5">Réponds à quelques questions : l’IA trouve ton niveau et règle ton fil pour toi.</p>
 <div style="flex: 1"></div>
-<button class="tap" type="button" onClick="{{startQuiz}}" style="width: 100%; height: 58px; border: none; border-radius: 29px; background: #5BB8F5; color: #0E3A57; font-family: inherit;font-size: 17px; font-weight: 800; cursor: pointer">Trouver mon niveau</button>
+<button class="tap" type="button" onClick="{{startQuiz4}}" style="width: 100%; height: 58px; border: none; border-radius: 29px; background: #5BB8F5; color: #0E3A57; font-family: inherit;font-size: 17px; font-weight: 800; cursor: pointer">Trouver mon niveau</button>
 <button class="tap" type="button" onClick="{{goActu}}" style="margin-top: 10px; height: 48px; padding: 0 20px; border: none; background: none; color: #4F7590; font-family: inherit;font-size: 15px; font-weight: 700; cursor: pointer">Plus tard</button>
 </div>
 </sc-if>
@@ -140,7 +145,7 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 <input id="newsSearch" type="text" inputmode="search" enterkeyhint="search" autocomplete="off" aria-label="Rechercher une actu" placeholder="Rechercher une actu, un sujet, un média" value="{{q}}" onInput="{{setQ}}" style="width: 100%; height: 50px; box-sizing: border-box; padding: 0 48px 0 46px; border: 1.5px solid #CFE8FA; border-radius: 25px; background: #F5FAFE; font-family: inherit; font-size: 16px; font-weight: 600; color: #0E3A57; outline: none; -webkit-appearance: none; appearance: none">
 <sc-if value="{{hasQ}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{clearQ}}" aria-label="Effacer la recherche" style="position: absolute; right: 8px; top: 8px; width: 34px; height: 34px; border: none; border-radius: 17px; background: #E3F2FD; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></sc-if>
 </div>
-<div class="noscroll" style="margin: 0 -16px; padding: 0 16px; display: flex; gap: 8px; overflow-x: auto">
+<div class="noscroll hscroll" style="margin: 0 -16px; padding: 0 16px; display: flex; gap: 8px; overflow-x: auto">
 <sc-for list="{{themes}}" as="th" hint-placeholder-count="5">
 <button class="tap" type="button" onClick="{{th.pick}}" style="{{th.style}}">{{th.name}}</button>
 </sc-for>
@@ -315,6 +320,8 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 </sc-if>
 </div>
 
+<sc-if value="{{g.threatDanger}}" hint-placeholder-val="{{ false }}"><div class="tap" style="margin-top: 12px; padding: 12px 14px; border-radius: 20px; background: #FBD5D6; color: #7A1015; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 800"><span style="font-size: 20px" aria-hidden="true">⚠</span><span style="flex: 1">{{g.threatText}}</span><button class="tap" type="button" onClick="{{g.buySec}}" style="height: 36px; padding: 0 12px; border: none; border-radius: 18px; background: #B4232A; color: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 800; cursor: pointer">Sécuriser</button></div></sc-if>
+<sc-if value="{{g.threatSafe}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 12px; padding: 12px 14px; border-radius: 20px; background: #E3F2FD; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 800"><span style="font-size: 18px" aria-hidden="true">🛡</span><span style="flex: 1">{{g.threatText}}</span></div></sc-if>
 <sc-if value="{{g.hasMission}}" hint-placeholder-val="{{ false }}">
 <button class="tap missionb" type="button" onClick="{{g.openMission}}" style="margin-top: 12px; width: 100%; padding: 14px 16px; border: none; border-radius: 22px; background: #0E3A57; color: #FFFFFF; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 12px; text-align: left">
 <span style="width: 44px; height: 44px; flex: 0 0 44px; border-radius: 22px; background: rgba(91,184,245,0.22); display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1L3.2 9.4l6.1-.8z" fill="#5BB8F5" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"></path></svg></span>
@@ -334,12 +341,21 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 </sc-if>
 <button class="tap" type="button" onClick="{{g.info.ctrl}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
 </div>
+<div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
+<span style="{{g.repStar}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1L3.2 9.4l6.1-.8z" fill="#FFFFFF" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></path></svg></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span>Réputation · {{g.repName}}</span><span>{{g.repVal}}</span></span><span style="display: block; height: 12px; border-radius: 6px; background: #E3F2FD; overflow: hidden"><span style="{{g.repFill}}"></span></span><span style="font-size: 11px; font-weight: 700; color: #4F7590">{{g.repGain}}</span></span>
+<button class="tap" type="button" onClick="{{g.info.rep}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
+</div>
+<div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
+<span style="width: 40px; height: 40px; flex: 0 0 40px; border-radius: 20px; background: #0E3A57; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4" stroke-linecap="round"></path></svg></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span>Sécurité</span><span>{{g.secLevel}}</span></span><span style="display: flex; gap: 4px"><sc-for list="{{g.secDots}}" as="sd" hint-placeholder-count="5"><span style="{{sd.style}}"></span></sc-for></span><span style="font-size: 11px; font-weight: 700; color: #4F7590">{{g.secNeed}}</span><sc-if value="{{g.secCanBuy}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.buySec}}" style="margin-top: 4px; height: 36px; padding: 0 14px; border: none; border-radius: 18px; background: #0E3A57; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; align-self: flex-start">{{g.secBtn}}</button></sc-if></span>
+<button class="tap" type="button" onClick="{{g.info.sec}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
+</div>
 
-<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
 <div style="position: relative"><button class="tap" type="button" onClick="{{g.newsQuiz}}" aria-label="Actu du jour" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="15" height="15" rx="2" fill="#FFFFFF"></rect><path d="M18 9h3v9a2 2 0 0 1-2 2"></path><path d="M6 9h9M6 13h9M6 16h6"></path></svg><span style="font-size: 12px; font-weight: 800">Actu</span><span style="{{g.newsBadge}}">×2</span></button><button class="tap" type="button" onClick="{{g.info.actu}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
 <div style="position: relative"><button class="tap" type="button" onClick="{{g.train}}" aria-label="S’entraîner" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a3 3 0 0 0-3-1z" fill="#FFFFFF"></path><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1V5a3 3 0 0 1 3-1z" fill="#FFFFFF"></path></svg><span style="font-size: 12px; font-weight: 800">Entraîne</span><span style="position: absolute; top: 6px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #5BB8F5; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{g.trainLeft}}</span></button><button class="tap" type="button" onClick="{{g.info.train}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
 <div style="position: relative"><button class="tap" type="button" onClick="{{g.cyclePrice}}" aria-label="Changer le prix" style="width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z" fill="#FFFFFF"></path><circle cx="7.5" cy="8.5" r="1.6" fill="#0E3A57"></circle></svg><span style="font-size: 12px; font-weight: 800">{{g.priceLabel}}</span></button><button class="tap" type="button" onClick="{{g.info.price}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="position: relative"><div style="width: 100%; height: 82px; border-radius: 22px; background: #E3F2FD; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1L3.2 9.4l6.1-.8z" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></path></svg><span style="font-size: 12px; font-weight: 800">{{g.rep}}</span></div><button class="tap" type="button" onClick="{{g.info.rep}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
 </div>
 
 <div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Tes agents</span><button class="tap" type="button" onClick="{{g.info.agents}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
@@ -381,6 +397,15 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 </button>
 </sc-for>
 </div>
+<div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Statistiques</span><button class="tap" type="button" onClick="{{g.info.stats}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
+<div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Tapes au total</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stTaps}}</span></div>
+<div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Meilleur combo</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stCombo}}</span></div>
+<div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Commandes réussies</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stOrders}}</span></div>
+<div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Temps de jeu</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stTime}}</span></div>
+<div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Argent gagné au total</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stTotal}}</span></div>
+<div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Attaques de pirates</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stHacks}}</span></div>
+</div>
 </div>
 </sc-if>
 
@@ -389,8 +414,8 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 <button class="tap" type="button" onClick="{{openMenu}}" aria-label="Ouvrir le menu" style="width: 48px; height: 48px; border: none; border-radius: 24px; background: #E3F2FD; display: flex; align-items: center; justify-content: center; cursor: pointer">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg>
 </button>
-<button class="tap" type="button" onClick="{{openFonts}}" aria-label="Changer la police" style="height: 44px; padding: 0 6px 0 14px; border: none; border-radius: 22px; background: none; display: flex; align-items: center; gap: 8px; color: #0E3A57; font-family: inherit; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; cursor: pointer">Inovia<span style="height: 26px; padding: 0 9px; border-radius: 13px; background: #5BB8F5; display: flex; align-items: center; font-size: 13px; font-weight: 800; letter-spacing: 0">Aa</span></button>
-<button class="tap {{levelCls}}" type="button" onClick="{{startQuiz}}" aria-label="{{levelAria}}" style="width: 48px; height: 48px; border: 2px solid #5BB8F5; border-radius: 24px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<span style="height: 44px; padding: 0 6px; display: flex; align-items: center; color: #0E3A57; font-size: 19px; font-weight: 800; letter-spacing: -0.01em">Inovia</span>
+<button class="tap {{levelCls}}" type="button" onClick="{{openLevel}}" aria-label="{{levelAria}}" style="width: 48px; height: 48px; border: 2px solid #5BB8F5; border-radius: 24px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 16a8 8 0 0 1 16 0"></path><path d="M12 16l4-5"></path><circle cx="12" cy="16" r="1.4" fill="#0E3A57"></circle></svg>
 </button>
 </div>
@@ -685,6 +710,20 @@ Apprends à le faire
 </div>
 </div>
 </sc-if>
+<sc-if value="{{showLevel}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 60">
+<div class="fade" onClick="{{closeLevel}}" style="position: absolute; inset: 0; background: rgba(14,58,87,0.35)"></div>
+<div class="sheet" style="position: absolute; left: 12px; right: 12px; top: 104px; padding: 22px 20px 18px; border-radius: 30px; background: #FFFFFF; box-shadow: 0 16px 40px rgba(14,58,87,0.25); display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #4F7590">Ton niveau</span>
+<span style="font-size: 30px; font-weight: 800; letter-spacing: -0.02em">{{lvName}}</span>
+<div style="display: flex; gap: 6px"><sc-for list="{{lvSegs}}" as="lv" hint-placeholder-count="3"><span style="{{lv.style}}"></span></sc-for></div>
+<div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #4F7590"><span>Découverte</span><span>Pratique</span><span>Expert</span></div>
+<p style="margin: 0; font-size: 16px; line-height: 1.5">{{lvDesc}}</p>
+<button class="tap" type="button" onClick="{{startQuiz}}" style="height: 54px; border: none; border-radius: 27px; background: #5BB8F5; font-family: inherit; font-size: 16px; font-weight: 800; color: #0E3A57; cursor: pointer">{{lvBtn}}</button>
+<button class="tap" type="button" onClick="{{closeLevel}}" style="height: 44px; border: none; background: none; font-family: inherit; font-size: 15px; font-weight: 700; color: #4F7590; cursor: pointer">Fermer</button>
+</div>
+</div>
+</sc-if>
 <sc-if value="{{showToast}}" hint-placeholder-val="{{ false }}">
 <div class="fade" style="position: absolute; left: 20px; right: 20px; top: 112px; padding: 14px 18px; border-radius: 20px; background: #0E3A57; color: #FFFFFF; font-size: 15px; font-weight: 700; line-height: 1.4; text-align: center; box-shadow: 0 8px 24px rgba(14,58,87,0.25); pointer-events: none">{{toastText}}</div>
 </sc-if>
@@ -754,7 +793,7 @@ Apprends à le faire
 
 <sc-if value="{{quizAsking}}" hint-placeholder-val="{{ true }}">
 <div class="fade" style="flex: 1; display: flex; flex-direction: column">
-<p style="margin: 34px 0 0; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4F7590">Question {{qNum}} sur 4</p>
+<p style="margin: 34px 0 0; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4F7590">Question {{qNum}} sur {{qLen}}</p>
 <h2 style="margin: 10px 0 0; font-size: 26px; font-weight: 800; line-height: 1.25; letter-spacing: -0.01em">{{qText}}</h2>
 <p style="margin: 8px 0 0; font-size: 14px; color: #4F7590">L’IA adapte la question suivante à ta réponse.</p>
 <div style="margin-top: 26px; display: flex; flex-direction: column; gap: 10px">
@@ -791,7 +830,7 @@ Apprends à le faire
 window.Component = class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { screen: 'intro', menu: false, quiz: null, open: null, level: null, theme: 'Tout', q: '', auth: null, sound: (() => { try { return window.localStorage.getItem('inoviaSound') !== '0'; } catch (e) { return true; } })(), saved: {}, hapt: true, font: 0, fonts: false };
+    this.state = { screen: 'intro', menu: false, quiz: null, open: null, level: (() => { try { const v = window.localStorage.getItem('inoviaLevel'); return v === null ? null : Math.max(0, Math.min(2, Number(v))); } catch (e) { return null; } })(), theme: 'Tout', q: '', auth: null, levelCard: false, sound: (() => { try { return window.localStorage.getItem('inoviaSound') !== '0'; } catch (e) { return true; } })(), saved: {}, hapt: true, font: 0, fonts: false };
     this.bank = [
       [
         { q: 'Qu’est-ce qu’une IA comme ChatGPT ?', o: ['Une personne qui répond en direct', 'Un programme qui génère des réponses à partir de ta demande', 'Un moteur de recherche classique'], a: 1 },
@@ -1073,6 +1112,8 @@ window.Component = class Component extends DCLogic {
       ups: { t: 'Améliorations', d: 'Des achats uniques qui rendent chaque tape beaucoup plus rentable.', tip: 'Elles s’achètent une seule fois et restent pour toujours.' },
       wgain: { t: 'Gains par seconde', d: 'Ce que ta société rapporte chaque seconde, même quand tu ne tapes pas.', tip: '' },
       wagents: { t: 'Agents', d: 'Le nombre total d’agents IA qui travaillent pour toi. Plus tu en as, plus ta ville grandit.', tip: '' },
+      sec: { t: 'Ta sécurité', d: 'Plus ta société vaut cher, plus elle attire les pirates. Quand une menace est détectée, tu vois le temps qu’il reste avant l’attaque et le niveau de sécurité nécessaire.', tip: 'Si tu as le bon niveau à temps, l’attaque est bloquée (+ 3 réputation). Sinon, les pirates volent 25 à 45 % de ta trésorerie.' },
+      stats: { t: 'Tes statistiques', d: 'Tout ce que tu as accompli depuis le début de ta partie : tapes, meilleur combo, commandes réussies, temps de jeu.', tip: '' },
       wctrl: { t: 'Contrôle', d: 'Ta jauge de contrôle. En rouge, ton IA dérape : tes gains baissent et la ville passe au rouge.', tip: 'Apprends avec Actu et Entraîne pour la faire remonter.' }
     };
   }
@@ -1099,6 +1140,7 @@ window.Component = class Component extends DCLogic {
     if (f.mode === 'create') this.saveAccount({ name: name, email: email, provider: 'email', created: Date.now(), signedIn: true });
     else this.saveAccount(Object.assign({}, this.loadAccount(), { signedIn: true }));
     const a = this.loadAccount(); this.authForm = null; this.buzz([15, 40, 25]);
+    if (f.mode === 'create' && this.state.level === null) setTimeout(() => this.startQuiz(4), 900);
     this.say(f.mode === 'create' ? 'Bienvenue ' + a.name + ' ! Ton compte est créé.' : 'Content de te revoir, ' + a.name + ' !');
     this.setState({ auth: null });
   }
@@ -1131,6 +1173,167 @@ window.Component = class Component extends DCLogic {
       }
     };
   }
+  rpick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  rint(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+  // Mémoire des scénarios déjà vus : on évite de reproposer la même situation.
+  seenHas(k) { const s = this.gs.seen || []; return s.indexOf(k) >= 0; }
+  seenAdd(k) { const gs = this.gs; if (!Array.isArray(gs.seen)) gs.seen = []; gs.seen.push(k); if (gs.seen.length > 600) gs.seen = gs.seen.slice(-600); }
+  freshPick(make) { let it = null; for (let i = 0; i < 40; i++) { it = make(); if (!this.seenHas(it.key)) break; } this.seenAdd(it.key); return it; }
+  initContent() {
+    if (this.CT) return this.CT;
+    const C = {};
+    C.first = ['Léa', 'Karim', 'Sofia', 'Hugo', 'Inès', 'Yanis', 'Chloé', 'Mehdi', 'Camille', 'Lucas', 'Sarah', 'Nathan', 'Jade', 'Rayan', 'Emma', 'Adam', 'Lina', 'Théo', 'Manon', 'Ilyes', 'Zoé', 'Enzo', 'Maëlys', 'Bilal', 'Clara', 'Noah', 'Yasmine', 'Tom', 'Anaïs', 'Samir', 'Julie', 'Malik', 'Océane', 'Louis', 'Nora', 'Kevin', 'Elsa', 'Moussa', 'Laura', 'Paul', 'Amel', 'Jules', 'Aya', 'Victor', 'Salomé', 'Ismaël', 'Lou', 'Gabriel', 'Rose', 'Nassim'];
+    C.last = ['Martin', 'Bernard', 'Dubois', 'Moreau', 'Laurent', 'Garcia', 'Benali', 'Lefèvre', 'Roux', 'Fontaine', 'Chevalier', 'Diallo', 'Mercier', 'Blanc', 'Guérin', 'Haddad', 'Faure', 'Rousseau', 'Nguyen', 'Perrin', 'Morel', 'Gauthier', 'Lambert', 'Bonnet', 'Girard', 'André', 'Mallet', 'Renaud', 'Caron', 'Meyer', 'Kaci', 'Lopez', 'Petit', 'Durand', 'Leroy'];
+    C.city = ['Toulouse', 'Lyon', 'Marseille', 'Lille', 'Nantes', 'Bordeaux', 'Carcassonne', 'Montpellier', 'Rennes', 'Strasbourg', 'Nice', 'Grenoble', 'Dijon', 'Brest', 'Tours', 'Metz', 'Reims', 'Angers', 'Perpignan', 'Clermont-Ferrand', 'Le Havre', 'Limoges', 'Nîmes', 'Pau', 'Annecy', 'Bayonne', 'Rouen', 'Caen', 'Avignon', 'Paris', 'Albi', 'Narbonne', 'Béziers', 'Toulon', 'Orléans'];
+    C.word = ['Nova', 'Atlas', 'Zénith', 'Horizon', 'Pulse', 'Orbit', 'Lumen', 'Kairos', 'Néon', 'Vega', 'Sakura', 'Bloom', 'Riva', 'Onyx', 'Solaris', 'Écho', 'Iris', 'Mistral', 'Opale', 'Azur', 'Boréal', 'Céleste', 'Duna', 'Flux'];
+    C.biz = [['boulangerie', 'Le Fournil de {p}'], ['salon de coiffure', 'Studio {p}'], ['garage', 'Garage {l}'], ['fleuriste', 'Les Fleurs de {p}'], ['restaurant', 'Chez {p}'], ['fast-food', '{w} Burger'], ['salle de sport', '{w} Fit'], ['agence immobilière', '{l} Immobilier'], ['boutique de vêtements', 'Maison {l}'], ['cabinet d’avocats', 'Cabinet {l}'], ['start-up', '{w} Tech'], ['école de danse', 'Danse {w}'], ['pizzeria', 'Pizza {p}'], ['librairie', 'La Page de {p}'], ['photographe', '{p} Photo'], ['plombier', '{l} Plomberie'], ['café', 'Café {w}'], ['hôtel', 'Hôtel {w}'], ['pharmacie', 'Pharmacie {l}'], ['auto-école', 'Auto-école {w}'], ['clinique vétérinaire', 'Clinique {w}'], ['bijouterie', 'Bijoux {p}'], ['traiteur', 'Traiteur {l}'], ['barbier', 'Barber {p}'], ['atelier de bijoux', 'Atelier {p}'], ['chaîne YouTube', 'la chaîne {w}'], ['salle d’escalade', 'Bloc {w}'], ['magasin de vélos', 'Cycles {l}'], ['agence de voyages', '{w} Voyages'], ['cabinet dentaire', 'Cabinet {l}'], ['food truck', '{w} Truck'], ['épicerie fine', 'Épicerie {w}'], ['cave à vin', 'Cave {l}'], ['marque de cosmétiques', '{w} Beauty'], ['club de foot', 'FC {w}'], ['studio de tatouage', 'Ink {w}']];
+    C.bigBiz = { 6: [['groupe de distribution', '{w} Group'], ['banque en ligne', 'Banque {w}'], ['opérateur télécom', '{w} Télécom'], ['enseigne nationale', '{w} Market'], ['assureur', '{w} Assurances']], 7: [['marque française', 'Maison {l}'], ['start-up qui grandit vite', '{w} Tech'], ['enseigne de mode', '{w} Paris'], ['marque de cosmétiques', '{w} Beauty'], ['éditeur de jeux vidéo', '{w} Games']], 8: [['collectivité', 'la Métropole de {v}'], ['mairie', 'la ville de {v}'], ['réseau de transport', 'les transports de {v}'], ['service de livraison', '{w} Livraison'], ['gestionnaire de parkings', '{w} Parking']], 9: [['géant de la tech', '{w} Global'], ['groupe industriel mondial', '{w} Industries'], ['plateforme internationale', '{w} World'], ['compagnie aérienne', '{w} Airlines'], ['constructeur automobile', '{w} Motors']] };
+    C.fund = ['Horizon Capital', 'Atlas Ventures', 'Nova Invest', 'Kairos Partners', 'Zénith Capital', 'Lumen Ventures', 'Orbit Fund', 'Riva Capital', 'Opale Partners', 'Vega Ventures', 'Mistral Invest', 'Solaris Capital', 'Boréal Partners', 'Azur Ventures'];
+    C.media = ['Le Mag Tech', 'Info Région', 'Les Échos du Sud', 'Radio Néon', 'TechDaily', 'Le Journal de l’IA', 'Start-up Hebdo', 'France Innovation'];
+    C.tool = ['NeuroWrite 5', 'Pixa Studio', 'VoxFlow', 'Atlas Agent', 'Lumen Vision', 'Kairos Code', 'Echo Voice', 'Vega Brain'];
+    C.agentNeeds = [
+      ['répondre à ses clients 24 h/24', 'trier ses mails chaque matin', 'prendre les rendez-vous automatiquement', 'répondre aux questions fréquentes sur son site', 'préparer le planning de la semaine', 'résumer les messages vocaux de ses clients'],
+      ['écrire les textes de son site internet', 'rédiger des fiches produits', 'écrire sa newsletter du mois', 'rédiger des annonces bien écrites', 'écrire des articles de blog', 'écrire la présentation de son entreprise'],
+      ['créer des visuels pour ses réseaux', 'faire des miniatures qui donnent envie de cliquer', 'créer une affiche pour un événement', 'retoucher ses photos produits', 'créer un logo moderne', 'faire une vidéo courte pour TikTok'],
+      ['lancer une campagne sur les réseaux', 'trouver un slogan accrocheur', 'publier des posts Instagram toute la semaine', 'préparer le lancement d’un nouveau produit', 'comprendre ce qui marche sur ses réseaux', 'organiser un jeu concours en ligne'],
+      ['trouver de nouveaux clients', 'relancer les clients qui n’ont pas répondu', 'préparer ses devis plus vite', 'écrire un script d’appel commercial', 'repérer ses meilleurs prospects', 'suivre ses ventes de la semaine'],
+      ['automatiser ses factures', 'trier ses notes de frais', 'préparer son budget du mois', 'suivre ses dépenses', 'relancer les factures impayées', 'préparer les chiffres pour son comptable'],
+      ['analyser 10 000 avis clients', 'traiter des millions de données', 'faire tourner sa propre IA très puissante', 'analyser 5 ans de ventes', 'stocker et analyser toutes ses vidéos', 'entraîner une IA sur ses propres données'],
+      ['se lancer au Japon', 'vendre ses produits au Brésil', 'traduire son site en 12 langues', 'ouvrir un bureau à Dubaï', 'conquérir le marché américain', 'trouver des clients en Allemagne'],
+      ['optimiser les livraisons dans toute la ville', 'réduire les bouchons autour de ses magasins', 'gérer une flotte de vélos partagés', 'prévoir l’affluence dans le métro', 'gérer l’éclairage public intelligemment', 'optimiser la collecte des déchets'],
+      ['coordonner ses équipes sur 5 continents', 'servir des millions d’utilisateurs en même temps', 'lancer un service mondial en une nuit', 'rendre son IA disponible dans tous les pays', 'synchroniser des usines partout dans le monde', 'déployer une mise à jour sur toute la planète']
+    ];
+    C.orderQ = ['{c}, {t} à {v}, veut {n}. Quel agent envoies-tu ?', '{c} ({t}, {v}) a besoin {dn}. Qui s’en charge ?', 'Nouvelle commande de {c}, {t} à {v} : {n}. Quel agent choisis-tu ?', 'À {v}, {c} ({t}) cherche à {n}. Qui envoies-tu ?', '{c}, {t} de {v}, te demande de l’aider à {n}. Quel agent ?'];
+    C.know = [
+      ['Comment une IA comme ChatGPT écrit-elle ses réponses ?', ['Elle copie une page Google', 'Elle prédit la suite la plus probable, mot après mot', 'Un humain répond en direct'], 1],
+      ['Qu’est-ce qu’une hallucination d’IA ?', ['Une réponse inventée mais dite avec assurance', 'Un bug d’affichage', 'Une IA qui rêve la nuit'], 0],
+      ['Que faut-il faire d’un chiffre important donné par une IA ?', ['Le publier tout de suite', 'Le vérifier sur une source fiable', 'Le multiplier par deux'], 1],
+      ['Quels sont les 4 ingrédients d’une bonne demande ?', ['Rôle, contexte, tâche, format', 'Bonjour, merci, s’il te plaît, au revoir', 'Titre, image, prix, lien'], 0],
+      ['La réponse de l’IA est trop longue. Que fais-tu ?', ['Tu recommences tout', 'Tu demandes « plus court » dans la même discussion', 'Tu fermes l’appli'], 1],
+      ['Que ne faut-il jamais donner à une IA ?', ['Ton prénom', 'Ton mot de passe ou ta carte bancaire', 'Ta ville'], 1],
+      ['Un proche t’appelle en panique pour de l’argent, avec une voix bizarre. Que fais-tu ?', ['Tu envoies l’argent', 'Tu raccroches et tu le rappelles toi-même', 'Tu donnes ton code bancaire'], 1],
+      ['Qu’est-ce qu’un deepfake ?', ['Une fausse vidéo ou voix créée par IA', 'Un antivirus', 'Un réseau social'], 0],
+      ['Pourquoi ouvrir une nouvelle discussion pour un nouveau sujet ?', ['Pour que l’IA ne mélange pas les sujets', 'Parce que c’est obligatoire', 'Pour payer moins cher'], 0],
+      ['Qu’est-ce qu’un agent IA ?', ['Une IA qui enchaîne seule plusieurs actions', 'Un vendeur de logiciels', 'Un espion'], 0],
+      ['L’Union européenne a adopté un texte sur l’IA. Comment s’appelle-t-il ?', ['L’AI Act', 'Le Code IA', 'La loi Turing'], 0],
+      ['D’où viennent les connaissances d’une IA comme ChatGPT ?', ['Des données sur lesquelles elle a été entraînée', 'De ton téléphone', 'D’un seul livre'], 0],
+      ['Que veut dire « IA générative » ?', ['Une IA qui crée du texte, des images ou des sons', 'Une IA qui répare les ordinateurs', 'Une IA pour les générations futures'], 0],
+      ['Comment repérer une image créée par IA ?', ['Mains étranges, textes illisibles, reflets incohérents', 'Elle est toujours en noir et blanc', 'Elle n’a pas de couleurs'], 0],
+      ['Qui doit valider une décision importante proposée par une IA ?', ['L’IA elle-même', 'Un humain', 'Personne'], 1],
+      ['À quoi sert de donner un exemple à l’IA ?', ['À ce qu’elle copie le style voulu', 'À la ralentir', 'À rien'], 0],
+      ['Une IA peut-elle reproduire des clichés ?', ['Non, jamais', 'Oui, si ses données en contiennent', 'Seulement le week-end'], 1],
+      ['Quelle tâche confier en priorité à l’IA ?', ['Une tâche répétitive et simple', 'Le choix de ton associé', 'Annoncer une mauvaise nouvelle à un ami'], 0],
+      ['Que fait une IA de traduction instantanée ?', ['Elle traduit texte ou voix presque en direct', 'Elle invente une langue', 'Elle corrige ton accent'], 0],
+      ['Pour qu’une IA réponde dans le bon format, tu…', ['Le précises : liste, tableau, 3 lignes…', 'Écris en majuscules', 'Ajoutes des émojis'], 0],
+      ['Un client veut publier un texte d’IA sans le relire. Ton conseil ?', ['Publier tel quel', 'Relire et vérifier les faits', 'Le traduire en latin'], 1],
+      ['Que permet l’IA dans une appli de photo ?', ['Détourer, effacer un objet, agrandir une image', 'Changer la batterie', 'Rien du tout'], 0],
+      ['Pourquoi dit-on que la fracture IA est un risque ?', ['Ceux qui maîtrisent l’IA avancent plus vite que les autres', 'Les ordinateurs cassent', 'Internet va s’arrêter'], 0],
+      ['Une info d’actu récente donnée par une IA est…', ['Toujours juste', 'À vérifier, l’IA peut ne pas être à jour', 'Interdite'], 1]
+    ];
+    C.swipe = [
+      { p: 'Ce détail améliore-t-il une demande à l’IA ?', yes: 'Oui', no: 'Non', cards: [['Préciser le format : liste, tableau, 5 lignes', true], ['Écrire tout en majuscules', false], ['Donner le contexte de ta situation', true], ['Rester très vague pour la laisser libre', false], ['Donner un exemple du résultat voulu', true], ['Mettre des fautes exprès', false], ['Indiquer à qui le texte s’adresse', true], ['Poser 10 questions dans une seule phrase', false], ['Préciser le ton : drôle, pro, chaleureux', true], ['Insulter l’IA pour qu’elle se dépêche', false], ['Lui donner un rôle : « Tu es coach sportif »', true], ['Écrire un seul mot', false]] },
+      { p: 'Ce détail améliore-t-il une demande d’image ?', yes: 'Oui', no: 'Non', cards: [['Préciser le style : aquarelle, photo, 3D', true], ['Décrire la lumière : coucher de soleil', true], ['Choisir le cadrage : gros plan, plan large', true], ['Écrire tout en majuscules', false], ['Ajouter des fautes d’orthographe', false], ['Indiquer les couleurs principales', true], ['Écrire « fais un truc joli »', false], ['Préciser le décor : forêt, ville, plage', true], ['Mettre 50 points d’exclamation', false], ['Donner le format : carré, vertical', true]] },
+      { p: 'À confier à l’IA ou à garder pour toi ?', yes: 'L’IA', no: 'Moi', cards: [['Trier les mails répétitifs', true], ['Choisir un associé', false], ['Envoyer les factures chaque mois', true], ['Annoncer une mauvaise nouvelle à un client', false], ['Reporter les rendez-vous dans l’agenda', true], ['Fixer la stratégie de l’entreprise', false], ['Résumer une réunion', true], ['Licencier quelqu’un', false], ['Traduire une fiche produit', true], ['Signer un gros contrat', false], ['Préparer un premier jet de post', true], ['Consoler un client mécontent au téléphone', false]] },
+      { p: 'Vrai ou faux ?', yes: 'Vrai', no: 'Faux', cards: [['Une IA peut inventer des informations', true], ['ChatGPT vérifie toujours ses sources', false], ['L’Union européenne a adopté l’AI Act', true], ['Toutes les IA sont interdites en Europe', false], ['On peut cloner une voix avec quelques secondes d’audio', true], ['Une image créée par IA est toujours facile à repérer', false], ['L’IA apprend à partir de grandes quantités de données', true], ['L’IA comprend les émotions comme un humain', false], ['Il ne faut jamais donner son mot de passe à une IA', true], ['Une IA gratuite ne peut rien faire d’utile', false], ['Une IA peut reproduire des clichés', true], ['L’IA remplace déjà tous les métiers', false]] },
+      { p: 'Bon réflexe de sécurité ?', yes: 'Bon', no: 'Mauvais', cards: [['Activer la double authentification', true], ['Utiliser le même mot de passe partout', false], ['Vérifier l’adresse d’un mail avant de cliquer', true], ['Donner son code reçu par SMS à un inconnu', false], ['Faire les mises à jour de son téléphone', true], ['Cliquer sur un lien « colis bloqué » douteux', false], ['Avoir un mot de code avec ses proches', true], ['Envoyer sa pièce d’identité à une IA', false], ['Sauvegarder ses fichiers importants', true], ['Payer une rançon tout de suite', false]] }
+    ];
+    C.trueFacts = ['La tour Eiffel se trouve à Paris.', 'L’eau bout à 100 °C au niveau de la mer.', 'La Lune est plus petite que la Terre.', 'Le Soleil est une étoile.', 'Une semaine compte 7 jours.', 'Le français est parlé au Québec.', 'Les abeilles fabriquent du miel.', 'Le Rhône passe par Lyon.', 'L’océan Pacifique est le plus grand océan.', 'Marseille est au bord de la Méditerranée.', 'Un an compte 12 mois.', 'Le cœur humain a 4 cavités.', 'Les chats sont des mammifères.', 'Le mont Blanc est dans les Alpes.', 'Toulouse est surnommée la Ville rose.', 'La Terre tourne autour du Soleil.', 'Les plantes produisent de l’oxygène.', 'Un triangle a 3 côtés.', 'Le Japon est en Asie.', 'Carcassonne possède une cité médiévale.', 'La Seine traverse Paris.', 'Le diamant est un minéral très dur.', 'Les dauphins respirent de l’air.', 'L’Everest est la plus haute montagne du monde.', 'Le Brésil est le plus grand pays d’Amérique du Sud.', 'Un octet compte 8 bits.', 'L’euro est utilisé en Espagne.', 'La baleine bleue est le plus grand animal.', 'Le Canada est en Amérique du Nord.', 'Les éléphants sont herbivores.'];
+    C.falseFacts = ['La tour Eiffel a été construite en 1650 par Napoléon.', 'Les manchots vivent au pôle Nord.', 'Le Soleil tourne autour de la Terre.', 'Lyon est la capitale de l’Espagne.', 'Les araignées ont 6 pattes.', 'L’eau gèle à 50 °C.', 'Le mont Blanc se trouve en Bretagne.', 'Les chats pondent des œufs.', 'La Lune est plus grande que la Terre.', 'Un triangle a 4 côtés.', 'Le Japon est en Amérique du Sud.', 'Les dauphins sont des poissons qui respirent sous l’eau.', 'La Seine traverse Marseille.', 'Un an compte 15 mois.', 'L’euro est la monnaie des États-Unis.', 'Les plantes ont besoin de pétrole pour pousser.', 'Le Canada est une île d’Afrique.', 'La baleine bleue est un insecte.', 'Les éléphants volent sur de courtes distances.', 'Le français est la seule langue parlée en Europe.'];
+    C.pairSets = [
+      { p: 'Associe chaque mission au bon outil.', pairs: [['Trouver 10 idées de slogans', 'Brainstorm avec l’IA'], ['Analyser 500 avis clients', 'Résumé par l’IA'], ['Créer le visuel de la pub', 'Générateur d’images'], ['Valider avant publication', 'Toi, l’humain'], ['Traduire le site en anglais', 'Traduction IA'], ['Transformer une réunion en compte rendu', 'Transcription IA'], ['Créer la voix off d’une vidéo', 'Voix IA'], ['Écrire une formule Excel', 'Assistant IA']] },
+      { p: 'Associe chaque situation au bon réflexe.', pairs: [['Données de tes clients', 'Les protéger'], ['Décision importante', 'Un humain tranche'], ['Image créée par l’IA', 'Le signaler'], ['Réponse importante de l’IA', 'La vérifier'], ['Appel suspect d’un proche', 'Le rappeler toi-même'], ['Mot de passe', 'Ne jamais le partager'], ['Lien bizarre par SMS', 'Ne pas cliquer'], ['Chiffre trop parfait', 'Chercher la source']] },
+      { p: 'Associe chaque problème à la bonne relance.', pairs: [['Réponse trop longue', '« Plus court »'], ['Trop compliqué', '« Plus simple »'], ['Ton trop froid', '« Plus chaleureux »'], ['Pas assez d’idées', '« Donne-moi 10 idées »'], ['Il manque un exemple', '« Avec un exemple »'], ['Tu hésites', '« Donne-moi 3 versions »'], ['Elle a mal compris', '« Pose-moi des questions d’abord »'], ['Format illisible', '« En tableau »']] }
+    ];
+    C.roles = ['Tu es rédacteur web.', 'Tu es coach sportif.', 'Tu es chef cuisinier.', 'Tu es conseiller en voyage.', 'Tu es expert en marketing.', 'Tu es professeur de maths.', 'Tu es recruteur.', 'Tu es community manager.', 'Tu es agent immobilier.', 'Tu es conseiller bancaire.', 'Tu es photographe pro.', 'Tu es avocat.', 'Tu es nutritionniste.', 'Tu es développeur.'];
+    C.tasks = ['Écris 3 phrases pour présenter une boulangerie.', 'Propose un programme de sport de 20 minutes.', 'Donne-moi une recette avec des pâtes et des tomates.', 'Prépare un week-end de 2 jours à Barcelone.', 'Trouve 5 slogans pour une marque de baskets.', 'Explique les fractions à un enfant de 10 ans.', 'Rédige une annonce pour un poste de serveur.', 'Écris un post Instagram pour un nouveau café.', 'Décris un appartement de 3 pièces à vendre.', 'Explique comment épargner 100 € par mois.', 'Donne 5 conseils pour photographier un plat.', 'Résume les règles d’un bail de location.', 'Propose un petit-déjeuner équilibré.', 'Explique ce qu’est une API.'];
+    C.formats = ['Ton chaleureux, sous forme de liste.', 'En 5 lignes maximum.', 'Sous forme de tableau.', 'Avec des émojis, ton fun.', 'En 3 étapes numérotées.', 'Ton professionnel, en un paragraphe.', 'Avec un exemple concret.', 'En moins de 100 mots.'];
+    C.traps = ['Fais un truc bien.', 'Écris n’importe quoi.', 'Mets plein de majuscules.', 'Sois parfait sans que j’explique.', 'Devine ce que je veux.', 'Fais vite et peu importe.'];
+    C.levelBank = [
+      [['Qu’est-ce qu’une IA comme ChatGPT ?', ['Une personne qui répond en direct', 'Un programme qui génère des réponses à partir de ta demande', 'Un moteur de recherche classique'], 1], ['Pour obtenir une bonne réponse d’une IA, il vaut mieux…', ['Écrire un seul mot', 'Lui donner une demande claire avec du contexte', 'Lui parler en majuscules'], 1], ['Où l’IA est-elle déjà dans ton téléphone ?', ['Nulle part', 'Face ID, le correcteur, les recommandations', 'Seulement dans la calculatrice'], 1], ['Une IA gratuite comme ChatGPT peut…', ['T’aider à écrire un mail', 'Réparer ton écran', 'Recharger ta batterie'], 0], ['Que fait l’IA quand elle « traduit » ?', ['Elle passe un texte d’une langue à une autre', 'Elle efface le texte', 'Elle le lit à voix basse'], 0], ['Une image peut-elle être créée par IA ?', ['Non, c’est impossible', 'Oui, à partir d’une simple phrase', 'Seulement en noir et blanc'], 1], ['Faut-il croire tout ce que dit une IA ?', ['Oui, elle ne se trompe jamais', 'Non, il faut vérifier les infos importantes', 'Seulement le matin'], 1], ['Que veut dire « IA » ?', ['Intelligence artificielle', 'Internet avancé', 'Image animée'], 0], ['Peut-on parler à une IA à la voix ?', ['Non', 'Oui, beaucoup d’assistants le permettent', 'Seulement en anglais'], 1], ['Que ne faut-il jamais donner à une IA ?', ['Ta ville', 'Ton mot de passe', 'Ta couleur préférée'], 1], ['Un deepfake, c’est…', ['Une fausse vidéo ou voix créée par IA', 'Un jeu vidéo', 'Une marque de téléphone'], 0], ['L’IA peut-elle t’aider à réviser ?', ['Oui, en t’expliquant et en t’interrogeant', 'Non, jamais', 'Seulement pour les maths'], 0]],
+      [['Comment appelle-t-on la consigne que tu écris à une IA ?', ['Un prompt', 'Un pixel', 'Un cookie'], 0], ['Une IA peut-elle se tromper tout en ayant l’air sûre d’elle ?', ['Non, elle vérifie tout', 'Oui, elle peut inventer des informations', 'Seulement si elle est hors ligne'], 1], ['Quels ingrédients rendent une demande efficace ?', ['Rôle, contexte, tâche, format', 'Majuscules et points d’exclamation', 'Un seul mot-clé'], 0], ['La réponse ne te plaît pas. Le meilleur réflexe ?', ['Tout recommencer', 'Préciser ce qui ne va pas dans la même discussion', 'Abandonner'], 1], ['Comment écrit une IA comme ChatGPT ?', ['Elle prédit la suite la plus probable', 'Elle copie Wikipédia', 'Un humain tape la réponse'], 0], ['Que peut-on envoyer à un assistant en plus du texte ?', ['Des photos et des documents', 'De l’argent', 'Des odeurs'], 0], ['Pourquoi donner un exemple à l’IA ?', ['Pour qu’elle copie le style voulu', 'Pour la ralentir', 'Pour la tromper'], 0], ['Une info récente donnée par l’IA est…', ['Forcément juste', 'À vérifier, elle peut ne pas être à jour', 'Interdite'], 1], ['Qu’est-ce qu’une hallucination d’IA ?', ['Une réponse inventée dite avec assurance', 'Un écran qui clignote', 'Une IA fatiguée'], 0], ['Pour une décision importante, l’IA…', ['Décide seule', 'Aide, mais un humain tranche', 'Ne sert à rien'], 1], ['Le RGPD protège…', ['Tes données personnelles', 'Ton forfait mobile', 'Ta voiture'], 0], ['Un biais d’IA, c’est…', ['Un cliché reproduit à partir de ses données', 'Une panne de courant', 'Un type de câble'], 0]],
+      [['À quoi sert une API d’IA ?', ['À intégrer une IA dans sa propre application', 'À accélérer sa connexion internet', 'À protéger son téléphone'], 0], ['Qu’est-ce qu’un agent IA ?', ['Un vendeur de logiciels', 'Une IA qui enchaîne seule plusieurs actions pour accomplir une tâche', 'Un antivirus'], 1], ['Que mesure la « fenêtre de contexte » d’un modèle ?', ['La quantité de texte qu’il peut prendre en compte d’un coup', 'La taille de l’écran', 'Le nombre d’utilisateurs'], 0], ['Que fait le « fine-tuning » ?', ['Il spécialise un modèle sur des données précises', 'Il nettoie l’écran', 'Il accélère le Wi-Fi'], 0], ['Le RAG consiste à…', ['Donner à l’IA des documents à consulter pour répondre', 'Effacer sa mémoire', 'Changer sa voix'], 0], ['Quel risque avec un agent qui agit seul ?', ['Qu’il fasse une action non voulue sans contrôle', 'Qu’il devienne trop lent', 'Aucun'], 0], ['L’AI Act européen classe les IA selon…', ['Leur niveau de risque', 'Leur prix', 'Leur couleur'], 0], ['Un modèle « open source » est…', ['Un modèle dont on peut télécharger et réutiliser les poids', 'Un modèle gratuit à vie sur le web', 'Un modèle sans données'], 0], ['Pourquoi limiter les données envoyées à une IA en entreprise ?', ['Confidentialité et respect du RGPD', 'Pour qu’elle aille moins vite', 'Pour économiser de l’encre'], 0], ['Qu’est-ce qu’un « token » pour un modèle de langage ?', ['Un morceau de texte traité par le modèle', 'Une pièce de monnaie', 'Un mot de passe'], 0], ['Le « prompt système » sert à…', ['Fixer des consignes permanentes au modèle', 'Allumer l’ordinateur', 'Changer de langue du téléphone'], 0], ['Comment réduire les hallucinations ?', ['Fournir des sources et demander de les citer', 'Écrire en majuscules', 'Poser la question 10 fois'], 0]]
+    ];
+    C.decisions = [
+      (x) => { const p = this.rint(10, 30); const who = x.inv(); return { key: 'inv-' + who + p, q: who + ' veut entrer au capital de ta société : un gros chèque tout de suite, contre ' + p + ' % de tes gains pendant 10 minutes.', ch: [{ t: 'Accepter l’argent', credits: 400 + p * 20, boost: [1 - p / 100, 600], res: who.split(',')[0] + ' t’a versé l’argent, mais tes gains baissent pendant 10 minutes.' }, { t: 'Négocier à ' + Math.round(p / 2) + ' %', credits: 200 + p * 8, boost: [1 - p / 200, 600], rep: 1, res: 'Accord trouvé : moins d’argent, mais tu gardes plus de contrôle.' }, { t: 'Refuser et rester indépendant', rep: 2, res: 'Tu gardes 100 % de ta société. + 2 réputation.' }] }; },
+      (x) => { const p = this.rint(15, 45); const r = x.biz(); return { key: 'rival-' + r + p, q: r + ' copie ton offre et casse ses prix de ' + p + ' %.', ch: [{ t: 'Lancer une campagne de pub', credits: -120, rep: 8, res: 'Ta pub coûte cher, mais ta réputation grimpe.' }, { t: 'Baisser tes prix aussi', credits: -60, boost: [0.9, 300], rep: 2, res: 'Tu gardes tes clients, mais tu gagnes moins pendant 5 minutes.' }, { t: 'Ignorer', rep: -4, res: 'Des clients partent chez ' + r + '. − 4 réputation.' }] }; },
+      (x) => { const p = this.rint(15, 40); const c = x.biz(); return { key: 'disc-' + c + p, q: c + ', ton plus gros client, exige ' + p + ' % de réduction.', ch: [{ t: 'Accepter les ' + p + ' %', credits: 300, rep: -2, res: 'Tu gardes le client, mais tu brades ton travail.' }, { t: 'Négocier à ' + Math.round(p / 2) + ' %', credits: 200, rep: 2, res: 'Accord trouvé, tout le monde est content.' }, { t: 'Refuser', rep: -3, res: c + ' part chez un concurrent. − 3 réputation.' }] }; },
+      (x) => { const n = x.person(); const k = this.rint(20, 900); return { key: 'infl-' + n + k, q: n + ', influenceur avec ' + k + ' 000 abonnés, propose de parler de ta société contre paiement.', ch: [{ t: 'Payer la collaboration', credits: -Math.round(k / 4 + 60), rep: Math.min(12, 4 + Math.round(k / 120)), res: 'La vidéo tourne bien : ta notoriété monte.' }, { t: 'Lui proposer un essai gratuit à la place', rep: 2, res: n.split(' ')[0] + ' accepte un petit post. + 2 réputation.' }, { t: 'Refuser', res: 'Rien ne change.' }] }; },
+      (x) => ({ key: 'tired-' + this.rint(1, 9999), q: 'Ton équipe est épuisée par le rythme de ' + this.rpick(['ce mois-ci', 'cette semaine', 'la dernière commande géante', 'la période des fêtes']) + '.', ch: [{ t: 'Prime et jour de repos', credits: -180, rep: 5, boost: [1.2, 300], res: 'Équipe reboostée : gains + 20 % pendant 5 minutes.' }, { t: 'Continuer comme ça', boost: [0.85, 300], res: 'La fatigue se voit : gains − 15 % pendant 5 minutes.' }] }),
+      (x) => { const t = this.rpick(this.CT.tool); return { key: 'tool-' + t, q: t + ', une nouvelle IA beaucoup plus puissante, vient de sortir.', ch: [{ t: 'L’installer partout tout de suite', boost: [1.5, 300], comp: -5, res: 'Gains + 50 % pendant 5 minutes, mais tu la maîtrises mal : − 5 compétence.' }, { t: 'Se former avant de l’utiliser', comp: 3, res: 'Tu prends de l’avance sur le long terme : + 3 compétence.' }] }; },
+      (x) => { const v = this.rpick(this.CT.city); const l = this.rpick(this.CT.last); return { key: 'school-' + v + l, q: 'Le lycée ' + l + ' de ' + v + ' te demande de former ses élèves à l’IA gratuitement.', ch: [{ t: 'Accepter', credits: -90, rep: 7, comp: 2, res: 'Belle image et tu apprends en enseignant : + 7 réputation, + 2 compétence.' }, { t: 'Refuser, pas le temps', res: 'Rien ne change.' }] }; },
+      (x) => { const c = x.biz(); return { key: 'fakeimg-' + c, q: 'Ton IA a créé une image trompeuse dans la pub de ' + c + '.', ch: [{ t: 'Retirer la pub et s’excuser', credits: -60, rep: 5, res: 'Transparence appréciée : + 5 réputation.' }, { t: 'Laisser passer', rep: -10, res: 'Les internautes s’en rendent compte. − 10 réputation.' }] }; },
+      (x) => { const n = x.person(); return { key: 'hire-' + n, q: n + ' postule chez toi : excellent profil en IA, mais demande un gros salaire.', ch: [{ t: 'L’embaucher', credits: -250, comp: 4, boost: [1.25, 600], res: n.split(' ')[0] + ' rejoint l’équipe : gains + 25 % pendant 10 minutes, + 4 compétence.' }, { t: 'Refuser', res: n.split(' ')[0] + ' part chez un concurrent.' }] }; },
+      (x) => { const m = this.rpick(this.CT.media); return { key: 'media-' + m + this.rint(1, 50), q: m + ' veut t’interviewer sur ta réussite avec l’IA.', ch: [{ t: 'Accepter l’interview', rep: 6, boost: [0.95, 120], res: 'L’interview est publiée : + 6 réputation.' }, { t: 'Refuser poliment', res: 'Tu restes concentré sur ton travail.' }] }; },
+      (x) => { const c = x.biz(); return { key: 'bill-' + c, q: 'Ton IA a envoyé une facture avec une erreur à ' + c + '.', ch: [{ t: 'Appeler pour s’excuser et corriger', credits: -40, rep: 4, comp: 1, res: 'Client rassuré, et tu vérifies mieux maintenant.' }, { t: 'Corriger sans rien dire', rep: -3, res: 'Le client l’a remarqué. − 3 réputation.' }] }; },
+      (x) => ({ key: 'green-' + this.rint(1, 999), q: 'Tes serveurs consomment beaucoup d’énergie et des clients posent des questions.', ch: [{ t: 'Passer à une énergie plus propre', credits: -200, rep: 8, res: 'Choix salué : + 8 réputation.' }, { t: 'Ne rien changer', rep: -4, res: 'L’image de ta société en prend un coup. − 4 réputation.' }] }),
+      (x) => { const c = x.biz(); return { key: 'data-' + c, q: c + ' te demande d’utiliser les données de ses clients sans leur accord, contre un bonus.', ch: [{ t: 'Refuser, c’est illégal', rep: 6, res: 'Tu respectes le RGPD : + 6 réputation.' }, { t: 'Accepter le bonus', credits: 350, rep: -15, res: 'L’affaire finit par sortir. − 15 réputation.' }] }; },
+      (x) => { const n = this.rpick(['TikTok', 'Instagram', 'X', 'LinkedIn', 'YouTube']); return { key: 'viral-' + n + this.rint(1, 99), q: 'Une vidéo sur ta société devient virale sur ' + n + ' !', ch: [{ t: 'Répondre vite aux commentaires', rep: 5, boost: [1.3, 300], res: 'Tu surfes sur la vague : gains + 30 % pendant 5 minutes.' }, { t: 'Ignorer', res: 'L’effet retombe vite.' }] }; },
+      (x) => { const p = this.rint(10, 35); const s = this.rpick(this.CT.word) + ' Cloud'; return { key: 'supp-' + s + p, q: s + ', ton fournisseur de serveurs, augmente ses prix de ' + p + ' %.', ch: [{ t: 'Accepter', boost: [1 - p / 300, 600], res: 'Tes coûts montent un peu pendant 10 minutes.' }, { t: 'Changer de fournisseur', credits: -100, comp: 1, res: 'La migration coûte un peu, mais tu restes libre.' }] }; },
+      (x) => { const b = this.rpick(['Banque du Sud', 'Crédit Nova', 'Banque Horizon', 'Caisse Atlas']); return { key: 'loan-' + b + this.rint(1, 99), q: b + ' te propose un prêt pour accélérer ta croissance.', ch: [{ t: 'Prendre le prêt', credits: 500, boost: [0.92, 900], res: 'De l’argent tout de suite, mais tu rembourses : gains − 8 % pendant 15 minutes.' }, { t: 'Refuser', rep: 1, res: 'Tu avances à ton rythme.' }] }; },
+      (x) => { const pz = this.rpick(['Trophées de l’innovation', 'Prix IA de l’année', 'Prix des jeunes entrepreneurs', 'Award de la tech responsable']); return { key: 'prize-' + pz + this.rint(1, 99), q: 'Ta société est nommée aux ' + pz + '. L’inscription est payante.', ch: [{ t: 'Payer l’inscription', credits: -150, rep: 9, res: 'Tu termines sur le podium : + 9 réputation.' }, { t: 'Ne pas participer', res: 'Rien ne change.' }] }; },
+      (x) => { const c = x.biz(); return { key: 'partner-' + c, q: c + ' te propose un partenariat : vous partagez vos clients.', ch: [{ t: 'Accepter', credits: 180, rep: 3, res: 'Nouveaux clients pour tout le monde.' }, { t: 'Refuser', res: 'Tu restes seul sur ton marché.' }] }; },
+      (x) => ({ key: 'outage-' + this.rint(1, 999), q: 'Panne géante chez ton hébergeur : ton service est coupé.', ch: [{ t: 'Prévenir tes clients en toute transparence', rep: 4, boost: [0.8, 120], res: 'Deux minutes de panne, mais on te fait confiance.' }, { t: 'Faire comme si de rien n’était', rep: -6, boost: [0.8, 120], res: 'Les clients découvrent la panne seuls. − 6 réputation.' }] })
+    ];
+    this.CT = C; return C;
+  }
+  cName(b, v) { const C = this.CT; return b[1].replace('{p}', this.rpick(C.first)).replace('{l}', this.rpick(C.last)).replace('{w}', this.rpick(C.word)).replace('{v}', v || this.rpick(C.city)); }
+  genOrder() {
+    const C = this.initContent(); const gs = this.gs;
+    const top = Math.min(9, Math.max(2, gs.unlocked.lastIndexOf(true) + 2));
+    if (Math.random() < 0.25) {
+      return this.freshPick(() => { const k = C.know[Math.floor(Math.random() * C.know.length)]; const c = this.rpick(C.biz); const name = this.cName(c); return { key: 'ok-' + k[0].slice(0, 24) + name, q: name + ' (' + c[0] + ') te demande : « ' + k[0] + ' »', o: k[1], a: k[2] }; });
+    }
+    return this.freshPick(() => {
+      const a = Math.floor(Math.random() * (top + 1)); const ni = Math.floor(Math.random() * 6); const v = this.rpick(C.city); const b = this.rpick(C.bigBiz[a] || C.biz); const name = this.cName(b, v);
+      const q = this.rpick(C.orderQ).replace('{c}', name).replace('{t}', b[0]).replace('{v}', v).replace('{n}', C.agentNeeds[a][ni]).replace('{dn}', (/^[aeéèêiouyh]/i.test(C.agentNeeds[a][ni]) ? 'd’' : 'de ') + C.agentNeeds[a][ni]);
+      const others = this.shuffle(this.AG.map((x, i) => i).filter(i => i !== a && i <= Math.max(top, 3))).slice(0, 2);
+      const opts = this.shuffle([a].concat(others));
+      return { key: 'o' + a + '-' + ni + '-' + name, q: q.charAt(0).toUpperCase() + q.slice(1), o: opts.map(i => this.AG[i].n), a: opts.indexOf(a) };
+    });
+  }
+  genDecision() {
+    const C = this.initContent();
+    const x = { biz: () => this.cName(this.rpick(C.biz)), person: () => this.rpick(C.first) + ' ' + this.rpick(C.last), inv: () => this.rpick(C.first) + ' ' + this.rpick(C.last) + ', du fonds ' + this.rpick(C.fund) };
+    return this.freshPick(() => C.decisions[Math.floor(Math.random() * C.decisions.length)](x));
+  }
+  genGame() {
+    const C = this.initContent(); const kind = this.rpick(['qcm', 'swipe', 'swipe', 'spot', 'match', 'build']);
+    if (kind === 'qcm') { const qs = this.shuffle(C.know).slice(0, 2); qs.forEach(k => this.seenAdd('k-' + k[0].slice(0, 30))); return { t: 'Quiz éclair', game: { type: 'qcm', qs: qs.map(k => { const order = this.shuffle([0, 1, 2]); return { q: k[0], o: order.map(i => k[1][i]), a: order.indexOf(k[2]) }; }) } }; }
+    if (kind === 'swipe') { const set = this.rpick(C.swipe); const cards = this.shuffle(set.cards).slice(0, 6); return { t: set.p, game: { type: 'swipe', prompt: set.p + ' 5 bonnes réponses sur 6, en 25 secondes.', yes: set.yes, no: set.no, need: 5, secs: 25, cards: cards } }; }
+    if (kind === 'spot') { const rounds = [0, 1].map(() => { const tr = this.shuffle(C.trueFacts).slice(0, 2); const f = this.rpick(C.falseFacts); const items = this.shuffle(tr.concat([f])); return { items: items, bad: items.indexOf(f) }; }); return { t: 'Repère l’erreur', game: { type: 'spot', prompt: 'L’IA a glissé une fausse info dans chaque série. Touche-la !', rounds: rounds } }; }
+    if (kind === 'match') { const set = this.rpick(C.pairSets); return { t: 'Fais les bonnes paires', game: { type: 'match', prompt: set.p + ' 2 erreurs maximum.', maxErr: 2, pairs: this.shuffle(set.pairs).slice(0, 4) } }; }
+    const role = this.rpick(C.roles), task = this.rpick(C.tasks), fmt = this.rpick(C.formats), trap = this.rpick(C.traps);
+    return { t: 'Construis le prompt idéal', game: { type: 'build', prompt: 'Touche les blocs dans le bon ordre : rôle, tâche, format. Attention au piège !', blocks: [[role, 0], [task, 1], [fmt, 2], [trap, -1]] } };
+  }
+  stat(k, v) { const gs = this.gs; if (!gs.stats) gs.stats = { taps: 0, bestCombo: 0, orders: 0, decisions: 0, play: 0, hacks: 0, blocked: 0 }; gs.stats[k] = (gs.stats[k] || 0) + v; }
+  secReq() { const t = this.gs.total || 0; return [1e4, 1e6, 1e8, 1e10, 1e12].filter(x => t >= x).length; }
+  secCost(l) { return 1500 * Math.pow(100, Math.max(0, l - 1)); }
+  dur(ms) { const m = Math.max(1, Math.round(ms / 60000)); if (m < 60) return m + ' min'; const h = Math.floor(m / 60); if (h < 48) return h + ' h ' + String(m % 60).padStart(2, '0'); return Math.round(h / 24) + ' jours'; }
+  buySec() {
+    const gs = this.gs; const l = (gs.sec || 0) + 1; if (l > 5) { this.say('Ta sécurité est déjà au maximum.'); this.refresh(); return; }
+    const c = this.secCost(l); if (gs.credits < c) { this.buzz([10, 30, 10]); this.say('Il te faut ' + this.fmt(c) + ' ₵ pour la sécurité niveau ' + l + '.'); this.refresh(); return; }
+    gs.credits -= c; gs.sec = l; this.sfx('cash'); this.buzz([15, 40, 25]);
+    const t = gs.threat; this.say('Sécurité niveau ' + l + ' installée.' + (t && l >= t.req ? ' Tu es protégé contre l’attaque annoncée.' : t ? ' Il faut le niveau ' + t.req + ' pour bloquer l’attaque annoncée.' : ''));
+    this.save(); this.refresh();
+  }
+  threatCheck(now) {
+    const gs = this.gs; if (!gs) return; const req = this.secReq(); const sec = gs.sec || 0;
+    if (gs.threat && now >= gs.threat.at) {
+      const t = gs.threat; gs.threat = null; gs.nextThreat = now + this.rint(12, 48) * 3600000;
+      if (sec >= t.req) { gs.rep = Math.min(100, gs.rep + 3); this.stat('blocked', 1); this.sfx('success'); this.say('Attaque de pirates bloquée par ta sécurité ! + 3 réputation.'); }
+      else {
+        const pct = this.rint(25, 45); const loss = Math.floor(gs.credits * pct / 100); gs.credits -= loss; gs.rep = Math.max(0, gs.rep - 10); this.stat('hacks', 1); this.sfx('alarm');
+        this.hackNews = { loss: loss, pct: pct, req: t.req };
+        if (this.state.screen === 'jeu' && !this.sheet) this.openSheet('decision', { kicker: 'Piratage', title: 'Tu t’es fait pirater', lesson: '' }, { type: 'decision', q: 'Les pirates ont vidé ' + pct + ' % de ta trésorerie : − ' + this.fmt(loss) + ' ₵ et − 10 réputation. Ta sécurité était au niveau ' + sec + ', il fallait le niveau ' + t.req + '. La prochaine fois, investis avant la date annoncée.', ch: [{ t: 'Compris, je renforce ma sécurité', act: 'sec', res: '' }, { t: 'Fermer', res: 'Pense à investir dans ta sécurité avant la prochaine menace.' }] });
+        else this.say('Piratage pendant ton absence : − ' + this.fmt(loss) + ' ₵. Investis dans ta sécurité !');
+      }
+      this.save(); return;
+    }
+    if (!gs.threat && req > sec && req > 0 && now >= (gs.nextThreat || 0) && this.state.screen === 'jeu' && !this.sheet && now - this.lastTap > 4000 && !this.state.world && !this.state.mission) {
+      const h = this.rint(3, 40); gs.threat = { at: now + h * 3600000, req: req }; this.save(); this.sfx('alarm');
+      this.openSheet('decision', { kicker: 'Menace détectée', title: 'Des pirates te visent', lesson: '' }, { type: 'decision', q: 'Ta société vaut maintenant très cher et des pirates préparent une attaque, estimée dans ' + this.dur(h * 3600000) + '. Il te faut la sécurité niveau ' + req + ' (tu es au niveau ' + sec + '). Sans ça, ils pourront voler une grosse partie de ta trésorerie.', ch: [{ t: 'Renforcer ma sécurité (' + this.fmt(this.secCost(sec + 1)) + ' ₵)', act: 'sec', res: '' }, { t: 'Plus tard', res: 'La menace reste affichée dans le jeu avec le temps restant.' }] });
+    }
+  }
   say(text) { this.toast = { text: text, until: Date.now() + 3200 }; }
   refresh() { this.setState({ tk: Date.now() }); }
   tick() {
@@ -1138,6 +1341,8 @@ window.Component = class Component extends DCLogic {
     const now = Date.now(); const dt = Math.min(5, (now - this.lastTick) / 1000); this.lastTick = now;
     if (this.state.screen === 'intro') return;
     if (this.worldEng) { try { this.worldEng.update(this.worldState()); } catch (e) {} }
+    if (this.state.screen === 'jeu') this.stat('play', dt);
+    this.threatCheck(now);
     const gs = this.gs; const g = this.perSec() * dt; gs.credits += g; gs.total += g;
     if (now > this.repNext) { this.repNext = now + 20000; if (gs.price === 'bas') gs.rep = Math.min(100, gs.rep + 1); if (gs.price === 'premium') gs.rep = Math.max(0, gs.rep - 1); }
     const j = this.jauge();
@@ -1169,13 +1374,13 @@ window.Component = class Component extends DCLogic {
     this.buzz(); this.refresh();
   }
   openOrder() {
-    const o = this.ORDERS[Math.floor(Math.random() * this.ORDERS.length)];
+    const o = this.genOrder(); this.sfx('alert');
     this.orderNext = Date.now() + 35000 + Math.random() * 20000;
     this.openSheet('order', { kicker: 'Commande client', title: 'Un client a besoin de toi', lesson: '', deadline: Date.now() + 30000 }, { type: 'qcm', qs: [{ q: o.q, o: o.o, a: o.a }], reveal: true });
     this.buzz([15, 40, 15]);
   }
   openDecision() {
-    const d = this.DECISIONS[Math.floor(Math.random() * this.DECISIONS.length)];
+    const d = this.genDecision(); this.sfx('alert');
     this.orderNext = Date.now() + 35000 + Math.random() * 20000;
     this.openSheet('decision', { kicker: 'Décision de patron', title: 'À toi de trancher', lesson: '' }, { type: 'decision', q: d.q, ch: d.ch });
     this.buzz([15, 40, 15]);
@@ -1186,13 +1391,15 @@ window.Component = class Component extends DCLogic {
     if (c.rep) { gs.rep = Math.max(0, Math.min(100, gs.rep + c.rep)); parts.push((c.rep > 0 ? '+ ' : '− ') + Math.abs(c.rep) + ' réputation'); }
     if (c.comp) { gs.comp = Math.max(0, gs.comp + c.comp); parts.push((c.comp > 0 ? '+ ' : '− ') + Math.abs(c.comp) + ' compétence'); }
     if (c.boost) this.boost = { mult: c.boost[0], until: Date.now() + c.boost[1] * 1000 };
+    this.stat('decisions', 1);
+    if (c.act === 'sec') { this.sheet = null; this.buySec(); return; }
     s.picked = k; s.status = 'won'; s.feedback = c.res + (parts.length ? ' (' + parts.join(', ') + ')' : '');
     this.buzz(c.rep < 0 || (c.boost && c.boost[0] < 1) ? [20, 50, 20] : [15, 40, 25]); this.save(); this.refresh();
   }
   openModule(i) { const m = this.AG[i].mod; this.openSheet('module', { agent: i, kicker: 'Mini-jeu · débloque ' + this.AG[i].n, title: m.t, lesson: m.lesson }, m.game); }
   openTrain() {
     if (this.gs.trainCount >= 10) { this.say('Tu as fait tes 10 entraînements du jour. Reviens demain !'); this.refresh(); return; }
-    const mods = this.AG.filter(a => a.mod).map(a => a.mod); const m = mods[Math.floor(Math.random() * mods.length)];
+    const m = this.genGame();
     this.openSheet('train', { kicker: 'Entraînement · + 1 compétence', title: m.t, lesson: '' }, m.game);
   }
   openNewsQuiz() {
@@ -1213,7 +1420,7 @@ window.Component = class Component extends DCLogic {
       if (won) { const r = Math.max(50, this.perSec() * 300); gs.credits += r; gs.total += r; gs.comp += 2; this.sfx('cash'); s.feedback = 'Bien vu ! + ' + this.fmt(r) + ' ₵ et + 2 compétence'; this.buzz([15, 40, 25]); }
       else { s.feedback = 'Raté. Lis l’actu pour la prochaine fois !'; this.buzz([20, 60, 20]); }
     } else if (s.kind === 'order') {
-      if (won) { const r = Math.max(25, this.perSec() * 120); gs.credits += r; gs.total += r; gs.rep = Math.min(100, gs.rep + 5); gs.comp += 1; this.sfx('cash'); s.feedback = 'Client ravi ! + ' + this.fmt(r) + ' ₵, + 5 réputation'; this.buzz([15, 40, 25]); }
+      if (won) { const r = Math.max(25, this.perSec() * 120); gs.credits += r; gs.total += r; gs.rep = Math.min(100, gs.rep + 5); gs.comp += 1; this.stat('orders', 1); this.sfx('cash'); s.feedback = 'Client ravi ! + ' + this.fmt(r) + ' ₵, + 5 réputation'; this.buzz([15, 40, 25]); }
       else { gs.rep = Math.max(0, gs.rep - 3); s.feedback = (why || 'Mauvais choix.') + ' − 3 réputation.'; this.buzz([20, 60, 20]); }
     }
     this.save(); this.refresh();
@@ -1259,7 +1466,10 @@ window.Component = class Component extends DCLogic {
     const v = this.tapValue(); gs.credits += v; gs.total += v;
     this.tapN = (this.tapN || 0) + 1; this.lastVal = this.fmt(v);
     this.sparkDirs = Array.from({ length: 6 }, () => { const an = Math.random() * Math.PI * 2, d = 90 + Math.random() * 50; return [Math.cos(an) * d, Math.sin(an) * d]; });
-    if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('success'); this.buzz([15, 30, 30]); } else { this.sfx('coin', 1 + Math.min(0.35, this.combo * 0.007)); this.buzz(9); }
+    this.stat('taps', 1); if (this.combo > ((gs.stats && gs.stats.bestCombo) || 0)) this.stat('bestCombo', this.combo - ((gs.stats && gs.stats.bestCombo) || 0));
+    if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('success', this.combo === 10 ? 1 : this.combo === 25 ? 1.122 : 1.26); this.sfx('spark', 1); this.buzz([15, 30, 30]); }
+    else { const tier = this.combo >= 50 ? 3 : this.combo >= 25 ? 2 : this.combo >= 10 ? 1 : 0; const k = (this.combo - 1) % 10; const semi = [0, 2, 4, 7, 9][k % 5] + 12 * Math.floor(k / 5) + [0, 2, 4, 5][tier];
+      this.sfx('coin', Math.pow(2, (semi - 7) / 12)); if (tier >= 1 && this.combo % 2 === 0) this.sfx('tap', 1.5); if (tier >= 2) this.sfx('spark', Math.pow(2, (semi % 12) / 24)); this.buzz(9); }
     this.refresh();
   }
   buyAgent(i) {
@@ -1301,8 +1511,17 @@ window.Component = class Component extends DCLogic {
       newsBadge: gs.newsDone ? 'display:none' : 'position:absolute;top:6px;right:8px;padding:2px 6px;border-radius:9px;background:#0E3A57;color:#FFFFFF;font-size:11px;font-weight:800',
       priceLabel: gs.price === 'bas' ? 'Bas' : gs.price === 'premium' ? 'Premium' : 'Normal',
       cyclePrice: () => { const nx = { bas: 'normal', normal: 'premium', premium: 'bas' }[gs.price]; gs.price = nx; this.buzz(); this.say(nx === 'bas' ? 'Prix bas : gains × 0,8, ta réputation monte' : nx === 'premium' ? 'Prix premium : gains × 1,5, ta réputation baisse' : 'Prix normal : gains × 1'); this.save(); this.refresh(); },
-      info: ['credits', 'steps', 'qg', 'ctrl', 'actu', 'train', 'price', 'rep', 'agents', 'ups', 'wgain', 'wagents', 'wctrl'].reduce((o, k) => { o[k] = () => this.openInfo(k); return o; }, {}),
+      info: ['credits', 'steps', 'qg', 'ctrl', 'actu', 'train', 'price', 'rep', 'agents', 'ups', 'wgain', 'wagents', 'wctrl', 'sec', 'stats'].reduce((o, k) => { o[k] = () => this.openInfo(k); return o; }, {}),
       openWorld: () => { this.buzz(); this.setState({ world: true }); },
+      repVal: Math.round(gs.rep) + ' / 100', repName: gs.rep >= 80 ? 'Excellente' : gs.rep >= 60 ? 'Bonne' : gs.rep >= 40 ? 'Moyenne' : gs.rep >= 20 ? 'Fragile' : 'Mauvaise', repGain: 'gains × ' + (0.5 + gs.rep / 100).toFixed(2).replace('.', ','),
+      repFill: 'display:block;height:100%;border-radius:6px;transition:width .4s ease;width:' + Math.max(3, Math.round(gs.rep)) + '%;background:' + (gs.rep >= 60 ? 'linear-gradient(90deg,#5BB8F5,#2E8FD6)' : gs.rep >= 40 ? '#F2A541' : '#E5484D'),
+      repStar: 'width:40px;height:40px;flex:0 0 40px;border-radius:20px;display:flex;align-items:center;justify-content:center;background:' + (gs.rep >= 60 ? '#5BB8F5' : gs.rep >= 40 ? '#FDE7C2' : '#FBD5D6'),
+      secLevel: 'Niveau ' + (gs.sec || 0) + ' / 5', secNeed: this.secReq() > (gs.sec || 0) ? 'Il te faut le niveau ' + this.secReq() : 'Tu es bien protégé',
+      secDots: [1, 2, 3, 4, 5].map(i => ({ style: 'width:16px;height:8px;border-radius:4px;background:' + (i <= (gs.sec || 0) ? '#0E3A57' : i <= this.secReq() ? '#FBD5D6' : '#E3F2FD') })),
+      secCanBuy: (gs.sec || 0) < 5, secBtn: 'Renforcer · ' + this.fmt(this.secCost((gs.sec || 0) + 1)) + ' ₵', buySec: () => this.buySec(),
+      hasThreat: !!gs.threat, threatText: gs.threat ? 'Attaque de pirates estimée dans ' + this.dur(gs.threat.at - Date.now()) + (gs.sec >= gs.threat.req ? ' · tu es protégé' : ' · niveau ' + gs.threat.req + ' requis') : '',
+      threatSafe: !!(gs.threat && (gs.sec || 0) >= gs.threat.req), threatDanger: !!(gs.threat && (gs.sec || 0) < gs.threat.req),
+      stTaps: Math.floor((gs.stats && gs.stats.taps) || 0).toLocaleString('fr-FR'), stCombo: '× ' + ((gs.stats && gs.stats.bestCombo) || 0), stOrders: String((gs.stats && gs.stats.orders) || 0), stTime: this.dur(((gs.stats && gs.stats.play) || 0) * 1000), stTotal: this.fmt(gs.total) + ' ₵', stHacks: ((gs.stats && gs.stats.blocked) || 0) + ' bloquée(s) · ' + ((gs.stats && gs.stats.hacks) || 0) + ' subie(s)',
       closeWorld: () => { this.buzz(); this.setState({ world: false }); },
       slots: (() => { const list = []; for (let i = 0; i < 10; i++) { const n = Math.min(3, Math.ceil(gs.counts[i] / 4)); for (let k = 0; k < n; k++) list.push(i); }
         const pos = []; [102, 262, 42, 322].forEach(x => pos.push([x, 62, 98, 3])); [129, 237, 75, 291, 21, 345].forEach(x => pos.push([x, 112, 86, 2])); [183, 132, 234, 82, 284, 32, 334].forEach(x => pos.push([x, 156, 72, 1]));
@@ -1618,7 +1837,8 @@ window.Component = class Component extends DCLogic {
     this.introAlive = false;
     if (this.introR) { try { this.introR.dispose(); if (this.introR.forceContextLoss) this.introR.forceContextLoss(); } catch (e) {} this.introR = null; }
   }
-  endIntro() { this.stopIntro(); this.setState({ screen: 'onb' }); }
+  endIntro() { this.stopIntro(); let done = false; try { done = window.localStorage.getItem('inoviaOnbDone') === '1'; } catch (e) {} this.setState({ screen: done ? 'actu' : 'onb' }); }
+  onbDone() { try { window.localStorage.setItem('inoviaOnbDone', '1'); } catch (e) {} }
   runIntro() {
     const T = window.THREE;
     const cv = document.getElementById('inoGL'), fxc = document.getElementById('inoFX');
@@ -1693,13 +1913,13 @@ window.Component = class Component extends DCLogic {
     const logo = document.getElementById('inoLogo'), lstar = document.getElementById('inoStar'), lname = document.getElementById('inoName'), lload = document.getElementById('inoLoad');
     let t0 = null, b1 = false, b2 = false;
     const begin = () => { if (t0 !== null || !this.introAlive) return; t0 = performance.now(); if (lload) lload.style.opacity = 0; };
-    mgr.onLoad = begin; setTimeout(begin, 5000);
+    mgr.onLoad = begin; setTimeout(begin, 1500);
     const loop = (now) => {
       if (!this.introAlive) return;
       this.introRaf = requestAnimationFrame(loop);
       globe.rotation.y += 0.0018; clouds.rotation.y += 0.0024; pm.forEach((m, i) => m.rotation.y += 0.002 + i * 0.0004);
       drawShoots(now); stepSparks();
-      if (t0 !== null) { const t = now - t0;
+      if (t0 !== null) { const t = (now - t0) * 1.8;
         camera.position.z = 6.3 + 0.9 * (1 - eo(cl(t / 1700)));
         cables.forEach((c, i) => { const gp = eo(cl((t - i * 110) / 950)); c.mesh.geometry.setDrawRange(0, Math.floor(c.count * gp / 6) * 6); c.plug.visible = gp > 0.96;
           const pp = cl((t - 1350 - i * 80) / 520); c.pulse.visible = pp > 0 && pp < 1; if (c.pulse.visible) c.pulse.position.copy(c.curve.getPointAt(eo(pp)));
@@ -1721,7 +1941,7 @@ window.Component = class Component extends DCLogic {
   }
   synth(name, sr) {
     // Sons générés par le code (aucun fichier à charger) : même recette pour le web et pour l'appli.
-    const D = { tap: 0.06, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3 }[name] || 0.06;
+    const D = { tap: 0.06, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3, alert: 0.75, spark: 0.22, alarm: 0.9 }[name] || 0.06;
     const n = Math.floor(D * sr), out = new Float32Array(n), TAU = Math.PI * 2;
     const note = (t0, f, len, amp, harm, dec) => {
       const a = Math.floor(t0 * sr), L = Math.floor(len * sr); let ph = 0;
@@ -1740,11 +1960,17 @@ window.Component = class Component extends DCLogic {
       note(0.02, 1318.51, 0.3, 0.2, 0.2, 14); note(0.09, 1760.0, 0.3, 0.2, 0.2, 13); note(0.16, 2637.02, 0.46, 0.22, 0.15, 9);
     } else if (name === 'success') {
       [523.25, 659.25, 783.99, 1046.5].forEach((f, k) => note(k * 0.085, f, 0.7 - k * 0.085, 0.2, 0.3, 7 + k));
+    } else if (name === 'alert') {
+      note(0, 1318.51, 0.75, 0.22, 0.12, 6); note(0.16, 1760.0, 0.59, 0.24, 0.12, 6);
+    } else if (name === 'spark') {
+      note(0, 3135.96, 0.12, 0.12, 0.05, 40); note(0.035, 3951.07, 0.12, 0.1, 0.05, 40); note(0.07, 4698.63, 0.15, 0.09, 0.05, 32);
+    } else if (name === 'alarm') {
+      [0, 0.3, 0.6].forEach((t0) => { note(t0, 880, 0.26, 0.2, 0.35, 9); note(t0 + 0.13, 659.25, 0.16, 0.18, 0.35, 12); });
     } else if (name === 'error') {
       let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 240 - 70 * Math.min(1, t / 0.2); ph += TAU * f / sr; out[i] = 0.3 * Math.min(1, t / 0.006) * Math.exp(-t * 11) * (Math.sin(ph) + 0.25 * Math.sin(ph * 3)); }
     }
     let pk = 0; for (let i = 0; i < n; i++) pk = Math.max(pk, Math.abs(out[i]));
-    const target = name === 'tap' ? 0.5 : name === 'coin' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
+    const target = name === 'tap' ? 0.5 : name === 'coin' ? 0.6 : name === 'spark' ? 0.32 : name === 'alert' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
     const fade = Math.floor(0.004 * sr); for (let i = 0; i < fade && i < n; i++) out[n - 1 - i] *= i / fade;
     return out;
   }
@@ -1773,27 +1999,23 @@ window.Component = class Component extends DCLogic {
   }
   go(s) {
     this.buzz();
-    this.setState({ screen: s, menu: false, open: null, world: false, mission: false, info: null, auth: null });
+    this.setState({ screen: s, menu: false, open: null, world: false, mission: false, info: null, auth: null, levelCard: false });
   }
+  qBank() { const C = this.initContent(); return C.levelBank.map(l => l.map(x => ({ q: x[0], o: x[1], a: x[2] }))); }
   pickQ(lvl, asked) {
-    const order = [lvl, lvl === 0 ? 1 : lvl - 1, lvl === 2 ? 1 : lvl + 1];
-    for (const l of order) {
-      for (let i = 0; i < 2; i++) {
-        const id = l + '-' + i;
-        if (asked.indexOf(id) === -1) return { lvl: l, i: i, id: id };
-      }
-    }
+    const bank = this.qBank(); const order = [lvl, lvl === 0 ? 1 : lvl - 1, lvl === 2 ? 1 : lvl + 1];
+    for (const l of order) { const free = bank[l].map((q, i) => i).filter(i => asked.indexOf(l + '-' + i) === -1); if (free.length) { const i = free[Math.floor(Math.random() * free.length)]; return { lvl: l, i: i, id: l + '-' + i }; } }
     return { lvl: 1, i: 0, id: '1-0' };
   }
-  startQuiz() {
-    this.buzz();
+  startQuiz(len) {
+    this.buzz(); const n = len || 4;
     const cur = this.pickQ(1, []);
-    this.setState({ menu: false, open: null, quiz: { step: 0, lvl: 1, asked: [cur.id], cur: cur, picked: null, done: false } });
+    this.setState({ menu: false, open: null, levelCard: false, quiz: { step: 0, len: n, lvl: 1, score: 0, asked: [cur.id], cur: cur, picked: null, done: false } });
   }
   answer(idx) {
     const z = this.state.quiz;
     if (!z || z.picked !== null) return;
-    const q = this.bank[z.cur.lvl][z.cur.i];
+    const q = this.qBank()[z.cur.lvl][z.cur.i];
     const ok = idx === q.a;
     this.buzz(ok ? 15 : [20, 60, 20]);
     this.setState({ quiz: { ...z, picked: idx } });
@@ -1802,7 +2024,7 @@ window.Component = class Component extends DCLogic {
       if (!zz) return;
       const nl = Math.max(0, Math.min(2, zz.lvl + (ok ? 1 : -1)));
       const step = zz.step + 1;
-      if (step >= 4) {
+      if (step >= (zz.len || 4)) {
         this.buzz(30);
         this.setState({ quiz: { ...zz, step: step, lvl: nl, done: true, picked: null } });
       } else {
@@ -1838,9 +2060,9 @@ window.Component = class Component extends DCLogic {
     const z = s.quiz;
     let qText = '', opts = [], feedback = '', segs = [], qNum = 1, resultName = '', resultDesc = '';
     if (z) {
-      segs = [0, 1, 2, 3].map(i => ({ style: 'flex:1;height:8px;border-radius:4px;transition:background .3s ease;background:' + (i < z.step || (i === z.step && z.done) ? '#5BB8F5' : (i === z.step ? '#A9D9F9' : '#E3F2FD')) }));
+      segs = Array.from({ length: z.len || 4 }, (_, i) => i).map(i => ({ style: 'flex:1;height:8px;border-radius:4px;transition:background .3s ease;background:' + (i < z.step || (i === z.step && z.done) ? '#5BB8F5' : (i === z.step ? '#A9D9F9' : '#E3F2FD')) }));
       if (!z.done) {
-        const q = this.bank[z.cur.lvl][z.cur.i];
+        const q = this.qBank()[z.cur.lvl][z.cur.i];
         qText = q.q;
         qNum = z.step + 1;
         opts = q.o.map((label, i) => {
@@ -1874,7 +2096,7 @@ window.Component = class Component extends DCLogic {
       showActu: s.screen === 'actu',
       showForm: s.screen === 'form',
       showProfil: s.screen === 'profil',
-      showChrome: s.screen !== 'onb' && s.screen !== 'intro' && !s.open && !s.world && !s.mission && !s.info && !s.auth,
+      showChrome: s.screen !== 'onb' && s.screen !== 'intro' && !s.open && !s.world && !s.mission && !s.info && !s.auth && !s.levelCard,
       showInfo: !!s.info && s.screen === 'jeu',
       acc: this.accVals().acc,
       showAuth: !!s.auth,
@@ -1892,10 +2114,11 @@ window.Component = class Component extends DCLogic {
       showMenu: s.menu,
       showQuiz: !!z,
       quizAsking: !!z && !z.done,
+      qLen: String((z && z.len) || 4),
       quizDone: !!z && z.done,
       levelName: levelName,
       levelCls: s.level === null ? 'pulse' : '',
-      levelAria: 'Mon niveau : ' + levelName + '. Faire le quiz de niveau',
+      levelAria: 'Mon niveau : ' + levelName,
       themes: themeNames.map(n => ({
         name: n,
         pick: () => { this.buzz(); this.setState({ theme: n }); },
@@ -1944,12 +2167,20 @@ window.Component = class Component extends DCLogic {
       soundStyle: 'width:56px;height:32px;padding:3px;border:none;border-radius:16px;cursor:pointer;display:flex;transition:background .2s ease;background:' + (s.sound !== false ? '#5BB8F5' : '#DCEEFB') + ';justify-content:' + (s.sound !== false ? 'flex-end' : 'flex-start'),
       toggleSound: () => { const on = s.sound === false; try { window.localStorage.setItem('inoviaSound', on ? '1' : '0'); } catch (e) {} this.setState({ sound: on }, () => {}); if (on) { this.state.sound = true; this.sfx('success'); } },
       toggleStyle: 'width:56px;height:32px;padding:3px;border:none;border-radius:16px;cursor:pointer;display:flex;transition:background .2s ease;background:' + (s.hapt ? '#5BB8F5' : '#DCEEFB') + ';justify-content:' + (s.hapt ? 'flex-end' : 'flex-start'),
-      startQuiz: () => this.startQuiz(),
-      closeQuiz: () => { this.buzz(); this.setState({ quiz: null, screen: s.screen === 'onb' ? 'actu' : s.screen }); },
-      finishQuiz: () => { this.buzz(); this.setState({ level: s.quiz ? s.quiz.lvl : s.level, quiz: null, screen: 'actu' }); },
+      startQuiz: () => this.startQuiz(12),
+      startQuiz4: () => this.startQuiz(4),
+      openLevel: () => { this.buzz(); this.setState({ levelCard: true, menu: false }); },
+      closeLevel: () => { this.buzz(); this.setState({ levelCard: false }); },
+      showLevel: !!s.levelCard && s.screen !== 'intro',
+      lvName: s.level === null ? 'Pas encore évalué' : this.levels[s.level].name,
+      lvDesc: s.level === null ? 'Fais le test pour que l’IA règle ton fil et tes formations à ton niveau.' : this.levels[s.level].desc,
+      lvSegs: [0, 1, 2].map(i => ({ style: 'flex:1;height:10px;border-radius:5px;background:' + (s.level !== null && i <= s.level ? '#5BB8F5' : '#E3F2FD') })),
+      lvBtn: s.level === null ? 'Faire le test (12 questions)' : 'Refaire le test (12 questions)',
+      closeQuiz: () => { this.buzz(); if (s.screen === 'onb') this.onbDone(); this.setState({ quiz: null, screen: s.screen === 'onb' ? 'actu' : s.screen }); },
+      finishQuiz: () => { this.buzz(); this.onbDone(); const lv = s.quiz ? s.quiz.lvl : s.level; try { if (lv !== null) window.localStorage.setItem('inoviaLevel', String(lv)); } catch (e) {} this.setState({ level: lv, quiz: null, screen: s.screen === 'onb' ? 'actu' : s.screen }); },
       closeDet: () => { this.buzz(); this.setState({ open: null }); },
       goModule: () => this.go('form'),
-      goActu: () => this.go('actu'),
+      goActu: () => { if (s.screen === 'onb') this.onbDone(); this.go('actu'); },
       goForm: () => this.go('form'),
       goProfil: () => this.go('profil'),
       openMenu: () => { this.buzz(); this.setState({ menu: true }); },

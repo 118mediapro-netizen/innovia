@@ -431,7 +431,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </span>
 <span class="bob2" style="display: flex; pointer-events: auto">
 <button type="button" onClick="{{goJeu}}" aria-label="Jeu Neo Corp" class="tap {{bJeu.cls}}" style="{{bJeu.style}}">
-<span style="font-size: 17px; font-weight: 800; letter-spacing: 0.05em">CLIC</span>
+<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 9.2l9.6 3.7-4.1 1.5 3 3.6-1.9 1.6-3-3.6-2.4 3.6z" fill="#FFFFFF"></path><path d="M7.2 7.2L5 5M9.5 5.8V3M5.8 9.5H3M12.7 6.6l1.6-1.6M6.6 12.7L5 14.3"></path></svg>
 </button>
 </span>
 <span class="bob3" style="display: flex; pointer-events: auto">
@@ -1621,7 +1621,7 @@ window.Component = class Component extends DCLogic {
     if (crit) { this.sfx('success', 1.5); this.sfx('spark', 1); this.buzz([20, 30, 40]); }
     else if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('success', this.combo === 10 ? 1 : this.combo === 25 ? 1.122 : 1.26); this.sfx('spark', 1); this.buzz([15, 30, 30]); }
     else { const k = (this.combo - 1) % 10; const semi = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21][k] + [0, 2, 4, 7][tier];
-      this.sfx('pluck', Math.pow(2, semi / 12)); if (tier >= 2 && this.combo % 2 === 0) this.sfx('spark', Math.pow(2, (semi % 12) / 24)); this.buzz(9); }
+      this.sfx('click', 0.95 + Math.random() * 0.1); if (tier >= 2 && this.combo % 4 === 0) this.sfx('spark', Math.pow(2, (semi % 12) / 24)); this.buzz(9); }
     this.featCheck(false);
     this.refresh();
   }
@@ -1763,6 +1763,7 @@ window.Component = class Component extends DCLogic {
     const gs = this.gs, n = this.totalAgents(), t = gs.total || 0;
     return [
       ['agents', t >= 10, 'Nouveau : tes agents IA ! Ils gagnent de l’argent pour toi, même quand tu ne cliques pas.'],
+      ['nextag', gs.counts[0] >= 1 && !gs.unlocked[1], 'Nouveau : l’Agent rédaction ! Réussis son mini-jeu « Jouer » pour le débloquer.'],
       ['ups', t >= 80, 'Nouveau : les améliorations. Elles rendent chaque clic plus rentable.'],
       ['ctrl', n >= 3, 'Nouveau : la jauge de contrôle et l’entraînement. Plus tu as d’agents, plus il faut apprendre pour les maîtriser.'],
       ['rep', t >= 300, 'Nouveau : ta réputation. Plus elle est haute, plus tu gagnes.'],
@@ -1860,7 +1861,7 @@ window.Component = class Component extends DCLogic {
       prices: [['bas', 'Bas', '× 0,8 · réputation +'], ['normal', 'Normal', '× 1'], ['premium', 'Premium', '× 1,5 · réputation −']].map(x => ({ name: x[1], eff: x[2], pick: () => { this.buzz(); gs.price = x[0]; this.save(); this.refresh(); }, style: 'display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:16px;font-family:inherit;color:#0E3A57;cursor:pointer;transition:background .2s ease;' + (gs.price === x[0] ? 'border:2px solid #5BB8F5;background:#5BB8F5' : 'border:2px solid #E3F2FD;background:#FFFFFF') })),
       rep: gs.rep, repMult: (0.5 + gs.rep / 100).toFixed(2).replace('.', ','),
       repBar: 'height:100%;border-radius:4px;background:#5BB8F5;transition:width .3s ease;width:' + gs.rep + '%',
-      agents: this.AG.map((a, i) => { const locked = !gs.unlocked[i]; const c = this.cost(i); return { show: i <= gs.unlocked.lastIndexOf(true) + 1,
+      agents: this.AG.map((a, i) => { const locked = !gs.unlocked[i]; const c = this.cost(i); const lastU = gs.unlocked.lastIndexOf(true); return { show: i <= lastU || (i === lastU + 1 && gs.counts[lastU] >= 1),
         name: a.n, short: ['Assistant', 'Rédaction', 'Visuel', 'Marketing', 'Ventes', 'Compta', 'Data center', 'Filiale', 'IA urbaine', 'Réseau'][i], a0: i === 0, a1: i === 1, a2: i === 2, a3: i === 3, a4: i === 4, a5: i === 5, a6: i === 6, a7: i === 7, a8: i === 8, a9: i === 9,
         info: () => this.openInfo('ag' + i),
         cardStyle: 'padding:12px;border-radius:24px;position:relative;' + (locked ? 'border:1.5px solid #E3F2FD;background:#F5FAFE' : 'border:1.5px solid #CFE8FA;background:#FFFFFF'),
@@ -2268,7 +2269,7 @@ window.Component = class Component extends DCLogic {
   }
   synth(name, sr) {
     // Sons générés par le code (aucun fichier à charger) : même recette pour le web et pour l'appli.
-    const D = { tap: 0.06, pluck: 0.22, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3, alert: 0.75, spark: 0.22, alarm: 0.9 }[name] || 0.06;
+    const D = { tap: 0.06, click: 0.09, pluck: 0.22, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3, alert: 0.75, spark: 0.22, alarm: 0.9 }[name] || 0.06;
     const n = Math.floor(D * sr), out = new Float32Array(n), TAU = Math.PI * 2;
     const note = (t0, f, len, amp, harm, dec) => {
       const a = Math.floor(t0 * sr), L = Math.floor(len * sr); let ph = 0;
@@ -2279,6 +2280,12 @@ window.Component = class Component extends DCLogic {
     };
     if (name === 'tap') {
       let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 680 + 520 * Math.exp(-t * 60); ph += TAU * f / sr; out[i] = 0.42 * Math.min(1, t / 0.002) * Math.exp(-t * 70) * Math.sin(ph); }
+    } else if (name === 'click') {
+      // clic de souris : un « clac » sec à l'appui, puis un petit relâchement
+      let sd = 11; const rnd = () => { sd = (sd * 16807) % 2147483647; return sd / 2147483647 * 2 - 1; };
+      const hit = (t0, amp, f1, f2) => { const a = Math.floor(t0 * sr); let prev = 0; for (let i = 0; i < Math.floor(0.03 * sr) && a + i < n; i++) { const t = i / sr; const w = rnd(), hp = w - prev; prev = w;
+        out[a + i] += amp * (0.9 * hp * Math.exp(-t * 1100) + 0.55 * Math.sin(TAU * f1 * t) * Math.exp(-t * 520) + 0.3 * Math.sin(TAU * f2 * t) * Math.exp(-t * 900)); } };
+      hit(0, 1, 2350, 5200); hit(0.052, 0.45, 2950, 6100);
     } else if (name === 'pluck') {
       note(0, 523.25, 0.22, 0.34, 0.16, 15); note(0, 1046.5, 0.12, 0.08, 0, 32);
     } else if (name === 'coin') {
@@ -2299,7 +2306,7 @@ window.Component = class Component extends DCLogic {
       let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 240 - 70 * Math.min(1, t / 0.2); ph += TAU * f / sr; out[i] = 0.3 * Math.min(1, t / 0.006) * Math.exp(-t * 11) * (Math.sin(ph) + 0.25 * Math.sin(ph * 3)); }
     }
     let pk = 0; for (let i = 0; i < n; i++) pk = Math.max(pk, Math.abs(out[i]));
-    const target = name === 'tap' ? 0.5 : name === 'pluck' ? 0.58 : name === 'coin' ? 0.6 : name === 'spark' ? 0.32 : name === 'alert' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
+    const target = name === 'tap' ? 0.5 : name === 'click' ? 0.75 : name === 'pluck' ? 0.58 : name === 'coin' ? 0.6 : name === 'spark' ? 0.32 : name === 'alert' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
     const fade = Math.floor(0.004 * sr); for (let i = 0; i < fade && i < n; i++) out[n - 1 - i] *= i / fade;
     return out;
   }

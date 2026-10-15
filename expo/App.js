@@ -12,8 +12,8 @@ const URL = 'https://118mediapro-netizen.github.io/innovia/';
 let ExpoAudio = null;
 try { ExpoAudio = require('expo-audio'); } catch (e) { ExpoAudio = null; }
 
-const PRELOAD = ['tap', 'pluck', 'coin', 'cash', 'success', 'error', 'alert', 'spark', 'alarm'];
-const COPIES = { tap: 4, pluck: 6, coin: 6, spark: 3 };
+const PRELOAD = ['tap', 'click', 'pluck', 'coin', 'cash', 'success', 'error', 'alert', 'spark', 'alarm'];
+const COPIES = { tap: 4, click: 8, pluck: 6, coin: 6, spark: 3 };
 const pool = {};
 const next = {};
 

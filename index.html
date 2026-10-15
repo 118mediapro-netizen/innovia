@@ -72,6 +72,9 @@ html,body{overscroll-behavior:none}
 @keyframes shineA{0%,100%{box-shadow:0 0 0 0 rgba(91,184,245,.0)}50%{box-shadow:0 0 0 6px rgba(91,184,245,.25)}}
 .missionb{animation:shineA 2.4s ease-in-out infinite}
 .hqbtn{transition:transform .08s ease}
+@keyframes newGlow{0%{box-shadow:0 0 0 0 rgba(91,184,245,.75)}70%{box-shadow:0 0 0 16px rgba(91,184,245,0)}100%{box-shadow:0 0 0 0 rgba(91,184,245,0)}}
+.newf{animation:newGlow 1.3s ease-out 3, inUp .5s ease-out both;border-radius:22px}
+@keyframes hintBob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-6px)}}
 .hqbtn:active{transform:scale(.97)}
 .hqpop{transition:transform .08s ease}
 .hqbtn:active .hqpop{transform:scale(.92,.88)}
@@ -269,12 +272,12 @@ html, body, #stage, #app { overscroll-behavior: none }
 <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6"></circle><path d="M12 6.5l1.5 3.5 3.5.3-2.7 2.3.9 3.6L12 14.3l-3.2 1.9.9-3.6L7 10.3l3.5-.3z" fill="#FFFFFF"></path></svg>
 <span style="display: flex; flex-direction: column; min-width: 0">
 <span style="font-size: 11px; font-weight: 800; color: #4F7590; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Trésorerie · {{g.coName}}</span>
-<span style="display: flex; align-items: baseline; gap: 4px; line-height: 1; white-space: nowrap"><span style="font-size: 32px; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">{{g.credits}}</span><span style="font-size: 26px; font-weight: 800; color: #5BB8F5">€</span></span>
+<span style="display: flex; align-items: baseline; gap: 4px; line-height: 1; white-space: nowrap"><span id="inoAmount" style="font-size: 32px; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">{{g.credits}}</span><span style="font-size: 26px; font-weight: 800; color: #5BB8F5">€</span></span>
 <span style="font-size: 12px; font-weight: 800; color: #2E8FD6; white-space: nowrap">+{{g.perSec}} €/s</span>
 </span>
-<button class="tap" type="button" onClick="{{g.info.credits}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
+<sc-if value="{{g.f.agents}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.info.credits}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></sc-if>
 </div>
-<button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 44px; padding: 0 14px; border: none; border-radius: 20px; font-family: inherit; font-weight: 800; color: #0E3A57; cursor: pointer; background: #E3F2FD; display: flex; align-items: center; gap: 6px; font-size: 14px; flex: 0 0 auto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>Mon monde</button>
+<sc-if value="{{g.f.world}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 44px; padding: 0 14px; border: none; border-radius: 20px; font-family: inherit; font-weight: 800; color: #0E3A57; cursor: pointer; background: #E3F2FD; display: flex; align-items: center; gap: 6px; font-size: 14px; flex: 0 0 auto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>Mon monde</button></sc-if>
 </div>
 <sc-if value="{{g.showWealth}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{g.openWealth}}" style="margin-top: 8px; margin-right: 6px; height: 30px; padding: 0 12px; border: 1.5px solid #CFE8FA; border-radius: 15px; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 800; color: #4F7590; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; vertical-align: top"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4F7590" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>Patrimoine · {{g.patLabel}}</button></sc-if>
 <sc-if value="{{g.hasBoost}}" hint-placeholder-val="{{ false }}">
@@ -295,32 +298,13 @@ html, body, #stage, #app { overscroll-behavior: none }
 </div>
 
 <div style="margin-top: 12px; position: relative">
-<button class="tap hqbtn" type="button" onClick="{{g.tap}}" aria-label="Faire une tâche" style="position: relative; display: block; width: 100%; height: 270px; padding: 0; border: none; border-radius: 30px; overflow: hidden; background: #E3F2FD; cursor: pointer; font-family: inherit">
-<span style="position: absolute; right: 28px; top: 22px; width: 38px; height: 38px; border-radius: 19px; background: #FFFFFF"></span>
-<span class="cloud1" style="position: absolute; top: 30px; left: 10px"><svg width="70" height="30" viewBox="0 0 70 30" aria-hidden="true"><ellipse cx="22" cy="20" rx="18" ry="10" fill="#FFFFFF"></ellipse><ellipse cx="40" cy="14" rx="16" ry="12" fill="#FFFFFF"></ellipse><ellipse cx="52" cy="21" rx="14" ry="9" fill="#FFFFFF"></ellipse></svg></span>
-<span class="cloud2" style="position: absolute; top: 70px; left: 200px"><svg width="70" height="30" viewBox="0 0 70 30" aria-hidden="true"><ellipse cx="22" cy="20" rx="18" ry="10" fill="#FFFFFF"></ellipse><ellipse cx="40" cy="14" rx="16" ry="12" fill="#FFFFFF"></ellipse><ellipse cx="52" cy="21" rx="14" ry="9" fill="#FFFFFF"></ellipse></svg></span>
-<span style="position: absolute; left: 0; right: 0; bottom: 0; height: 58px; background: #CFE8FA"></span>
-<span style="position: absolute; left: 0; right: 0; bottom: 22px; height: 10px; background: #FFFFFF; opacity: 0.8"></span>
-<span class="hqpop" style="position: absolute; left: 50%; bottom: 36px; width: 236px; height: 236px; margin-left: -118px">
-<sc-if value="{{g.h1}}" hint-placeholder-val="{{ false }}"><svg viewBox="-40 -126 80 126" width="100%" height="100%" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style="display: block"><rect x="-34" y="-46" width="68" height="46" fill="#FFFFFF" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><path d="M-38 -46 L0 -66 L38 -46 Z" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></path><rect x="-26" y="-34" width="36" height="34" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><line x1="-26" y1="-27" x2="10" y2="-27" stroke="#A9D9F9" stroke-width="2"></line><line x1="-26" y1="-20" x2="10" y2="-20" stroke="#A9D9F9" stroke-width="2"></line><line x1="-26" y1="-13" x2="10" y2="-13" stroke="#A9D9F9" stroke-width="2"></line><line x1="-26" y1="-6" x2="10" y2="-6" stroke="#A9D9F9" stroke-width="2"></line><rect x="16" y="-34" width="12" height="12" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-14" y="-60" width="28" height="7" rx="2" fill="#0E3A57"></rect></svg></sc-if>
-<sc-if value="{{g.h2}}" hint-placeholder-val="{{ false }}"><svg viewBox="-40 -126 80 126" width="100%" height="100%" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style="display: block"><rect x="-32" y="-70" width="64" height="70" fill="#FFFFFF" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><path d="M-37 -70 L0 -98 L37 -70 Z" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></path><rect x="-24" y="-60" width="14" height="12" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="10" y="-60" width="14" height="12" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-24" y="-36" width="14" height="12" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="10" y="-36" width="14" height="12" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-7" y="-24" width="14" height="24" rx="2" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-16" y="-90" width="32" height="8" rx="2" fill="#0E3A57"></rect></svg></sc-if>
-<sc-if value="{{g.h3}}" hint-placeholder-val="{{ false }}"><svg viewBox="-40 -126 80 126" width="100%" height="100%" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style="display: block"><rect x="-27" y="-106" width="54" height="106" fill="#FFFFFF" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-19" y="-98" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-5" y="-98" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="9" y="-98" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-19" y="-84" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-5" y="-84" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="9" y="-84" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-19" y="-70" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-5" y="-70" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="9" y="-70" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-19" y="-56" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-5" y="-56" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="9" y="-56" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-19" y="-42" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-5" y="-42" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="9" y="-42" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-19" y="-28" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-5" y="-28" width="10" height="9" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="9" y="-28" width="10" height="9" rx="1.5" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-8" y="-14" width="16" height="14" rx="2" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><line x1="14" y1="-106" x2="14" y2="-120" stroke="#0E3A57" stroke-width="2"></line><circle cx="14" cy="-121" r="2.5" fill="#5BB8F5" class="blink"></circle></svg></sc-if>
-<sc-if value="{{g.h4}}" hint-placeholder-val="{{ false }}"><svg viewBox="-40 -126 80 126" width="100%" height="100%" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style="display: block"><rect x="20" y="-46" width="18" height="46" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-38" y="-34" width="16" height="34" fill="#E3F2FD" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><path d="M-20 0 L-13 -108 L13 -108 L20 0 Z" fill="#FFFFFF" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></path><path d="M-4 -100 L4 -100 L6 0 L-6 0 Z" fill="#5BB8F5"></path><ellipse cx="0" cy="-78" rx="24" ry="6" fill="none" stroke="#5BB8F5" stroke-width="3"></ellipse><line x1="0" y1="-108" x2="0" y2="-122" stroke="#0E3A57" stroke-width="2"></line><circle cx="0" cy="-123" r="3" fill="#5BB8F5" class="blink"></circle></svg></sc-if>
-</span>
-<sc-for list="{{g.drones}}" as="dr" hint-placeholder-count="0">
-<span class="drone" style="{{dr.style}}"><svg width="38" height="23" viewBox="0 0 26 16" aria-hidden="true"><rect x="8" y="6" width="10" height="6" rx="3" fill="#0E3A57"></rect><line x1="2" y1="4" x2="10" y2="7" stroke="#0E3A57" stroke-width="1.6"></line><line x1="24" y1="4" x2="16" y2="7" stroke="#0E3A57" stroke-width="1.6"></line><ellipse cx="3" cy="3" rx="3" ry="1.2" fill="#5BB8F5"></ellipse><ellipse cx="23" cy="3" rx="3" ry="1.2" fill="#5BB8F5"></ellipse><circle cx="13" cy="9" r="1.4" fill="#5BB8F5" class="blink"></circle></svg></span>
-</sc-for>
-<sc-if value="{{g.red}}" hint-placeholder-val="{{ false }}"><span class="redfx" style="position: absolute; inset: 0; background: rgba(229,72,77,0.12)"><svg width="100%" height="100%" viewBox="0 0 358 250" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60H90V120H160V40H260V140H358M40 250V180H120V210H220V170H300V250M0 200H60V150" fill="none" stroke="#E5484D" stroke-width="2.5"></path><circle cx="90" cy="60" r="4" fill="#E5484D"></circle><circle cx="160" cy="120" r="4" fill="#E5484D"></circle><circle cx="260" cy="40" r="4" fill="#E5484D"></circle><circle cx="120" cy="180" r="4" fill="#E5484D"></circle><circle cx="300" cy="170" r="4" fill="#E5484D"></circle></svg></span></sc-if>
-<span style="position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); padding: 6px 16px; border-radius: 16px; background: #0E3A57; color: #FFFFFF; font-size: 14px; font-weight: 800; white-space: nowrap">Tape ! +{{g.tapValue}}</span>
+<button class="tap hqbtn" type="button" onClick="{{g.tap}}" aria-label="Faire une tâche" style="position: relative; display: block; width: 100%; height: 300px; padding: 0; border: none; border-radius: 28px; overflow: hidden; cursor: pointer; background: #EAF6FE; touch-action: manipulation; font-family: inherit">
+<canvas id="inoPlanet" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none"></canvas>
+<span style="position: absolute; right: 12px; top: 12px; z-index: 2; padding: 6px 11px; border-radius: 14px; background: rgba(255,255,255,0.88); color: #0E3A57; font-size: 12px; font-weight: 800; pointer-events: none; font-variant-numeric: tabular-nums">{{g.netLabel}}</span>
+<sc-if value="{{g.showHint}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 50%; top: 46px; z-index: 2; padding: 8px 14px; border-radius: 16px; background: #5BB8F5; color: #0E3A57; font-size: 14px; font-weight: 800; white-space: nowrap; pointer-events: none; animation: hintBob 1.2s ease-in-out infinite">Clique sur la planète !</span></sc-if>
+<span style="position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 2; padding: 7px 16px; border-radius: 16px; background: #0E3A57; color: #FFFFFF; font-size: 15px; font-weight: 800; white-space: nowrap; pointer-events: none">Clic ! +{{g.tapValue}}</span>
 </button>
-<sc-if value="{{g.hasFx}}" hint-placeholder-val="{{ false }}">
-<span class="{{g.ringCls}}"></span>
-<sc-for list="{{g.fx}}" as="fx" hint-placeholder-count="6">
-<span class="{{fx.cls}}" style="{{fx.style}}"></span>
-</sc-for>
-<span class="{{g.popCls}}" style="left: 50%; top: 82px">+{{g.popTxt}}</span>
-</sc-if>
-<button class="tap" type="button" onClick="{{g.info.qg}}" aria-label="Explication" style="position: absolute; top: 12px; left: 12px; z-index: 3; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
+<sc-if value="{{g.f.agents}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.info.qg}}" aria-label="Explication" style="position: absolute; top: 12px; left: 12px; z-index: 3; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></sc-if>
 <sc-if value="{{g.hasCombo}}" hint-placeholder-val="{{ false }}">
 <span class="combo" style="position: absolute; z-index: 4; top: 12px; left: 50%; padding: 6px 14px; border-radius: 16px; background: #0E3A57; color: #FFFFFF; font-size: 14px; font-weight: 800; white-space: nowrap">{{g.comboLabel}}</span>
 </sc-if>
@@ -336,7 +320,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <span style="padding: 6px 10px; border-radius: 14px; background: #5BB8F5; color: #0E3A57; font-size: 12px; font-weight: 800; white-space: nowrap">+15 %</span>
 </button>
 </sc-if>
-<div style="margin-top: 12px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
+<sc-if value="{{g.f.ctrl}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.ctrl}}"><div style="margin-top: 12px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
 <span style="{{g.ctrlDot}}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="4"></rect><circle cx="9" cy="13" r="1.5" fill="#0E3A57"></circle><circle cx="15" cy="13" r="1.5" fill="#0E3A57"></circle><path d="M12 7V4M10 4h4"></path></svg></span>
 <span style="flex: 1; height: 10px; border-radius: 5px; background: #E3F2FD; overflow: hidden"><span style="{{g.ctrlBar}}"></span></span>
 <span style="font-size: 14px; font-weight: 800; min-width: 44px; text-align: right">{{g.ctrlPct}}</span>
@@ -345,27 +329,27 @@ html, body, #stage, #app { overscroll-behavior: none }
 </sc-if>
 <button class="tap" type="button" onClick="{{g.info.ctrl}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
 </div>
-<div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
+</div></sc-if><sc-if value="{{g.f.rep}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.rep}}"><div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
 <span style="{{g.repStar}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1L3.2 9.4l6.1-.8z" fill="#FFFFFF" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></path></svg></span>
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span>Réputation · {{g.repName}}</span><span>{{g.repVal}}</span></span><span style="display: block; height: 12px; border-radius: 6px; background: #E3F2FD; overflow: hidden"><span style="{{g.repFill}}"></span></span><span style="font-size: 11px; font-weight: 700; color: #4F7590">{{g.repGain}}</span></span>
 <button class="tap" type="button" onClick="{{g.info.rep}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
 </div>
-<div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
+</div></sc-if><sc-if value="{{g.f.sec}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.sec}}"><div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F5FAFE">
 <span style="width: 40px; height: 40px; flex: 0 0 40px; border-radius: 20px; background: #0E3A57; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4" stroke-linecap="round"></path></svg></span>
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span>Sécurité</span><span>{{g.secLevel}}</span></span><span style="display: flex; gap: 4px"><sc-for list="{{g.secDots}}" as="sd" hint-placeholder-count="5"><span style="{{sd.style}}"></span></sc-for></span><span style="font-size: 11px; font-weight: 700; color: #4F7590">{{g.secNeed}}</span><sc-if value="{{g.secCanBuy}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.buySec}}" style="margin-top: 4px; height: 36px; padding: 0 14px; border: none; border-radius: 18px; background: #0E3A57; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; align-self: flex-start">{{g.secBtn}}</button></sc-if></span>
 <button class="tap" type="button" onClick="{{g.info.sec}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
 </div>
 
-<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-<div style="position: relative"><button class="tap" type="button" onClick="{{g.newsQuiz}}" aria-label="Actu du jour" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="15" height="15" rx="2" fill="#FFFFFF"></rect><path d="M18 9h3v9a2 2 0 0 1-2 2"></path><path d="M6 9h9M6 13h9M6 16h6"></path></svg><span style="font-size: 12px; font-weight: 800">Actu</span><span style="{{g.newsBadge}}">×2</span></button><button class="tap" type="button" onClick="{{g.info.actu}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="position: relative"><button class="tap" type="button" onClick="{{g.train}}" aria-label="S’entraîner" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a3 3 0 0 0-3-1z" fill="#FFFFFF"></path><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1V5a3 3 0 0 1 3-1z" fill="#FFFFFF"></path></svg><span style="font-size: 12px; font-weight: 800">Entraîne</span><span style="position: absolute; top: 6px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #5BB8F5; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{g.trainLeft}}</span></button><button class="tap" type="button" onClick="{{g.info.train}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="position: relative"><button class="tap" type="button" onClick="{{g.cyclePrice}}" aria-label="Changer le prix" style="width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z" fill="#FFFFFF"></path><circle cx="7.5" cy="8.5" r="1.6" fill="#0E3A57"></circle></svg><span style="font-size: 12px; font-weight: 800">{{g.priceLabel}}</span></button><button class="tap" type="button" onClick="{{g.info.price}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-</div>
+</div></sc-if><sc-if value="{{g.f.actions}}" hint-placeholder-val="{{ true }}"><div style="margin-top: 12px; display: flex; gap: 8px">
+<sc-if value="{{g.f.actu}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.actu}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.newsQuiz}}" aria-label="Actu du jour" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="15" height="15" rx="2" fill="#FFFFFF"></rect><path d="M18 9h3v9a2 2 0 0 1-2 2"></path><path d="M6 9h9M6 13h9M6 16h6"></path></svg><span style="font-size: 12px; font-weight: 800">Actu</span><span style="{{g.newsBadge}}">×2</span></button><button class="tap" type="button" onClick="{{g.info.actu}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div></sc-if>
+<sc-if value="{{g.f.ctrl}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.ctrl}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.train}}" aria-label="S’entraîner" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a3 3 0 0 0-3-1z" fill="#FFFFFF"></path><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1V5a3 3 0 0 1 3-1z" fill="#FFFFFF"></path></svg><span style="font-size: 12px; font-weight: 800">Entraîne</span><span style="position: absolute; top: 6px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #5BB8F5; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{g.trainLeft}}</span></button><button class="tap" type="button" onClick="{{g.info.train}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div></sc-if>
+<sc-if value="{{g.f.price}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.price}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.cyclePrice}}" aria-label="Changer le prix" style="width: 100%; height: 82px; border: none; border-radius: 22px; background: #E3F2FD; font-family: inherit; color: #0E3A57; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z" fill="#FFFFFF"></path><circle cx="7.5" cy="8.5" r="1.6" fill="#0E3A57"></circle></svg><span style="font-size: 12px; font-weight: 800">{{g.priceLabel}}</span></button><button class="tap" type="button" onClick="{{g.info.price}}" aria-label="Explication" style="position: absolute; top: 6px; left: 6px; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div></sc-if>
+</div></sc-if>
 
-<div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Tes agents</span><button class="tap" type="button" onClick="{{g.info.agents}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
+<sc-if value="{{g.f.agents}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.agents}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Tes agents</span><button class="tap" type="button" onClick="{{g.info.agents}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
 <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
 <sc-for list="{{g.agents}}" as="ag" hint-placeholder-count="4">
-<div style="{{ag.cardStyle}}">
+<sc-if value="{{ag.show}}" hint-placeholder-val="{{ true }}"><div style="{{ag.cardStyle}}">
 <span style="position: relative; display: block; height: 86px">
 <span style="{{ag.artStyle}}">
 <sc-if value="{{ag.a0}}" hint-placeholder-val="{{ false }}"><svg viewBox="-40 -126 80 126" width="100%" height="100%" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style="display: block"><rect x="-16" y="-26" width="32" height="26" fill="#FFFFFF" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><path d="M-20 -26 L0 -44 L20 -26 Z" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></path><rect x="-4" y="-14" width="8" height="14" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="-13" y="-21" width="6" height="6" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect><rect x="7" y="-21" width="6" height="6" rx="1.5" fill="#5BB8F5" stroke="#0E3A57" stroke-width="1.6" stroke-linejoin="round"></rect></svg></sc-if>
@@ -386,11 +370,11 @@ html, body, #stage, #app { overscroll-behavior: none }
 <span style="display: block; margin-top: 6px; font-size: 13px; font-weight: 800; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ag.short}}</span>
 <sc-if value="{{ag.open}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{ag.buy}}" style="{{ag.buyStyle}}">{{ag.cost}}</button></sc-if>
 <sc-if value="{{ag.locked}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{ag.learn}}" style="margin-top: 8px; width: 100%; height: 38px; border: none; border-radius: 20px; font-family: inherit; font-weight: 800; color: #0E3A57; cursor: pointer; background: #FFFFFF; border: 1.5px solid #CFE8FA; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 6c3-1.5 6-1.5 9 0v14c-3-1.5-6-1.5-9 0zM12 6c3-1.5 6-1.5 9 0v14c-3-1.5-6-1.5-9 0z"></path></svg>Jouer</button></sc-if>
-</div>
+</div></sc-if>
 </sc-for>
 </div>
 
-<div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Améliorations</span><button class="tap" type="button" onClick="{{g.info.ups}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
+</div></sc-if><sc-if value="{{g.f.ups}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.ups}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Améliorations</span><button class="tap" type="button" onClick="{{g.info.ups}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
 <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
 <sc-for list="{{g.ups}}" as="up" hint-placeholder-count="4">
 <button class="tap" type="button" onClick="{{up.buy}}" aria-label="{{up.aria}}" style="{{up.style}}">
@@ -402,7 +386,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </button>
 </sc-for>
 </div>
-<div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Statistiques</span><button class="tap" type="button" onClick="{{g.info.stats}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
+</div></sc-if><sc-if value="{{g.f.stats}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.stats}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Statistiques</span><button class="tap" type="button" onClick="{{g.info.stats}}" aria-label="Explication" style=" width: 26px; height: 26px; padding: 0; border: 1.5px solid #CFE8FA; border-radius: 13px; background: #FFFFFF; color: #0E3A57; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
 <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
 <div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Tapes au total</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stTaps}}</span></div>
 <div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Meilleur combo</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stCombo}}</span></div>
@@ -410,8 +394,9 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Temps de jeu</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stTime}}</span></div>
 <div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Argent gagné au total</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stTotal}}</span></div>
 <div style="padding: 12px 14px; border-radius: 18px; background: #F5FAFE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4F7590">Attaques de pirates</span><span style="font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums">{{g.stHacks}}</span></div>
+</div></div></sc-if>
 </div>
-</div>
+<canvas id="inoFly" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5"></canvas>
 </sc-if>
 
 <sc-if value="{{showChrome}}" hint-placeholder-val="{{ false }}">
@@ -433,7 +418,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </span>
 <span class="bob2" style="display: flex; pointer-events: auto">
 <button type="button" onClick="{{goJeu}}" aria-label="Jeu Neo Corp" class="tap {{bJeu.cls}}" style="{{bJeu.style}}">
-<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0E3A57" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="5.2"></circle><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-20 12 12)"></ellipse><circle cx="20.2" cy="9" r="1.3" fill="#0E3A57"></circle></svg>
+<span style="font-size: 17px; font-weight: 800; letter-spacing: 0.05em">CLIC</span>
 </button>
 </span>
 <span class="bob3" style="display: flex; pointer-events: auto">
@@ -757,7 +742,7 @@ Apprends à le faire
 </div>
 </sc-if>
 <sc-if value="{{showToast}}" hint-placeholder-val="{{ false }}">
-<div class="fade" style="position: absolute; left: 20px; right: 20px; top: 112px; padding: 14px 18px; border-radius: 20px; background: #0E3A57; color: #FFFFFF; font-size: 15px; font-weight: 700; line-height: 1.4; text-align: center; box-shadow: 0 8px 24px rgba(14,58,87,0.25); pointer-events: none">{{toastText}}</div>
+<div class="fade" style="position: absolute; left: 20px; right: 20px; bottom: 136px; z-index: 80; padding: 14px 18px; border-radius: 20px; background: #0E3A57; color: #FFFFFF; font-size: 15px; font-weight: 700; line-height: 1.4; text-align: center; box-shadow: 0 8px 24px rgba(14,58,87,0.25); pointer-events: none">{{toastText}}</div>
 </sc-if>
 
 <sc-if value="{{showMenu}}" hint-placeholder-val="{{ false }}">
@@ -987,6 +972,8 @@ window.Component = class Component extends DCLogic {
     if (!pl) pl = { v: 1, pat: 0, act: 0, cos: [{ name: 'Neo Corp', gs: gs }] }; else pl.cos[pl.act].gs = gs;
     this.pl = pl;
     this.gs = gs;
+    if (!gs.feat) { gs.feat = {}; if (gs.total > 0) this.featCheck(true); }
+    if (pl.cos.length > 1) this.featDefs().forEach(d => { gs.feat[d[0]] = 1; });
     this.pops = []; this.fx = []; this.sheet = null; this.toast = null; this.combo = 0; this.lastTap = 0; this.boost = null;
     this.orderNext = Date.now() + 40000; this.repNext = Date.now() + 20000; this.rogueNext = Date.now() + 25000;
     this.lastTick = Date.now(); this.saveNext = Date.now() + 5000;
@@ -1021,7 +1008,7 @@ window.Component = class Component extends DCLogic {
     const names = ['Neo Corp', 'Neo Labs', 'Neo Vision', 'Neo Studio', 'Neo Data', 'Neo Capital', 'Neo Robotics', 'Neo Santé', 'Neo Énergie', 'Neo Spatial'];
     const used = this.pl.cos.map(x => x.name); const name = names.find(n => used.indexOf(n) < 0) || ('Neo ' + (this.pl.cos.length + 1));
     this.pl.pat -= c; this.save();
-    const g = this.freshGs(); g.missions = {}; g.realBonus = 0; g.savedAt = Date.now();
+    const g = this.freshGs(); g.missions = {}; g.realBonus = 0; g.savedAt = Date.now(); g.feat = {}; this.featDefs().forEach(d => { g.feat[d[0]] = 1; });
     this.pl.cos.push({ name: name, gs: g });
     this.switchCo(this.pl.cos.length - 1, true);
     this.sfx('success'); this.buzz([15, 40, 25, 40, 35]);
@@ -1481,6 +1468,9 @@ window.Component = class Component extends DCLogic {
       else if (s.g.type === 'swipe' && now > s.r.end) this.finish(false, 'Temps écoulé ! ' + s.r.score + ' bonne(s) réponse(s) sur ' + s.g.need + ' demandées.');
     }
     if (now - this.lastTap > 1100) this.combo = 0;
+    if (this.netFullAt && now - this.netFullAt > 3000) { this.netFullAt = null; const nt = gs.net || { n: 0, lvl: 0 }; gs.net = { n: 0, lvl: (nt.lvl || 0) + 1 }; if (this.pe) this.pe.cables = []; this.save(); }
+    this.featCheck(false);
+    if (this.featQ && this.featQ.length && (!this.toast || this.toast.until < now) && now - this.lastTap > 700) { this.toast = { text: this.featQ.shift(), until: now + 4500 }; this.sfx('spark', 1.2); }
     if (this.pops.length && now - this.pops[this.pops.length - 1].t > 900) this.pops = [];
     if (this.fx.length && now - this.fx[this.fx.length - 1].t > 900) this.fx = [];
     if (now > this.saveNext) { this.saveNext = now + 5000; this.save(); }
@@ -1589,17 +1579,190 @@ window.Component = class Component extends DCLogic {
     else this.finish(false, 'Mauvaise réponse.');
     this.refresh();
   }
-  tapTask() {
+  tapTask(e) {
     const gs = this.gs; const now = Date.now();
     this.combo = now - this.lastTap < 550 ? this.combo + 1 : 1; this.lastTap = now;
-    const v = this.tapValue(); gs.credits += v; gs.total += v;
+    const pt = this.planetPoint(e);
+    // étoile bonus attrapée ?
+    const pe = this.pe;
+    if (pe && pe.bonus && Math.hypot(pe.bonus.x - pt.x, (pe.bonus.cy || pe.bonus.y) - pt.y) < 44) {
+      const v = this.tapValue() * 50; gs.credits += v; gs.total += v; pe.bonus = null; pe.nextBonus = pe.t + 20 + Math.random() * 20;
+      pe.texts.push({ x: pt.x, y: pt.y - 10, vy: -1.2, a: 1.4, txt: 'ÉTOILE +' + this.fmt(v), big: true });
+      this.planetBurst(pt, 22, [255, 200, 80], true); pe.flash = 0.6; pe.flashCol = '255,224,150';
+      this.addNet(10); this.sfx('cash'); this.sfx('spark', 1.2); this.buzz([15, 40, 25]); this.refresh(); return;
+    }
+    const crit = Math.random() < 1 / 40;
+    const v = this.tapValue() * (crit ? 10 : 1); gs.credits += v; gs.total += v;
     this.tapN = (this.tapN || 0) + 1; this.lastVal = this.fmt(v);
-    this.sparkDirs = Array.from({ length: 6 }, () => { const an = Math.random() * Math.PI * 2, d = 90 + Math.random() * 50; return [Math.cos(an) * d, Math.sin(an) * d]; });
     this.stat('taps', 1); if (this.combo > ((gs.stats && gs.stats.bestCombo) || 0)) this.stat('bestCombo', this.combo - ((gs.stats && gs.stats.bestCombo) || 0));
-    if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('success', this.combo === 10 ? 1 : this.combo === 25 ? 1.122 : 1.26); this.sfx('spark', 1); this.buzz([15, 30, 30]); }
-    else { const tier = this.combo >= 50 ? 3 : this.combo >= 25 ? 2 : this.combo >= 10 ? 1 : 0; const k = (this.combo - 1) % 10; const semi = [0, 2, 4, 7, 9][k % 5] + 12 * Math.floor(k / 5) + [0, 2, 4, 5][tier];
-      this.sfx('coin', Math.pow(2, (semi - 7) / 12)); if (tier >= 1 && this.combo % 2 === 0) this.sfx('tap', 1.5); if (tier >= 2) this.sfx('spark', Math.pow(2, (semi % 12) / 24)); this.buzz(9); }
+    const tier = this.combo >= 50 ? 3 : this.combo >= 25 ? 2 : this.combo >= 10 ? 1 : 0;
+    if (pe) {
+      pe.sq = Math.max(0.8, pe.sq - (crit ? 0.2 : 0.12)); pe.sqv = 0;
+      pe.waves.push({ r: this.planetR(), a: crit ? 0.9 : 0.5, col: crit ? [255, 200, 80] : pe.cur.acc.slice(), w: crit ? 6 : 3 });
+      pe.texts.push({ x: pt.x + (crit ? 0 : (Math.random() - 0.5) * 60), y: pt.y - 16 - (crit ? 30 : Math.random() * 18), vy: -1.6, a: crit ? 1.4 : 0.85, txt: crit ? 'CRITIQUE × 10' : '+' + this.fmt(v), big: crit });
+      this.planetBurst(pt, crit ? 16 : 4 + tier * 2, crit ? [255, 200, 80] : pe.cur.acc.slice(), crit);
+      if (crit) { pe.flash = 0.7; pe.flashCol = '255,214,120'; pe.shake = 10; }
+      if (this.combo === 10 || this.combo === 25 || this.combo === 50) pe.waves.push({ r: this.planetR(), a: 0.9, col: [[139, 124, 246], [245, 170, 40], [255, 206, 90]][[10, 25, 50].indexOf(this.combo)], w: 8 });
+    }
+    this.addNet(crit ? 5 : 1);
+    if (crit) { this.sfx('success', 1.5); this.sfx('spark', 1); this.buzz([20, 30, 40]); }
+    else if (this.combo === 10 || this.combo === 25 || this.combo === 50) { this.sfx('success', this.combo === 10 ? 1 : this.combo === 25 ? 1.122 : 1.26); this.sfx('spark', 1); this.buzz([15, 30, 30]); }
+    else { const k = (this.combo - 1) % 10; const semi = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21][k] + [0, 2, 4, 7][tier];
+      this.sfx('pluck', Math.pow(2, semi / 12)); if (tier >= 2 && this.combo % 2 === 0) this.sfx('spark', Math.pow(2, (semi % 12) / 24)); this.buzz(9); }
+    this.featCheck(false);
     this.refresh();
+  }
+  // ----- la planète aux câbles (zone de clic) -----
+  netMax() { const l = (this.gs.net && this.gs.net.lvl) || 0; return Math.min(400, Math.round(60 * Math.pow(1.5, l))); }
+  addNet(k) {
+    const gs = this.gs; if (!gs.net) gs.net = { n: 0, lvl: 0 }; if (this.netFullAt) return;
+    gs.net.n = Math.min(this.netMax(), gs.net.n + k);
+    if (gs.net.n >= this.netMax()) {
+      this.netFullAt = Date.now();
+      const r = Math.max(200, this.perSec() * 180, this.tapValue() * 40); gs.credits += r; gs.total += r;
+      const pe = this.pe; if (pe) { const R = this.planetR(), c = this.planetC(); pe.flash = 1; pe.flashCol = '255,255,255'; pe.shake = 12; pe.waves.push({ r: R, a: 1, col: [255, 255, 255], w: 10 }); pe.waves.push({ r: R * 0.6, a: 1, col: pe.cur.acc.slice(), w: 6 }); pe.texts.push({ x: c.x, y: c.y - R - 24, vy: -0.5, a: 2.2, txt: 'PLANÈTE CONNECTÉE', big: true }); }
+      this.say('Planète connectée ! + ' + this.fmt(r) + ' €. Un réseau plus grand t’attend.');
+      this.sfx('success'); this.sfx('cash'); this.buzz([30, 40, 30, 40, 80]); this.save();
+    }
+  }
+  planetR() { const cv = this.pe && this.pe.cv; const W = cv ? cv.clientWidth : 358; const st = this.stageIdxP(); return [60, 68, 76, 84][st] * Math.min(1, W / 358); }
+  planetC() { const cv = this.pe && this.pe.cv; return { x: (cv ? cv.clientWidth : 358) / 2, y: (cv ? cv.clientHeight : 300) * 0.47 }; }
+  stageIdxP() { const t = (this.gs && this.gs.total) || 0; return t >= 1e10 ? 3 : t >= 1e7 ? 2 : t >= 1e4 ? 1 : 0; }
+  planetPoint(e) {
+    const cv = document.getElementById('inoPlanet'); const c = this.planetC();
+    if (!cv || !e || e.clientX == null) return { x: c.x, y: c.y, cx: null, cy: null };
+    const r = cv.getBoundingClientRect(); const k = r.width / (cv.clientWidth || r.width || 1);
+    return { x: (e.clientX - r.left) / k, y: (e.clientY - r.top) / k, cx: e.clientX, cy: e.clientY };
+  }
+  planetBurst(pt, n, col, big) {
+    const pe = this.pe; const fly = document.getElementById('inoFly'); const cv = document.getElementById('inoPlanet'); if (!pe || !fly || !cv) return;
+    const fr = fly.getBoundingClientRect(), k = fr.width / (fly.clientWidth || 1);
+    let cx = pt.cx, cy = pt.cy; if (cx == null) { const r = cv.getBoundingClientRect(); cx = r.left + r.width / 2; cy = r.top + r.height * 0.47; }
+    const x0 = (cx - fr.left) / k, y0 = (cy - fr.top) / k;
+    for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, sp = (big ? 6 : 3.5) + Math.random() * 4; pe.parts.push({ x: x0, y: y0, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 2, life: 0, home: 0.22 + Math.random() * 0.2, col: col, s: 2.5 + Math.random() * 2.5, rot: Math.random() * 6 }); }
+  }
+  planetInit() {
+    if (this.pe) return this.pe;
+    const v3 = (lat, lon) => { const cl = Math.cos(lat); return [cl * Math.cos(lon), Math.sin(lat), cl * Math.sin(lon)]; };
+    const BL = [[0.75, -1.7, 0.55], [0.3, -1.45, 0.4], [-0.35, -1.0, 0.45], [-0.75, -1.05, 0.3], [0.85, 0.3, 0.45], [0.75, 1.4, 0.7], [0.45, 2.0, 0.45], [0.15, 0.35, 0.45], [-0.25, 0.4, 0.42], [-0.45, 2.3, 0.35], [0.55, -0.1, 0.25], [-1.25, 0.5, 0.6]];
+    const LAND = [], N = 1400, GA = Math.PI * (3 - Math.sqrt(5));
+    for (let k = 0; k < N; k++) { const y = 1 - (k / (N - 1)) * 2, rr = Math.sqrt(1 - y * y), th = GA * k, p = [Math.cos(th) * rr, y, Math.sin(th) * rr]; const lat = Math.asin(y), lon = Math.atan2(p[2], p[0]);
+      for (const bb of BL) { const c0 = v3(bb[0], bb[1]); if (p[0] * c0[0] + p[1] * c0[1] + p[2] * c0[2] > Math.cos(bb[2] * (0.85 + 0.3 * Math.sin(lon * 5 + lat * 3)))) { LAND.push(p); break; } } }
+    const dots = []; for (let i = 0; i < 40; i++) dots.push({ x: Math.random(), y: Math.random(), r: 0.6 + Math.random() * 1.6, s: 0.2 + Math.random() * 0.8, p: Math.random() * 6.28 });
+    this.pe = { LAND: LAND, dots: dots, cables: [], waves: [], texts: [], parts: [], t: 0, rot: 0, sq: 1, sqv: 0, shake: 0, flash: 0, flashCol: '255,255,255', bonus: null, nextBonus: 25 + Math.random() * 15, last: 0, cv: null,
+      cur: { bg: [[234, 246, 254], [255, 255, 255]], acc: [91, 184, 245], halo: [91, 184, 245] } };
+    return this.pe;
+  }
+  planetCable() {
+    const L = this.pe.LAND; const pick = () => L[(Math.random() * L.length) | 0];
+    let a = pick(), b = pick(), n = 0; while (n++ < 8 && (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]) < -0.2) b = pick();
+    const dd = Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])), om = Math.acos(dd), so = Math.sin(om) || 1e-6, lift = 0.04 + om * 0.12, pts = [];
+    for (let i = 0; i <= 22; i++) { const t = i / 22, k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so, h = 1 + lift * Math.sin(Math.PI * t); pts.push([(a[0] * k1 + b[0] * k2) * h, (a[1] * k1 + b[1] * k2) * h, (a[2] * k1 + b[2] * k2) * h]); }
+    return { pts: pts, grow: 0 };
+  }
+  planetSync() { const on = this.state.screen === 'jeu' && !this.state.world && !this.state.mission && !!this.gs; if (on) this.planetStart(); else this.planetStop(); }
+  planetStart() { if (this.peRaf) return; this.planetInit(); const step = (now) => { this.peRaf = requestAnimationFrame(step); try { this.planetFrame(now); } catch (err) {} }; this.peRaf = requestAnimationFrame(step); }
+  planetStop() { if (this.peRaf) cancelAnimationFrame(this.peRaf); this.peRaf = null; }
+  planetFrame(now) {
+    const pe = this.planetInit(); const gs = this.gs; if (!gs) return;
+    const cv = document.getElementById('inoPlanet'); if (!cv) return; pe.cv = cv;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight; if (!W || !H) return;
+    if (cv.width !== Math.round(W * DPR) || cv.height !== Math.round(H * DPR)) { cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); }
+    const dt = pe.last ? Math.min(0.05, (now - pe.last) / 1000) : 0.016; pe.last = now; pe.t += dt;
+    const tms = Date.now(), tapping = tms - this.lastTap < 1100, combo = tapping ? this.combo : 0;
+    const tier = combo >= 50 ? 3 : combo >= 25 ? 2 : combo >= 10 ? 1 : 0;
+    const TIERS = [{ bg: [[234, 246, 254], [255, 255, 255]], acc: [91, 184, 245], halo: [91, 184, 245] }, { bg: [[236, 233, 255], [250, 249, 255]], acc: [139, 124, 246], halo: [139, 124, 246] }, { bg: [[255, 242, 214], [255, 251, 242]], acc: [245, 170, 40], halo: [245, 184, 61] }, { bg: [[10, 32, 52], [22, 74, 112]], acc: [255, 206, 90], halo: [190, 240, 255] }];
+    const lerp = (a, b, k) => { Object.keys(a).forEach(i => { if (typeof a[i] === 'object') lerp(a[i], b[i], k); else a[i] += (b[i] - a[i]) * k; }); };
+    lerp(pe.cur, TIERS[tier], Math.min(1, dt * 4));
+    const rgb = (c, a) => 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + (a == null ? 1 : a) + ')';
+    // câbles : autant que de clics sur ce réseau
+    const net = gs.net || { n: 0, lvl: 0 }, max = this.netMax(), want = Math.min(net.n, max);
+    if (pe.cables.length > want) pe.cables = [];
+    const init = pe.cables.length === 0 && want > 1 && !pe.seeded; pe.seeded = true;
+    while (pe.cables.length < want) { const cb = this.planetCable(); if (init) cb.grow = 1; pe.cables.push(cb); }
+    const full = !!this.netFullAt, fill = want / max, white = full ? 1 : Math.pow(Math.min(1, fill), 1.7) * 0.9;
+    pe.rot += dt * (0.25 + (tapping ? 0.35 : 0) + (tier === 3 ? 0.4 : 0));
+    pe.sqv += (1 - pe.sq) * 0.32; pe.sqv *= 0.72; pe.sq += pe.sqv; pe.shake *= 0.85; pe.flash = Math.max(0, pe.flash - dt * 2.2);
+    const x = cv.getContext('2d'); x.setTransform(DPR, 0, 0, DPR, 0, 0);
+    x.save(); x.translate((Math.random() - 0.5) * pe.shake, (Math.random() - 0.5) * pe.shake);
+    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rgb(pe.cur.bg[0])); g.addColorStop(1, rgb(pe.cur.bg[1])); x.fillStyle = g; x.fillRect(-20, -20, W + 40, H + 40);
+    const speed = 8 + tier * 18;
+    pe.dots.forEach(d => { d.y -= d.s * speed * dt / H; if (d.y < -0.02) { d.y = 1.02; d.x = Math.random(); } x.fillStyle = rgb(pe.cur.acc, (0.35 + 0.35 * Math.sin(pe.t * 2 + d.p)) * (tier === 3 ? 0.9 : 0.55)); x.beginPath(); x.arc(d.x * W, d.y * H, d.r, 0, 6.29); x.fill(); });
+    const st = this.stageIdxP(), c = { x: W / 2, y: H * 0.47 }, R = [60, 68, 76, 84][st] * Math.min(1, W / 358), br = 1 + Math.sin(pe.t * 2.2) * 0.015;
+    const hc = [0, 1, 2].map(i => pe.cur.halo[i] + (255 - pe.cur.halo[i]) * white);
+    const hg = x.createRadialGradient(c.x, c.y, R * 0.8, c.x, c.y, R * (2 + white * 0.8 + tier * 0.3)); hg.addColorStop(0, rgb(hc, 0.5 + white * 0.4)); hg.addColorStop(1, rgb(hc, 0)); x.fillStyle = hg; x.beginPath(); x.arc(c.x, c.y, R * 3.3, 0, 6.29); x.fill();
+    if (tier === 3 || full) { x.save(); x.translate(c.x, c.y); x.rotate(pe.t * 0.3); for (let k = 0; k < 16; k++) { x.rotate(Math.PI * 2 / 16); const len = R * (1.55 + 0.25 * Math.sin(pe.t * 3 + k)); x.fillStyle = 'rgba(255,255,255,0.35)'; x.beginPath(); x.moveTo(R * 0.95, -4); x.lineTo(len, 0); x.lineTo(R * 0.95, 4); x.fill(); } x.restore(); }
+    const RR = R * pe.sq * br, nr = [0, 1, 2, 3][st], spin = 0.6 + tier * 0.6 + (tapping ? 0.8 : 0), tilts = [-0.38, 0.32, -0.08], sats = [];
+    const ring = (rx, ry, rot, back, a, lw) => { x.save(); x.strokeStyle = rgb(pe.cur.acc, a); x.lineWidth = lw; x.beginPath(); x.ellipse(c.x, c.y, rx, ry, rot, back ? Math.PI : 0, back ? Math.PI * 2 : Math.PI); x.stroke(); x.restore(); };
+    for (let q = 0; q < nr; q++) { const rx = RR * (1.5 + q * 0.3), ry = rx * (0.28 + q * 0.05); ring(rx, ry, tilts[q], true, 0.35, 2); const ang = pe.t * spin * (q % 2 ? -1 : 1) * (1 - q * 0.15) + q * 2;
+      for (let m = 0; m < (st === 3 ? 2 : 1); m++) { const aa = ang + m * Math.PI, ex = Math.cos(aa) * rx, ey = Math.sin(aa) * ry, cr = Math.cos(tilts[q]), sr = Math.sin(tilts[q]); sats.push({ x: c.x + ex * cr - ey * sr, y: c.y + ex * sr + ey * cr, back: Math.sin(aa) < 0 }); } }
+    sats.forEach(p => { if (p.back) { x.fillStyle = rgb(pe.cur.acc, 0.7); x.beginPath(); x.arc(p.x, p.y, 4, 0, 6.29); x.fill(); } });
+    const TILT = 0.38, cr0 = Math.cos(pe.rot), sr0 = Math.sin(pe.rot), ct = Math.cos(TILT), stt = Math.sin(TILT);
+    const proj = (p) => { const px = p[0] * cr0 + p[2] * sr0, pz = -p[0] * sr0 + p[2] * cr0, py = p[1]; return { x: c.x + px * R, y: c.y - (py * ct - pz * stt) * R, z: py * stt + pz * ct }; };
+    x.save(); x.translate(c.x, c.y); x.scale((1 + (1 - pe.sq) * 0.6) * br, pe.sq * br); x.translate(-c.x, -c.y);
+    const vis = pe.cables.map(cb => { cb.grow = Math.min(1, cb.grow + dt * 3.2); const n = Math.max(2, Math.ceil(cb.pts.length * cb.grow)), pp = []; for (let j = 0; j < n; j++) pp.push(proj(cb.pts[j])); return { pp: pp, cb: cb }; });
+    x.lineCap = 'round'; x.lineJoin = 'round';
+    const path = (pp, front) => { x.beginPath(); let on = false; pp.forEach(p => { if ((p.z >= 0) === front) { if (!on) { x.moveTo(p.x, p.y); on = true; } else x.lineTo(p.x, p.y); } else on = false; }); x.stroke(); };
+    x.strokeStyle = 'rgba(255,255,255,0.18)'; x.lineWidth = 1.2; vis.forEach(v => path(v.pp, false));
+    const og = x.createRadialGradient(c.x - R * 0.35, c.y - R * 0.4, R * 0.1, c.x, c.y, R); og.addColorStop(0, '#9FD7FA'); og.addColorStop(0.55, '#3E9FE6'); og.addColorStop(1, '#1D6FB0'); x.fillStyle = og; x.beginPath(); x.arc(c.x, c.y, R, 0, 6.29); x.fill();
+    x.fillStyle = 'rgba(214,240,255,0.95)'; for (const lp0 of pe.LAND) { const lp = proj(lp0); if (lp.z > 0) { const ds = 1 + lp.z * 1.1; x.fillRect(lp.x - ds / 2, lp.y - ds / 2, ds, ds); } }
+    if (white > 0) { const wg = x.createRadialGradient(c.x - R * 0.3, c.y - R * 0.35, R * 0.1, c.x, c.y, R); wg.addColorStop(0, 'rgba(255,255,255,' + Math.min(1, white * 1.05) + ')'); wg.addColorStop(1, 'rgba(232,244,255,' + white * 0.92 + ')'); x.fillStyle = wg; x.beginPath(); x.arc(c.x, c.y, R, 0, 6.29); x.fill(); }
+    x.strokeStyle = 'rgba(255,255,255,0.65)'; x.lineWidth = 2; x.beginPath(); x.arc(c.x, c.y, R - 1, 0, 6.29); x.stroke();
+    vis.forEach(v => { const fresh = v.cb.grow < 1; x.strokeStyle = fresh ? '#FFFFFF' : 'rgba(255,255,255,' + (full ? 1 : 0.88) + ')'; x.lineWidth = fresh ? 2.4 : 1.6; x.shadowColor = '#FFFFFF'; x.shadowBlur = fresh ? 10 : 0; path(v.pp, true); x.shadowBlur = 0;
+      const a0 = v.pp[0], a1 = v.pp[v.pp.length - 1]; x.fillStyle = '#FFFFFF'; [a0, a1].forEach(p => { if (p.z >= 0) { x.beginPath(); x.arc(p.x, p.y, 2.2, 0, 6.29); x.fill(); } });
+      if (fresh && a1.z >= 0) { x.shadowColor = '#FFFFFF'; x.shadowBlur = 14; x.beginPath(); x.arc(a1.x, a1.y, 3.6, 0, 6.29); x.fill(); x.shadowBlur = 0; } });
+    x.fillStyle = 'rgba(255,255,255,0.35)'; x.beginPath(); x.ellipse(c.x - R * 0.4, c.y - R * 0.5, R * 0.22, R * 0.1, -0.6, 0, 6.29); x.fill();
+    x.restore();
+    for (let q = 0; q < nr; q++) { const rx = RR * (1.5 + q * 0.3); ring(rx, rx * (0.28 + q * 0.05), tilts[q], false, 0.75, 2.5); }
+    sats.forEach(p => { if (!p.back) { x.fillStyle = '#FFFFFF'; x.strokeStyle = rgb(pe.cur.acc); x.lineWidth = 2; x.beginPath(); x.arc(p.x, p.y, 5, 0, 6.29); x.fill(); x.stroke(); } });
+    for (let w = pe.waves.length - 1; w >= 0; w--) { const wv = pe.waves[w]; wv.r += (180 + wv.w * 20) * dt; wv.a -= dt * 1.6; if (wv.a <= 0) { pe.waves.splice(w, 1); continue; } x.strokeStyle = rgb(wv.col, wv.a); x.lineWidth = wv.w; x.beginPath(); x.arc(c.x, c.y, wv.r, 0, 6.29); x.stroke(); }
+    // étoile bonus (seulement quand on joue déjà un peu)
+    if (!pe.bonus && pe.t > pe.nextBonus && ((gs.stats && gs.stats.taps) || 0) > 30) { const dir = Math.random() < 0.5 ? 1 : -1; pe.bonus = { x: dir > 0 ? -30 : W + 30, y: H * (0.16 + Math.random() * 0.1), vx: dir * (W / 5.5), ph: Math.random() * 6, trail: [] }; }
+    if (pe.bonus) { const b = pe.bonus; b.x += b.vx * dt; b.ph += dt * 5; const by = b.y + Math.sin(b.ph) * 8; b.cy = by; b.trail.push({ x: b.x, y: by }); if (b.trail.length > 14) b.trail.shift();
+      b.trail.forEach((p, i) => { x.fillStyle = 'rgba(255,200,80,' + (i / 14 * 0.5) + ')'; x.beginPath(); x.arc(p.x, p.y, 2 + i * 0.25, 0, 6.29); x.fill(); });
+      const bg2 = x.createRadialGradient(b.x, by, 2, b.x, by, 30); bg2.addColorStop(0, 'rgba(255,214,120,0.7)'); bg2.addColorStop(1, 'rgba(255,214,120,0)'); x.fillStyle = bg2; x.beginPath(); x.arc(b.x, by, 30, 0, 6.29); x.fill();
+      x.fillStyle = '#F5B83D'; x.strokeStyle = '#FFFFFF'; x.lineWidth = 2; x.beginPath(); for (let i = 0; i < 10; i++) { const r = i % 2 ? 7 : 16, a = b.ph * 0.3 + i * Math.PI / 5; x.lineTo(b.x + Math.cos(a) * r, by + Math.sin(a) * r); } x.closePath(); x.fill(); x.stroke();
+      if (b.x < -60 || b.x > W + 60) { pe.bonus = null; pe.nextBonus = pe.t + 25 + Math.random() * 20; } }
+    x.textAlign = 'center';
+    for (let k = pe.texts.length - 1; k >= 0; k--) { const tx = pe.texts[k]; tx.y += tx.vy; tx.a -= dt * (tx.big ? 1.1 : 1.8); if (tx.a <= 0) { pe.texts.splice(k, 1); continue; }
+      x.font = '800 ' + (tx.big ? 22 : 20) + 'px ' + (this.state.font ? "'" + this.state.font + "'," : '') + 'system-ui, sans-serif';
+      x.lineWidth = 5; x.strokeStyle = 'rgba(255,255,255,' + Math.min(1, tx.a) * 0.9 + ')'; x.strokeText(tx.txt, tx.x, tx.y);
+      x.fillStyle = tx.big ? 'rgba(217,138,0,' + Math.min(1, tx.a) + ')' : 'rgba(14,58,87,' + Math.min(1, tx.a) + ')'; x.fillText(tx.txt, tx.x, tx.y); }
+    x.restore();
+    if (pe.flash > 0) { x.fillStyle = 'rgba(' + pe.flashCol + ',' + pe.flash * 0.6 + ')'; x.fillRect(0, 0, W, H); }
+    // particules qui volent jusqu'à l'argent
+    const fly = document.getElementById('inoFly'); if (!fly) return;
+    const FW = fly.clientWidth, FH = fly.clientHeight;
+    if (fly.width !== Math.round(FW * DPR) || fly.height !== Math.round(FH * DPR)) { fly.width = Math.round(FW * DPR); fly.height = Math.round(FH * DPR); }
+    const f = fly.getContext('2d'); f.setTransform(DPR, 0, 0, DPR, 0, 0); f.clearRect(0, 0, FW, FH);
+    if (!pe.parts.length) return;
+    const am = document.getElementById('inoAmount'), fr = fly.getBoundingClientRect(), kk = fr.width / (FW || 1);
+    let tg = { x: 60, y: 120 }; if (am) { const ar = am.getBoundingClientRect(); tg = { x: (ar.left + ar.width / 2 - fr.left) / kk, y: (ar.top + ar.height / 2 - fr.top) / kk }; }
+    let arrived = 0;
+    for (let i = pe.parts.length - 1; i >= 0; i--) { const p = pe.parts[i]; p.life += dt; p.rot += dt * 8;
+      if (p.life > p.home) { const dx = tg.x - p.x, dy = tg.y - p.y, dist = Math.hypot(dx, dy) || 1, acc = 1.6 + p.life * 3; p.vx += dx / dist * acc; p.vy += dy / dist * acc; p.vx *= 0.9; p.vy *= 0.9; if (dist < 18 || p.life > 3) { pe.parts.splice(i, 1); arrived++; continue; } }
+      else { p.vx *= 0.92; p.vy = p.vy * 0.92 + 0.15; }
+      p.x += p.vx; p.y += p.vy; f.save(); f.translate(p.x, p.y); f.rotate(p.rot); f.fillStyle = rgb(p.col, 0.95); f.fillRect(-p.s / 2, -p.s / 2, p.s, p.s); f.restore(); }
+    if (arrived && am) { am.style.transition = 'transform .09s ease-out'; am.style.display = 'inline-block'; am.style.transform = 'scale(1.08)'; clearTimeout(this.amT); this.amT = setTimeout(() => { am.style.transform = ''; }, 90); }
+  }
+  // ----- découverte progressive du jeu -----
+  featDefs() {
+    const gs = this.gs, n = this.totalAgents(), t = gs.total || 0;
+    return [
+      ['agents', t >= 10, 'Nouveau : tes agents IA ! Ils gagnent de l’argent pour toi, même quand tu ne cliques pas.'],
+      ['ups', t >= 80, 'Nouveau : les améliorations. Elles rendent chaque clic plus rentable.'],
+      ['ctrl', n >= 3, 'Nouveau : la jauge de contrôle et l’entraînement. Plus tu as d’agents, plus il faut apprendre pour les maîtriser.'],
+      ['rep', t >= 300, 'Nouveau : ta réputation. Plus elle est haute, plus tu gagnes.'],
+      ['actu', t >= 500, 'Nouveau : l’actu du jour. Un quiz rapide pour gagner un bonus.'],
+      ['price', t >= 1000, 'Nouveau : ton prix. Gagne plus, ou soigne ta réputation.'],
+      ['world', n >= 5, 'Nouveau : Mon monde. Va voir ta ville grandir en 3D.'],
+      ['sec', t >= 1e4, 'Nouveau : la sécurité. Ta société vaut cher, les pirates s’intéressent à toi.'],
+      ['stats', t >= 2e4, 'Nouveau : tes statistiques.']
+    ];
+  }
+  featCheck(silent) {
+    const gs = this.gs; if (!gs) return; if (!gs.feat) gs.feat = {};
+    this.featDefs().forEach(d => { if (d[1] && !gs.feat[d[0]]) { gs.feat[d[0]] = 1; if (!silent) { (this.featQ = this.featQ || []).push(d[2]); (this.nfUntil = this.nfUntil || {})[d[0]] = Date.now() + 5000; } } });
   }
   buyAgent(i) {
     const gs = this.gs; const c = this.cost(i);
@@ -1641,6 +1804,10 @@ window.Component = class Component extends DCLogic {
       priceLabel: gs.price === 'bas' ? 'Bas' : gs.price === 'premium' ? 'Premium' : 'Normal',
       cyclePrice: () => { const nx = { bas: 'normal', normal: 'premium', premium: 'bas' }[gs.price]; gs.price = nx; this.buzz(); this.say(nx === 'bas' ? 'Prix bas : gains × 0,8, ta réputation monte' : nx === 'premium' ? 'Prix premium : gains × 1,5, ta réputation baisse' : 'Prix normal : gains × 1'); this.save(); this.refresh(); },
       coName: (this.pl && this.pl.cos[this.pl.act].name) || 'Neo Corp',
+      f: (() => { const F = gs.feat || {}; const o = {}; ['agents', 'ups', 'ctrl', 'rep', 'actu', 'price', 'world', 'sec', 'stats'].forEach(k => { o[k] = !!F[k]; }); o.actions = o.actu || o.ctrl || o.price; return o; })(),
+      nf: (() => { const o = {}; const U = this.nfUntil || {}, nw = Date.now(); ['agents', 'ups', 'ctrl', 'rep', 'actu', 'price', 'world', 'sec', 'stats'].forEach(k => { o[k] = (U[k] || 0) > nw ? 'newf' : ''; }); return o; })(),
+      netLabel: this.netFullAt ? 'Planète connectée' : 'Réseau ' + Math.floor((((gs.net && gs.net.n) || 0) / this.netMax()) * 100) + ' %',
+      showHint: ((gs.stats && gs.stats.taps) || 0) < 6,
       showWealth: !!this.pl && (gs.total >= 1e4 || this.pl.pat > 0 || this.pl.cos.length > 1), patLabel: this.fmt((this.pl && this.pl.pat) || 0) + ' €',
       openWealth: () => { this.buzz(); this.setState({ wealth: true }); },
       info: ['credits', 'steps', 'qg', 'ctrl', 'actu', 'train', 'price', 'rep', 'agents', 'ups', 'wgain', 'wagents', 'wctrl', 'sec', 'stats'].reduce((o, k) => { o[k] = () => this.openInfo(k); return o; }, {}),
@@ -1671,7 +1838,7 @@ window.Component = class Component extends DCLogic {
       ctrlBar: 'display:block;height:100%;border-radius:6px;transition:width .3s ease,background .3s ease;background:' + zone[3] + ';width:' + Math.min(100, (nA ? j : 150) / 1.5).toFixed(1) + '%',
       ctrlInfo: 'Compétence ' + gs.comp + ' pts · besoin ' + Math.ceil(nA ? 5 * Math.pow(nA, 0.6) : 0) + ' pts pour ' + nA + ' agents. ' + zone[4] + '.',
       trainLeft: 10 - gs.trainCount, canUnplug: j < 60 && nA > 0,
-      train: () => this.openTrain(), unplug: () => this.unplug(), tap: () => this.tapTask(),
+      train: () => this.openTrain(), unplug: () => this.unplug(), tap: (e) => this.tapTask(e),
       readNews: () => { this.buzz(); this.setState({ open: 'n1' }); },
       newsQuiz: () => this.openNewsQuiz(),
       newsQuizLabel: gs.newsDone ? 'Quiz fait' : 'Quiz + 2 compétence', newsQuizStyle: btn(!gs.newsDone),
@@ -1680,7 +1847,7 @@ window.Component = class Component extends DCLogic {
       prices: [['bas', 'Bas', '× 0,8 · réputation +'], ['normal', 'Normal', '× 1'], ['premium', 'Premium', '× 1,5 · réputation −']].map(x => ({ name: x[1], eff: x[2], pick: () => { this.buzz(); gs.price = x[0]; this.save(); this.refresh(); }, style: 'display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:16px;font-family:inherit;color:#0E3A57;cursor:pointer;transition:background .2s ease;' + (gs.price === x[0] ? 'border:2px solid #5BB8F5;background:#5BB8F5' : 'border:2px solid #E3F2FD;background:#FFFFFF') })),
       rep: gs.rep, repMult: (0.5 + gs.rep / 100).toFixed(2).replace('.', ','),
       repBar: 'height:100%;border-radius:4px;background:#5BB8F5;transition:width .3s ease;width:' + gs.rep + '%',
-      agents: this.AG.map((a, i) => { const locked = !gs.unlocked[i]; const c = this.cost(i); return {
+      agents: this.AG.map((a, i) => { const locked = !gs.unlocked[i]; const c = this.cost(i); return { show: i <= gs.unlocked.lastIndexOf(true) + 1,
         name: a.n, short: ['Assistant', 'Rédaction', 'Visuel', 'Marketing', 'Ventes', 'Compta', 'Data center', 'Filiale', 'IA urbaine', 'Réseau'][i], a0: i === 0, a1: i === 1, a2: i === 2, a3: i === 3, a4: i === 4, a5: i === 5, a6: i === 6, a7: i === 7, a8: i === 8, a9: i === 9,
         info: () => this.openInfo('ag' + i),
         cardStyle: 'padding:12px;border-radius:24px;position:relative;' + (locked ? 'border:1.5px solid #E3F2FD;background:#F5FAFE' : 'border:1.5px solid #CFE8FA;background:#FFFFFF'),
@@ -1743,7 +1910,7 @@ window.Component = class Component extends DCLogic {
     return v;
   }
   componentDidMount() { this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
-  componentDidUpdate(pp, ps) { if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
+  componentDidUpdate(pp, ps) { this.planetSync(); if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
   const R = new T.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance' });
@@ -1972,7 +2139,7 @@ window.Component = class Component extends DCLogic {
     try { this.worldEng = this.inoWorld(T, cv, this.worldState()); } catch (e) { this.worldEng = null; }
   }
   stopWorld() { clearTimeout(this.worldT); this.worldT = null; if (this.worldEng) { try { this.worldEng.dispose(); } catch (e) {} this.worldEng = null; } }
-  componentWillUnmount() { clearInterval(this.tickT); clearInterval(this.cloudTimer); if (this.gs) { this.save(); this.cloudFlush(); } this.stopIntro(); this.stopWorld(); }
+  componentWillUnmount() { this.planetStop(); clearInterval(this.tickT); clearInterval(this.cloudTimer); if (this.gs) { this.save(); this.cloudFlush(); } this.stopIntro(); this.stopWorld(); }
   startIntro() {
     this.stopIntro();
     this.introTimer = setTimeout(() => this.runIntro(), 40);
@@ -2088,7 +2255,7 @@ window.Component = class Component extends DCLogic {
   }
   synth(name, sr) {
     // Sons générés par le code (aucun fichier à charger) : même recette pour le web et pour l'appli.
-    const D = { tap: 0.06, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3, alert: 0.75, spark: 0.22, alarm: 0.9 }[name] || 0.06;
+    const D = { tap: 0.06, pluck: 0.22, coin: 0.2, cash: 0.62, success: 0.7, error: 0.3, alert: 0.75, spark: 0.22, alarm: 0.9 }[name] || 0.06;
     const n = Math.floor(D * sr), out = new Float32Array(n), TAU = Math.PI * 2;
     const note = (t0, f, len, amp, harm, dec) => {
       const a = Math.floor(t0 * sr), L = Math.floor(len * sr); let ph = 0;
@@ -2099,6 +2266,8 @@ window.Component = class Component extends DCLogic {
     };
     if (name === 'tap') {
       let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 680 + 520 * Math.exp(-t * 60); ph += TAU * f / sr; out[i] = 0.42 * Math.min(1, t / 0.002) * Math.exp(-t * 70) * Math.sin(ph); }
+    } else if (name === 'pluck') {
+      note(0, 523.25, 0.22, 0.34, 0.16, 15); note(0, 1046.5, 0.12, 0.08, 0, 32);
     } else if (name === 'coin') {
       note(0, 1567.98, 0.07, 0.22, 0.25, 38); note(0.055, 2093.0, 0.145, 0.26, 0.25, 22);
     } else if (name === 'cash') {
@@ -2117,7 +2286,7 @@ window.Component = class Component extends DCLogic {
       let ph = 0; for (let i = 0; i < n; i++) { const t = i / sr; const f = 240 - 70 * Math.min(1, t / 0.2); ph += TAU * f / sr; out[i] = 0.3 * Math.min(1, t / 0.006) * Math.exp(-t * 11) * (Math.sin(ph) + 0.25 * Math.sin(ph * 3)); }
     }
     let pk = 0; for (let i = 0; i < n; i++) pk = Math.max(pk, Math.abs(out[i]));
-    const target = name === 'tap' ? 0.5 : name === 'coin' ? 0.6 : name === 'spark' ? 0.32 : name === 'alert' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
+    const target = name === 'tap' ? 0.5 : name === 'pluck' ? 0.58 : name === 'coin' ? 0.6 : name === 'spark' ? 0.32 : name === 'alert' ? 0.6 : 0.72; if (pk > 0) for (let i = 0; i < n; i++) out[i] *= target / pk;
     const fade = Math.floor(0.004 * sr); for (let i = 0; i < fade && i < n; i++) out[n - 1 - i] *= i / fade;
     return out;
   }

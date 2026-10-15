@@ -97,8 +97,10 @@ html, body { height: 100%; background: #FFFFFF; color: #0E3A57; overflow: hidden
 #root, #root > div { height: 100% }
 #app, #app * { touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none }
 #app canvas#inoWorld { touch-action: none }
+.in-app #stage { top: 0 !important; bottom: 0 !important }
 #app input, #app textarea { -webkit-user-select: auto; user-select: auto }
 </style>
+<script>try { if (window.ReactNativeWebView) document.documentElement.classList.add('in-app'); } catch (e) {}</script>
 <div id="stage"><div id="app"><div id="root"></div></div></div>
 <template id="tpl">
 <div style="width: 390px; height: 100%; position: relative; overflow: hidden; background: #FFFFFF; font-family: {{fontFamily}}; color: #0E3A57">
@@ -1711,7 +1713,7 @@ window.Component = class Component extends DCLogic {
     return out;
   }
   sfxUnlock() {
-    if (window.ReactNativeWebView) return;
+    if (window.ReactNativeWebView && window.__nativeSound) return;
     try {
       if (this.sfxCtx === undefined) { const AC = window.AudioContext || window.webkitAudioContext; this.sfxCtx = AC ? new AC() : null; this.sfxBuf = {}; }
       if (this.sfxCtx && this.sfxCtx.state === 'suspended') this.sfxCtx.resume();
@@ -1720,7 +1722,7 @@ window.Component = class Component extends DCLogic {
   sfx(name, rate) {
     if (this.state.sound === false) return;
     this.lastSfx = Date.now();
-    if (window.ReactNativeWebView) { try { window.ReactNativeWebView.postMessage(JSON.stringify({ t: 'snd', n: name, r: rate || 1 })); } catch (e) {} return; }
+    if (window.ReactNativeWebView && window.__nativeSound) { try { window.ReactNativeWebView.postMessage(JSON.stringify({ t: 'snd', n: name, r: rate || 1 })); } catch (e) {} return; }
     this.sfxUnlock(); const c = this.sfxCtx; if (!c) return;
     try {
       let b = this.sfxBuf[name];

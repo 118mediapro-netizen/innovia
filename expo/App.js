@@ -1,7 +1,7 @@
 // Inovia — appli de test pour Expo Go
 // Affiche la version web d'Inovia en plein écran et branche les vraies vibrations de l'iPhone.
 import React, { useEffect, useRef } from 'react';
-import { View, StatusBar, StyleSheet } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as Haptics from 'expo-haptics';
 
@@ -17,7 +17,7 @@ const pool = {};
 const next = {};
 
 async function loadSounds() {
-  if (!ExpoAudio) return;
+  if (!ExpoAudio) return false;
   try { await ExpoAudio.setAudioModeAsync({ playsInSilentMode: true }); } catch (e) {}
   for (const name of Object.keys(SOUNDS)) {
     pool[name] = [];
@@ -30,6 +30,7 @@ async function loadSounds() {
       } catch (e) {}
     }
   }
+  return Object.values(pool).some((l) => l.length > 0);
 }
 
 function play(name, rate) {
@@ -79,18 +80,25 @@ function vibrate(p) {
 
 export default function App() {
   const web = useRef(null);
+  const soundOk = useRef(false);
+  // Dit à la page que l'iPhone joue les sons lui-même (sinon la page les joue elle-même).
+  const announce = () => {
+    if (!web.current) return;
+    if (soundOk.current) web.current.injectJavaScript('window.__nativeSound = true; true;');
+  };
   useEffect(() => {
-    loadSounds();
+    loadSounds().then((ok) => { soundOk.current = !!ok; announce(); }).catch(() => {});
     return unloadSounds;
   }, []);
   return (
-    <View style={styles.root}>
+    <SafeAreaView style={styles.root}>
       <StatusBar barStyle="dark-content" />
       <WebView
         ref={web}
         source={{ uri: URL }}
         style={styles.web}
         injectedJavaScriptBeforeContentLoaded={BRIDGE}
+        onLoadEnd={announce}
         onMessage={(e) => {
           try {
             const m = JSON.parse(e.nativeEvent.data);
@@ -111,7 +119,7 @@ export default function App() {
         cacheEnabled={false}
         originWhitelist={['*']}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

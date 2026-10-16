@@ -1821,7 +1821,7 @@ window.Component = class Component extends DCLogic {
     ];
     // Agents IA : chaque rôle s'appuie sur une appli compatible
     D.AG = [
-      { id: 'assistant', n: 'Agent assistant', s: 'Assistant', apps: ['chatgpt', 'claude', 'gemini', 'mistral'], steps: 1, k: 0.25,
+      { id: 'assistant', n: 'Agent assistant', s: 'Assistant IA', apps: ['chatgpt', 'claude', 'gemini', 'mistral'], steps: 1, k: 0.25,
         role: 'Il trie tes mails, répond aux messages simples et prend tes rendez-vous.', real: 'Pour de vrai : un GPT personnalisé dans ChatGPT, un Projet dans Claude ou un Gem dans Gemini, avec tes consignes écrites une fois pour toutes.',
         task: 'répondre poliment à un client qui demande tes horaires et proposer un rendez-vous', proof: 'la réponse que l’IA a écrite au client' },
       { id: 'redaction', n: 'Agent rédaction', s: 'Rédaction', apps: ['claude', 'chatgpt', 'mistral'], steps: 2, k: 0.3,

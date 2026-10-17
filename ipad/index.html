@@ -132,6 +132,9 @@ div:nth-child(even) > span > span > .floaty{animation-delay:-1.7s}
 @keyframes stgPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .stg[style*="border:2px solid #1E3A8A"],.stg[style*="border: 2px solid rgb(30, 58, 138)"]{animation:stgPulse 2.6s ease-in-out infinite;box-shadow:0 8px 18px rgba(30,58,138,.18)}
 .screen .card{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.datepill{box-shadow:-3px -3px 8px rgba(255,255,255,.95),4px 5px 12px rgba(30,58,138,.1)}
+@keyframes pageFlip{0%{transform:perspective(300px) rotateX(0)}40%{transform:perspective(300px) rotateX(-85deg)}100%{transform:perspective(300px) rotateX(0)}}
+.datepill.flip{animation:pageFlip .9s cubic-bezier(.3,1.4,.5,1)}
 </style>
 
 <style>
@@ -316,11 +319,14 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
 <div style="display: flex; flex-direction: column; min-width: 0">
 <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: #5A6B8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.headLabel}}</span><button class="tap" type="button" onClick="{{g.info.credits}}" aria-label="Explication" style="width: 22px; height: 22px; padding: 0; border: 1.5px solid #D6DEEC; border-radius: 11px; background: #FFFFFF; color: #0E2A4F; font-family: Georgia, serif; font-style: italic; font-size: 12px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 22px">i</button></span>
-<span style="display: flex; align-items: baseline; gap: 4px; line-height: 1.05; white-space: nowrap"><span id="inoAmount" style="font-size: 36px; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">{{g.credits}}</span><span style="font-size: 28px; font-weight: 800; color: #1E3A8A">€</span></span>
+<span style="display: flex; align-items: baseline; gap: 4px; line-height: 1.05; white-space: nowrap"><span id="inoAmount" style="{{g.amountStyle}}">{{g.credits}}</span><span style="{{g.euroStyle}}">€</span></span>
 <sc-if value="{{g.showRate}}" hint-placeholder-val="{{ false }}"><span style="{{g.rateStyle}}">{{g.rateLabel}}</span></sc-if>
 </div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex: 0 0 auto">
 <button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 44px; padding: 0 14px; border: none; border-radius: 22px; font-family: inherit; font-weight: 800; color: #0E2A4F; cursor: pointer; background: #E4EAF6; display: flex; align-items: center; gap: 6px; font-size: 14px; flex: 0 0 auto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l5-3v14M10 21V4l9 4v13"></path><path d="M13 11h3M13 15h3"></path></svg>Mon monde</button>
 </div>
+</div>
+<div style="margin-top: 8px; display: flex"><button class="tap {{g.dateCls}}" type="button" onClick="{{g.openDate}}" aria-label="Date dans le jeu" style="height: 32px; padding: 0 12px; border: none; border-radius: 16px; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 800; color: #0E2A4F; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>{{g.dateLabel}}</button></div>
 <sc-if value="{{g.showChips}}" hint-placeholder-val="{{ false }}"><div class="noscroll hscroll" style="margin: 10px -16px 0; padding: 0 16px; display: flex; gap: 6px; overflow-x: auto">
 <sc-for list="{{g.chips}}" as="ch" hint-placeholder-count="2"><button class="tap" type="button" onClick="{{ch.open}}" style="{{ch.style}}">{{ch.label}}</button></sc-for>
 </div></sc-if>
@@ -328,7 +334,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 
 <div style="margin-top: 12px; display: flex; align-items: center; gap: 6px">
 <sc-for list="{{g.steps}}" as="sp" hint-placeholder-count="4">
-<span class="stg" style="{{sp.style}}"><img src="{{sp.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none"></span>
+<span style="display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 0 0 58px"><span class="stg" style="{{sp.style}}"><img src="{{sp.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none"></span><span style="{{sp.labStyle}}">{{sp.lab}}</span></span>
 <sc-if value="{{sp.hasBar}}" hint-placeholder-val="{{ true }}"><span style="flex: 1; height: 6px; border-radius: 3px; background: #E4EAF6; overflow: hidden"><span class="barfx" style="{{sp.bar}}"></span></span></sc-if>
 </sc-for>
 <button class="tap" type="button" onClick="{{g.info.steps}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #D6DEEC; border-radius: 13px; background: #FFFFFF; color: #0E2A4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
@@ -339,13 +345,18 @@ html, body, #stage, #app { overscroll-behavior: none }
 <canvas id="inoPlanet" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none"></canvas>
 <sc-if value="{{g.showHint}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 50%; top: 46px; z-index: 2; padding: 8px 14px; border-radius: 16px; background: #1E3A8A; color: #0E2A4F; font-size: 14px; font-weight: 800; white-space: nowrap; pointer-events: none; animation: hintBob 1.2s ease-in-out infinite">Clique sur la planète !</span></sc-if>
 <sc-if value="{{g.showWhisper}}" hint-placeholder-val="{{ false }}"><span class="whisper" style="position: absolute; left: 14px; right: 82px; top: 14px; z-index: 2; padding: 9px 12px; border-radius: 16px; background: rgba(10,16,22,0.86); color: #FFFFFF; font-size: 13px; font-weight: 700; line-height: 1.35; text-align: left; pointer-events: none; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; flex: 0 0 8px; border-radius: 4px; background: #E5484D" class="blink"></span><span><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #F3B7B9">Message inconnu</span>{{g.whisper}}</span></span></sc-if>
-<span style="position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 2; padding: 7px 16px; border-radius: 16px; background: #0E2A4F; color: #FFFFFF; font-size: 15px; font-weight: 800; white-space: nowrap; pointer-events: none">Clic ! +{{g.tapValue}} €</span>
+<span style="position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 2; padding: 7px 16px; border-radius: 16px; background: #0E2A4F; color: #FFFFFF; font-size: 15px; font-weight: 800; white-space: nowrap; pointer-events: none">{{g.clicLabel}}</span>
 </button>
 <sc-if value="{{g.hasCombo}}" hint-placeholder-val="{{ false }}"><span class="combo" style="position: absolute; z-index: 4; top: 12px; left: 50%; padding: 6px 14px; border-radius: 16px; background: #0E2A4F; color: #FFFFFF; font-size: 14px; font-weight: 800; white-space: nowrap">{{g.comboLabel}}</span></sc-if>
 </div>
 
 <sc-if value="{{g.hasCta}}" hint-placeholder-val="{{ false }}"><button class="tap missionb shine" type="button" onClick="{{g.ctaAct}}" style="{{g.ctaStyle}}"><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px"><span style="font-size: 16px; font-weight: 800">{{g.ctaT}}</span><span style="font-size: 13px; font-weight: 600; opacity: 0.85; line-height: 1.35">{{g.ctaD}}</span></span><span style="{{g.ctaBStyle}}">{{g.ctaB}}</span></button></sc-if>
 
+<sc-if value="{{g.hasGoal}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 12px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 22px; background: #FFFFFF; border: 1.5px solid #D6DEEC">
+<span style="width: 40px; height: 40px; flex: 0 0 40px; border-radius: 20px; background: #E4EAF6; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.5" fill="#0E2A4F"></circle></svg></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #5A6B8C">{{g.goalN}}</span><span style="font-size: 15px; font-weight: 800">{{g.goalT}}</span><span style="font-size: 12px; font-weight: 700; color: #2B4FC0">{{g.goalR}}</span></span>
+<sc-if value="{{g.goalDone}}" hint-placeholder-val="{{ false }}"><button class="tap shine" type="button" onClick="{{g.claimGoal}}" style="flex: 0 0 auto; height: 40px; padding: 0 14px; border: none; border-radius: 20px; background: #1E3A8A; font-family: inherit; font-size: 13px; font-weight: 800; color: #0E2A4F; cursor: pointer">Récupérer</button></sc-if>
+</div></sc-if>
 <sc-if value="{{g.f.ctrl}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.ctrl}}"><div style="margin-top: 12px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F7F8FC">
 <span style="{{g.ctrlDot}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z" fill="#FFFFFF"></path><circle cx="12" cy="12" r="2.6" fill="#0E2A4F"></circle></svg></span>
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.ctrlLabel}}</span><span>{{g.ctrlPct}}</span></span><span style="display: block; height: 10px; border-radius: 5px; background: #E4EAF6; overflow: hidden"><span class="barfx" style="{{g.ctrlBar}}"></span></span><span style="font-size: 11px; font-weight: 700; color: #5A6B8C">{{g.ctrlSub}}</span></span>
@@ -355,6 +366,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <sc-if value="{{g.f.rep}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.rep}}"><div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F7F8FC">
 <span style="{{g.repStar}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1L3.2 9.4l6.1-.8z" fill="#FFFFFF" stroke="#0E2A4F" stroke-width="1.6" stroke-linejoin="round"></path></svg></span>
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span>Réputation · {{g.repName}}</span><span>{{g.repVal}}</span></span><span style="display: block; height: 10px; border-radius: 5px; background: #E4EAF6; overflow: hidden"><span class="barfx" style="{{g.repFill}}"></span></span></span>
+<sc-if value="{{g.repLow}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{g.restoreImage}}" style="{{g.repBtnStyle}}"><span style="font-size: 11px">Redorer</span><span>{{g.repBtn}}</span></button></sc-if>
 <button class="tap" type="button" onClick="{{g.info.rep}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #D6DEEC; border-radius: 13px; background: #FFFFFF; color: #0E2A4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
 </div></div></sc-if>
 <sc-if value="{{g.f.sec}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.sec}}"><div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F7F8FC">
@@ -394,7 +406,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 <span style="display: block; margin-top: 6px; font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ag.short}}</span>
 <span style="display: block; font-size: 11px; font-weight: 700; color: #5A6B8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ag.by}}</span>
 <sc-if value="{{ag.open}}" hint-placeholder-val="{{ true }}"><span style="margin-top: 6px; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 14px; font-weight: 800; color: #0E2A4F">{{ag.l1}}</span><span style="font-size: 11px; font-weight: 700; color: #5A6B8C">{{ag.l2}}</span><span style="{{ag.l3Style}}">{{ag.l3}}</span><span style="{{ag.l4Style}}">{{ag.l4}}</span></span>
-<button class="tap" type="button" onClick="{{ag.buy}}" style="{{ag.buyStyle}}">{{ag.cost}}</button></sc-if>
+<button class="tap" type="button" onClick="{{ag.buy}}" style="{{ag.buyStyle}}">{{ag.cost}}</button>
+<sc-if value="{{ag.canBonus}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{ag.bonus}}" style="margin-top: 6px; width: 100%; height: 30px; border: 1.5px dashed #E8B04A; border-radius: 15px; background: #FFFBF0; font-family: inherit; font-size: 12px; font-weight: 800; color: #8A6A10; cursor: pointer">{{ag.bonusLabel}}</button></sc-if></sc-if>
 <sc-if value="{{ag.locked}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{ag.learn}}" style="margin-top: 8px; width: 100%; height: 40px; border: none; border-radius: 20px; font-family: inherit; font-size: 13px; font-weight: 800; color: #FFFFFF; cursor: pointer; background: #0E2A4F; white-space: nowrap">{{ag.learnLabel}}</button></sc-if>
 </div></sc-if>
 </sc-for>
@@ -569,7 +582,7 @@ Apprends à le faire
 <p style="margin: 8px 0 0; font-size: 17px; font-weight: 800; line-height: 1.35">{{sh.q}}</p>
 <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px">
 <sc-for list="{{sh.choices}}" as="dc" hint-placeholder-count="2">
-<button class="tap" type="button" onClick="{{dc.pick}}" style="{{dc.style}}"><span style="{{dc.lstyle}}">{{dc.letter}}</span><span style="flex: 1; line-height: 1.35">{{dc.txt}}</span></button>
+<button class="tap" type="button" onClick="{{dc.pick}}" style="{{dc.style}}"><span style="{{dc.lstyle}}">{{dc.letter}}</span><span style="flex: 1; display: flex; flex-direction: column; gap: 3px; line-height: 1.35"><span>{{dc.txt}}</span><span style="font-size: 12px; font-weight: 800; opacity: 0.72">{{dc.fx}}</span></span></button>
 </sc-for>
 </div>
 </sc-if>
@@ -844,7 +857,7 @@ Apprends à le faire
 window.Component = class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { screen: 'intro', menu: false, quiz: null, open: null, level: (() => { try { const v = window.localStorage.getItem('inoviaLevel'); return v === null ? null : Math.max(0, Math.min(2, Number(v))); } catch (e) { return null; } })(), theme: 'Tout', q: '', auth: null, levelCard: false, sound: (() => { try { return window.localStorage.getItem('inoviaSound') !== '0'; } catch (e) { return true; } })(), saved: {}, hapt: true, font: 0, fonts: false };
+    this.state = { screen: 'jeu', menu: false, quiz: null, open: null, level: (() => { try { const v = window.localStorage.getItem('inoviaLevel'); return v === null ? null : Math.max(0, Math.min(2, Number(v))); } catch (e) { return null; } })(), theme: 'Tout', q: '', auth: null, levelCard: false, sound: (() => { try { return window.localStorage.getItem('inoviaSound') !== '0'; } catch (e) { return true; } })(), saved: {}, hapt: true, font: 0, fonts: false };
     this.bank = [
       [
         { q: 'Qu’est-ce qu’une IA comme ChatGPT ?', o: ['Une personne qui répond en direct', 'Un programme qui génère des réponses à partir de ta demande', 'Un moteur de recherche classique'], a: 1 },
@@ -1204,7 +1217,7 @@ window.Component = class Component extends DCLogic {
     if (cv.width !== Math.round(W * DPR) || cv.height !== Math.round(H * DPR)) { cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); }
     const dt = pe.last ? Math.min(0.05, (now - pe.last) / 1000) : 0.016; pe.last = now; pe.t += dt;
     const tms = Date.now(), tapping = tms - this.lastTap < 1100, combo = tapping ? this.combo : 0;
-    const tier = combo >= 60 ? 2 : combo >= 25 ? 1 : 0;
+    const tier = combo >= 120 ? 2 : combo >= 50 ? 1 : 0;
     const TIERS = [{ bg: [[234, 246, 254], [255, 255, 255]], acc: [91, 184, 245], halo: [91, 184, 245] }, { bg: [[236, 233, 255], [250, 249, 255]], acc: [139, 124, 246], halo: [139, 124, 246] }, { bg: [[255, 242, 214], [255, 251, 242]], acc: [245, 170, 40], halo: [245, 184, 61] }, { bg: [[10, 32, 52], [22, 74, 112]], acc: [255, 206, 90], halo: [190, 240, 255] }];
     const lerp = (a, b, k) => { Object.keys(a).forEach(i => { if (typeof a[i] === 'object') lerp(a[i], b[i], k); else a[i] += (b[i] - a[i]) * k; }); };
     lerp(pe.cur, TIERS[tier], Math.min(1, dt * 4));
@@ -1309,7 +1322,7 @@ window.Component = class Component extends DCLogic {
     if (t === 'match') {
       v.lefts = g.pairs.map((p, i) => ({ txt: p[0], pick: () => this.pickLeft(i), style: optBase + 'min-height:64px;font-size:14px;' + (r.done.indexOf(i) >= 0 ? 'border:2px solid #1E3A8A;background:#1E3A8A;opacity:.55;' : r.sel === i ? 'border:2px solid #0E2A4F;background:#E4EAF6;' : 'border:2px solid #D6DEEC;background:#FFFFFF;') }));
       v.rights = r.right.map((rt, j) => { const done = r.done.some(i => g.pairs[i][1] === rt); return { txt: rt, pick: () => this.pickRight(j), style: optBase + 'min-height:64px;font-size:14px;' + (done ? 'border:2px solid #1E3A8A;background:#1E3A8A;opacity:.55;' : 'border:2px solid #D6DEEC;background:#FFFFFF;') }; }); }
-    if (t === 'decision') { v.q = g.q; v.choices = g.ch.map((c, k) => ({ txt: c.t, letter: 'ABCD'[k], lstyle: LS(!play && s.picked === k ? 'good' : ''), pick: () => this.decide(k), style: optBase + (play ? 'border:2px solid #D6DEEC;background:#FFFFFF;' : s.picked === k ? 'border:2px solid #1E3A8A;background:#1E3A8A;' : 'border:2px solid #E4EAF6;background:#FFFFFF;opacity:.5;') })); }
+    if (t === 'decision') { v.q = g.q; v.choices = g.ch.map((c, k) => ({ txt: c.t, fx: this.choiceFx(c), letter: 'ABCD'[k], lstyle: LS(!play && s.picked === k ? 'good' : ''), pick: () => this.decide(k), style: optBase + (play ? 'border:2px solid #D6DEEC;background:#FFFFFF;' : s.picked === k ? 'border:2px solid #1E3A8A;background:#1E3A8A;' : 'border:2px solid #E4EAF6;background:#FFFFFF;opacity:.5;') })); }
     if (t === 'spot') { const rd = g.rounds[Math.min(r.round, g.rounds.length - 1)]; v.progress = 'Série ' + Math.min(r.round + 1, g.rounds.length) + '/' + g.rounds.length;
       v.items = rd.items.map((it, i) => ({ txt: it, pick: () => this.pickSpot(i), style: optBase + 'border:2px solid #D6DEEC;background:#FFFFFF;' })); }
     return v;
@@ -1571,7 +1584,7 @@ window.Component = class Component extends DCLogic {
     this.introAlive = false;
     if (this.introR) { try { this.introR.dispose(); if (this.introR.forceContextLoss) this.introR.forceContextLoss(); } catch (e) {} this.introR = null; }
   }
-  endIntro() { this.stopIntro(); let done = false; try { done = window.localStorage.getItem('inoviaOnbDone') === '1'; } catch (e) {} this.setState({ screen: done ? 'actu' : 'onb' }); }
+  endIntro() { this.stopIntro(); let done = false; try { done = window.localStorage.getItem('inoviaOnbDone') === '1'; } catch (e) {} this.setState({ screen: 'jeu' }); }
   onbDone() { try { window.localStorage.setItem('inoviaOnbDone', '1'); } catch (e) {} }
   synth(name, sr) {
     // Sons générés par le code (aucun fichier à charger) : même recette pour le web et pour l'appli.
@@ -1762,7 +1775,7 @@ window.Component = class Component extends DCLogic {
       closeInfo: () => { this.buzz(); this.setState({ info: null }); },
       showWorld: !!s.world && s.screen === 'jeu',
       showIntro: s.screen === 'intro',
-      skipIntro: () => { this.buzz(); this.stopIntro(); this.setState({ screen: 'onb' }); },
+      skipIntro: () => { this.buzz(); this.stopIntro(); this.setState({ screen: 'jeu' }); },
       replayIntro: () => { this.buzz(); this.setState({ menu: false, open: null, quiz: null, screen: 'intro' }); },
       showDet: !!found,
       det: det,
@@ -1916,12 +1929,12 @@ window.Component = class Component extends DCLogic {
       { id: 'dir', n: 'Directeur IA', sal: 12000, sup: 150, c: 60000, need: 1e8, role: 'Il fixe les règles : ce que l’IA a le droit de décider seule, et ce qui doit passer par un humain.' }
     ];
     D.UPS = [
-      { n: 'Clavier mécanique', c: 150, eff: 'Chaque clic rapporte × 2' },
+      { n: 'Clavier mécanique', c: 120, eff: 'Chaque clic rapporte + 0,75 €' },
       { n: 'Prompts enregistrés', c: 5000, eff: 'Chaque clic ajoute 2 % de tes gains par seconde' },
       { n: 'Raccourcis IA', c: 4e5, eff: 'Chaque clic ajoute 5 % de tes gains par seconde' },
       { n: 'Assistant vocal', c: 4e7, eff: 'Chaque clic ajoute 10 % de tes gains par seconde' }
     ];
-    D.ECO = { p0: 0.3, pm: 5.8, c0: 250, cm: 20, g: 1.15, off: 0.06, offH: [0.5, 1, 4, 8] };
+    D.ECO = { cost: [60, 250, 700, 5000, 100000, 2000000, 40000000, 800000000, 16000000000, 320000000000, 6400000000000, 128000000000000, 2560000000000000, 51200000000000000, 1024000000000000000, 20480000000000000000], prod: [0.2, 0.5, 1.0, 1.74, 10.092, 58.534, 339.495, 1969.07, 11420.608, 66239.525, 384189.245, 2228297.622, 12924126.207, 74959932.0, 434767605.603, 2521652112.497], cs: 1, ps: 0.68, g: 1.17, off: 0.06, offH: [0.5, 1, 4, 8] };
     D.STAGES = ['Le garage', 'La start-up', 'La multinationale', 'L’échelle planétaire'];
     // Tâches réelles : à faire pour de vrai, notées par l'IA
     D.MIS = [
@@ -2037,7 +2050,7 @@ window.Component = class Component extends DCLogic {
   freshGs() {
     const today = new Date().toISOString().slice(0, 10);
     return { v: 3, credits: 0, total: 0, apps: [], ag: Array(12).fill(0), q: Array(12).fill(0), sys: [0, 0, 0, 0], hum: [0, 0, 0, 0], ups: [false, false, false, false],
-      comp: 0, rep: 50, sec: 0, company: null, own: 1, distrib: 0, monthStart: Date.now(), monthN: 0, mo: { ca: 0, ch: 0, sal: 0, apps: 0 }, bilans: [],
+      comp: 0, rep: 50, pop: 10, popDir: 0, goal: 0, lastInv: 0, startAt: Date.now(), sec: 0, company: null, own: 1, distrib: 0, monthStart: Date.now(), monthN: 0, mo: { ca: 0, ch: 0, sal: 0, apps: 0 }, bilans: [],
       inbox: [], feat: {}, seen: [], missions: {}, realBonus: 0, offers: [], offer: null, offerNext: 600, whisper: {}, threat: null, nextThreat: 0,
       newsDay: today, newsDone: {}, trainDay: today, trainCount: 0, streak: 0, lastDay: '', giftDay: '', days: 0, arc: 0, flags: {}, savedAt: 0, net: { n: 0, lvl: 0 }, qSeen: [],
       stats: { taps: 0, bestCombo: 0, orders: 0, decisions: 0, play: 0, hacks: 0, blocked: 0, missions: 0, incidents: 0 } };
@@ -2062,6 +2075,7 @@ window.Component = class Component extends DCLogic {
     const gs = this.gs; const today = new Date().toISOString().slice(0, 10);
     if (gs.trainDay !== today) { gs.trainDay = today; gs.trainCount = 0; }
     if (gs.newsDay !== today) { gs.newsDay = today; gs.newsDone = {}; }
+    if (!gs.startAt) gs.startAt = Date.now(); if (gs.pop == null) gs.pop = 10; if (gs.goal == null) gs.goal = 0;
     if (gs.lastDay !== today) {
       const y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
       gs.streak = gs.lastDay === y ? (gs.streak || 0) + 1 : 1; gs.lastDay = today; gs.days = (gs.days || 0) + 1;
@@ -2078,8 +2092,9 @@ window.Component = class Component extends DCLogic {
   // ----- unités : 12 agents puis 4 systèmes -----
   U(i) { const D = this.v3d(); return i < 12 ? D.AG[i] : D.SYS[i - 12]; }
   ucount(i) { return i < 12 ? this.gs.ag[i] : this.gs.sys[i - 12]; }
-  ubase(i) { const E = this.v3d().ECO; return E.p0 * Math.pow(E.pm, i); }
-  ucost(i) { const E = this.v3d().ECO; return Math.ceil(E.c0 * Math.pow(E.cm, i) * Math.pow(E.g, this.ucount(i))); }
+  ubase(i) { const E = this.v3d().ECO; return E.prod[i] * (i >= 3 ? E.ps : 1); }
+  ubaseCost(i) { const E = this.v3d().ECO; return E.cost[i] * E.cs; }
+  ucost(i) { const E = this.v3d().ECO; return Math.ceil(this.ubaseCost(i) * Math.pow(E.g, this.ucount(i))); }
   palier(n) { return n >= 200 ? 1.5 : n >= 100 ? 1.35 : n >= 50 ? 1.2 : n >= 25 ? 1.1 : 1; }
   uq(i) { return i < 12 ? (this.gs.q[i] || 1) : 1; }
   unitRaw(i) { return this.ubase(i) * this.uq(i) * this.palier(this.ucount(i)); }
@@ -2094,7 +2109,7 @@ window.Component = class Component extends DCLogic {
   coMult() { return 1 + 0.25 * Math.max(0, ((this.pl && this.pl.cos.length) || 1) - 1); }
   mult() {
     const gs = this.gs; const bm = this.boost && this.boost.until > Date.now() ? this.boost.mult : 1;
-    return (0.5 + gs.rep / 100) * (1 + 0.1 * this.autonomy()) * bm * this.coMult() * (1 + (gs.realBonus || 0)) * (1 + this.collBonus()) * (1 + ((this.pl && this.pl.heritage) || 0));
+    return (0.8 + 0.4 * gs.rep / 100) * (1 + 0.1 * this.autonomy()) * bm * this.coMult() * (1 + (gs.realBonus || 0)) * (1 + this.collBonus()) * (1 + ((this.pl && this.pl.heritage) || 0));
   }
   econ() {
     const gs = this.gs; const D = this.v3d(); const m = this.mult(); let gross = 0, ch = 0;
@@ -2105,15 +2120,21 @@ window.Component = class Component extends DCLogic {
     return { gross: gross, ch: ch, apps: apps, sal: sal, net: gross - ch - apps - sal, m: m };
   }
   perSec() { return this.econ().net; }
-  comboMult() { const c = this.combo; return c >= 60 ? 1.5 : c >= 25 ? 1.2 : 1; }
+  comboMult() { const c = this.combo; return c >= 120 ? 1.25 : c >= 50 ? 1.1 : 1; }
   tapValue() {
     const gs = this.gs; const u = gs.ups; const na = gs.apps.length;
-    const base = 0.5 * (u[0] ? 2 : 1) * (na ? 2 + 0.25 * (na - 1) : 1);
+    const base = 0.5 * (na ? 2 + 0.25 * (na - 1) : 1) + (u[0] ? 0.75 : 0);
     const pct = u[3] ? 0.1 : u[2] ? 0.05 : u[1] ? 0.02 : 0;
     return (base + Math.max(0, this.perSec()) * pct) * this.comboMult();
   }
   stageIdx(t) { t = t == null ? ((this.gs && this.gs.total) || 0) : t; return t >= 1e10 ? 3 : t >= 1e7 ? 2 : t >= 1e4 ? 1 : 0; }
   stageIdxP() { return this.stageIdx(); }
+  // Calendrier du jeu : 1 mois = 1 heure réelle, donc 1 jour ≈ 2 minutes. On commence le jour où la partie démarre.
+  gameDate() {
+    const gs = this.gs; const st = (gs && gs.startAt) || Date.now(); const days = Math.floor((Date.now() - st) / 120000);
+    const d0 = new Date(st); const d = new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() + days);
+    return { d: d, m: d.getFullYear() * 12 + d.getMonth(), label: d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) };
+  }
   offlineGain() {
     const gs = this.gs; if (!gs.savedAt) return 0;
     const capH = this.v3d().ECO.offH[this.stageIdx()];
@@ -2140,7 +2161,7 @@ window.Component = class Component extends DCLogic {
   pushInbox(it) {
     const gs = this.gs; if (!gs.inbox) gs.inbox = [];
     it.id = it.id || 'm' + Date.now().toString(36) + Math.floor(Math.random() * 1e5);
-    if (gs.inbox.length >= 14) { const k = gs.inbox.findIndex(x => x.kind === 'order' || x.kind === 'decision'); if (k >= 0) gs.inbox.splice(k, 1); else return; }
+    if (gs.inbox.length >= 12) { const k = gs.inbox.findIndex(x => x.kind !== 'bilan' && x.kind !== 'arc'); if (k >= 0) gs.inbox.splice(k, 1); else return; }
     if (it.kind === 'bilan' || it.urgent) gs.inbox.unshift(it); else gs.inbox.push(it);
     this.inboxPing = Date.now(); this.sfx('tap', 1.4); this.save();
   }
@@ -2170,6 +2191,8 @@ window.Component = class Component extends DCLogic {
     gs.credits += e.net * dt; gs.total += e.gross * dt;
     if (gs.company) { gs.mo.ca += e.gross * dt; gs.mo.ch += e.ch * dt; gs.mo.sal += e.sal * dt; gs.mo.apps += e.apps * dt; }
     this.monthCheck(now);
+    if (now > (this.driftNext || 0)) { this.driftNext = now + 60000; if (gs.rep < 50) gs.rep = Math.min(50, gs.rep + 0.5); if ((gs.pop || 0) > 10) gs.pop = Math.max(10, gs.pop - 0.2); }
+    const md = this.gameDate(); if (this.lastMonth != null && md.m !== this.lastMonth) { this.monthFlip = now + 1600; this.sfx('pluck', 1.2); } this.lastMonth = md.m;
     if (gs.credits < 0 && !this.redWarn) { this.redWarn = true; this.say('Ta trésorerie passe dans le rouge : tes charges dépassent tes gains. Regarde « Ma société ».'); this.buzz([20, 60, 20]); }
     if (gs.credits >= 0) this.redWarn = false;
     const tapping = now - this.lastTap < 4000;
@@ -2194,7 +2217,7 @@ window.Component = class Component extends DCLogic {
   // ----- clics -----
   tapTask(e) {
     const gs = this.gs; const now = Date.now(); if (gs.dead) return;
-    this.combo = now - this.lastTap < 550 ? this.combo + 1 : 1; this.lastTap = now;
+    this.combo = now - this.lastTap < 450 ? this.combo + 1 : 1; this.lastTap = now;
     const pt = this.planetPoint(e); const pe = this.pe;
     if (pe && pe.bonus && Math.hypot(pe.bonus.x - pt.x, (pe.bonus.cy || pe.bonus.y) - pt.y) < 44) {
       const v = this.tapValue() * 15; gs.credits += v; gs.total += v; pe.bonus = null; pe.nextBonus = pe.t + 30 + Math.random() * 30;
@@ -2206,18 +2229,18 @@ window.Component = class Component extends DCLogic {
     const v = this.tapValue() * (crit ? 5 : 1); gs.credits += v; gs.total += v;
     this.tapN = (this.tapN || 0) + 1; this.lastVal = this.fmt(v);
     this.stat('taps', 1); if (this.combo > ((gs.stats && gs.stats.bestCombo) || 0)) gs.stats.bestCombo = this.combo;
-    const tier = this.combo >= 60 ? 2 : this.combo >= 25 ? 1 : 0;
+    const tier = this.combo >= 120 ? 2 : this.combo >= 50 ? 1 : 0;
     if (pe) {
       pe.sq = Math.max(0.84, pe.sq - (crit ? 0.16 : 0.1)); pe.sqv = 0;
       pe.waves.push({ r: this.planetR(), a: crit ? 0.8 : 0.45, col: crit ? [255, 200, 80] : pe.cur.acc.slice(), w: crit ? 5 : 3 });
       pe.texts.push({ x: pt.x + (crit ? 0 : (Math.random() - 0.5) * 60), y: pt.y - 16 - (crit ? 30 : Math.random() * 18), vy: -1.4, a: crit ? 1.3 : 0.8, txt: crit ? 'CRITIQUE × 5' : '+' + this.fmt(v), big: crit });
       this.planetBurst(pt, crit ? 12 : 3 + tier * 2, crit ? [255, 200, 80] : pe.cur.acc.slice(), crit);
       if (crit) { pe.flash = 0.5; pe.flashCol = '255,214,120'; pe.shake = 7; }
-      if (this.combo === 25 || this.combo === 60) pe.waves.push({ r: this.planetR(), a: 0.85, col: this.combo === 25 ? [139, 124, 246] : [245, 170, 40], w: 7 });
+      if (this.combo === 50 || this.combo === 120) pe.waves.push({ r: this.planetR(), a: 0.85, col: this.combo === 50 ? [139, 124, 246] : [245, 170, 40], w: 7 });
     }
     this.addNet(1);
     if (crit) { this.sfx('combo', 1.4); this.buzz([20, 30, 40]); }
-    else if (this.combo === 25 || this.combo === 60) { this.sfx('combo', this.combo === 25 ? 1 : 1.122); this.buzz([15, 30, 30]); }
+    else if (this.combo === 50 || this.combo === 120) { this.sfx('combo', this.combo === 50 ? 1 : 1.122); this.buzz([15, 30, 30]); }
     else { this.sfx('click', 0.97 + Math.random() * 0.06); this.buzz(9); }
     this.featCheck(false); this.refresh();
   }
@@ -2323,27 +2346,52 @@ window.Component = class Component extends DCLogic {
     const x = { biz: () => this.cName(this.rpick(C.biz)), person: () => this.rpick(C.first) + ' ' + this.rpick(C.last), inv: () => this.rpick(C.first) + ' ' + this.rpick(C.last) + ', du fonds ' + this.rpick(C.fund) };
     return this.freshPick(() => C.decisions[Math.floor(Math.random() * C.decisions.length)](x));
   }
-  valuation() { const e = this.econ(); return Math.max(this.gs.credits, 0) + Math.max(0, e.net) * 3600 * 24; }
+  valuation() { const e = this.econ(); return Math.max(this.gs.credits, 0) + Math.max(0, e.net) * 3600 * 2; }
   genInvestor() {
     const C = this.initContent(); const gs = this.gs; const p = this.rpick([5, 10, 15, 20, 25]); const who = this.rpick(C.first) + ' ' + this.rpick(C.last) + ', du fonds ' + this.rpick(C.fund);
     const fair = this.valuation() * p / 100; const k = this.rpick([0.6, 0.9, 1.1, 1.4]); const amt = Math.max(5000, fair * k);
     return { kind: 'investor', q: who + ' propose d’investir ' + this.fmt(amt) + ' € dans ' + (gs.company ? gs.company.name : 'ta société') + ' contre ' + p + ' % des parts. Ta société vaut environ ' + this.fmt(this.valuation()) + ' €.', amt: amt, pct: p, fair: k >= 1, photo: 'business' };
   }
   queueEvent(now, tapping) {
-    const gs = this.gs; this.orderNext = now + 40000 + Math.random() * 30000;
-    const t = this.wealthTier(); const r = Math.random();
-    if (gs.company && gs.total >= 2e4 && r < 0.12) { this.pushInbox(this.genInvestor()); return; }
+    const gs = this.gs; const k = 1.25 - 0.3 * gs.rep / 100 - 0.35 * (gs.pop || 0) / 100;
+    this.orderNext = now + (40000 + Math.random() * 30000) * k;
+    const t = this.wealthTier(); const r = Math.random(); const play = (gs.stats && gs.stats.play) || 0;
+    const invOk = gs.company && gs.total >= 2e4 && play - (gs.lastInv || 0) > 1800 + Math.random() * 600 && !(gs.inbox || []).some(x => x.kind === 'investor');
+    if (invOk && r < 0.25) { gs.lastInv = play; this.pushInbox(this.genInvestor()); return; }
+    if (gs.company && Math.random() < 0.05) { this.pushInbox(this.genGold()); return; }
     if (r < 0.5) { const d = this.genDecision(); this.pushInbox({ kind: 'decision', q: d.q, ch: d.ch, photo: /pirate|rançon|fuite|panne/i.test(d.q) ? 'code' : /influenceur|vidéo|viral/i.test(d.q) ? 'creation' : /postule|équipe|salarié/i.test(d.q) ? 'emploi' : 'business' }); return; }
     const big = t >= 2 ? Math.random() < 0.4 : t === 1 && Math.random() < 0.15; const o = big ? this.genBigOrder() : this.genOrder();
-    const gold = Math.random() < 0.12;
-    this.pushInbox({ kind: 'order', q: o.q, o: o.o, a: o.a, big: big, gold: gold, tier: t, photo: o.ph || 'business' });
+    this.pushInbox({ kind: 'order', q: o.q, o: o.o, a: o.a, big: big, tier: t, photo: o.ph || 'business' });
+  }
+  // Contrat doré : une vraie décision, chaque choix est valable avec ses avantages et ses inconvénients
+  genGold() {
+    const C = this.initContent(); const gs = this.gs; const b = this.rpick(C.biz); const name = this.cName(b);
+    const A = Math.max(300, Math.max(0, this.perSec()) * (300 + Math.random() * 300));
+    return { kind: 'decision', gold: true, photo: 'creation', q: name + ' (' + b[0] + ') veut te confier tout son travail IA pour l’année : un contrat de ' + this.fmt(A) + ' €. Comment tu réponds ?',
+      ch: [{ t: 'Accepter tout de suite', cash: A, rep: -2, boost: [0.9, 300], res: 'Gros contrat signé, mais tes agents sont débordés pendant 5 minutes.' },
+        { t: 'Négocier un meilleur service', cash: A * 0.6, rep: 4, pop: 3, res: 'Moins d’argent tout de suite, mais un client ravi qui parle de toi.' },
+        { t: 'Proposer un contrat sur 6 mois', boost: [1.25, 900], rep: 2, res: 'Un revenu régulier : tes gains montent de 25 % pendant 15 minutes.' }] };
+  }
+  // Ce que chaque choix rapporte ou coûte, affiché avant de choisir
+  choiceFx(c) {
+    const ps = Math.max(0.5, this.perSec()); const P = [];
+    if (c.credits) { const amt = Math.sign(c.credits) * Math.max(20, Math.abs(c.credits) * ps); P.push((amt > 0 ? '+ ' : '− ') + this.fmt(Math.abs(amt)) + ' €'); }
+    if (c.cash) P.push((c.cash > 0 ? '+ ' : '− ') + this.fmt(Math.abs(c.cash)) + ' €');
+    if (c.act === 'invest') P.push('+ ' + this.fmt(c.amt) + ' € · − ' + c.pct + ' % des parts');
+    if (c.act === 'unplug') P.push('− ' + Math.round((c.pct || 0.3) * 100) + ' % d’agents');
+    if (c.act === 'sec') P.push('sécurité + 1');
+    if (c.rep) P.push(c.rep <= -10 ? 'réputation : risque ?' : (c.rep > 0 ? '+ ' : '− ') + Math.abs(c.rep) + ' réputation');
+    if (c.pop) P.push((c.pop > 0 ? '+ ' : '− ') + Math.abs(c.pop) + ' popularité');
+    if (c.comp) P.push((c.comp > 0 ? '+ ' : '− ') + Math.abs(c.comp) + ' compétence');
+    if (c.boost) P.push('gains × ' + String(c.boost[0]).replace('.', ',') + ' pendant ' + Math.round(c.boost[1] / 60) + ' min');
+    return P.join(' · ') || 'Aucun effet immédiat';
   }
   genBigOrder() {
     const C = this.initContent(); const gs = this.gs;
     const corp = this.rpick(C.word) + ' ' + this.rpick(['Industries', 'Bank', 'Pharma', 'Retail', 'Énergie', 'Télécom', 'Logistique', 'Assurances', 'Motors', 'Média', 'Group', 'Aéro']);
     const city = this.rpick(C.city);
     const state = this.rpick(['Le ministère de la Santé', 'Le ministère de l’Éducation', 'Le ministère du Travail', 'La région de ' + city, 'La mairie de ' + city]);
-    const amt = this.fmt(Math.max(gs.credits, this.perSec() * 600, 1e5) * this.rint(2, 9)) + ' €';
+    const amt = this.fmt(Math.max(1000, Math.max(0, gs.credits) * (0.3 + Math.random() * 0.9) + Math.max(0, this.perSec()) * 300)) + ' €';
     const inv = this.rpick(C.first) + ' ' + this.rpick(C.last) + ', du fonds ' + this.rpick(C.fund);
     const x = { tag: corp, fill: (t) => t.replace('{corp}', corp).replace('{city}', city).replace('{state}', state).replace('{amt}', amt).replace('{inv}', inv).replace('{n}', String(this.totalAgents())) };
     const o = this.freshPick(() => C.bigOrders[Math.floor(Math.random() * C.bigOrders.length)](x)); o.ph = 'business'; return o;
@@ -2351,19 +2399,22 @@ window.Component = class Component extends DCLogic {
   openInbox() {
     const gs = this.gs; const it = (gs.inbox || [])[0]; if (!it) return; this.buzz();
     const ph = this.photo(it.photo);
-    if (it.kind === 'order') this.openSheet('order', { kicker: it.gold ? 'Contrat doré · × 5' : it.big ? 'Gros contrat' : 'Demande client', title: it.gold ? 'Un client en or te contacte' : it.big ? 'Un grand compte te consulte' : 'Un client a besoin de toi', lesson: '', deadline: 0, big: it.big, gold: it.gold, tier: it.tier, inboxId: it.id, photo: ph }, { type: 'qcm', qs: [{ q: it.q, o: it.o, a: it.a }], reveal: true });
+    if (it.kind === 'order') this.openSheet('order', { kicker: it.big ? 'Gros contrat' : 'Demande client', title: it.big ? 'Un grand compte te consulte' : 'Un client a besoin de toi', lesson: '', deadline: 0, big: it.big, tier: it.tier, inboxId: it.id, photo: ph }, { type: 'qcm', qs: [{ q: it.q, o: it.o, a: it.a }], reveal: true });
     else if (it.kind === 'investor') this.openSheet('decision', { kicker: 'Proposition d’investisseur', title: 'Quelqu’un veut entrer au capital', lesson: '', inboxId: it.id, photo: ph }, { type: 'decision', q: it.q, ch: [{ t: 'Accepter : + ' + this.fmt(it.amt) + ' €, je cède ' + it.pct + ' %', act: 'invest', amt: it.amt, pct: it.pct, res: it.fair ? 'Bon accord : l’argent arrive en trésorerie. Tu touches désormais ' + Math.round(gs.own * (1 - it.pct / 100) * 100) + ' % des dividendes.' : 'Accord signé, mais à ce prix tu as bradé tes parts.' }, { t: 'Refuser et garder le contrôle', res: 'Tu gardes ' + Math.round(gs.own * 100) + ' % de ta société.' }] });
     else if (it.kind === 'bilan') { this.inboxDone({ inboxId: it.id }); this.openPanel({ kind: 'bilan', b: it.b }); }
     else if (it.kind === 'arc') this.openSheet('decision', { kicker: it.kicker, title: it.title, lesson: '', inboxId: it.id, photo: ph, arc: it.arc }, { type: 'decision', q: it.q, ch: it.ch });
-    else this.openSheet('decision', { kicker: it.inc ? 'Incident · ton IA a agi seule' : 'Décision de patron', title: it.inc ? 'Personne n’a vérifié' : 'À toi de trancher', lesson: '', inboxId: it.id, photo: ph }, { type: 'decision', q: it.q, ch: it.ch });
+    else this.openSheet('decision', { kicker: it.gold ? 'Contrat doré' : it.inc ? 'Incident · ton IA a agi seule' : 'Décision de patron', title: it.gold ? 'Un client en or te contacte' : it.inc ? 'Personne n’a vérifié' : 'À toi de trancher', lesson: '', inboxId: it.id, photo: ph, inc: it.inc, gold: it.gold }, { type: 'decision', q: it.q, ch: it.ch });
   }
   inboxDone(s) { if (s && s.inboxId && this.gs.inbox) this.gs.inbox = this.gs.inbox.filter(x => x.id !== s.inboxId); }
   decide(k) {
     const s = this.sheet; const gs = this.gs; if (!s || s.status !== 'play') return; const c = s.g.ch[k]; const ps = Math.max(0.5, this.perSec()); const parts = [];
     if (c.credits) { const amt = Math.sign(c.credits) * Math.max(20, Math.abs(c.credits) * ps); gs.credits += amt; if (amt > 0) gs.total += amt; parts.push((amt > 0 ? '+ ' : '− ') + this.fmt(Math.abs(amt)) + ' €'); }
-    if (c.cash) { gs.credits += c.cash; parts.push((c.cash > 0 ? '+ ' : '− ') + this.fmt(Math.abs(c.cash)) + ' €'); }
+    if (c.cash) { gs.credits += c.cash; if (c.cash > 0) gs.total += c.cash; parts.push((c.cash > 0 ? '+ ' : '− ') + this.fmt(Math.abs(c.cash)) + ' €'); }
     if (c.rep) { gs.rep = Math.max(0, Math.min(100, gs.rep + c.rep)); parts.push((c.rep > 0 ? '+ ' : '− ') + Math.abs(c.rep) + ' réputation'); }
     if (c.comp) { gs.comp = Math.max(0, gs.comp + c.comp); parts.push((c.comp > 0 ? '+ ' : '− ') + Math.abs(c.comp) + ' compétence'); }
+    let dp = c.pop || 0; if (!dp && /influenceur|interview|viral|presse|journa|média|prix|award|trophée/i.test(s.g.q || '')) dp = (c.rep || 0) > 0 ? 6 : (c.rep || 0) < 0 ? -4 : 0;
+    if (s.inc && (c.rep || 0) < 0) dp -= 5;
+    if (dp) { gs.pop = Math.max(0, Math.min(100, (gs.pop || 0) + dp)); gs.popDir = Math.sign(dp); parts.push((dp > 0 ? '+ ' : '− ') + Math.abs(dp) + ' popularité'); }
     if (c.boost) this.boost = { mult: c.boost[0], until: Date.now() + c.boost[1] * 1000 };
     if (c.act === 'invest') { gs.credits += c.amt; gs.own = gs.own * (1 - c.pct / 100); parts.push('+ ' + this.fmt(c.amt) + ' € en trésorerie'); this.sfx('cash'); }
     if (c.act === 'unplug') { this.unplug(c.pct || 0.3, true); }
@@ -2438,7 +2489,7 @@ window.Component = class Component extends DCLogic {
     const gs = this.gs; const nm = String(name || '').trim().slice(0, 28) || 'Neo Corp';
     if (gs.credits < 500) { this.say('Il te faut 500 € pour ouvrir ta société.'); this.refresh(); return; }
     const fee = 250; const capital = Math.floor(gs.credits - fee);
-    gs.credits = capital; gs.company = { name: nm, at: Date.now(), capital: capital }; gs.monthStart = Date.now(); gs.mo = { ca: 0, ch: 0, sal: 0, apps: 0 };
+    gs.credits = capital; gs.company = { name: nm, at: Date.now(), capital: capital }; gs.monthStart = (gs.startAt || Date.now()) + Math.floor((Date.now() - (gs.startAt || Date.now())) / 3600000) * 3600000; gs.mo = { ca: 0, ch: 0, sal: 0, apps: 0 };
     this.pl.cos[this.pl.act].name = nm; this.panel = null;
     this.celebrate(nm + ' est née ! Capital : ' + this.fmt(capital) + ' €.', true); this.save(); this.refresh();
   }
@@ -2470,7 +2521,7 @@ window.Component = class Component extends DCLogic {
   }
   unplug(pct, quiet) {
     const gs = this.gs; let refund = 0; pct = pct || 0.2;
-    for (let i = 0; i < 12; i++) { const r = Math.floor(gs.ag[i] * pct); const E = this.v3d().ECO; for (let k = gs.ag[i] - r; k < gs.ag[i]; k++) refund += E.c0 * Math.pow(E.cm, i) * Math.pow(E.g, k) * 0.5; gs.ag[i] -= r; }
+    for (let i = 0; i < 12; i++) { const r = Math.floor(gs.ag[i] * pct); const E = this.v3d().ECO; for (let k = gs.ag[i] - r; k < gs.ag[i]; k++) refund += this.ubaseCost(i) * Math.pow(E.g, k) * 0.5; gs.ag[i] -= r; }
     gs.credits += refund; this.buzz([30, 30, 30]); if (!quiet) this.say(Math.round(pct * 100) + ' % de tes agents débranchés. Remboursement : ' + this.fmt(refund) + ' €'); this.save(); this.refresh();
   }
   cancelOffers() { const gs = this.gs; const n = (gs.offers || []).filter(o => o.trap).length; gs.offers = (gs.offers || []).filter(o => !o.trap); this.buzz(); this.say(n ? n + ' abonnement(s) inutile(s) résilié(s).' : 'Aucun abonnement inutile.'); this.save(); this.refresh(); }
@@ -2530,32 +2581,47 @@ window.Component = class Component extends DCLogic {
     const r = Math.max(20, Math.max(0, this.perSec()) * 60 * Math.min(7, gs.streak || 1)); gs.giftDay = today; gs.credits += r; gs.total += r;
     this.celebrate('Cadeau du jour (série de ' + (gs.streak || 1) + ' j) : + ' + this.fmt(r) + ' €'); this.save(); this.refresh();
   }
-  // ----- débloquer un agent en 3 étapes : comprendre, faire, prouver -----
+  // ----- créer un agent : simple au début, une question plus tard ; le prompt et la preuve sont des défis bonus -----
   openUnlock(i) {
-    const A = this.U(i); const app = this.appOf(i);
+    const app = this.appOf(i);
     if (!app) { this.openPanel({ kind: 'store', need: i }); return; }
-    this.panel = { kind: 'unlock', i: i, step: 0, qs: null, qi: 0, picked: null, ok: 0, busy: true, prompt: '', proof: '', g1: null, g2: null, err: '', app: app };
-    this.buzz(); this.refresh(); this.loadUnlockQs(i);
+    const needQ = i >= 3;
+    this.panel = { kind: 'unlock', i: i, needQ: needQ, passed: !needQ, ok: false, qs: null, qi: 0, picked: null, busy: needQ, app: app };
+    this.sfx('whoosh', 1.05); this.buzz(8); this.refresh(); if (needQ) this.loadUnlockQs(i);
   }
   async loadUnlockQs(i) {
     const D = this.v3d(); const A = D.AG[i]; const p = this.panel; const gs = this.gs;
     const seen = (gs.qSeen || []).slice(-30).join(' | ');
-    const out = await this.aiJson('Tu crées des questions pour un jeu éducatif français sur l’IA (octobre 2026). Le joueur veut créer un « ' + A.n + ' » : ' + A.role + ' Écris 2 questions QCM réalistes et utiles dans la vraie vie, sur la façon de bien utiliser l’IA pour ce métier aujourd’hui (outils réels comme ChatGPT, Claude, Gemini, Mistral, Perplexity, Canva, Midjourney, ElevenLabs, Runway, Make ; bonnes pratiques ; limites ; règles comme le RGPD ou l’AI Act). Pas de chiffres ni de dates que tu n’es pas sûr de connaître. Niveau débutant, phrases courtes, tutoiement. Ne répète aucune de ces questions : ' + (seen || 'aucune') + '. Réponds uniquement avec ce JSON : {"qs":[{"q":"question","o":["réponse A","réponse B","réponse C"],"a":index de la bonne réponse 0-2,"ex":"explication en une phrase"}]}');
-    let qs = out && Array.isArray(out.qs) ? out.qs.filter(x => x && x.q && Array.isArray(x.o) && x.o.length >= 2 && x.a >= 0 && x.a < x.o.length).slice(0, 2).map(x => ({ q: String(x.q), o: x.o.slice(0, 4).map(String), a: Number(x.a), ex: String(x.ex || '') })) : [];
-    if (qs.length < 2) { const bank = this.shuffle(D.QA[A.id] || []); qs = bank.slice(0, 2).map(x => { const ord = this.shuffle(x[1].map((_, k) => k)); return { q: x[0], o: ord.map(k => x[1][k]), a: ord.indexOf(x[2]), ex: x[3] }; }); }
+    const out = await this.aiJson('Tu crées des questions pour un jeu éducatif français sur l’IA (octobre 2026). Le joueur veut créer un « ' + A.n + ' » : ' + A.role + ' Écris 1 question QCM simple, réaliste et utile dans la vraie vie, sur la façon de bien utiliser l’IA pour ce métier aujourd’hui (outils réels, bonnes pratiques, limites, règles comme le RGPD). Pas de chiffres ni de dates dont tu n’es pas sûr. Niveau débutant, phrases courtes, tutoiement. Ne répète aucune de ces questions : ' + (seen || 'aucune') + '. Réponds uniquement avec ce JSON : {"qs":[{"q":"question","o":["réponse A","réponse B","réponse C"],"a":index de la bonne réponse 0-2,"ex":"explication en une phrase"}]}');
+    let qs = out && Array.isArray(out.qs) ? out.qs.filter(x => x && x.q && Array.isArray(x.o) && x.o.length >= 2 && x.a >= 0 && x.a < x.o.length).slice(0, 1).map(x => ({ q: String(x.q), o: x.o.slice(0, 4).map(String), a: Number(x.a), ex: String(x.ex || '') })) : [];
+    if (!qs.length) { const bank = this.shuffle(D.QA[A.id] || []); qs = bank.slice(0, 1).map(x => { const ord = this.shuffle(x[1].map((_, k) => k)); return { q: x[0], o: ord.map(k => x[1][k]), a: ord.indexOf(x[2]), ex: x[3] }; }); }
     qs.forEach(x => { gs.qSeen = (gs.qSeen || []).concat([x.q.slice(0, 80)]).slice(-60); });
-    if (this.panel !== p) return; p.qs = qs; p.busy = false; this.refresh();
+    if (this.panel !== p) return; p.qs = qs; p.qi = 0; p.picked = null; p.busy = false; this.refresh();
   }
   unlockAnswer(k) {
-    const p = this.panel; if (!p || p.picked !== null) return; const q = p.qs[p.qi]; p.picked = k; if (k === q.a) { p.ok += 1; this.buzz(12); this.sfx('coin'); } else this.buzz([20, 50, 20]); this.refresh();
+    const p = this.panel; if (!p || p.picked !== null || !p.qs) return; const q = p.qs[p.qi]; p.picked = k;
+    if (k === q.a) { p.ok = true; p.passed = true; this.sfx('coin'); this.buzz(12); } else { this.sfx('error'); this.buzz([20, 50, 20]); }
+    this.refresh();
   }
-  unlockNext() {
-    const p = this.panel; if (!p) return; const A = this.U(p.i);
-    if (p.step === 0) { if (p.qi + 1 < p.qs.length) { p.qi += 1; p.picked = null; this.refresh(); return; }
-      if (p.ok < 1) { p.qi = 0; p.picked = null; p.ok = 0; p.busy = true; this.say('Il faut au moins une bonne réponse. Nouvelles questions !'); this.refresh(); this.loadUnlockQs(p.i); return; }
-      if (A.steps <= 1) { this.unlockDone(); return; } p.step = 1; this.refresh(); return; }
-    if (p.step === 1) { if (!p.g1 || p.g1.score < 50) return; if (A.steps <= 2) { this.unlockDone(); return; } p.step = 2; this.refresh(); return; }
-    if (p.step === 2) { if (!p.g2 || p.g2.score < 50) return; this.unlockDone(); }
+  unlockRetry() { const p = this.panel; if (!p) return; p.busy = true; p.picked = null; this.refresh(); this.loadUnlockQs(p.i); }
+  createAgent() {
+    const p = this.panel; const gs = this.gs; if (!p || !p.passed) return; const i = p.i; const cost = this.ucost(i);
+    if (gs.credits < cost) { this.buzz([10, 30, 10]); this.say('Il te manque ' + this.fmt(cost - gs.credits) + ' €.'); this.refresh(); return; }
+    gs.credits -= cost; gs.q[i] = p.ok ? 1.05 : 1; gs.ag[i] += 1; gs.comp += 3; this.panel = null;
+    this.celebrate(this.U(i).n + ' créé ! Il travaille pour toi.', true);
+    this.save(); this.refresh();
+  }
+  stars(i) { const q = this.gs.q[i] || 0; return q >= 1.25 ? 3 : q >= 1.12 ? 2 : q > 0 ? 1 : 0; }
+  // Défi bonus : écrire le prompt (★★), puis prouver avec un vrai résultat (★★★)
+  openBonus(i) {
+    const st = this.stars(i); if (st >= 3) { this.say('Cet agent a déjà ses 3 étoiles.'); this.refresh(); return; }
+    this.panel = { kind: 'bonus', i: i, step: st >= 2 ? 1 : 0, prompt: '', proof: '', g1: null, g2: null, busy: false, err: '', app: this.appOf(i) || this.U(i).apps[0] };
+    this.sfx('whoosh', 1.05); this.buzz(8); this.refresh();
+  }
+  bonusReward(stars) {
+    const gs = this.gs; const p = this.panel; const r = Math.max(stars === 3 ? 150 : 60, Math.max(0, this.perSec()) * (stars === 3 ? 300 : 120));
+    gs.q[p.i] = Math.max(gs.q[p.i] || 1, stars === 3 ? 1.3 : 1.15); gs.credits += r; gs.total += r; gs.comp += stars === 3 ? 5 : 3; p.reward = this.fmt(r) + ' €';
+    this.celebrate(this.U(p.i).s + ' passe à ' + '★★★'.slice(0, stars) + ' · + ' + this.fmt(r) + ' €', true); this.save();
   }
   heurPrompt(t) {
     t = String(t || ''); const l = t.toLowerCase(); let s = 0; const tips = [];
@@ -2571,27 +2637,57 @@ window.Component = class Component extends DCLogic {
     if (t.length < 15) { p.err = 'Écris ta demande avant de la faire noter.'; this.refresh(); return; }
     p.busy = true; p.err = ''; this.refresh();
     const out = await this.aiJson('Tu es un formateur IA bienveillant mais exigeant. Le joueur doit écrire le prompt qu’il donnerait à ' + this.appName(p.app) + ' pour : ' + A.task + '. Voici son prompt : « ' + t.slice(0, 1500) + ' ». Note-le sur 100 selon : rôle donné à l’IA, contexte, tâche précise, format attendu, contraintes. Tutoie-le. Réponds uniquement avec ce JSON : {"score": entier 0-100, "msg": "un conseil concret en une phrase"}');
-    let g = out && typeof out.score !== 'undefined' ? { score: Math.max(0, Math.min(100, Math.round(Number(out.score) || 0))), msg: String(out.msg || '') } : this.heurPrompt(t);
-    if (this.panel !== p) return; p.g1 = g; p.busy = false; if (g.score >= 50) { this.sfx('success'); this.buzz([15, 40, 25]); } else this.buzz([20, 60, 20]); this.refresh();
+    const g = out && typeof out.score !== 'undefined' ? { score: Math.max(0, Math.min(100, Math.round(Number(out.score) || 0))), msg: String(out.msg || '') } : this.heurPrompt(t);
+    if (this.panel !== p) return; p.g1 = g; p.busy = false;
+    if (g.score >= 50) { if (this.stars(p.i) < 2) this.bonusReward(2); } else this.buzz([20, 60, 20]);
+    this.refresh();
   }
   async gradeProof() {
     const p = this.panel; if (!p || p.busy) return; const A = this.U(p.i); const t = String(p.proof || '').trim();
     if (t.length < 80) { p.err = 'Colle le résultat complet obtenu dans ' + this.appName(p.app) + ' (au moins quelques lignes).'; this.refresh(); return; }
-    if (t === String(p.prompt || '').trim()) { p.err = 'Ici, colle la réponse de l’IA, pas ta demande.'; this.refresh(); return; }
     p.busy = true; p.err = ''; this.refresh();
     const out = await this.aiJson('Le joueur d’un jeu éducatif devait utiliser une vraie IA pour : ' + A.task + '. Il colle ce résultat : « ' + t.slice(0, 3000) + ' ». Est-ce un vrai résultat utilisable pour cette tâche ? Note sur 100 (moins de 30 si hors sujet ou vide). Tutoie-le. Réponds uniquement avec ce JSON : {"score": entier 0-100, "msg": "une phrase : ce qui est réussi ou à améliorer"}');
-    let g = out && typeof out.score !== 'undefined' ? { score: Math.max(0, Math.min(100, Math.round(Number(out.score) || 0))), msg: String(out.msg || '') } : { score: t.length >= 200 ? 75 : 55, msg: 'Mode démo : ici, l’IA ne peut pas lire ton résultat. Dans la vraie appli, elle le note comme un client.', demo: true };
-    if (this.panel !== p) return; p.g2 = g; p.busy = false; if (g.score >= 50) { this.sfx('success'); this.buzz([15, 40, 25]); } else this.buzz([20, 60, 20]); this.refresh();
+    const g = out && typeof out.score !== 'undefined' ? { score: Math.max(0, Math.min(100, Math.round(Number(out.score) || 0))), msg: String(out.msg || '') } : { score: t.length >= 200 ? 75 : 55, msg: 'Mode démo : ici, l’IA ne peut pas lire ton résultat. Dans la vraie appli, elle le note comme un client.', demo: true };
+    if (this.panel !== p) return; p.g2 = g; p.busy = false;
+    if (g.score >= 50) this.bonusReward(3); else this.buzz([20, 60, 20]);
+    this.refresh();
   }
-  unlockDone() {
-    const p = this.panel; const gs = this.gs; const A = this.U(p.i);
-    const parts = [p.ok / Math.max(1, p.qs.length) * 100]; if (p.g1) parts.push(p.g1.score); if (p.g2) parts.push(p.g2.score);
-    const sc = parts.reduce((a, b) => a + b, 0) / parts.length; const q = Math.round((0.8 + 0.5 * sc / 100) * 100) / 100;
-    gs.q[p.i] = Math.max(gs.q[p.i] || 0, q); gs.comp += 5; this.panel = null;
-    const stars = q >= 1.22 ? 3 : q >= 1.1 ? 2 : 1;
-    this.celebrate(A.n + ' débloqué · ' + '★★★'.slice(0, stars) + ' qualité × ' + String(q).replace('.', ','), true);
-    this.save(); this.refresh();
+  // ----- objectifs du début : toujours savoir quoi faire -----
+  goalDefs() {
+    const gs = this.gs; const st = gs.stats || {}; const nA = this.totalAgents();
+    return [
+      ['Fais 20 clics', (st.taps || 0) >= 20, 5],
+      ['Installe ta première IA', gs.apps.length >= 1, 8],
+      ['Crée ton premier agent', nA >= 1, 15],
+      ['Aie 3 agents', nA >= 3, 30],
+      ['Crée l’agent rédaction', gs.q[1] > 0, 50],
+      ['Achète le clavier mécanique', !!gs.ups[0], 40],
+      ['Ouvre ta société', !!gs.company, 80],
+      ['Crée l’agent visuel', gs.q[2] > 0, 120],
+      ['Aie 10 agents', nA >= 10, 200],
+      ['Réponds à une demande client', (st.orders || 0) + (st.decisions || 0) >= 1, 150],
+      ['Recrute ton premier humain', this.totalHum() >= 1, 250],
+      ['Fais l’Actu du jour', Object.keys(gs.newsDone || {}).length >= 1, 250],
+      ['Atteins 5 000 € gagnés', gs.total >= 5000, 400],
+      ['Gagne une étoile bonus sur un agent', gs.q.some(x => x >= 1.15), 500],
+      ['Aie 20 agents', nA >= 20, 700],
+      ['Crée l’agent sites web', gs.q[3] > 0, 1000],
+      ['Atteins 20 000 € gagnés', gs.total >= 2e4, 1500],
+      ['Livre une tâche réelle', (st.missions || 0) >= 1, 3000]
+    ];
   }
+  goal() { const L = this.goalDefs(); const k = this.gs.goal || 0; return k < L.length ? { k: k, t: L[k][0], done: L[k][1], r: Math.max(L[k][2], Math.max(0, this.perSec()) * 30) } : null; }
+  claimGoal() {
+    const g = this.goal(); const gs = this.gs; if (!g || !g.done) return;
+    gs.credits += g.r; gs.total += g.r; gs.goal = (gs.goal || 0) + 1; this.celebrate('Objectif atteint : ' + g.t + ' · + ' + this.fmt(g.r) + ' €'); this.save(); this.refresh();
+  }
+  restoreImage() {
+    const gs = this.gs; const c = this.imageCost();
+    if (gs.credits < c) { this.buzz([10, 30, 10]); this.say('Une campagne pour redorer ton image coûte ' + this.fmt(c) + ' €.'); this.refresh(); return; }
+    gs.credits -= c; gs.rep = Math.min(100, gs.rep + 15); gs.pop = Math.min(100, (gs.pop || 0) + 5); gs.popDir = 1; this.sfx('cash'); this.buzz([15, 40, 25]);
+    this.say('Campagne lancée et excuses publiques : + 15 réputation, + 5 popularité.'); this.save(); this.refresh();
+  }
+  imageCost() { return Math.ceil(Math.max(300, Math.max(0, this.perSec()) * 600)); }
   // ----- tâches réelles -----
   misAvail() { const gs = this.gs; return this.v3d().MIS.filter(m => !gs.missions[m.id] && gs.total >= m.min); }
   openMission(id) { const m = this.v3d().MIS.find(x => x.id === id); if (!m) return; this.panel = { kind: 'mission', m: m, file: null, preview: '', text: '', busy: false, res: null, err: '' }; this.buzz([12, 40, 12]); this.refresh(); }
@@ -2728,29 +2824,35 @@ window.Component = class Component extends DCLogic {
       bl.push(B.Input('coName', p.name || '', 'Ex. Neo Corp', (ev) => { p.name = ev && ev.target ? ev.target.value : ''; this.refresh(); }));
       bl.push(B.Btn('Créer ma société', () => this.createCompany(p.name), 'dark', gs.credits < 500));
     } else if (p.kind === 'unlock') {
-      const A = this.U(p.i); kicker = 'Créer un agent · avec ' + this.appName(p.app); title = A.n;
-      bl.push(B.Steps(p.step, A.steps));
+      const A = this.U(p.i); const cost = this.ucost(p.i); const raw = this.ubase(p.i); kicker = 'Nouvel agent · avec ' + this.appName(p.app); title = A.n;
+      bl.push(B.Img(IMG['r_' + A.id], 150, true)); bl.push(B.P(A.role));
+      bl.push(B.Stat('Il rapporte', '+' + f(raw * e.m) + ' €/s')); bl.push(B.Stat('Il coûte', f(raw * A.k * 3600) + ' €/mois'));
+      if (p.needQ && !p.passed) {
+        if (p.busy || !p.qs) bl.push(B.Busy('L’IA prépare une question…'));
+        else { const q = p.qs[p.qi]; bl.push(B.H('Une question pour le créer')); bl.push(B.P(q.q)); qOpts(q, p.picked, (k) => this.unlockAnswer(k));
+          if (p.picked !== null && p.picked !== q.a) { if (q.ex) bl.push(B.Note(q.ex, 'gold')); bl.push(B.Btn('Une autre question', () => this.unlockRetry(), 'light')); } }
+      }
+      if (p.passed) { if (p.needQ && p.qs) bl.push(B.Note('Bonne réponse ! ' + (p.qs[0].ex || ''))); bl.push(B.Btn(gs.credits >= cost ? 'Créer · ' + f(cost) + ' €' : 'Il te manque ' + f(cost - gs.credits) + ' €', () => this.createAgent(), 'dark', gs.credits < cost)); }
+      bl.push(B.P(A.real, true));
+    } else if (p.kind === 'bonus') {
+      const A = this.U(p.i); const st = this.stars(p.i); kicker = 'Défi bonus · facultatif'; title = A.s + ' · ' + '★★★'.slice(0, Math.max(1, st)) + '☆☆☆'.slice(0, 3 - Math.max(1, st));
       if (p.step === 0) {
-        if (p.qi === 0 && p.picked === null) { bl.push(B.Img(IMG['r_' + A.id], 140, true)); bl.push(B.P(A.role)); bl.push(B.Note(A.real)); }
-        if (p.busy || !p.qs) bl.push(B.Busy('L’IA prépare tes questions…'));
-        else { const q = p.qs[p.qi]; bl.push(B.H('Question ' + (p.qi + 1) + ' sur ' + p.qs.length)); bl.push(B.P(q.q)); qOpts(q, p.picked, (i) => this.unlockAnswer(i));
-          if (p.picked !== null) { if (q.ex) bl.push(B.Note(q.ex, p.picked === q.a ? '' : 'gold')); bl.push(B.Btn('Continuer', () => this.unlockNext(), 'dark')); } }
-      } else if (p.step === 1) {
-        bl.push(B.P('Écris le prompt que tu donnerais vraiment à ' + this.appName(p.app) + ' pour que ton agent puisse ' + A.task + '.'));
-        bl.push(B.Note('Un bon prompt : un rôle (« Tu es… »), du contexte, une tâche précise, un format et une contrainte.'));
-        bl.push(B.Area('ulPrompt', p.prompt, 'Tu es…', (ev) => { p.prompt = ev && ev.target ? ev.target.value : ''; p.err = ''; this.refresh(); }));
+        bl.push(B.Note('Écris le prompt que tu donnerais vraiment à ' + this.appName(p.app) + ' pour ' + A.task + '. Réussi : 2 étoiles (il rapporte plus) et une prime.', 'gold'));
+        bl.push(B.P('Un bon prompt : un rôle (« Tu es… »), du contexte, une tâche précise, un format et une contrainte.', true));
+        bl.push(B.Area('bnPrompt', p.prompt, 'Tu es…', (ev) => { p.prompt = ev && ev.target ? ev.target.value : ''; p.err = ''; this.refresh(); }));
         if (p.err) bl.push(B.Note(p.err, 'red'));
         if (p.busy) bl.push(B.Busy('L’IA note ton prompt…'));
         else if (p.g1) { bl.push(B.Ring(p.g1.score, p.g1.score >= 50)); bl.push(B.Note(p.g1.msg + (p.g1.demo ? ' (notation automatique)' : ''), p.g1.score >= 50 ? '' : 'gold'));
-          bl.push(p.g1.score >= 50 ? B.Btn('Étape suivante', () => this.unlockNext(), 'dark') : B.Btn('Améliorer et renoter', () => this.gradePrompt())); }
+          if (p.g1.score >= 50) { bl.push(B.Btn('Défi 3 étoiles : le faire pour de vrai', () => { p.step = 1; this.refresh(); }, 'dark')); bl.push(B.Btn('Plus tard', () => this.closePanel(), 'light')); }
+          else bl.push(B.Btn('Améliorer et renoter', () => this.gradePrompt())); }
         else bl.push(B.Btn('Faire noter mon prompt', () => this.gradePrompt()));
       } else {
-        bl.push(B.P('Maintenant, fais-le pour de vrai : ouvre ' + this.appName(p.app) + ' (la version gratuite suffit), colle ton prompt, puis copie ici ' + A.proof + '.'));
-        bl.push(B.Area('ulProof', p.proof, 'Colle ici le résultat obtenu…', (ev) => { p.proof = ev && ev.target ? ev.target.value : ''; p.err = ''; this.refresh(); }));
+        bl.push(B.Note('Ouvre ' + this.appName(p.app) + ' (la version gratuite suffit), fais la tâche, puis colle ici ' + A.proof + '. Réussi : 3 étoiles et une grosse prime.', 'gold'));
+        bl.push(B.Area('bnProof', p.proof, 'Colle ici le résultat obtenu…', (ev) => { p.proof = ev && ev.target ? ev.target.value : ''; p.err = ''; this.refresh(); }));
         if (p.err) bl.push(B.Note(p.err, 'red'));
         if (p.busy) bl.push(B.Busy('L’IA vérifie ton résultat…'));
         else if (p.g2) { bl.push(B.Ring(p.g2.score, p.g2.score >= 50)); bl.push(B.Note(p.g2.msg, p.g2.score >= 50 ? '' : 'gold'));
-          bl.push(p.g2.score >= 50 ? B.Btn('Créer mon agent', () => this.unlockNext(), 'dark') : B.Btn('Renvoyer', () => this.gradeProof())); }
+          bl.push(p.g2.score >= 50 ? B.Btn('Super !', () => this.closePanel(), 'dark') : B.Btn('Renvoyer', () => this.gradeProof())); }
         else bl.push(B.Btn('Envoyer mon résultat', () => this.gradeProof()));
       }
     } else if (p.kind === 'actu') {
@@ -2807,6 +2909,8 @@ window.Component = class Component extends DCLogic {
       const A = this.totalAgents(), S = this.totalSys(), H = this.totalHum(); const au = this.autonomy();
       bl.push(B.Stat('Humains', String(H))); bl.push(B.Stat('Agents IA', String(A))); bl.push(B.Stat('Systèmes IA', String(S))); bl.push(B.Stat('Applis IA', String(gs.apps.length)));
       bl.push(B.Stat('IA sans surveillance', Math.round(au * 100) + ' %', false, au >= 0.25)); bl.push(B.Stat('Agents surveillables', String(Math.floor(this.supCap()))));
+      bl.push(B.Stat('Réputation clients', Math.round(gs.rep) + ' / 100', false, gs.rep < 30)); bl.push(B.Stat('Popularité médias', Math.round(gs.pop || 0) + ' / 100 ' + (gs.popDir > 0 ? '↑' : gs.popDir < 0 ? '↓' : '→')));
+      bl.push(B.Bar(gs.pop || 0, '#8B5CF6')); bl.push(B.P('La popularité monte avec les interviews, les vidéos virales, les gros contrats et les tâches réelles. Plus elle est haute, plus tu reçois de clients.', true));
       bl.push(B.H('Ce mois-ci (par mois)'));
       bl.push(B.Kv('Chiffre d’affaires', f(e.gross * 3600) + ' €'));
       bl.push(B.Kv('Coûts des agents (calcul, API)', '− ' + f(e.ch * 3600) + ' €', '#B4232A'));
@@ -2863,7 +2967,7 @@ window.Component = class Component extends DCLogic {
       const c = this.collection(); kicker = 'Collection'; title = c.n + ' / ' + c.max + ' découverts';
       bl.push(B.P('Chaque famille complète donne + 5 % de gains pour toujours.', true));
       bl.push(B.H('Applis IA · ' + c.a + ' / ' + D.APPS.length)); D.APPS.forEach(A => bl.push(B.Tile({ t: A.n, img: IMG['t_' + A.id], on: this.hasApp(A.id), act: () => { this.say(A.learn); this.refresh(); } })));
-      bl.push(B.H('Agents · ' + c.g + ' / 12')); D.AG.forEach((A, i) => bl.push(B.Tile({ t: A.s, sub: gs.q[i] ? '★★★'.slice(0, gs.q[i] >= 1.22 ? 3 : gs.q[i] >= 1.1 ? 2 : 1) : '', img: IMG['r_' + A.id], on: gs.q[i] > 0 })));
+      bl.push(B.H('Agents · ' + c.g + ' / 12')); D.AG.forEach((A, i) => bl.push(B.Tile({ t: A.s, sub: gs.q[i] ? '★★★'.slice(0, this.stars(i)) : '', img: IMG['r_' + A.id], on: gs.q[i] > 0 })));
       bl.push(B.H('Systèmes · ' + c.s + ' / 4')); D.SYS.forEach((S, k) => bl.push(B.Tile({ t: S.n, img: this.AGIMG[6 + k], on: gs.sys[k] > 0 })));
       bl.push(B.H('Équipe · ' + c.h + ' / 4')); D.HUM.forEach((H, k) => bl.push(B.Tile({ t: H.n, img: IMG.human, on: gs.hum[k] > 0 })));
     }
@@ -2895,13 +2999,15 @@ window.Component = class Component extends DCLogic {
     return {
       credits: gs && gs.company ? { t: 'La trésorerie', d: 'C’est l’argent de ta société, pas le tien. Le chiffre en dessous montre ce que ta société gagne chaque seconde, une fois payés les agents, les abonnements et les salaires.', tip: 'Pour t’enrichir toi, verse-toi des dividendes depuis ton patrimoine.' } : { t: 'Tes gains', d: 'L’argent que tu gagnes en travaillant. Au début, tu cliques. Ensuite, des IA travailleront pour toi.', tip: 'Avec 22 €, tu pourras installer ta première IA.' },
       steps: { t: 'Les 4 étapes', d: 'Garage, start-up, multinationale, puis échelle planétaire. La barre se remplit avec tout l’argent gagné depuis le début.', tip: 'Chaque étape agrandit tes locaux : tu peux recruter plus de monde.' },
-      qg: { t: 'La planète', d: 'Clique dessus pour travailler et gagner de l’argent. Plus tu cliques, plus elle se connecte.', tip: 'Clique vite sans t’arrêter : × 1,2 à 25 clics, × 1,5 à 60.' },
+      qg: { t: 'La planète', d: 'Clique dessus pour travailler et gagner de l’argent. Plus tu cliques, plus elle se connecte.', tip: 'Clique vite sans t’arrêter : × 1,1 à 50 clics, × 1,25 à 120.' },
       ctrl: { t: 'Contrôle de l’IA', d: 'Toi et tes employés ne pouvez surveiller qu’un certain nombre d’agents. Les agents en trop agissent seuls : + 10 % de gains au maximum, mais des incidents peuvent te coûter une fortune.', tip: 'Pour reprendre le contrôle : recrute, entraîne-toi (compétence), ou débranche des agents.' },
       actu: { t: 'Actu du jour', d: '3 vraies actus de l’IA chaque jour, avec une question sur chacune. Bonne réponse : prime et + 2 compétence.', tip: 'Tu peux lire l’article complet et sa source.' },
       train: { t: 'Entraîne-toi', d: 'Des exercices pratiques pour apprendre à bien utiliser l’IA. Chaque réussite augmente ta compétence.', tip: '10 exercices par jour.' },
       tasks: { t: 'Tâches réelles', d: 'De vrais travaux à faire avec une vraie IA : flyers, sites, textes. Une IA note ton travail comme un client.', tip: 'Validé : grosse prime et + 5 % de gains pour toujours.' },
-      rep: { t: 'Ta réputation', d: 'Ce que tes clients pensent de toi, sur 100. Plus elle est haute, plus tes agents rapportent.', tip: 'Elle monte avec les clients satisfaits et les bonnes décisions. Elle chute avec les incidents et les scandales.' },
-      agents: { t: 'Tes agents IA', d: 'Chaque agent s’appuie sur une appli IA et fait un vrai métier. Sur chaque carte : ce qu’il rapporte, ce qu’il coûte par mois, et en combien de temps il est rentabilisé.', tip: 'Pour créer un nouveau type d’agent, tu passes 1 à 3 étapes : comprendre, faire, prouver. Mieux tu réussis, plus il est efficace (étoiles).' },
+      rep: { t: 'Ta réputation', d: 'Ce que tes clients pensent de toi, sur 100. Haute : plus de clients et tes agents rapportent jusqu’à 20 % de plus. Basse : moins de clients, mais tes agents rapportent toujours au moins 80 %.', tip: 'Sous 50, elle remonte toute seule doucement. Pour aller plus vite : une campagne pour redorer ton image.' },
+      date: { t: 'Le calendrier', d: 'Le temps passe dans le jeu : 1 mois = 1 heure réelle, donc 1 jour ≈ 2 minutes. À chaque fin de mois, ta société reçoit son bilan.', tip: 'La partie commence le jour où tu as démarré.' },
+      goal: { t: 'Les objectifs', d: 'Une suite d’objectifs simples pour bien démarrer. Chaque objectif atteint donne une prime.', tip: '' },
+      agents: { t: 'Tes agents IA', d: 'Chaque agent s’appuie sur une appli IA et fait un vrai métier. Sur chaque carte : ce qu’il rapporte, ce qu’il coûte par mois, et en combien de temps il est rentabilisé.', tip: 'Créer un agent est simple : tu l’achètes (une petite question pour les agents avancés). Ensuite, les défis bonus (écrire le prompt, le faire pour de vrai) lui donnent des étoiles : il rapporte plus.' },
       apps: { t: 'Tes applis IA', d: 'ChatGPT, Claude, Gemini, Mistral, Perplexity, Canva, Midjourney… Chaque appli coûte un abonnement mensuel et ouvre de nouveaux métiers d’agents.', tip: 'Ce sont les vrais outils utilisés en entreprise aujourd’hui.' },
       team: { t: 'Ton équipe', d: 'Des humains qui surveillent tes agents. Plus ils sont nombreux et qualifiés, plus ton IA reste sous contrôle.', tip: 'Ils ont un salaire mensuel. Tes locaux limitent le nombre de recrues.' },
       ups: { t: 'Améliorations', d: 'Des achats uniques qui rendent chaque clic plus rentable.', tip: 'Elles restent pour toujours.' },
@@ -2916,13 +3022,13 @@ window.Component = class Component extends DCLogic {
     const A = this.U(i); const gs = this.gs; const app = this.appOf(i);
     if (i >= 12) return { t: A.n, d: A.role + ' Il faut ' + A.need + ' agents pour le faire tourner.', tip: 'Coût : ' + this.fmt(this.ucost(i)) + ' €.' };
     const d = A.role + ' ' + A.real;
-    const tip = !app ? 'Il te faut une de ces applis : ' + A.apps.map(id => this.appName(id)).join(', ') + '.' : !gs.q[i] ? 'Pour le créer : ' + ['comprendre', 'comprendre puis faire', 'comprendre, faire puis prouver'][A.steps - 1] + '.' : 'Qualité × ' + String(gs.q[i]).replace('.', ',') + '. Ils montent de niveau à 25, 50, 100 et 200 agents : leurs gains augmentent à chaque fois.';
+    const tip = !app ? 'Il te faut une de ces applis : ' + A.apps.map(id => this.appName(id)).join(', ') + '.' : !gs.q[i] ? (i >= 3 ? 'Pour le créer : une question simple, puis tu l’achètes.' : 'Pour le créer : il suffit de l’acheter.') : 'Qualité × ' + String(gs.q[i]).replace('.', ',') + '. Ils montent de niveau à 25, 50, 100 et 200 agents : leurs gains augmentent à chaque fois.';
     return { t: A.n, d: d, tip: tip };
   }
   cta() {
     const gs = this.gs;
     if (!gs.apps.length && gs.credits >= 22) return { t: 'Ta première IA est prête', d: 'Choisis ton assistant : ChatGPT, Claude ou Gemini.', b: 'Choisir', act: () => this.openPanel({ kind: 'store' }), dark: true };
-    if (gs.apps.length && !gs.q.some(x => x > 0)) return { t: 'Transforme ton IA en agent', d: 'Ton premier agent va travailler pour toi, même quand tu ne cliques pas.', b: 'Créer', act: () => this.openUnlock(0), dark: true };
+    if (gs.apps.length && !gs.q.some(x => x > 0) && gs.credits >= this.ucost(0)) return { t: 'Transforme ton IA en agent', d: 'Ton premier agent va travailler pour toi, même quand tu ne cliques pas.', b: 'Créer', act: () => this.openUnlock(0), dark: true };
     if (!gs.company && gs.credits >= 500) return { t: 'Ouvre ta société', d: 'Recrute, signe de gros contrats, grandis.', b: 'Ouvrir', act: () => this.openPanel({ kind: 'company', name: '' }), dark: true };
     const gift = gs.giftDay !== new Date().toISOString().slice(0, 10) && gs.days >= 2 && gs.total >= 100;
     if (gift) return { t: 'Cadeau du jour', d: 'Série de ' + (gs.streak || 1) + ' jour(s). Reviens chaque jour pour un plus gros cadeau.', b: 'Ouvrir', act: () => this.claimGift(), gold: true };
@@ -2945,7 +3051,7 @@ window.Component = class Component extends DCLogic {
     const agents = D.AG.map((A, i) => {
       const unlocked = gs.q[i] > 0; const app = this.appOf(i); const prevOk = i === 0 ? gs.apps.length > 0 : gs.q[i - 1] > 0;
       const show = unlocked || prevOk; const cost = this.ucost(i); const m = e.m; const raw = this.unitRaw(i);
-      const gain = raw * m, chg = raw * A.k, net = gain - chg; const pay = net > 0 ? cost / net : Infinity; const stars = gs.q[i] >= 1.22 ? 3 : gs.q[i] >= 1.1 ? 2 : gs.q[i] > 0 ? 1 : 0;
+      const gain = raw * m, chg = raw * A.k, net = gain - chg; const pay = net > 0 ? cost / net : Infinity; const stars = this.stars(i);
       return { show: show, key: 'ag' + i, name: A.n, short: A.s, img: IMG['r_' + A.id], info: () => this.openInfo('ag' + i), count: gs.ag[i], locked: !unlocked, open: unlocked,
         by: unlocked ? 'avec ' + this.appName(app || A.apps[0]) + ' · ' + '★★★'.slice(0, stars) : app ? 'Prêt à créer avec ' + this.appName(app) : 'Il faut : ' + A.apps.slice(0, 2).map(id => this.appName(id)).join(' ou '),
         l1: '+' + this.fmt(gain) + ' €/s', l2: 'Coût ' + this.fmt(chg * 3600) + ' €/mois', l3: (net >= 0 ? 'Net +' : 'Net ') + this.fmt(net) + ' €/s', l4: net > 0 ? 'Rentable en ' + this.durS(pay) : 'Pas rentable',
@@ -2953,7 +3059,8 @@ window.Component = class Component extends DCLogic {
         cardStyle: 'padding:12px;border-radius:24px;position:relative;' + (unlocked ? 'border:1.5px solid #D6DEEC;background:#FFFFFF' : 'border:1.5px solid #E4EAF6;background:#F7F8FC'),
         artStyle: 'position:absolute;inset:0;display:block;' + (unlocked ? '' : 'opacity:.5;filter:grayscale(1)'),
         cost: this.fmt(cost) + ' €', buy: () => this.buyAgent(i), buyStyle: 'margin-top:8px;width:100%;' + btn(gs.credits >= cost),
-        learnLabel: app ? 'Créer · ' + A.steps + ' étape' + (A.steps > 1 ? 's' : '') : 'Voir les applis', learn: () => app ? this.openUnlock(i) : this.openPanel({ kind: 'store', need: i }) };
+        canBonus: unlocked && stars < 3, bonusLabel: stars < 2 ? 'Défi bonus ★★' : 'Défi bonus ★★★', bonus: () => this.openBonus(i),
+        learnLabel: app ? 'Créer · ' + this.fmt(cost) + ' €' : 'Voir les applis', learn: () => app ? this.openUnlock(i) : this.openPanel({ kind: 'store', need: i }) };
     });
     const systems = D.SYS.map((S, k) => { const i = 12 + k; const cost = this.ucost(i); const raw = this.unitRaw(i); const gain = raw * e.m, chg = raw * S.k, net = gain - chg; const ok = nA >= S.need;
       return { key: 'sy' + k, name: S.n, img: this.AGIMG[6 + k], count: gs.sys[k], open: ok, locked: !ok, info: () => this.openInfo('ag' + i), by: ok ? 'Système IA' : 'Il faut ' + S.need + ' agents',
@@ -2969,14 +3076,18 @@ window.Component = class Component extends DCLogic {
     const zone = au >= 0.6 ? ['#E5484D', '#FFFFFF'] : au >= 0.25 ? ['#FBD5D6', '#B4232A'] : au > 0 ? ['#FDE7C2', '#7A4E00'] : ['#1E3A8A', '#0E2A4F'];
     const sup = Math.round((1 - au) * 100);
     return {
+      amountStyle: (() => { const L = (Math.abs(gs.credits) < 1e6 ? Math.floor(Math.abs(gs.credits)).toLocaleString('fr-FR') : this.fmt(gs.credits)).length; const fs = L <= 5 ? 52 : L <= 7 ? 40 : 44; return 'font-size:' + fs + 'px;font-weight:800;letter-spacing:-0.035em;font-variant-numeric:tabular-nums;white-space:nowrap'; })(), euroStyle: 'font-size:' + (Math.abs(gs.credits) < 1e5 || Math.abs(gs.credits) >= 1e6 ? 36 : 30) + 'px;font-weight:800;color:#1E3A8A',
       headLabel: gs.company ? 'Trésorerie · ' + gs.company.name : 'Tes gains',
       credits: Math.abs(gs.credits) < 1e6 ? (gs.credits < 0 ? '− ' : '') + Math.floor(Math.abs(gs.credits)).toLocaleString('fr-FR') : this.fmt(gs.credits),
       showRate: Math.abs(e.net) > 0.0001, rateLabel: (e.net >= 0 ? '+' : '') + this.fmt(e.net) + ' €/s', rateStyle: 'font-size:13px;font-weight:800;white-space:nowrap;color:' + (e.net >= 0 ? '#2B4FC0' : '#B4232A'),
       f: f, nf: nf, chips: chips, showChips: chips.length > 0,
-      steps: [0, 1, 2, 3].map(i => ({ key: 'st' + i, img: IMG['s' + i], hasBar: i < 3, style: 'width:58px;height:58px;flex:0 0 58px;box-sizing:border-box;padding:3px;border-radius:16px;' + (i === st ? 'background:#E4EAF6;border:2px solid #1E3A8A;' : i < st ? 'background:#F7F8FC;border:2px solid #E4EAF6;' : 'background:#F7F8FC;border:2px solid #F7F8FC;opacity:.35;filter:grayscale(1);'),
+      steps: [0, 1, 2, 3].map(i => ({ key: 'st' + i, img: IMG['s' + i], hasBar: i < 3, lab: i < st ? '✓' : i === 0 ? 'Départ' : this.fmt(th[i]) + ' €', labStyle: 'font-size:11px;font-weight:800;white-space:nowrap;color:' + (i === st + 1 ? '#1E3A8A' : i <= st ? '#2B4FC0' : '#5A6B8C'), style: 'width:58px;height:58px;flex:0 0 58px;box-sizing:border-box;padding:3px;border-radius:16px;' + (i === st ? 'background:#E4EAF6;border:2px solid #1E3A8A;' : i < st ? 'background:#F7F8FC;border:2px solid #E4EAF6;' : 'background:#F7F8FC;border:2px solid #F7F8FC;opacity:.35;filter:grayscale(1);'),
         bar: 'display:block;height:100%;border-radius:3px;background:#1E3A8A;width:' + (i < st ? 100 : i === st ? nextPct : 0).toFixed(1) + '%' })),
       stageName: D.STAGES[st], stageNum: st + 1, nextStage: st < 3 ? 'Prochaine étape : ' + D.STAGES[st + 1] + ' à ' + this.fmt(th[st + 1]) + ' € gagnés' : 'Dernière étape atteinte',
-      showHint: ((gs.stats && gs.stats.taps) || 0) < 6, showWhisper: !!(this.whisp && this.whisp.until > Date.now()) && ((gs.stats && gs.stats.taps) || 0) >= 6, whisper: this.whisp ? this.whisp.t : '',
+      showHint: false, clicLabel: ((gs.stats && gs.stats.taps) || 0) === 0 ? 'Clic' : 'Clic · +' + this.fmt(this.tapValue()) + ' €', showWhisper: !!(this.whisp && this.whisp.until > Date.now()) && ((gs.stats && gs.stats.taps) || 0) >= 6, whisper: this.whisp ? this.whisp.t : '',
+      dateLabel: (() => { const l = this.gameDate().label; return l.charAt(0).toUpperCase() + l.slice(1); })(), dateCls: this.monthFlip && this.monthFlip > Date.now() ? 'datepill flip' : 'datepill', openDate: () => this.openInfo('date'),
+      hasGoal: !cta && !this.panel && !!this.goal(), goalT: (() => { const g0 = this.goal(); return g0 ? g0.t : ''; })(), goalR: (() => { const g0 = this.goal(); return g0 ? 'Prime : + ' + this.fmt(g0.r) + ' €' : ''; })(), goalDone: !!(this.goal() && this.goal().done), goalTodo: !!(this.goal() && !this.goal().done), claimGoal: () => this.claimGoal(), goalN: 'Objectif ' + ((gs.goal || 0) + 1) + ' / ' + this.goalDefs().length,
+      repLow: gs.rep < 40, repBtn: this.fmt(this.imageCost()) + ' €', repBtnStyle: btn(gs.credits >= this.imageCost()) + ';height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.15;flex:0 0 auto', restoreImage: () => this.restoreImage(),
       hasCta: !!cta && !this.panel, ctaT: cta ? cta.t : '', ctaD: cta ? cta.d : '', ctaB: cta ? cta.b : '', ctaAct: cta ? cta.act : () => {},
       ctaStyle: 'margin-top:12px;width:100%;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;border:none;border-radius:22px;font-family:inherit;cursor:pointer;text-align:left;box-sizing:border-box;' + (cta && cta.gold ? 'background:linear-gradient(135deg,#FFF4D6,#F6D27A);color:#3A2A00' : 'background:#0E2A4F;color:#FFFFFF'),
       ctaBStyle: 'flex:0 0 auto;padding:9px 14px;border-radius:16px;font-size:14px;font-weight:800;' + (cta && cta.gold ? 'background:#3A2A00;color:#FFF4D6' : 'background:#FFFFFF;color:#1E3A8A'),
@@ -3008,7 +3119,7 @@ window.Component = class Component extends DCLogic {
       nAgents: nA, emptyWorld: nA === 0, notEmptyWorld: nA > 0, red: au >= 0.5,
       perSec: this.fmt(e.net), tapValue: this.fmt(this.tapValue()),
       hasBoost: !!(this.boost && this.boost.until > Date.now()), boostLabel: this.boost ? (this.boost.mult >= 1 ? 'Bonus' : 'Malus') + ' × ' + String(this.boost.mult).replace('.', ',') + ' · ' + Math.max(0, Math.ceil((this.boost.until - Date.now()) / 1000)) + ' s' : '',
-      hasCombo: this.combo >= 25, comboLabel: 'Combo × ' + String(this.comboMult()).replace('.', ',') + ' · ' + this.combo,
+      hasCombo: this.combo >= 50, comboLabel: 'Combo × ' + String(this.comboMult()).replace('.', ',') + ' · ' + this.combo,
       tap: (ev) => this.tapTask(ev)
     };
   }

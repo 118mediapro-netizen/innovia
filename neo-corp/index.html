@@ -811,7 +811,44 @@ function buildBedroom(){
   [[1.62,.07,-1.15,2.23],[1.62,.07,-1.15,1.07],[.07,1.2,-1.93,1.65],[.07,1.2,-.37,1.65],[.04,1.1,-1.15,1.65]].forEach(([w,h,a,y])=>wallBox(back,w,h,.06,a,y,M.white));
   wallBox(back,1.75,.04,.2,-1.15,1.04,M.white);
   wallBox(back,W-.3,.025,.03,0,H-.07,M.led);wallBox(right,D-.3,.025,.03,0,H-.07,M.led);
-  wallMesh(left,new THREE.Mesh(new THREE.PlaneGeometry(.7,1.0),M.poster),1.4,1.75);
+  /* écran mural au-dessus du lit : messages codés qui défilent */
+  wallBox(left,1.24,.78,.05,1.45,1.72,M.monitor);
+  const cc=document.createElement('canvas');cc.width=640;cc.height=400;const ccx=cc.getContext('2d'),codeTex=new THREE.CanvasTexture(cc);
+  const codeScr=wallMesh(left,new THREE.Mesh(new THREE.PlaneGeometry(1.16,.7),new THREE.MeshBasicMaterial({map:codeTex,color:new THREE.Color(1.2,1.2,1.2)})),1.45,1.72,.046);
+  wallBox(left,.05,.012,.02,1.45,1.34,M.ledC);
+  const cgl=new THREE.PointLight(0x3cffb0,.55,3.2,1.6);cgl.position.set(-2.35,1.7,-1.45);root.add(cgl);
+  const HEX='0123456789ABCDEF',B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  const rs=(set,n)=>{let o='';for(let i=0;i<n;i++)o+=set[(Math.random()*set.length)|0];return o;};
+  const DECODED=['> MESSAGE DÉCODÉ : « Le premier client arrive. »','> MESSAGE DÉCODÉ : « Construis l’empire. »','> MESSAGE DÉCODÉ : « L’IA observe. »',
+    '> MESSAGE DÉCODÉ : « Neo Corp va naître. »','> MESSAGE DÉCODÉ : « Ne t’arrête jamais. »','> MESSAGE DÉCODÉ : « Agent #01 en attente… »'];
+  const genLine=()=>{const r=Math.random();
+    if(r<.09)return{t:DECODED[(Math.random()*DECODED.length)|0],c:'#c9a0ff',hl:1};
+    if(r<.22)return{t:'0x'+rs(HEX,4)+'  '+rs(HEX,8)+' '+rs(HEX,8)+' '+rs(HEX,8),c:'#3cffb0'};
+    if(r<.34)return{t:Array.from({length:6},()=>rs('01',8)).join(' '),c:'#2fbf86'};
+    if(r<.46)return{t:'decrypt(“'+rs(B64,22)+'==”)',c:'#6fe3ff'};
+    if(r<.56)return{t:'[NEO-CORP] uplink '+rs(HEX,2)+'.'+rs(HEX,2)+'.'+rs(HEX,2)+' … OK',c:'#8af0b0'};
+    if(r<.64)return{t:'>> SIGNAL '+((Math.random()*999)|0)+' Hz · clé '+rs(HEX,6)+' · '+(Math.random()<.5?'BLOQUÉ':'ACCEPTÉ'),c:'#ffcf8a'};
+    if(r<.74)return{t:'sha256: '+rs('abcdef0123456789',40),c:'#3cffb0'};
+    return{t:rs(B64+'#$%&*@<>{}[]',30+((Math.random()*14)|0)),c:'#1fa874'};};
+  const LH=22,code=[];for(let i=0;i<20;i++)code.push(genLine());
+  let scroll=0,lastC=-1,lastT=0;
+  interior.anim.push(t=>{if(t-lastC<1/24)return;const dt=Math.min(.1,t-(lastT||t));lastT=t;lastC=t;
+    scroll+=dt*38;while(scroll>=LH){scroll-=LH;code.shift();code.push(genLine());}
+    const w=640,h=400;ccx.fillStyle='#020806';ccx.fillRect(0,0,w,h);
+    ccx.font='600 15px "Courier New", ui-monospace, Menlo, monospace';ccx.textBaseline='top';
+    code.forEach((ln,i)=>{const y=34+i*LH-scroll;if(y<26||y>h-6)return;
+      if(ln.hl){ccx.fillStyle='rgba(181,131,255,.16)';ccx.fillRect(10,y-3,w-20,LH);}
+      let txt=ln.t;if(i===code.length-3&&!ln.hl){const n=Math.floor(((t*30)%1)*txt.length);txt=txt.slice(0,Math.max(4,n));}
+      ccx.fillStyle=ln.c;ccx.globalAlpha=ln.hl?1:.55+.45*((i%5)/4);ccx.fillText(txt,16,y);ccx.globalAlpha=1;});
+    ccx.fillStyle='#04120c';ccx.fillRect(0,0,w,26);ccx.fillStyle='#3cffb0';ccx.font='700 14px "Courier New", ui-monospace, monospace';
+    ccx.fillText('NEO//TERMINAL  ·  FLUX CHIFFRÉ',14,6);ccx.fillStyle=(t%1)<.5?'#ff5a6a':'#5a1c22';ccx.beginPath();ccx.arc(w-22,13,5,0,7);ccx.fill();
+    ccx.fillStyle='#3cffb0';ccx.fillText('LIVE',w-66,6);
+    if((t%1)<.55){ccx.fillStyle='#3cffb0';ccx.fillRect(16,h-24,9,15);}
+    ccx.fillStyle='rgba(0,0,0,.18)';for(let y=0;y<h;y+=3)ccx.fillRect(0,y,w,1);
+    const v=ccx.createRadialGradient(w/2,h/2,h*.35,w/2,h/2,h*.85);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.55)');ccx.fillStyle=v;ccx.fillRect(0,0,w,h);
+    codeTex.needsUpdate=true;cgl.intensity=.45+Math.random()*.15;});
+  codeScr.userData.owner={getInfo:()=>({eye:'Écran mural',name:'Flux chiffré',rows:[['Contenu','Messages codés'],['Source','Réseau Neo Corp'],['Statut','Déchiffrement en cours…']]})};
+  interior.pick.push(codeScr);
   // lit
   bx(stat,1.5,.3,2.15,-2.22,.15,-1.43,M.wood2);bx(stat,1.5,.9,.08,-2.22,.55,-2.46,M.wood2);
   bx(stat,1.38,.2,2.0,-2.22,.4,-1.4,M.white);bx(stat,1.42,.09,1.35,-2.22,.54,-.98,M.blanket);bx(stat,.04,.3,1.35,-1.5,.41,-.98,M.blanket);

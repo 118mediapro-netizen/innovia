@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;600;700;800&amp;family=Sora:wght@400;600;700;800&amp;family=Outfit:wght@400;600;700;800&amp;family=Urbanist:wght@400;600;700;800&amp;family=DM+Sans:wght@400;600;700;800&amp;family=Space+Grotesk:wght@400;600;700&amp;family=Poppins:wght@400;600;700;800&amp;family=Lexend:wght@400;600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;family=Figtree:wght@400;600;700;800&amp;family=Bricolage+Grotesque:wght@400;600;700;800&amp;family=Unbounded:wght@400;600;700;800&amp;family=Syne:wght@400;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Anton&amp;family=Manrope:wght@400;600;700;800&amp;family=Sora:wght@400;600;700;800&amp;family=Outfit:wght@400;600;700;800&amp;family=Urbanist:wght@400;600;700;800&amp;family=DM+Sans:wght@400;600;700;800&amp;family=Space+Grotesk:wght@400;600;700&amp;family=Poppins:wght@400;600;700;800&amp;family=Lexend:wght@400;600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;family=Figtree:wght@400;600;700;800&amp;family=Bricolage+Grotesque:wght@400;600;700;800&amp;family=Unbounded:wght@400;600;700;800&amp;family=Syne:wght@400;600;700;800&amp;display=swap">
 <style>
 body{margin:0}
 a{color:#0E2A4F}a:hover{color:#0E2A4F}
@@ -135,6 +135,110 @@ div:nth-child(even) > span > span > .floaty{animation-delay:-1.7s}
 .datepill{box-shadow:-3px -3px 8px rgba(255,255,255,.95),4px 5px 12px rgba(30,58,138,.1)}
 @keyframes pageFlip{0%{transform:perspective(300px) rotateX(0)}40%{transform:perspective(300px) rotateX(-85deg)}100%{transform:perspective(300px) rotateX(0)}}
 .datepill.flip{animation:pageFlip .9s cubic-bezier(.3,1.4,.5,1)}
+.fm{--fm-ink:#0E2A4F;--fm-mute:#5A6B8C;--fm-acc:#2B4FC0;--fm-chip:#FFFFFF;--fm-line:#D6DEEC;--fm-ib:#E4EAF6}
+.night .fm{--fm-ink:#F2F5FB;--fm-mute:#8A93A8;--fm-acc:#4B9BFF;--fm-chip:rgba(255,255,255,.04);--fm-line:rgba(150,165,210,.35);--fm-ib:rgba(255,255,255,.12);background:radial-gradient(70% 30% at 105% 28%,rgba(88,70,220,.20),rgba(0,0,0,0) 70%),radial-gradient(70% 34% at -5% 62%,rgba(40,90,230,.18),rgba(0,0,0,0) 70%),#090B15}
+.fm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px}
+.fm-title{margin:0;font-size:31px;font-weight:800;letter-spacing:-.02em;color:var(--fm-ink)}
+.fm-icons{display:flex;gap:10px}
+.fm-ib{width:46px;height:46px;padding:0;border:none;border-radius:23px;background:var(--fm-ib);color:var(--fm-ink);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.fm-chips{display:flex;gap:8px;overflow-x:auto;padding:16px 20px 4px}
+.fm-chip{flex:0 0 auto;height:40px;padding:0 18px;border:1.5px solid var(--fm-line);border-radius:20px;background:var(--fm-chip);color:var(--fm-ink);font-family:inherit;font-size:15px;font-weight:600;white-space:nowrap;cursor:pointer}
+.night .fm-chip{color:#B8C0D6}
+.fm-chip.fm-on{background:#0E2A4F;border-color:#0E2A4F;color:#FFFFFF}
+.night .fm-chip.fm-on{background:#FFFFFF;border-color:#FFFFFF;color:#0A0C16}
+.fm-sec{margin:22px 20px 12px;font-size:22px;font-weight:700;letter-spacing:-.01em;color:var(--fm-ink)}
+.fm-row{display:flex;gap:12px;overflow-x:auto;padding:4px 20px 22px;scroll-snap-type:x mandatory;scroll-padding-left:20px}
+.fm-thumb{position:relative;flex:0 0 auto;display:block;padding:0;border:none;overflow:hidden;background:#0A0C16;cursor:pointer;font-family:inherit;text-align:left;scroll-snap-align:start}
+.fm-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.fm-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 28%,rgba(4,8,24,.84) 100%)}
+.fm-big{width:316px;height:178px;border-radius:22px;box-shadow:0 12px 28px rgba(14,42,79,.20)}
+.night .fm-big{border:1.5px solid rgba(150,160,255,.6);box-shadow:0 0 0 1px rgba(120,140,255,.12),0 12px 40px rgba(70,95,255,.38)}
+.fm-small{width:178px;height:100px;border-radius:14px;box-shadow:0 8px 20px rgba(14,42,79,.14)}
+.night .fm-small{box-shadow:0 10px 26px rgba(0,0,0,.55)}
+.fm-tt{position:absolute;left:16px;right:72px;bottom:50px;color:#FFFFFF;font-family:'Anton',Impact,'Arial Narrow',sans-serif;font-size:29px;line-height:1.03;letter-spacing:.005em;text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.fm-tt b{font-weight:400;color:#7CC0FF}
+.fm-small .fm-tt{left:10px;right:10px;bottom:9px;font-size:18px}
+.fm-badge{position:absolute;left:12px;top:12px;padding:5px 9px;border-radius:8px;background:#2A7DE1;color:#FFFFFF;font-size:11px;font-weight:800;letter-spacing:.05em}
+.fm-dur{position:absolute;left:16px;bottom:16px;color:#FFFFFF;font-size:15px;font-weight:700}
+.fm-play{position:absolute;right:14px;bottom:14px;width:54px;height:54px;border-radius:27px;background:rgba(255,255,255,.94);color:#0E2A4F;display:flex;align-items:center;justify-content:center}
+.night .fm-play{background:rgba(255,255,255,.2);color:#FFFFFF;border:1px solid rgba(255,255,255,.4);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.fm-prog{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.3)}
+.fm-prog i{display:block;height:100%;background:#3B8BFF;box-shadow:0 0 10px rgba(59,139,255,.9)}
+.fm-ok{position:absolute;right:8px;top:8px;width:24px;height:24px;border-radius:12px;background:#22B46E;display:flex;align-items:center;justify-content:center}
+.fm-lock{position:absolute;inset:0;background:rgba(8,14,30,.42);display:flex;align-items:center;justify-content:center}
+.fm-mh{display:flex;flex-direction:column;padding:4px 20px 10px}
+.fm-mn{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--fm-acc)}
+.fm-mt{margin-top:3px;font-size:24px;font-weight:800;letter-spacing:-.015em;color:var(--fm-ink)}
+.fm-mm{margin-top:3px;font-size:13.5px;font-weight:500;color:var(--fm-mute)}
+.fmv{--fm-ink:#0E2A4F;--fm-mute:#5A6B8C;--fm-acc:#2B4FC0;--fm-bg:#F2F3F8;--fm-card:#FFFFFF;--fm-line:#D6DEEC;--fm-txt:#33405E;background:var(--fm-bg);color:var(--fm-ink)}
+.night .fmv{--fm-ink:#F2F5FB;--fm-mute:#8A93A8;--fm-acc:#4B9BFF;--fm-bg:#090B15;--fm-card:#111623;--fm-line:#232B3D;--fm-txt:#C3CAD8}
+.fmv-player{position:relative;height:244px;background:#000;overflow:hidden}
+.fmv-player img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92}
+.fmv-grad{position:absolute;left:0;right:0;bottom:0;height:80px;background:linear-gradient(180deg,rgba(0,0,0,0),var(--fm-bg))}
+.fmv-back{position:absolute;left:16px;top:52px;width:42px;height:42px;padding:0;border:none;border-radius:21px;background:rgba(0,0,0,.45);color:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.fmv-play{position:absolute;left:50%;top:54%;width:72px;height:72px;margin:-36px 0 0 -36px;padding:0;border:1px solid rgba(255,255,255,.5);border-radius:36px;background:rgba(255,255,255,.25);color:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.fmv-body{padding:14px 20px 48px;display:flex;flex-direction:column}
+.fmv-mod{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--fm-acc)}
+.fmv-t{margin:6px 0 10px;font-size:27px;font-weight:800;line-height:1.12;letter-spacing:-.02em;color:var(--fm-ink)}
+.fmv-meta{display:flex;flex-wrap:wrap;gap:7px}
+.fmv-meta span{padding:5px 11px;border-radius:999px;border:1.5px solid var(--fm-line);background:var(--fm-card);font-size:12.5px;font-weight:700;color:var(--fm-mute)}
+.fmv-btns{display:flex;gap:10px;margin:16px 0}
+.fmv-go{flex:1;height:52px;border:none;border-radius:15px;background:#1E3A8A;color:#FFFFFF;font-family:inherit;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer}
+.night .fmv-go{background:#FFFFFF;color:#0A0C16}
+.fmv-sq{width:52px;height:52px;flex:0 0 52px;padding:0;border:1.5px solid var(--fm-line);border-radius:15px;background:var(--fm-card);color:var(--fm-ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.fmv-desc{margin:0;font-size:15px;line-height:1.58;color:var(--fm-txt)}
+.fmv-learn{margin-top:16px;padding:16px;border-radius:18px;border:1.5px solid var(--fm-line);background:var(--fm-card);display:flex;flex-direction:column;gap:9px}
+.fmv-lh{font-size:15px;font-weight:800;color:var(--fm-ink)}
+.fmv-li{display:flex;gap:10px;font-size:14px;font-weight:600;line-height:1.4;color:var(--fm-txt)}
+.fmv-li svg{flex:0 0 18px;margin-top:1px}
+.fmv-mission{margin-top:12px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#1D4FC0,#4A9BFF);color:#FFFFFF;display:flex;flex-direction:column;gap:5px}
+.fmv-ms{font-size:11px;font-weight:800;letter-spacing:.12em;opacity:.85}
+.fmv-mt{font-size:15px;font-weight:700;line-height:1.4}
+.night{background-color:#07090F!important;color:#EEF2FA!important}
+.night [style*="background: #FFFFFF"],.night [style*="background:#FFFFFF"],.night [style*="background: rgb(255, 255, 255)"],.night [style*="background-color: rgb(255, 255, 255)"]{background-color:#151B28!important}
+.night [style*="background: #F2F3F8"],.night [style*="background:#F2F3F8"],.night [style*="background: rgb(242, 243, 248)"],.night [style*="background-color: rgb(242, 243, 248)"]{background-color:#07090F!important}
+.night [style*="background: #F7F8FC"],.night [style*="background:#F7F8FC"],.night [style*="background: rgb(247, 248, 252)"],.night [style*="background-color: rgb(247, 248, 252)"]{background-color:#121826!important}
+.night [style*="background: #F5F6FA"],.night [style*="background:#F5F6FA"],.night [style*="background: rgb(245, 246, 250)"],.night [style*="background-color: rgb(245, 246, 250)"]{background-color:#1B2130!important}
+.night [style*="background: #FAFBFE"],.night [style*="background:#FAFBFE"],.night [style*="background: rgb(250, 251, 254)"],.night [style*="background-color: rgb(250, 251, 254)"]{background-color:#121826!important}
+.night [style*="background: #EEF1FA"],.night [style*="background:#EEF1FA"],.night [style*="background: rgb(238, 241, 250)"],.night [style*="background-color: rgb(238, 241, 250)"]{background-color:#121826!important}
+.night [style*="background: #FFFBF0"],.night [style*="background:#FFFBF0"],.night [style*="background: rgb(255, 251, 240)"],.night [style*="background-color: rgb(255, 251, 240)"]{background-color:#1E1A10!important}
+.night [style*="background: #E4EAF6"],.night [style*="background:#E4EAF6"],.night [style*="background: rgb(228, 234, 246)"],.night [style*="background-color: rgb(228, 234, 246)"]{background-color:#1E2638!important}
+.night [style*="background: #DCE3F2"],.night [style*="background:#DCE3F2"],.night [style*="background: rgb(220, 227, 242)"],.night [style*="background-color: rgb(220, 227, 242)"]{background-color:#252E44!important}
+.night [style*="background: #E1E7F1"],.night [style*="background:#E1E7F1"],.night [style*="background: rgb(225, 231, 241)"],.night [style*="background-color: rgb(225, 231, 241)"]{background-color:#1E2638!important}
+.night [style*="background: #DCE7F7"],.night [style*="background:#DCE7F7"],.night [style*="background: rgb(220, 231, 247)"],.night [style*="background-color: rgb(220, 231, 247)"]{background-color:#1E2638!important}
+.night [style*="background: #E8EEF2"],.night [style*="background:#E8EEF2"],.night [style*="background: rgb(232, 238, 242)"],.night [style*="background-color: rgb(232, 238, 242)"]{background-color:#1E2638!important}
+.night [style*="background: #E4F2FC"],.night [style*="background:#E4F2FC"],.night [style*="background: rgb(228, 242, 252)"],.night [style*="background-color: rgb(228, 242, 252)"]{background-color:#1E2638!important}
+.night [style*="background: #FDECEC"],.night [style*="background:#FDECEC"],.night [style*="background: rgb(253, 236, 236)"],.night [style*="background-color: rgb(253, 236, 236)"]{background-color:#3A1A1D!important}
+.night [style*="background: #FBD5D6"],.night [style*="background:#FBD5D6"],.night [style*="background: rgb(251, 213, 214)"],.night [style*="background-color: rgb(251, 213, 214)"]{background-color:#3A1A1D!important}
+.night [style*="background: #F8E9E6"],.night [style*="background:#F8E9E6"],.night [style*="background: rgb(248, 233, 230)"],.night [style*="background-color: rgb(248, 233, 230)"]{background-color:#3A1A1D!important}
+.night [style*="background: #F3D3CF"],.night [style*="background:#F3D3CF"],.night [style*="background: rgb(243, 211, 207)"],.night [style*="background-color: rgb(243, 211, 207)"]{background-color:#3A1A1D!important}
+.night [style*="background: #FFF4D6"],.night [style*="background:#FFF4D6"],.night [style*="background: rgb(255, 244, 214)"],.night [style*="background-color: rgb(255, 244, 214)"]{background-color:#3A2F14!important}
+.night [style*="background: #FDE7C2"],.night [style*="background:#FDE7C2"],.night [style*="background: rgb(253, 231, 194)"],.night [style*="background-color: rgb(253, 231, 194)"]{background-color:#3A2F14!important}
+.night [style*="; color: #1E3A8A"],.night [style*=";color:#1E3A8A"],.night [style^="color: #1E3A8A"],.night [style^="color:#1E3A8A"],.night [style*="; color: rgb(30, 58, 138)"],.night [style^="color: rgb(30, 58, 138)"]{color:#8CB2FF!important}
+.night [style*="; color: #2F4FB0"],.night [style*=";color:#2F4FB0"],.night [style^="color: #2F4FB0"],.night [style^="color:#2F4FB0"],.night [style*="; color: rgb(47, 79, 176)"],.night [style^="color: rgb(47, 79, 176)"]{color:#8CB2FF!important}
+.night [style*="; color: #0E2A4F"],.night [style*=";color:#0E2A4F"],.night [style^="color: #0E2A4F"],.night [style^="color:#0E2A4F"],.night [style*="; color: rgb(14, 42, 79)"],.night [style^="color: rgb(14, 42, 79)"]{color:#EEF2FA!important}
+.night [style*="; color: #5A6B8C"],.night [style*=";color:#5A6B8C"],.night [style^="color: #5A6B8C"],.night [style^="color:#5A6B8C"],.night [style*="; color: rgb(90, 107, 140)"],.night [style^="color: rgb(90, 107, 140)"]{color:#9AA5BD!important}
+.night [style*="; color: #2B4FC0"],.night [style*=";color:#2B4FC0"],.night [style^="color: #2B4FC0"],.night [style^="color:#2B4FC0"],.night [style*="; color: rgb(43, 79, 192)"],.night [style^="color: rgb(43, 79, 192)"]{color:#8CB2FF!important}
+.night [style*="; color: #B4232A"],.night [style*=";color:#B4232A"],.night [style^="color: #B4232A"],.night [style^="color:#B4232A"],.night [style*="; color: rgb(180, 35, 42)"],.night [style^="color: rgb(180, 35, 42)"]{color:#FF7A7F!important}
+.night [style*="; color: #3A2A00"],.night [style*=";color:#3A2A00"],.night [style^="color: #3A2A00"],.night [style^="color:#3A2A00"],.night [style*="; color: rgb(58, 42, 0)"],.night [style^="color: rgb(58, 42, 0)"]{color:#F6D27A!important}
+.night [style*="; color: #5A4200"],.night [style*=";color:#5A4200"],.night [style^="color: #5A4200"],.night [style^="color:#5A4200"],.night [style*="; color: rgb(90, 66, 0)"],.night [style^="color: rgb(90, 66, 0)"]{color:#F6D27A!important}
+.night [style*="; color: #7A4E00"],.night [style*=";color:#7A4E00"],.night [style^="color: #7A4E00"],.night [style^="color:#7A4E00"],.night [style*="; color: rgb(122, 78, 0)"],.night [style^="color: rgb(122, 78, 0)"]{color:#F6D27A!important}
+.night [style*="; color: #8A6A10"],.night [style*=";color:#8A6A10"],.night [style^="color: #8A6A10"],.night [style^="color:#8A6A10"],.night [style*="; color: rgb(138, 106, 16)"],.night [style^="color: rgb(138, 106, 16)"]{color:#F6D27A!important}
+.night [style*="solid #D6DEEC"],.night [style*="solid rgb(214, 222, 236)"],.night [style*="solid #E4EAF6"],.night [style*="solid rgb(228, 234, 246)"]{border-color:#2A3348!important}
+.night [style*="solid #0E2A4F"],.night [style*="solid rgb(14, 42, 79)"]{border-color:#C9D3E8!important}
+.night [style*="rgba(255,255,255,0.9)"],.night [style*="rgba(255,255,255,.9"],.night [style*="rgba(255, 255, 255, 0.9"],.night [style*="background: #F7F8FC"],.night [style*="background:#F7F8FC"],.night [style*="background: #E4EAF6"],.night [style*="background:#E4EAF6"]{box-shadow:0 6px 16px rgba(0,0,0,.45)!important}
+.night [style*="1.5px solid #D6DEEC"],.night [style*="1.5px solid rgb(214, 222, 236)"]{box-shadow:0 8px 20px rgba(0,0,0,.35)!important}
+.night svg [stroke="#0E2A4F"],.night svg[stroke="#0E2A4F"]{stroke:#E6ECF7}.night svg [fill="#0E2A4F"],.night svg[fill="#0E2A4F"]{fill:#E6ECF7}
+.night [style*="background: #1E3A8A"] svg [stroke="#0E2A4F"],.night [style*="background:#1E3A8A"] svg [stroke="#0E2A4F"]{stroke:#FFFFFF}
+.night [style*="linear-gradient(#F2F3F8"]{background:linear-gradient(#07090F 75%, rgba(7,9,15,0))!important}
+.night nav[aria-label="Navigation principale"]{background:rgba(28,33,46,.82)!important;box-shadow:0 14px 34px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)!important}
+.night .navb:not(.on){background:#1B2130!important;box-shadow:-3px -3px 8px rgba(255,255,255,.05),5px 6px 14px rgba(0,0,0,.5)!important}
+.night .navb.on{box-shadow:0 10px 26px rgba(61,107,224,.45)!important}
+.night svg [stroke="#E4EAF6"],.night svg [stroke="#D6DEEC"],.night svg [stroke="#DCE3F2"]{stroke:#1E2638}
+.night .popup{color:#EEF2FA;text-shadow:0 2px 0 #000}
+.night input,.night textarea{color:#EEF2FA}
+.night ::placeholder{color:#8A93A8}
+.night .spinner{border-color:#2A3348;border-top-color:#4B9BFF}
 </style>
 
 <style>
@@ -152,7 +256,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <script>try { if (window.ReactNativeWebView) document.documentElement.classList.add('in-app'); } catch (e) {}</script>
 <div id="stage"><div id="app"><div id="root"></div></div></div>
 <template id="tpl">
-<div style="width: 390px; height: 100%; position: relative; overflow: hidden; background: #F2F3F8; font-family: {{fontFamily}}; color: #0E2A4F">
+<div class="{{themeCls}}" style="width: 390px; height: 100%; position: relative; overflow: hidden; background: #F2F3F8; font-family: {{fontFamily}}; color: #0E2A4F">
 
 <sc-if value="{{showIntro}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; inset: 0; background: #000000; overflow: hidden">
@@ -236,31 +340,52 @@ html, body, #stage, #app { overscroll-behavior: none }
 </sc-if>
 
 <sc-if value="{{showForm}}" hint-placeholder-val="{{ false }}">
-<div class="screen noscroll" style="height: 100%; overflow-y: auto; box-sizing: border-box; padding: 112px 20px 150px">
-<h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Formations</h2>
-<p style="margin: 4px 0 0; font-size: 14px; color: #5A6B8C">Achète une fois, garde-la à vie.</p>
-<div class="card" style="margin-top: 20px; padding: 22px; border-radius: 26px; background: #1E3A8A">
-<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase">Recommandée pour toi</span>
-<h3 style="margin: 8px 0 0; font-size: 24px; font-weight: 800">Les bases de l’IA</h3>
-<p style="margin: 6px 0 0; font-size: 14px; line-height: 1.5">Comprendre et utiliser l’IA au quotidien, sans aucune connaissance.</p>
-<div style="margin-top: 16px; display: flex; align-items: center; justify-content: space-between">
-<span style="font-size: 20px; font-weight: 800">9,99 €</span>
-<button class="tap" type="button" onClick="{{buzzOnly}}" style="height: 46px; padding: 0 20px; border: none; border-radius: 23px; background: #FFFFFF; color: #0E2A4F; font-family: inherit;font-size: 15px; font-weight: 800; cursor: pointer">Découvrir</button>
+<div class="screen noscroll fm" style="height: 100%; overflow-y: auto; box-sizing: border-box; padding: 104px 0 150px">
+<div class="fm-head">
+<h2 class="fm-title">Apprendre</h2>
+<div class="fm-icons">
+<button class="tap fm-ib" type="button" onClick="{{buzzOnly}}" aria-label="Rechercher une vidéo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg></button>
+<button class="tap fm-ib" type="button" onClick="{{buzzOnly}}" aria-label="Mes téléchargements"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
 </div>
 </div>
-<div style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px">
-<sc-for list="{{courses}}" as="c" hint-placeholder-count="4">
-<button class="tap card" type="button" onClick="{{buzzOnly}}" style="{{c.style}}">
-<span style="width: 48px; height: 48px; flex: 0 0 48px; border-radius: 24px; background: #E4EAF6; display: flex; align-items: center; justify-content: center">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.3 6.4L21 10.5l-6.7 2.1L12 19l-2.3-6.4L3 10.5l6.7-2.1z"></path></svg>
-</span>
-<span style="flex: 1; display: flex; flex-direction: column; gap: 2px; text-align: left">
-<span style="font-size: 16px; font-weight: 700; color: #0E2A4F">{{c.t}}</span>
-<span style="font-size: 13px; color: #5A6B8C">Accès à vie</span>
-</span>
-<span style="padding: 7px 12px; border-radius: 14px; background: #E4EAF6; font-size: 14px; font-weight: 800; color: #0E2A4F">{{c.p}}</span>
-</button>
+<div class="noscroll hscroll fm-chips">
+<sc-for list="{{fm.chips}}" as="ch" hint-placeholder-count="4"><button class="tap fm-chip {{ch.cls}}" type="button" onClick="{{ch.pick}}">{{ch.label}}</button></sc-for>
+</div>
+<h3 class="fm-sec">À ne pas rater</h3>
+<div class="noscroll hscroll fm-row">
+<sc-for list="{{fm.hero}}" as="h" hint-placeholder-count="3"><button class="tap fm-thumb fm-big" type="button" onClick="{{h.open}}" aria-label="{{h.aria}}"><img src="{{h.img}}" alt="" draggable="false"><span class="fm-shade"></span><span class="fm-badge">{{h.badge}}</span><span class="fm-tt">{{h.t1}} <b>{{h.t2}}</b></span><span class="fm-dur">{{h.dur}}</span><span class="fm-play"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"></path></svg></span></button></sc-for>
+</div>
+<sc-for list="{{fm.mods}}" as="m" hint-placeholder-count="2">
+<div class="fm-mh"><span class="fm-mn">MODULE {{m.n}}</span><span class="fm-mt">{{m.title}}</span><span class="fm-mm">{{m.meta}}</span></div>
+<div class="noscroll hscroll fm-row">
+<sc-for list="{{m.eps}}" as="e" hint-placeholder-count="3"><button class="tap fm-thumb fm-small" type="button" onClick="{{e.open}}" aria-label="{{e.aria}}"><img src="{{e.img}}" alt="" draggable="false"><span class="fm-shade"></span><span class="fm-tt">{{e.t1}} <b>{{e.t2}}</b></span><sc-if value="{{e.done}}" hint-placeholder-val="{{ false }}"><span class="fm-ok"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></sc-if><sc-if value="{{e.locked}}" hint-placeholder-val="{{ false }}"><span class="fm-lock"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></span></sc-if><sc-if value="{{e.hasProg}}" hint-placeholder-val="{{ false }}"><span class="fm-prog"><i style="{{e.prog}}"></i></span></sc-if></button></sc-for>
+</div>
 </sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{showFv}}" hint-placeholder-val="{{ false }}">
+<div class="sheet noscroll fmv" style="position: absolute; inset: 0; z-index: 70; overflow-y: auto">
+<div class="fmv-player">
+<img src="{{fv.img}}" alt="" draggable="false">
+<span class="fmv-grad"></span>
+<button class="tap fmv-back" type="button" onClick="{{fv.close}}" aria-label="Retour aux vidéos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<button class="tap fmv-play" type="button" onClick="{{fv.play}}" aria-label="Lire la vidéo"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"></path></svg></button>
+</div>
+<div class="fmv-body">
+<span class="fmv-mod">{{fv.mod}}</span>
+<h2 class="fmv-t">{{fv.title}}</h2>
+<div class="fmv-meta"><span>{{fv.ep}}</span><span>{{fv.dur}}</span><span>{{fv.lvl}}</span><span>Mis à jour oct. 2026</span></div>
+<div class="fmv-btns">
+<button class="tap fmv-go" type="button" onClick="{{fv.play}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"></path></svg>{{fv.cta}}</button>
+<button class="tap fmv-sq" type="button" onClick="{{buzzOnly}}" aria-label="Télécharger la vidéo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+<button class="tap fmv-sq" type="button" onClick="{{buzzOnly}}" aria-label="Ajouter à ma liste"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+<p class="fmv-desc">{{fv.desc}}</p>
+<div class="fmv-learn"><span class="fmv-lh">Ce que tu vas savoir faire</span>
+<sc-for list="{{fv.learn}}" as="l" hint-placeholder-count="3"><span class="fmv-li"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#2A7DE1" fill-opacity="0.18"></circle><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#3B8BFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>{{l.t}}</span></sc-for>
+</div>
+<div class="fmv-mission"><span class="fmv-ms">À TOI DE JOUER APRÈS LA VIDÉO</span><span class="fmv-mt">{{fv.mission}}</span></div>
 </div>
 </div>
 </sc-if>
@@ -759,6 +884,10 @@ Apprends à le faire
 <button class="tap" type="button" onClick="{{buzzOnly}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #0E2A4F; font-family: inherit;font-size: 16px; font-weight: 700; cursor: pointer">Mes favoris</button>
 <button class="tap" type="button" onClick="{{startQuiz}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #0E2A4F; font-family: inherit;font-size: 16px; font-weight: 700; cursor: pointer">Refaire le quiz de niveau</button>
 <div style="height: 52px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<label for="nuit" style="font-size: 16px; font-weight: 700">Mode nuit</label>
+<button id="nuit" class="tap" type="button" onClick="{{toggleNight}}" aria-pressed="{{nightOn}}" style="{{nightStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(14,42,79,0.25)"></span></button>
+</div>
+<div style="height: 52px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
 <label for="vib" style="font-size: 16px; font-weight: 700">Vibrations</label>
 <button id="vib" class="tap" type="button" onClick="{{toggleHapt}}" aria-pressed="{{haptOn}}" style="{{toggleStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(14,42,79,0.25)"></span></button>
 </div>
@@ -844,7 +973,7 @@ Apprends à le faire
 window.Component = class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { screen: 'jeu', menu: false, quiz: null, open: null, level: (() => { try { const v = window.localStorage.getItem('inoviaLevel'); return v === null ? null : Math.max(0, Math.min(2, Number(v))); } catch (e) { return null; } })(), theme: 'Tout', q: '', auth: null, levelCard: false, sound: (() => { try { return window.localStorage.getItem('inoviaSound') !== '0'; } catch (e) { return true; } })(), saved: {}, hapt: true, font: 0, fonts: false };
+    this.state = { screen: 'jeu', menu: false, quiz: null, open: null, level: (() => { try { const v = window.localStorage.getItem('inoviaLevel'); return v === null ? null : Math.max(0, Math.min(2, Number(v))); } catch (e) { return null; } })(), theme: 'Tout', q: '', auth: null, levelCard: false, sound: (() => { try { return window.localStorage.getItem('inoviaSound') !== '0'; } catch (e) { return true; } })(), saved: {}, hapt: true, font: 0, fonts: false, fp: 0, fv: null, night: (() => { try { return window.localStorage.getItem('inoviaNight') === '1'; } catch (e) { return false; } })() };
     this.bank = [
       [
         { q: 'Qu’est-ce qu’une IA comme ChatGPT ?', o: ['Une personne qui répond en direct', 'Un programme qui génère des réponses à partir de ta demande', 'Un moteur de recherche classique'], a: 1 },
@@ -1219,7 +1348,7 @@ window.Component = class Component extends DCLogic {
     pe.sqv += (1 - pe.sq) * 0.32; pe.sqv *= 0.72; pe.sq += pe.sqv; pe.shake *= 0.85; pe.flash = Math.max(0, pe.flash - dt * 2.2);
     const x = cv.getContext('2d'); x.setTransform(DPR, 0, 0, DPR, 0, 0);
     x.save(); x.translate((Math.random() - 0.5) * pe.shake, (Math.random() - 0.5) * pe.shake);
-    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rgb(pe.cur.bg[0])); g.addColorStop(1, rgb(pe.cur.bg[1])); x.fillStyle = g; x.fillRect(-20, -20, W + 40, H + 40);
+    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, this.state.night ? 'rgb(16,21,38)' : rgb(pe.cur.bg[0])); g.addColorStop(1, this.state.night ? 'rgb(9,11,21)' : rgb(pe.cur.bg[1])); x.fillStyle = g; x.fillRect(-20, -20, W + 40, H + 40);
     const speed = 8 + tier * 18;
     pe.dots.forEach(d => { d.y -= d.s * speed * dt / H; if (d.y < -0.02) { d.y = 1.02; d.x = Math.random(); } x.fillStyle = rgb(pe.cur.acc, (0.35 + 0.35 * Math.sin(pe.t * 2 + d.p)) * (tier === 3 ? 0.9 : 0.55)); x.beginPath(); x.arc(d.x * W, d.y * H, d.r, 0, 6.29); x.fill(); });
     const st = this.stageIdxP(), c = { x: W / 2, y: H * 0.47 }, R = [60, 68, 76, 84][st] * Math.min(1, W / 358), br = 1 + Math.sin(pe.t * 2.2) * 0.015;
@@ -1329,7 +1458,7 @@ window.Component = class Component extends DCLogic {
     };
     document.addEventListener('pointerdown', this.fxDown, true);
   }
-  componentDidMount() { this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
+  componentDidMount() { try { if (this.state.night) { document.documentElement.style.background = '#07090F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#07090F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
   componentDidUpdate(pp, ps) { this.planetSync(); if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
@@ -1650,9 +1779,37 @@ window.Component = class Component extends DCLogic {
     if (!this.state.hapt) return;
     try { if (navigator.vibrate) navigator.vibrate(ms || 12); } catch (e) {}
   }
+  fmCat() { return {"parcours": ["Les bases de l’IA", "Créer", "Travailler", "Automatiser"], "mods": [{"n": 1, "p": 0, "title": "Les bases de l’IA", "free": true, "lvl": "Débutant", "learn": ["Expliquer simplement ce qu’est une IA", "Savoir ce qu’elle fait bien… et mal", "Avoir ton premier vrai échange avec une IA"], "mission": "Pose 3 questions à ChatGPT sur ton métier et garde la meilleure réponse.", "eps": [["assets/fm-robot.jpg", "C’est quoi", "l’IA ?", "C’est quoi vraiment l’IA ?", 6, "Oublie les robots des films. En 6 minutes, tu comprends ce qu’est vraiment une IA comme ChatGPT, d’où elle vient et pourquoi tout le monde en parle depuis 2023."], ["assets/fm-pixels.jpg", "Dans la tête", "d’une IA", "Comment une IA « réfléchit »", 7, "Une IA ne pense pas comme toi : elle devine le mot le plus probable, encore et encore. On t’explique ce mécanisme avec un exemple simple, et pourquoi ça la rend parfois géniale, parfois complètement à côté."], ["assets/fm-chess.jpg", "Ce qu’elle", "ne sait pas faire", "Ses forces et ses limites", 6, "L’IA écrit, résume, traduit et crée des images en quelques secondes. Mais elle peut aussi inventer des faits avec aplomb. Tu apprends à repérer quand lui faire confiance, et quand vérifier."], ["assets/fm-woman.jpg", "Ton premier", "échange", "Ton premier échange avec une IA", 7, "On ouvre ChatGPT ensemble, pas à pas. Tu poses ta première vraie question, tu relances, tu corriges. À la fin de la vidéo, tu sais t’en servir pour de vrai."]]}, {"n": 2, "p": 0, "title": "Bien parler à l’IA", "lvl": "Débutant", "learn": ["Écrire un prompt clair du premier coup", "Obtenir le ton et la longueur que tu veux", "Corriger une mauvaise réponse sans tout recommencer"], "mission": "Écris ton prompt pour le post Instagram de Burger Nova. L’IA te note sur 100.", "eps": [["assets/fm-code2.jpg", "Le prompt", "parfait", "Le prompt parfait en 4 étapes", 9, "Pourquoi la même IA donne une réponse géniale à certains et une réponse nulle à d’autres ? Tout se joue dans la façon de demander. Tu découvres la méthode en 4 étapes : le rôle, le contexte, la tâche et le format. Exemple réel : un post Instagram pour un fast-food, d’un résultat banal à un texte prêt à publier."], ["assets/fm-chess2.jpg", "Donne-lui", "un rôle", "Donner un rôle à l’IA", 7, "« Tu es un chef cuisinier », « tu es un recruteur »… Donner un rôle change complètement la réponse. On compare la même demande avec et sans rôle, et la différence saute aux yeux."], ["assets/fm-cube.jpg", "Les 5", "erreurs", "Les 5 erreurs qui ruinent tes résultats", 8, "Trop vague, trop long, sans exemple, sans format… Ces 5 erreurs expliquent la plupart des réponses décevantes. Tu apprends à les éviter avec des exemples avant et après."], ["assets/fm-code.jpg", "Corriger", "sans tout refaire", "Corriger une réponse sans tout recommencer", 6, "La première réponse n’est pas la bonne ? Normal. Tu apprends à guider l’IA en deux ou trois messages pour arriver exactement au résultat voulu."]]}, {"n": 3, "p": 0, "title": "Choisir le bon outil", "lvl": "Débutant", "learn": ["Savoir quel outil ouvrir pour chaque tâche", "Connaître les points forts de ChatGPT, Claude et Gemini", "Chercher une info fiable avec l’IA"], "mission": "Pose la même question à ChatGPT, Claude et Gemini, puis choisis la meilleure réponse.", "eps": [["assets/fm-duel.jpg", "ChatGPT, Claude ou Gemini ?", "Le match", "Lequel choisir pour quoi faire ?", 12, "On met les trois géants face à face sur les mêmes tâches : écrire un mail, résumer un document, trouver une idée. Tu repars en sachant lequel ouvrir selon ce que tu veux faire."], ["assets/fm-robot2.jpg", "Chercher", "sans se tromper", "Chercher une info avec l’IA", 7, "Perplexity, Gemini, la recherche de ChatGPT : ces outils citent leurs sources. Tu apprends à t’en servir pour trouver une info fiable, et à la vérifier en un geste."], ["assets/fm-robot.jpg", "Quel outil", "pour quoi ?", "Le bon outil pour chaque tâche", 6, "Texte, image, vidéo, code, tableur : il existe un outil IA pour presque tout. Voici une carte simple pour t’y retrouver sans te perdre dans les noms."]]}, {"n": 4, "p": 1, "title": "Images avec l’IA", "lvl": "Intermédiaire", "learn": ["Créer une image réaliste à partir d’une phrase", "Garder le même style sur plusieurs images", "Éviter les défauts typiques (mains, texte)"], "mission": "Crée l’affiche d’un concert imaginaire et envoie-la pour être notée.", "eps": [["assets/fm-cube.jpg", "Ta première", "image IA", "Ta première image en 30 secondes", 8, "Une phrase suffit pour obtenir une image. On part de zéro : tu crées ta première image réaliste, puis tu l’améliores étape par étape."], ["assets/fm-pixels.jpg", "Décrire", "comme un pro", "Décrire une image comme un photographe", 9, "Lumière, cadrage, objectif, ambiance : les mots des photographes donnent des images bien plus belles. Tu apprends le vocabulaire qui change tout."], ["assets/fm-night.jpg", "Le même", "style partout", "Garder le même style sur toutes tes images", 7, "Pour une marque ou un compte Instagram, toutes les images doivent se ressembler. Tu apprends à fixer un style et à le réutiliser."]]}, {"n": 5, "p": 1, "title": "Flyers et visuels pro", "lvl": "Intermédiaire", "learn": ["Créer un flyer propre en 10 minutes", "Choisir les bonnes couleurs et les bonnes polices", "Adapter un visuel pour Instagram, TikTok et l’impression"], "mission": "Crée le flyer de Burger Nova pour sa soirée du vendredi.", "eps": [["assets/fm-campus.jpg", "Ton premier", "flyer pro", "Crée ton premier flyer pro en 10 min", 10, "Un flyer pour un resto, une soirée ou un service : on le crée de A à Z avec l’IA, du texte à l’image finale, prêt à imprimer."], ["assets/fm-city.jpg", "Les règles", "d’un bon visuel", "Les règles d’un visuel qui attire l’œil", 8, "Pourquoi certains visuels arrêtent le pouce et d’autres non ? Contraste, une seule idée, un texte court : les règles simples qu’utilisent les pros."], ["assets/fm-night.jpg", "Un visuel,", "3 formats", "Adapter un visuel à chaque réseau", 6, "Story, post carré, affiche A4 : l’IA t’aide à décliner le même visuel dans tous les formats sans tout refaire."]]}, {"n": 6, "p": 1, "title": "Vidéo avec l’IA", "lvl": "Intermédiaire", "learn": ["Créer une courte vidéo à partir d’un texte", "Ajouter une voix naturelle", "Monter une vidéo prête pour TikTok"], "mission": "Crée une vidéo de 15 secondes pour présenter un produit.", "eps": [["assets/fm-woman.jpg", "Ta première", "vidéo IA", "Ta première vidéo IA de 15 secondes", 9, "Du texte à la vidéo : tu découvres les outils qui génèrent des plans réalistes, et tu crées ta première vidéo courte."], ["assets/fm-chess2.jpg", "Une voix", "qui sonne vrai", "Ajouter une voix naturelle", 7, "Les voix d’IA sont devenues bluffantes. Tu apprends à choisir la bonne voix, le bon rythme, et à éviter l’effet robot."], ["assets/fm-duel.jpg", "Monter", "en 5 minutes", "Monter ta vidéo avec l’IA", 8, "Sous-titres automatiques, coupes, musique : l’IA fait le plus long du montage. Tu finis avec une vidéo prête à publier."]]}, {"n": 7, "p": 2, "title": "Ton site sans coder", "lvl": "Intermédiaire", "learn": ["Créer une page web sans écrire de code", "Écrire un texte qui donne envie", "Mettre ton site en ligne"], "mission": "Mets en ligne une page pour un commerce de ton quartier et envoie le lien.", "eps": [["assets/fm-city.jpg", "Ton premier site", "sans coder", "En ligne en 20 minutes", 14, "Tu décris le site que tu veux, l’IA le construit. On crée ensemble une vraie page pour un commerce, et on la met en ligne avant la fin de la vidéo."], ["assets/fm-campus.jpg", "Une page", "qui vend", "Écrire une page qui donne envie", 9, "Un titre clair, une promesse, une preuve, un bouton : la structure des pages qui marchent, rédigée avec l’IA."], ["assets/fm-code.jpg", "Le mettre", "en ligne", "Mettre ton site en ligne", 8, "Nom de domaine, hébergement, partage du lien : toutes les étapes, une par une, sans jargon."]]}, {"n": 8, "p": 2, "title": "L’IA au travail", "lvl": "Débutant", "learn": ["Écrire tes mails deux fois plus vite", "Résumer un long document en quelques points", "Préparer une réunion en 5 minutes"], "mission": "Résume un long document de ton travail en 5 points avec l’IA.", "eps": [["assets/fm-code2.jpg", "Tes mails", "en 2 minutes", "Écrire tes mails deux fois plus vite", 7, "Relance, réclamation, candidature : tu apprends à faire écrire tes mails par l’IA avec ton ton à toi, puis à les relire en 30 secondes."], ["assets/fm-cube.jpg", "Résumer", "n’importe quoi", "Résumer un document de 50 pages", 6, "Rapport, contrat, cours : l’IA en sort l’essentiel en quelques secondes. Tu apprends à lui demander le bon format de résumé, et à vérifier les points clés."], ["assets/fm-chess.jpg", "Préparer", "une réunion", "Préparer une réunion avec l’IA", 7, "Ordre du jour, questions à poser, compte rendu automatique : l’IA devient ton assistant de réunion."]]}, {"n": 9, "p": 3, "title": "Ton premier agent IA", "lvl": "Avancé", "learn": ["Comprendre la différence entre une appli IA et un agent", "Créer un agent qui travaille pour toi", "Garder le contrôle sur ce qu’il fait"], "mission": "Crée un agent qui répond aux questions des clients d’un resto.", "eps": [["assets/fm-robot.jpg", "Ton premier", "agent IA", "C’est quoi un agent IA ?", 8, "Une appli IA répond à tes questions. Un agent, lui, agit : il envoie des mails, remplit des tableaux, prend des décisions. Tu comprends ce qui change, et pourquoi c’est la prochaine grande étape."], ["assets/fm-robot2.jpg", "Lui donner", "une mission", "Créer ton premier agent, pas à pas", 12, "Instructions, outils, limites : on construit ensemble un agent simple qui accomplit une vraie tâche à ta place."], ["assets/fm-pixels.jpg", "Garder", "le contrôle", "Garder le contrôle sur ton agent", 9, "Un agent mal réglé peut faire n’importe quoi en ton nom. Tu apprends à fixer des limites, à vérifier ses actions et à tout arrêter en un geste."]]}, {"n": 10, "p": 3, "title": "Automatiser avec Make et Zapier", "lvl": "Avancé", "learn": ["Créer ta première automatisation sans coder", "Relier tes applis entre elles", "Ajouter l’IA au milieu d’une automatisation"], "mission": "Automatise l’envoi d’un mail de bienvenue à chaque nouveau client.", "eps": [["assets/fm-island.jpg", "Automatiser", "sans coder", "Ta première automatisation", 10, "Un formulaire rempli, un mail envoyé, une ligne ajoutée dans un tableau : tu crées ta première automatisation qui tourne toute seule, jour et nuit."], ["assets/fm-night.jpg", "Relier", "tes applis", "Relier tes applis entre elles", 9, "Gmail, Google Sheets, Instagram, ton agenda : tu apprends à les faire travailler ensemble sans rien copier-coller."], ["assets/fm-code.jpg", "L’IA dans", "tes automatisations", "Ajouter l’IA dans une automatisation", 11, "Trier des mails, rédiger des réponses, résumer des avis clients : l’IA au milieu de tes automatisations, c’est là que tout s’accélère."]]}], "hero": [[3, 0, "NOUVEAU"], [7, 0, "TOP 1"], [9, 0, "TENDANCE"]], "progress": {"1-0": 100, "1-1": 45}}; }
+  fmVals() {
+    const s = this.state, C = this.fmCat();
+    const openEp = (n, i) => () => { this.sfx('pop', 1.3); this.buzz(); this.setState({ fv: n + '-' + i }); };
+    const epKey = (n, i) => n + '-' + i;
+    const locked = (m, i) => !m.free && i > 0;
+    const chips = C.parcours.map((label, i) => ({ label, cls: s.fp === i ? 'fm-on' : '', pick: () => { this.buzz(); this.sfx('pop', 1.25); this.setState({ fp: i }); } }));
+    const hero = C.hero.map(([n, i, badge]) => { const m = C.mods.find(x => x.n === n), e = m.eps[i]; return { img: e[0], t1: e[1], t2: e[2], dur: e[4] + ' min', badge, aria: e[3] + ', ' + e[4] + ' minutes', open: openEp(n, i) }; });
+    const mods = C.mods.filter(m => m.p === s.fp).map(m => {
+      const total = m.eps.reduce((a, e) => a + e[4], 0);
+      return { n: String(m.n), title: m.title, meta: m.eps.length + ' vidéos · ' + total + ' min' + (m.free ? ' · Gratuit' : ''),
+        eps: m.eps.map((e, i) => { const p = C.progress[epKey(m.n, i)] || 0; return { img: e[0], t1: e[1], t2: e[2], done: p >= 100, hasProg: p > 0, prog: 'width:' + p + '%', locked: locked(m, i), aria: 'Épisode ' + (i + 1) + ' : ' + e[3] + (locked(m, i) ? ' (verrouillé)' : ''), open: openEp(m.n, i) }; }) };
+    });
+    let fv = { img: '', mod: '', title: '', ep: '', dur: '', lvl: '', desc: '', cta: '', mission: '', learn: [], close: () => {}, play: () => {} };
+    if (s.fv) {
+      const [n, i] = s.fv.split('-').map(Number); const m = C.mods.find(x => x.n === n); const e = m && m.eps[i];
+      if (e) {
+        const lk = locked(m, i);
+        fv = { img: e[0], mod: 'Module ' + m.n + ' · ' + m.title, title: e[3], ep: 'Épisode ' + (i + 1), dur: e[4] + ' min', lvl: m.lvl, desc: e[5], mission: m.mission,
+          cta: lk ? 'Débloquer la formation' : ((C.progress[epKey(n, i)] || 0) > 0 && (C.progress[epKey(n, i)] || 0) < 100 ? 'Reprendre' : 'Regarder'),
+          learn: m.learn.map(t => ({ t })),
+          close: () => { this.buzz(); this.setState({ fv: null }); },
+          play: () => { this.buzz([8, 30, 12]); this.say(lk ? 'Le paiement arrivera avec la vraie appli.' : 'La vidéo arrive bientôt : on tourne les épisodes.'); this.setState({}); } };
+      }
+    }
+    return { fm: { chips, hero, mods }, fv, showFv: !!s.fv && s.screen === 'form' };
+  }
+
   go(s) {
     if (s !== this.state.screen) { this.sfx('pop', s === 'jeu' ? 1 : s === 'actu' ? 1.15 : 1.3); this.buzz([8, 30, 12]); } else this.buzz();
-    this.setState({ screen: s, menu: false, open: null, world: false, mission: false, info: null, auth: null, levelCard: false, wealth: false });
+    this.setState({ screen: s, menu: false, open: null, world: false, mission: false, info: null, auth: null, levelCard: false, wealth: false, fv: null });
   }
   qBank() { const C = this.initContent(); return C.levelBank.map(l => l.map(x => ({ q: x[0], o: x[1], a: x[2] }))); }
   pickQ(lvl, asked) {
@@ -1748,8 +1905,13 @@ window.Component = class Component extends DCLogic {
       showOnb: s.screen === 'onb' && !z,
       showActu: s.screen === 'actu',
       showForm: s.screen === 'form',
+      ...this.fmVals(),
+      themeCls: s.night ? 'night' : '',
+      nightOn: s.night ? 'true' : 'false',
+      nightStyle: 'width:56px;height:32px;padding:3px;border:none;border-radius:16px;cursor:pointer;display:flex;transition:background .2s ease;background:' + (s.night ? '#1E3A8A' : '#DCE3F2') + ';justify-content:' + (s.night ? 'flex-end' : 'flex-start'),
+      toggleNight: () => { const on = !s.night; try { window.localStorage.setItem('inoviaNight', on ? '1' : '0'); } catch (e) {} this.buzz(); this.sfx('pop', on ? 0.9 : 1.2); this.setState({ night: on }); try { document.documentElement.style.background = on ? '#07090F' : ''; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', on ? '#07090F' : '#FFFFFF'); } catch (e) {} },
       showProfil: s.screen === 'profil',
-      showChrome: s.screen !== 'onb' && s.screen !== 'intro' && !s.open && !s.world && !s.info && !s.auth && !s.levelCard && !this.hackFx && !(this.panel && s.screen === 'jeu') && !(this.gs && this.gs.dead && s.screen === 'jeu'),
+      showChrome: s.screen !== 'onb' && s.screen !== 'intro' && !(s.fv && s.screen === 'form') && !s.open && !s.world && !s.info && !s.auth && !s.levelCard && !this.hackFx && !(this.panel && s.screen === 'jeu') && !(this.gs && this.gs.dead && s.screen === 'jeu'),
       showInfo: !!s.info && s.screen === 'jeu',
       showPanel: !!this.panel && s.screen === 'jeu' && !s.open && !s.world, pn: this.panelVals(), dv: (() => { const d = this.deathVals(); d.show = d.show && s.screen === 'jeu'; return d; })(),
       showHack: !!this.hackFx && s.screen === 'jeu',
@@ -1789,15 +1951,6 @@ window.Component = class Component extends DCLogic {
         ...n, ...covers(n.photo ? '' : n.cover), hasPhoto: !!n.photo,
         open: () => { this.buzz(); this.setState({ open: n.id }); },
         cardStyle: FONT + 'display:block;width:100%;padding:0;overflow:hidden;text-align:left;border-radius:28px;border:none;background:#FFFFFF;box-shadow:0 14px 32px rgba(30,58,138,.10),0 2px 6px rgba(30,58,138,.05);cursor:pointer;animation-delay:' + (i * 90) + 'ms'
-      })),
-      courses: [
-        { t: 'Créer du contenu avec l’IA', p: '19,99 €' },
-        { t: 'Lancer un business avec l’IA', p: '29,99 €' },
-        { t: 'Image et vidéo IA', p: '19,99 €' },
-        { t: 'Coder avec l’IA', p: '29,99 €' }
-      ].map((c, i) => ({
-        ...c,
-        style: FONT + 'width:100%;display:flex;align-items:center;gap:14px;padding:14px;border-radius:24px;border:1.5px solid #D6DEEC;background:#FFFFFF;cursor:pointer;animation-delay:' + (i * 80) + 'ms'
       })),
       bActu: bubble(s.screen === 'actu'),
       bForm: bubble(s.screen === 'form'),

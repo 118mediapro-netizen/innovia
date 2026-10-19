@@ -647,23 +647,9 @@ Apprends à le faire
 </sc-if>
 
 <sc-if value="{{showWorld}}" hint-placeholder-val="{{ false }}">
-<div class="sheet" style="position: absolute; inset: 0; background: #FFFFFF; display: flex; flex-direction: column">
-<div style="padding: 54px 16px 10px; display: flex; align-items: center; justify-content: space-between">
-<button class="tap" type="button" onClick="{{g.closeWorld}}" aria-label="Retour au jeu" style="width: 46px; height: 46px; border: none; border-radius: 23px; background: #E4EAF6; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
-<span style="font-size: 20px; font-weight: 800">Mon monde</span>
-<span style="padding: 6px 12px; border-radius: 14px; background: #1E3A8A; font-size: 12px; font-weight: 800">{{g.stageName}}</span>
-</div>
-<div style="position: relative; flex: 1; margin: 0 12px; border-radius: 30px; overflow: hidden; background: #5FB4E8">
-<canvas id="inoWorld" aria-label="Ta ville en 3D" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab"></canvas>
-<sc-if value="{{g.red}}" hint-placeholder-val="{{ false }}"><span class="redfx" style="position: absolute; inset: 0; background: rgba(229,72,77,0.12); pointer-events: none"></span></sc-if>
-<sc-if value="{{g.emptyWorld}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); white-space: nowrap; padding: 10px 16px; border-radius: 20px; background: rgba(255,255,255,0.92); font-size: 13px; font-weight: 800; color: #0E2A4F; pointer-events: none">Achète des agents : ta ville va grandir</span></sc-if>
-<sc-if value="{{g.notEmptyWorld}}" hint-placeholder-val="{{ true }}"><span class="whint" style="position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); white-space: nowrap; padding: 8px 14px; border-radius: 18px; background: rgba(255,255,255,0.9); font-size: 12px; font-weight: 800; color: #0E2A4F; pointer-events: none; display: flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"></path></svg>Glisse pour tourner · pince pour zoomer</span></sc-if>
-</div>
-<div style="padding: 14px 16px 36px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-<div style="position: relative; height: 70px; border-radius: 20px; background: #E4EAF6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#1E3A8A" stroke="#0E2A4F" stroke-width="1.6"></circle><path d="M12 6.5l1.5 3.5 3.5.3-2.7 2.3.9 3.6L12 14.3l-3.2 1.9.9-3.6L7 10.3l3.5-.3z" fill="#FFFFFF"></path></svg><span style="font-size: 13px; font-weight: 800">+{{g.perSec}}/s</span><button class="tap" type="button" onClick="{{g.info.wgain}}" aria-label="Explication" style="position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; padding: 0; border: 1.5px solid #D6DEEC; border-radius: 13px; background: #FFFFFF; color: #0E2A4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="position: relative; height: 70px; border-radius: 20px; background: #E4EAF6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="4"></rect><circle cx="9" cy="13" r="1.5" fill="#0E2A4F"></circle><circle cx="15" cy="13" r="1.5" fill="#0E2A4F"></circle><path d="M12 7V4M10 4h4"></path></svg><span style="font-size: 13px; font-weight: 800">{{g.nAgents}} agents</span><button class="tap" type="button" onClick="{{g.info.wagents}}" aria-label="Explication" style="position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; padding: 0; border: 1.5px solid #D6DEEC; border-radius: 13px; background: #FFFFFF; color: #0E2A4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="position: relative; height: 70px; border-radius: 20px; background: #E4EAF6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px"><span style="{{g.ctrlDot}}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="4"></rect><circle cx="9" cy="13" r="1.5" fill="#0E2A4F"></circle><circle cx="15" cy="13" r="1.5" fill="#0E2A4F"></circle><path d="M12 7V4M10 4h4"></path></svg></span><span style="font-size: 13px; font-weight: 800">{{g.ctrlPct}}</span><button class="tap" type="button" onClick="{{g.info.wctrl}}" aria-label="Explication" style="position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; padding: 0; border: 1.5px solid #D6DEEC; border-radius: 13px; background: #FFFFFF; color: #0E2A4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-</div>
+<div class="sheet" style="position: absolute; inset: 0; background: #040814">
+<iframe id="neoWorld" src="monde/index.html?embed=1" title="Mon monde Neo Corp en 3D" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #040814"></iframe>
+<button class="tap" type="button" onClick="{{g.closeWorld}}" aria-label="Retour au jeu" style="position: absolute; top: 54px; left: 16px; width: 46px; height: 46px; border: 1px solid rgba(140,170,255,0.25); border-radius: 23px; background: rgba(10,16,34,0.72); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8EEFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
 </div>
 </sc-if>
 
@@ -1458,7 +1444,7 @@ window.Component = class Component extends DCLogic {
     };
     document.addEventListener('pointerdown', this.fxDown, true);
   }
-  componentDidMount() { try { if (this.state.night) { document.documentElement.style.background = '#07090F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#07090F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
+  componentDidMount() { if (!this.neoMsg) { this.neoMsg = (e) => { const f = document.getElementById('neoWorld'); const d = e.data; if (!f || e.source !== f.contentWindow || !d) return; if (d.type === 'neocorp-ready') this.neoPost(); else if (d.type === 'neocorp-buzz') this.buzz(d.ms); }; window.addEventListener('message', this.neoMsg); } try { if (this.state.night) { document.documentElement.style.background = '#07090F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#07090F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
   componentDidUpdate(pp, ps) { this.planetSync(); if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
@@ -1684,9 +1670,12 @@ window.Component = class Component extends DCLogic {
   startWorld(n) {
     this.worldT = null; const T = window.THREE; const cv = document.getElementById('inoWorld');
     if (!this.state.world || this.state.screen !== 'jeu') return;
-    if (!T || !cv || !cv.clientWidth) { if ((n || 0) < 40) this.worldT = setTimeout(() => this.startWorld((n || 0) + 1), 60); return; }
+    if (!cv) return;
+    if (!T || !cv.clientWidth) { if ((n || 0) < 40) this.worldT = setTimeout(() => this.startWorld((n || 0) + 1), 60); return; }
     try { this.worldEng = this.inoWorld(T, cv, this.worldState()); } catch (e) { this.worldEng = null; }
   }
+  neoState() { const gs = this.gs; if (!gs) return null; const t = gs.total || 0; return { type: 'neocorp', lvl: t >= 1e10 ? 5 : t >= 1e7 ? 4 : t >= 1e6 ? 3 : t >= 1e4 ? 2 : 1, worth: this.fmt(gs.credits || 0) + ' €', wl: 'Trésorerie', staff: this.totalHum() }; }
+  neoPost() { const f = document.getElementById('neoWorld'); if (!f || !f.contentWindow) return; const st = this.neoState(); if (st) { try { f.contentWindow.postMessage(st, '*'); } catch (e) {} } }
   stopWorld() { clearTimeout(this.worldT); this.worldT = null; if (this.worldEng) { try { this.worldEng.dispose(); } catch (e) {} this.worldEng = null; } }
   componentWillUnmount() { if (this.fxDown) { try { document.removeEventListener('pointerdown', this.fxDown, true); if (this.fxLayer) this.fxLayer.remove(); } catch (e) {} this.fxOn = false; } this.planetStop(); clearInterval(this.tickT); clearInterval(this.cloudTimer); if (this.gs) { this.save(); this.cloudFlush(); } this.stopIntro(); this.stopWorld(); }
   startIntro() {
@@ -2324,6 +2313,7 @@ window.Component = class Component extends DCLogic {
     if (this.state.screen === 'intro') return;
     const gs = this.gs;
     if (this.worldEng) { try { this.worldEng.update(this.worldState()); } catch (e) {} }
+    if (this.state.world) this.neoPost();
     if (gs.dead) { this.deadT = (this.deadT || 0) + dt; this.refresh(); return; }
     const playing = this.state.screen === 'jeu';
     if (playing) this.stat('play', dt);

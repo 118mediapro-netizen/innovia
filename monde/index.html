@@ -449,9 +449,9 @@ const ships=[];
   g.position.set(x,-1,z);g.rotation.y=R()*6;scene.add(g);ships.push(g);});
 
 /* ---------- eau ---------- */
-const water=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400),new THREE.ShaderMaterial({uniforms:{t:{value:0}},
+const water=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400),new THREE.ShaderMaterial({uniforms:{t:{value:0},day:{value:0}},
   vertexShader:`varying vec3 vW;void main(){vec4 w=modelMatrix*vec4(position,1.);vW=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`,
-  fragmentShader:`uniform float t;varying vec3 vW;
+  fragmentShader:`uniform float t;uniform float day;varying vec3 vW;
   void main(){
     float w=sin(vW.x*.15+t*.8)*.5+sin(vW.z*.21-t*.6)*.5+sin((vW.x+vW.z)*.42+t*1.3)*.25+sin((vW.x-vW.z)*.9-t*1.9)*.12;
     vec3 c=mix(vec3(.008,.025,.07),vec3(.03,.075,.16),w*.4+.5);
@@ -462,6 +462,8 @@ const water=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400),new THREE.ShaderMa
     c+=vec3(1.,.8,.5)*sp*.5*near;
     float far=smoothstep(140.,420.,length(vW-cameraPosition));
     c=mix(c,vec3(.016,.03,.07),far);
+    vec3 cd=mix(vec3(.10,.33,.47),vec3(.20,.50,.64),w*.4+.5)+vec3(1.,.95,.85)*sp*.6;cd=mix(cd,vec3(.62,.78,.9),far);
+    c=mix(c,cd,day);
     gl_FragColor=vec4(c,1.);}`}));
 water.rotation.x=-Math.PI/2;water.position.y=-1;scene.add(water);
 // eau bioluminescente de la marina
@@ -990,7 +992,7 @@ function buildBedroom(){
   interior.lay=null;iScene.add(root);
 }
 
-function buildInterior(l){clearInterior();if(l===1)buildBedroom();else buildOffice(l);interiorHome();}
+function buildInterior(l){clearInterior();if(l===1)buildBedroom();else buildOffice(l);interiorHome();if(typeof applyDay==='function')applyDay();}
 function interiorHome(){const h=interior.home;iCam.position.set(...h.pos);iCtl.target.set(...h.target);iCtl.minDistance=h.minD;iCtl.maxDistance=h.maxD;iCtl.update();}
 iCtl.addEventListener('change',()=>{if(!interior)return;const t=iCtl.target,[lx,lz]=interior.home.lim;
   t.x=Math.max(-lx,Math.min(lx,t.x));t.z=Math.max(-lz,Math.min(lz,t.z));t.y=Math.max(0,Math.min(2.5,t.y));});
@@ -1264,10 +1266,23 @@ const SKY=new THREE.Group();scene.add(SKY);
   SKY.add(new THREE.Points(gg,new THREE.PointsMaterial({color:0xffc98a,size:2,sizeAttenuation:false,transparent:true,opacity:.75})));})();
 
 VIEWS={1:{pos:[30,17,40],tg:[0,6,4],min:12,max:110},2:{pos:[24,24,34],tg:[0,4,3],min:12,max:110},3:{pos:[46,32,60],tg:[0,9,6],min:18,max:160},4:{pos:[72,52,92],tg:[0,18,4],min:28,max:230}};
+
+/* ---------- jour / nuit (suit le mode nuit de l'appli Inovia) ---------- */
+let DAY=new URLSearchParams(location.search).get('night')==='0';
+function applyDay(){const d=DAY;
+  scene.background.set(d?0x9cc6e8:0x040814);scene.fog.color.set(d?0xb7d2ea:0x050a18);scene.fog.density=d?0.0026:0.0042;
+  hemiL.color.set(d?0xe2efff:0x33447a);hemiL.groundColor.set(d?0x6f604c:0x1a140e);hemiL.intensity=d?1.0:.6;
+  moon.color.set(d?0xfff0d8:0x9db0ff);moon.intensity=d?1.45:.35;moon.position.set(-60,d?130:90,-40);
+  starsPts.visible=!d;water.material.uniforms.day.value=d?1:0;iScene.background.set(d?0xd6e4f3:0x05070f);iHemi.intensity=d?1.05:.5;iDir.intensity=d?1.1:.25;
+  const f=d?.12:1;
+  [scene,iScene].forEach(S=>S.traverse(o=>{if(!o.material)return;(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{
+    if(typeof m.emissiveIntensity==='number'){if(m.userData.ei0===undefined)m.userData.ei0=m.emissiveIntensity;m.emissiveIntensity=m.userData.ei0*f;}
+    if(m.blending===THREE.AdditiveBlending&&!m.isPointsMaterial){if(m.userData.op0===undefined)m.userData.op0=m.opacity;m.opacity=m.userData.op0*(d?.1:1);}
+    if(m.isPointsMaterial&&m!==starsPts.material){if(m.userData.op0===undefined)m.userData.op0=m.opacity;m.opacity=m.userData.op0*(d?0:1);}});}));}
 function showWorld(l){curWorld=l;Object.keys(worlds).forEach(k=>{worlds[k].visible=(+k===l);});SKY.visible=l<5;
   worlds[l].userData.grow.forEach((g,i)=>{g.scale.y=.001;g.userData.gd=.1+i*.03;});
   if(l===5){buildings.forEach((b,i)=>{b.scale.y=.001;});towerH=8;}
-  homeView();controls.update();}
+  homeView();controls.update();applyDay();}
 
 /* ---------- niveaux, verrouillage, interface ---------- */
 const LV=[{name:'Garage',worth:'12 k €',staff:0},{name:'Start-up',worth:'480 k €',staff:3},{name:'Scale-up',worth:'18 M €',staff:10},{name:'Groupe',worth:'740 M €',staff:22},{name:'Neo Corp',worth:'2,4 Md €',staff:38}];
@@ -1292,6 +1307,7 @@ function updateStats(){worthEl.textContent=extWorth||LV[unlocked-1].worth;countE
 function showToast(){toastName.textContent=LV[unlocked-1].name;toast.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.remove('on'),2600);}
 /* l'appli envoie le vrai niveau du joueur, sa trésorerie et son nombre d'employés */
 addEventListener('message',e=>{const d=e.data;if(!EMB||!d||d.type!=='neocorp'||e.source!==parent)return;
+  if(d.night!=null){const nd=!d.night;if(nd!==DAY){DAY=nd;if(started)applyDay();}}
   if(d.worth!=null)extWorth=String(d.worth);if(d.wl)document.getElementById('worthLbl').textContent=String(d.wl);if(d.staff!=null)extStaff=Number(d.staff)||0;
   const nl=Math.max(1,Math.min(5,parseInt(d.lvl,10)||1));
   if(!started){unlocked=nl;level=nl;boot();return;}
@@ -1398,6 +1414,7 @@ function cityFrame(dt){const W=worlds[curWorld];
   controls.update();}
 function frame(){
   const dt=Math.min(clock.getDelta(),.05);time+=dt;
+  if(bloom){if(DAY){bloom.strength=.16;bloom.threshold=.96;}else{bloom.strength=mode==='in'?.6:.75;bloom.threshold=mode==='in'?.9:.72;}}
   if(mode==='city'){cityFrame(dt);if(composer)composer.render();else renderer.render(scene,camera);}
   else{updateAgents(time,dt);iCtl.update();if(composer)composer.render();else renderer.render(iScene,iCam);}
   requestAnimationFrame(frame);

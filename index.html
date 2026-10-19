@@ -1910,7 +1910,7 @@ window.Component = class Component extends DCLogic {
       info: (() => { const x = (s.info && (/^ag\d+$/.test(s.info) ? this.agInfo(+s.info.slice(2)) : this.infoTexts()[s.info])) || { t: '', d: '', tip: '' }; return { t: x.t, d: x.d, tip: x.tip, hasTip: !!x.tip }; })(),
       closeInfo: () => { this.buzz(); this.setState({ info: null }); },
       showWorld: !!s.world && s.screen === 'jeu',
-      ncSrc: 'monde/index.html?embed=1&lvl=' + (s.ncLvl || 1),
+      ncSrc: 'monde/index.html?embed=1&lvl=' + (s.ncLvl || 1) + '&night=' + (s.night ? 1 : 0),
       showIntro: s.screen === 'intro',
       skipIntro: () => { this.buzz(); this.stopIntro(); this.setState({ screen: 'jeu' }); },
       replayIntro: () => { this.buzz(); this.setState({ menu: false, open: null, quiz: null, screen: 'intro' }); },
@@ -2230,7 +2230,7 @@ window.Component = class Component extends DCLogic {
   ncSend(force) {
     try {
       if (!this.state.world || !this.gs) return; const f = document.getElementById('ncFrame'); if (!f || !f.contentWindow) return;
-      const d = { type: 'neocorp', lvl: this.ncLevel(), worth: this.fmt(Math.max(0, this.gs.credits || 0)) + ' €', wl: 'Trésorerie', staff: this.totalHum() };
+      const d = { type: 'neocorp', lvl: this.ncLevel(), worth: this.fmt(Math.max(0, this.gs.credits || 0)) + ' €', wl: 'Trésorerie', staff: this.totalHum(), night: !!this.state.night };
       const k = JSON.stringify(d); if (!force && k === this.ncLast) return; this.ncLast = k; f.contentWindow.postMessage(d, '*');
     } catch (e) {}
   }

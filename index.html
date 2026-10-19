@@ -2226,7 +2226,7 @@ window.Component = class Component extends DCLogic {
   palier(n) { return n >= 200 ? 1.5 : n >= 100 ? 1.35 : n >= 50 ? 1.2 : n >= 25 ? 1.1 : 1; }
   uq(i) { return i < 12 ? (this.gs.q[i] || 1) : 1; }
   unitRaw(i) { return this.ubase(i) * this.uq(i) * this.palier(this.ucount(i)); }
-  ncLevel() { const t = (this.gs && this.gs.total) || 0; return t >= 1e10 ? 5 : t >= 1e7 ? 4 : t >= 1e6 ? 3 : t >= 1e4 ? 2 : 1; }
+  ncLevel() { const NC_TEST_ALL = true; /* TEST : tous les niveaux de Mon monde débloqués — remettre à false pour la vraie progression */ if (NC_TEST_ALL) return 5; const t = (this.gs && this.gs.total) || 0; return t >= 1e10 ? 5 : t >= 1e7 ? 4 : t >= 1e6 ? 3 : t >= 1e4 ? 2 : 1; }
   ncSend(force) {
     try {
       if (!this.state.world || !this.gs) return; const f = document.getElementById('ncFrame'); if (!f || !f.contentWindow) return;

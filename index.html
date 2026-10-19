@@ -647,9 +647,9 @@ Apprends à le faire
 </sc-if>
 
 <sc-if value="{{showWorld}}" hint-placeholder-val="{{ false }}">
-<div class="sheet" style="position: absolute; inset: 0; background: #040814">
-<iframe id="neoWorld" src="monde/index.html?embed=1" title="Mon monde Neo Corp en 3D" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #040814"></iframe>
-<button class="tap" type="button" onClick="{{g.closeWorld}}" aria-label="Retour au jeu" style="position: absolute; top: 54px; left: 16px; width: 46px; height: 46px; border: 1px solid rgba(140,170,255,0.25); border-radius: 23px; background: rgba(10,16,34,0.72); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8EEFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+<div class="sheet" style="position: absolute; inset: 0; z-index: 40; background: #040814; overflow: hidden">
+<iframe id="ncFrame" src="{{ncSrc}}" title="Mon monde en 3D" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #040814"></iframe>
+<button class="tap" type="button" onClick="{{g.closeWorld}}" aria-label="Retour au jeu" style="position: absolute; left: 14px; top: 54px; z-index: 2; width: 46px; height: 46px; padding: 0; border: 1px solid rgba(140,170,255,0.28); border-radius: 23px; background: rgba(10,16,34,0.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8EEFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
 </div>
 </sc-if>
 
@@ -1444,7 +1444,7 @@ window.Component = class Component extends DCLogic {
     };
     document.addEventListener('pointerdown', this.fxDown, true);
   }
-  componentDidMount() { if (!this.neoMsg) { this.neoMsg = (e) => { const f = document.getElementById('neoWorld'); const d = e.data; if (!f || e.source !== f.contentWindow || !d) return; if (d.type === 'neocorp-ready') this.neoPost(); else if (d.type === 'neocorp-buzz') this.buzz(d.ms); }; window.addEventListener('message', this.neoMsg); } try { if (this.state.night) { document.documentElement.style.background = '#07090F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#07090F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
+  componentDidMount() { this.ncMsg = (e) => { const d = e && e.data; if (!d || typeof d !== 'object') return; if (d.type === 'neocorp-ready') this.ncSend(true); else if (d.type === 'neocorp-buzz') this.buzz(d.ms); }; try { window.addEventListener('message', this.ncMsg); } catch (e) {} try { if (this.state.night) { document.documentElement.style.background = '#07090F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#07090F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
   componentDidUpdate(pp, ps) { this.planetSync(); if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
@@ -1668,14 +1668,12 @@ window.Component = class Component extends DCLogic {
   };
 }
   startWorld(n) {
+    return;
     this.worldT = null; const T = window.THREE; const cv = document.getElementById('inoWorld');
     if (!this.state.world || this.state.screen !== 'jeu') return;
-    if (!cv) return;
-    if (!T || !cv.clientWidth) { if ((n || 0) < 40) this.worldT = setTimeout(() => this.startWorld((n || 0) + 1), 60); return; }
+    if (!T || !cv || !cv.clientWidth) { if ((n || 0) < 40) this.worldT = setTimeout(() => this.startWorld((n || 0) + 1), 60); return; }
     try { this.worldEng = this.inoWorld(T, cv, this.worldState()); } catch (e) { this.worldEng = null; }
   }
-  neoState() { const gs = this.gs; if (!gs) return null; const t = gs.total || 0; return { type: 'neocorp', lvl: t >= 1e10 ? 5 : t >= 1e7 ? 4 : t >= 1e6 ? 3 : t >= 1e4 ? 2 : 1, worth: this.fmt(gs.credits || 0) + ' €', wl: 'Trésorerie', staff: this.totalHum() }; }
-  neoPost() { const f = document.getElementById('neoWorld'); if (!f || !f.contentWindow) return; const st = this.neoState(); if (st) { try { f.contentWindow.postMessage(st, '*'); } catch (e) {} } }
   stopWorld() { clearTimeout(this.worldT); this.worldT = null; if (this.worldEng) { try { this.worldEng.dispose(); } catch (e) {} this.worldEng = null; } }
   componentWillUnmount() { if (this.fxDown) { try { document.removeEventListener('pointerdown', this.fxDown, true); if (this.fxLayer) this.fxLayer.remove(); } catch (e) {} this.fxOn = false; } this.planetStop(); clearInterval(this.tickT); clearInterval(this.cloudTimer); if (this.gs) { this.save(); this.cloudFlush(); } this.stopIntro(); this.stopWorld(); }
   startIntro() {
@@ -1912,6 +1910,7 @@ window.Component = class Component extends DCLogic {
       info: (() => { const x = (s.info && (/^ag\d+$/.test(s.info) ? this.agInfo(+s.info.slice(2)) : this.infoTexts()[s.info])) || { t: '', d: '', tip: '' }; return { t: x.t, d: x.d, tip: x.tip, hasTip: !!x.tip }; })(),
       closeInfo: () => { this.buzz(); this.setState({ info: null }); },
       showWorld: !!s.world && s.screen === 'jeu',
+      ncSrc: 'monde/index.html?embed=1&lvl=' + (s.ncLvl || 1),
       showIntro: s.screen === 'intro',
       skipIntro: () => { this.buzz(); this.stopIntro(); this.setState({ screen: 'jeu' }); },
       replayIntro: () => { this.buzz(); this.setState({ menu: false, open: null, quiz: null, screen: 'intro' }); },
@@ -2227,6 +2226,14 @@ window.Component = class Component extends DCLogic {
   palier(n) { return n >= 200 ? 1.5 : n >= 100 ? 1.35 : n >= 50 ? 1.2 : n >= 25 ? 1.1 : 1; }
   uq(i) { return i < 12 ? (this.gs.q[i] || 1) : 1; }
   unitRaw(i) { return this.ubase(i) * this.uq(i) * this.palier(this.ucount(i)); }
+  ncLevel() { const t = (this.gs && this.gs.total) || 0; return t >= 1e10 ? 5 : t >= 1e7 ? 4 : t >= 1e6 ? 3 : t >= 1e4 ? 2 : 1; }
+  ncSend(force) {
+    try {
+      if (!this.state.world || !this.gs) return; const f = document.getElementById('ncFrame'); if (!f || !f.contentWindow) return;
+      const d = { type: 'neocorp', lvl: this.ncLevel(), worth: this.fmt(Math.max(0, this.gs.credits || 0)) + ' €', wl: 'Trésorerie', staff: this.totalHum() };
+      const k = JSON.stringify(d); if (!force && k === this.ncLast) return; this.ncLast = k; f.contentWindow.postMessage(d, '*');
+    } catch (e) {}
+  }
   totalAgents() { return this.gs.ag.reduce((a, b) => a + b, 0); }
   totalSys() { return this.gs.sys.reduce((a, b) => a + b, 0); }
   totalHum() { return this.gs.hum.reduce((a, b) => a + b, 0); }
@@ -2307,13 +2314,13 @@ window.Component = class Component extends DCLogic {
   durS(s) { if (!isFinite(s) || s <= 0) return 'jamais'; if (s < 60) return Math.ceil(s) + ' s'; return this.dur(s * 1000); }
   // ----- temps réel -----
   tick() {
+    if (this.state.world) this.ncSend(false);
     if (!this.gs) return;
     const now = Date.now(); const gap = (now - this.lastTick) / 1000; const dt = Math.min(5, gap); this.lastTick = now;
     if (gap > 30 && this.gs && !this.gs.dead && this.state.screen !== 'intro') { this.gs.savedAt = now - gap * 1000; const g0 = this.offlineGain(); if (g0 >= 1) this.say('Pendant ta pause, tes agents ont rapporté ' + this.fmt(g0) + ' €.'); }
     if (this.state.screen === 'intro') return;
     const gs = this.gs;
     if (this.worldEng) { try { this.worldEng.update(this.worldState()); } catch (e) {} }
-    if (this.state.world) this.neoPost();
     if (gs.dead) { this.deadT = (this.deadT || 0) + dt; this.refresh(); return; }
     const playing = this.state.screen === 'jeu';
     if (playing) this.stat('play', dt);
@@ -3242,10 +3249,10 @@ window.Component = class Component extends DCLogic {
       ups: D.UPS.map((u, k) => ({ key: 'up' + k, name: u.n, aria: u.n + ' : ' + u.eff, label: gs.ups[k] ? 'Acquis' : this.fmt(u.c) + ' €', buy: () => this.buyUp(k),
         style: 'min-height:74px;padding:8px 4px;border:none;border-radius:20px;font-family:inherit;color:#0E2A4F;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;background:' + (gs.ups[k] ? '#1E3A8A' : gs.credits >= u.c ? '#E4EAF6' : '#F7F8FC;opacity:.6') })),
       showInbox: (gs.inbox || []).length > 0 && !this.sheet && !this.newCard && !this.panel, inboxN: String((gs.inbox || []).length), inboxAria: (gs.inbox || []).length + ' message(s)', openInbox: () => this.openInbox(),
-      showCard: !!this.newCard && !this.sheet && !this.panel, cardTitle: this.newCard ? this.newCard.t : '', cardText: this.newCard ? this.newCard.d : '',
+      showCard: !!this.newCard && !this.sheet && !this.panel && !this.state.world, cardTitle: this.newCard ? this.newCard.t : '', cardText: this.newCard ? this.newCard.d : '',
       closeCard: () => { this.newCard = null; this.cardNext = Date.now() + 2500; this.sfx('pop', 1.1); this.buzz(8); this.refresh(); },
       info: ['credits', 'steps', 'qg', 'ctrl', 'actu', 'train', 'tasks', 'rep', 'agents', 'apps', 'team', 'ups', 'wgain', 'wagents', 'wctrl', 'sec', 'systems'].reduce((oo, k) => { oo[k] = () => this.openInfo(k); return oo; }, {}),
-      openWorld: () => { this.buzz(); this.setState({ world: true }); }, closeWorld: () => { this.buzz(); this.setState({ world: false }); },
+      openWorld: () => { this.buzz(); this.ncLast = ''; this.setState({ world: true, ncLvl: this.ncLevel() }); }, closeWorld: () => { this.buzz(); this.setState({ world: false }); },
       nAgents: nA, emptyWorld: nA === 0, notEmptyWorld: nA > 0, red: au >= 0.5,
       perSec: this.fmt(e.net), tapValue: this.fmt(this.tapValue()),
       hasBoost: !!(this.boost && this.boost.until > Date.now()), boostLabel: this.boost ? (this.boost.mult >= 1 ? 'Bonus' : 'Malus') + ' × ' + String(this.boost.mult).replace('.', ',') + ' · ' + Math.max(0, Math.ceil((this.boost.until - Date.now()) / 1000)) + ' s' : '',

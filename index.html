@@ -72,6 +72,9 @@ a{color:#260E4F}a:hover{color:#260E4F}
 .night .ino-strip .ino-cell{color:#F2EEFA}
 .night .ino-strip .ino-cell+.ino-cell{border-left-color:#2A2140}
 .night .ino-strip .ino-cell small{color:#A99BC4}
+.ino-strip .ino-cell.goal{background:#7046DC;animation:goalPulse 1.4s ease-in-out infinite}
+.ino-strip .ino-cell.goal small,.ino-strip .ino-cell.goal b{color:#FFFFFF}
+@keyframes goalPulse{0%,100%{box-shadow:inset 0 0 0 0 rgba(255,255,255,0)}50%{box-shadow:inset 0 0 0 3px rgba(255,255,255,.45)}}
 .ino-live{width:8px;height:8px;border-radius:4px;background:#E5484D;box-shadow:0 0 0 0 rgba(229,72,77,.6);animation:inoLive 1.6s ease-out infinite;flex:none}
 @keyframes inoLive{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55)}100%{box-shadow:0 0 0 8px rgba(229,72,77,0)}}
 .ino-ptr{height:var(--ino-ptr,0px);overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:800;color:#6C5A8C}
@@ -467,8 +470,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 <span style="font-size: 13px; color: #6C5A8C">de ton parcours</span>
 </div>
 </div>
-<p style="margin: 18px 0 0; font-size: 16px; font-weight: 700">Aucune formation commencée</p>
-<p style="margin: 4px 0 0; font-size: 14px; color: #6C5A8C">Commence ta première formation pour faire avancer ton cercle.</p>
+<p style="margin: 18px 0 0; font-size: 16px; font-weight: 700">Aucun apprentissage commencé</p>
+<p style="margin: 4px 0 0; font-size: 14px; color: #6C5A8C">Commence ton premier apprentissage pour faire avancer ton cercle.</p>
 <div style="margin-top: 26px; width: 100%; display: flex; flex-direction: column; gap: 10px">
 <div class="card" style="padding: 16px 18px; border-radius: 22px; border: 1.5px solid #DED6EC; display: flex; align-items: center; justify-content: space-between; text-align: left">
 <span style="display: flex; flex-direction: column; gap: 2px">
@@ -479,7 +482,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </div>
 <div class="card" style="padding: 16px 18px; border-radius: 22px; border: 1.5px solid #DED6EC; display: flex; align-items: center; justify-content: space-between; text-align: left">
 <span style="display: flex; flex-direction: column; gap: 2px">
-<span style="font-size: 13px; color: #6C5A8C">Mes formations</span>
+<span style="font-size: 13px; color: #6C5A8C">Mes apprentissages</span>
 <span style="font-size: 17px; font-weight: 800">0</span>
 </span>
 <button class="tap" type="button" onClick="{{goForm}}" style="height: 40px; padding: 0 16px; border: none; border-radius: 20px; background: #7046DC; color: #260E4F; font-family: inherit;font-size: 14px; font-weight: 700; cursor: pointer">Découvrir</button>
@@ -504,15 +507,6 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div class="ino-strip"><sc-for list="{{g.tiles}}" as="tl" hint-placeholder-count="4"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}"><small>{{tl.t}}</small><b>{{tl.sub}}</b><sc-if value="{{tl.dot}}" hint-placeholder-val="{{ false }}"><span class="dot">{{tl.badge}}</span></sc-if></button></sc-for></div>
 <sc-if value="{{g.hasBoost}}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 12px; background: #EBE4F6; font-size: 12px; font-weight: 800">{{g.boostLabel}}</span></sc-if>
 
-<div style="margin-top: 12px; display: flex; align-items: center; gap: 6px">
-<sc-for list="{{g.steps}}" as="sp" hint-placeholder-count="4">
-<span style="display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 0 0 58px"><span class="stg" style="{{sp.style}}"><img src="{{sp.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none"></span><span style="{{sp.labStyle}}">{{sp.lab}}</span></span>
-<sc-if value="{{sp.hasBar}}" hint-placeholder-val="{{ true }}"><span style="flex: 1; height: 6px; border-radius: 3px; background: #EBE4F6; overflow: hidden"><span class="barfx" style="{{sp.bar}}"></span></span></sc-if>
-</sc-for>
-<button class="tap" type="button" onClick="{{g.info.steps}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
-</div>
-<div style="margin-top: 6px; font-size: 12px; font-weight: 800; color: #6C5A8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.lvlLine}}</div>
-
 <div style="margin-top: 12px; position: relative">
 <button class="tap hqbtn" type="button" onClick="{{g.tap}}" aria-label="Travailler : clique sur la planète" style="position: relative; display: block; width: 100%; height: 300px; padding: 0; border: none; border-radius: 28px; overflow: hidden; cursor: pointer; background: #F2EEFA; touch-action: manipulation; font-family: inherit">
 <canvas id="inoPlanet" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none"></canvas>
@@ -522,6 +516,14 @@ html, body, #stage, #app { overscroll-behavior: none }
 </button>
 <sc-if value="{{g.hasCombo}}" hint-placeholder-val="{{ false }}"><span class="combo" style="position: absolute; z-index: 4; top: 54px; left: 50%; padding: 6px 14px; border-radius: 16px; background: #260E4F; color: #FFFFFF; font-size: 14px; font-weight: 800; white-space: nowrap">{{g.comboLabel}}</span></sc-if>
 </div>
+<div style="margin-top: 12px; display: flex; align-items: center; gap: 6px">
+<sc-for list="{{g.steps}}" as="sp" hint-placeholder-count="4">
+<span style="display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 0 0 58px"><span class="stg" style="{{sp.style}}"><img src="{{sp.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none"></span><span style="{{sp.labStyle}}">{{sp.lab}}</span></span>
+<sc-if value="{{sp.hasBar}}" hint-placeholder-val="{{ true }}"><span style="flex: 1; height: 6px; border-radius: 3px; background: #EBE4F6; overflow: hidden"><span class="barfx" style="{{sp.bar}}"></span></span></sc-if>
+</sc-for>
+<button class="tap" type="button" onClick="{{g.info.steps}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
+</div>
+<div style="margin-top: 6px; font-size: 12px; font-weight: 800; color: #6C5A8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.lvlLine}}</div>
 
 <sc-if value="{{g.hasCta}}" hint-placeholder-val="{{ false }}"><button class="tap missionb shine" type="button" onClick="{{g.ctaAct}}" style="{{g.ctaStyle}}"><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px"><span style="font-size: 16px; font-weight: 800">{{g.ctaT}}</span><span style="font-size: 13px; font-weight: 600; opacity: 0.85; line-height: 1.35">{{g.ctaD}}</span></span><span style="{{g.ctaBStyle}}">{{g.ctaB}}</span></button></sc-if>
 
@@ -1046,37 +1048,37 @@ window.Component = class Component extends DCLogic {
       { id: 'n0', tag: 'Société', cover: 'b', photo: 'assets/photo-societe.jpg', title: 'Un quart des questions des députés écrites par l’IA ?',
         lead: 'Selon un détecteur d’IA cité par franceinfo, 48 des 194 questions écrites déposées par des députés le 22 septembre auraient été entièrement rédigées par une IA. Certains députés l’assument : pour eux, c’est un outil d’aide qu’ils relisent et valident.',
         why: 'L’IA s’invite jusque dans la fabrique de la loi. Savoir s’en servir, mais surtout relire et vérifier ce qu’elle écrit, devient une compétence de base.',
-        module: 'Module : Vérifier ce que l’IA écrit', course: 'Formation Les bases de l’IA',
+        module: 'Module : Vérifier ce que l’IA écrit', course: 'Parcours Les bases de l’IA',
         source: 'franceinfo', date: '7 oct. 2026', srcTitle: '« Je vois l’intelligence artificielle comme une aide » : des députés assument d’utiliser l’IA pour rédiger leurs questions et leurs amendements', url: 'https://www.franceinfo.fr/internet/intelligence-artificielle/je-vois-l-intelligence-artificielle-comme-une-aide-des-deputes-assument-d-utiliser-l-ia-pour-rediger-leurs-questions-et-leurs-amendements_8227393.html' },
       { id: 'n1', pimg: 'https://www.musicbusinessworldwide.com/files/2026/10/GettyImages-594350394.jpg', tag: 'Création', cover: 'a', impact: 'Agent visuel × 2 aujourd’hui', photo: 'assets/photo-creation.jpg', title: '8 millions avec de fausses écoutes : 18 mois de prison.',
         lead: 'Aux États-Unis, Michael Smith a fait écouter des centaines de milliers de chansons créées par IA à des milliers de faux comptes sur Spotify, Apple Music ou YouTube Music. Il a touché plus de 8 millions de dollars de droits. Le 6 octobre, il a été condamné à 18 mois de prison.',
         why: 'Créer de la musique avec l’IA est permis. Tricher sur les écoutes, non. Pour vivre de tes créations, mise sur un vrai public.',
-        module: 'Module : Créer avec l’IA, sans risque', course: 'Formation Créer du contenu avec l’IA',
+        module: 'Module : Créer avec l’IA, sans risque', course: 'Parcours Créer du contenu avec l’IA',
         source: 'Music Business Worldwide', date: '7 oct. 2026', srcTitle: 'Michael Smith, man behind $8M AI song and bot streaming fraud, sentenced to 18 months in prison', url: 'https://www.musicbusinessworldwide.com/man-behind-8m-ai-song-and-bot-streaming-fraud-is-sentenced-to-18-months-in-prison/' },
       { id: 'n2', pimg: 'https://storage.googleapis.com/gweb-research2023-media/images/HO_previewImage1.width-800.format-jpeg.jpg', tag: 'Emploi', cover: 'b', photo: 'assets/photo-emploi.jpg', title: 'L’IA t’aide. Mais elle ne t’apprend pas le métier.',
         lead: 'Google Research a suivi 133 avocats pendant trois mois. Avec l’IA, tous rédigent mieux et les débutants vont plus vite. Mais une fois privés de l’outil, seuls les plus expérimentés avaient vraiment progressé.',
         why: 'Utiliser l’IA ne suffit pas : il faut comprendre ce qu’elle fait pour progresser toi-même. C’est ce qui fera la différence sur ton CV.',
-        module: 'Module : Progresser avec l’IA, pas seulement aller vite', course: 'Formation Les bases de l’IA',
+        module: 'Module : Progresser avec l’IA, pas seulement aller vite', course: 'Parcours Les bases de l’IA',
         source: 'Google Research', date: '7 oct. 2026', srcTitle: 'Does better work always mean better workers?', url: 'https://research.google/blog/does-better-work-always-mean-better-workers/' },
       { id: 'n3', pimg: 'https://newsroom.ibm.com/image/Providence_health_banner.jpg', tag: 'Business', cover: 'c', photo: 'assets/photo-business.jpg', title: '90 % de paperasse en moins pour recruter.',
         lead: 'Aux États-Unis, le groupe de santé Providence utilise RITA, un agent IA conçu avec IBM. Il crée les offres d’emploi, gère les validations et suit les recrutements. Résultat annoncé : 90 % de tâches administratives en moins pour les managers, et des mutations internes 12 jours plus rapides.',
         why: 'Les agents IA prennent en charge les tâches répétitives des entreprises. Savoir les mettre en place est une compétence très recherchée.',
-        module: 'Module : Automatiser une tâche avec un agent IA', course: 'Formation Lancer un business avec l’IA',
+        module: 'Module : Automatiser une tâche avec un agent IA', course: 'Parcours Lancer un business avec l’IA',
         source: 'IBM Newsroom', date: '7 oct. 2026', srcTitle: 'Providence Collaborates with IBM Using AI to Reduce Hiring Admin Time Without Replacing a Single System', url: 'https://newsroom.ibm.com/2026-10-07-providence-health-collaborates-with-ibm-using-ai-to-reduce-hiring-admin-time-without-replacing-a-single-system' },
       { id: 'n4', pimg: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/THUMBNAIL_BLOG.width-1300.png', tag: 'Code', cover: 'd', photo: 'assets/photo-code.jpg', title: 'Décris ton jeu. Joue-y tout de suite.',
         lead: 'Google lance Playground : tu décris en quelques phrases le jeu que tu veux, l’IA le crée, tu y joues dans ton navigateur et tu peux le partager. Pour l’instant, c’est réservé aux États-Unis et aux plus de 18 ans.',
         why: 'Créer un jeu ou une appli sans savoir coder devient réalité. Ce qui compte : savoir décrire précisément ce que tu veux.',
-        module: 'Module : Ta première appli sans coder', course: 'Formation Coder avec l’IA',
+        module: 'Module : Ta première appli sans coder', course: 'Parcours Coder avec l’IA',
         source: 'Google', date: '7 oct. 2026', srcTitle: 'Introducing Playground: Create and play custom games', url: 'https://blog.google/innovation-and-ai/technology/ai/playground-experimental-gaming-platform/' },
       { id: 'n5', pimg: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Raccoon_Video_SynthIDDetector.max-1440x810.png', tag: 'Image et vidéo', cover: 'e', photo: 'assets/photo-image.jpg', title: 'Vraie photo ou IA ? Google ouvre son détecteur à tous.',
         lead: 'Le SynthID Detector de Google vérifie si une image, une vidéo ou un son a été créé avec l’IA de Google ou de partenaires comme OpenAI et NVIDIA. Il est désormais ouvert à tout le monde, pour l’instant en anglais.',
         why: 'Les fausses images vont se multiplier. Apprendre à les repérer te protège des arnaques et des fausses infos.',
-        module: 'Module : Repérer une image créée par IA', course: 'Formation Image et vidéo IA',
+        module: 'Module : Repérer une image créée par IA', course: 'Parcours Image et vidéo IA',
         source: 'Google DeepMind', date: '7 oct. 2026', srcTitle: 'We’re making it easier to identify AI-generated content globally', url: 'https://blog.google/innovation-and-ai/models-and-research/google-deepmind/synth-id-ai-content/' },
       { id: 'n6', pimg: 'https://pic.clubic.com/v1/images/2460364/raw', tag: 'Société', cover: 'f', photo: '', title: 'GPT-6 arrive dans ChatGPT, même en gratuit.',
         lead: 'OpenAI ouvre GPT-6 à tous les utilisateurs de ChatGPT. Les comptes gratuits reçoivent la version GPT-6 Luna. Nouveauté : les réponses peuvent contenir de petits outils interactifs, comme une calculette ou une liste de courses.',
         why: 'L’IA la plus récente est gratuite pour tout le monde. La différence ne se fera plus sur l’accès, mais sur qui sait bien s’en servir.',
-        module: 'Module : Bien parler à ChatGPT', course: 'Formation Les bases de l’IA',
+        module: 'Module : Bien parler à ChatGPT', course: 'Parcours Les bases de l’IA',
         source: 'Clubic', date: '8 oct. 2026', srcTitle: 'GPT-6 pour tous : la nouvelle IA d’OpenAI arrive pour le grand public', url: 'https://www.clubic.com/actualite-633151-gpt-6-pour-tous-la-nouvelle-ia-d-openai-arrive-pour-le-grand-public.html' }
     ];
     // Actus qui arrivent en direct (démo : dans la vraie appli, le serveur lit les médias toutes les minutes)
@@ -1084,17 +1086,17 @@ window.Component = class Component extends DCLogic {
       { id: 'n7', pimg: 'https://www.lalibre.be/resizer/v2/ODKLKJBY5JHBZGGEX5JO7VIOG4.png?auth=99992c0249edfd0f59ed7caae24c0f483574cfcaa1b362acfcac9717c690a301&width=1200&height=630&quality=85&smart=true', tag: 'Business', cover: 'c', title: 'L’IA fait repartir Wall Street.',
         lead: 'Lundi, la Bourse de New York a fini en hausse grâce aux valeurs liées à l’intelligence artificielle, après plusieurs séances difficiles. Le Nasdaq a gagné 1,11 % et Nvidia 1,38 %. CoreWeave, très endetté, a encore reculé après avoir perdu un quart de sa valeur la semaine dernière.',
         why: 'L’IA reste le moteur de la Bourse, mais les entreprises qui s’endettent trop pour suivre sont punies. Comprendre où va l’argent t’aide à voir quels métiers et quels outils vont grandir.',
-        module: 'Module : Comprendre le business de l’IA', course: 'Formation Lancer un business avec l’IA',
+        module: 'Module : Comprendre le business de l’IA', course: 'Parcours Lancer un business avec l’IA',
         source: 'La Libre', date: '20 oct. 2026', srcTitle: 'Wall Street profite d’un regain d’intérêt pour l’intelligence artificielle', url: 'https://lalibre.be/dernieres-depeches/2026/10/20/wall-street-profite-dun-regain-dinteret-pour-lintelligence-artificielle-G2GA44DOG5FOPFNLOV7EYOAKRM' },
       { id: 'n8', pimg: 'https://www.maddyness.com/app/uploads/2025/09/Ballon-dor--scaled.jpg', tag: 'Société', cover: 'a', impact: 'Agent analyste × 2 aujourd’hui', title: 'Ballon d’or 2026 : l’IA a choisi son vainqueur.',
         lead: 'Le cabinet français Avisia a fait tourner une IA sur les 30 joueurs nommés. Lamine Yamal arrive en tête avec 23 % de chances, devant Harry Kane (21 %), puis Kylian Mbappé et Rodri (19 %). Verdict le 26 octobre à Londres.',
         why: 'L’IA ne devine pas l’avenir : elle calcule des probabilités à partir du passé. En 2025, ce même modèle donnait Dembélé gagnant à 72 %. Garde toujours un œil critique sur les prédictions.',
-        module: 'Module : Vérifier ce que l’IA écrit', course: 'Formation Les bases de l’IA',
+        module: 'Module : Vérifier ce que l’IA écrit', course: 'Parcours Les bases de l’IA',
         source: 'Maddyness', date: '20 oct. 2026', srcTitle: 'Ballon d’or 2026 : voici le vainqueur selon l’IA', url: 'https://maddyness.com/2026/10/20/ballon-dor-2026-voici-le-vainqueur-selon-lia' },
       { id: 'n9', pimg: 'https://cdn.theneuron.ai/everything-happened-ai-today-october-19-2026.png', tag: 'Emploi', cover: 'b', title: 'Chez Anthropic, les postes juniors fondent.',
         lead: 'Selon une étude publiée par Anthropic, la part des juniors dans ses équipes techniques est passée de 21 % à 14 % depuis début 2025. Ils ne représentent plus que 9 % des recrutements techniques, contre 27 % avant. L’entreprise recrute pourtant toujours plus au total.',
         why: 'Les tâches de débutant sont les premières confiées aux agents IA. Pour décrocher un premier poste, savoir piloter ces agents devient un vrai avantage.',
-        module: 'Module : Automatiser une tâche avec un agent IA', course: 'Formation Les bases de l’IA',
+        module: 'Module : Automatiser une tâche avec un agent IA', course: 'Parcours Les bases de l’IA',
         source: 'The Neuron', date: '20 oct. 2026', srcTitle: 'Everything That Happened in AI Today, Monday, October 19', url: 'https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-october-19-2026/' }
     ];
     this.SB = { url: 'https://swlzdzzfudomdqtgqjjo.supabase.co', key: 'sb_publishable__w68mk60GQjnadt8zAuTtw_mhIX7L8t' }; this.remote = []; this.remoteOk = false; this.remoteNext = null; this.nextPoll = 0;
@@ -1863,9 +1865,12 @@ window.Component = class Component extends DCLogic {
     C.mods.forEach(m => { const x = (A.eps || {})[m.n] || []; m.eps = m.eps.concat(x.map(e => [e.img, e.t1, e.t2 || '', e.title, e.dur || 5, e.desc || ''])); });
     return C;
   }
-  fmPrice(m, i) { const A = this.admLoad(); const k = m.n + '-' + i; if (A.price && A.price[k] != null) return Number(A.price[k]) || 0; return (!m.free && i > 0 && m.n < 100) ? 2.99 : 0; }
+  fmPrice(m, i) { const A = this.admLoad(); const k = m.n + '-' + i; if (A.price && A.price[k] != null) return Number(A.price[k]) || 0; return (!m.free && i > 0 && m.n < 100) ? ({ 'Débutant': 4.99, 'Intermédiaire': 6.99, 'Avancé': 9.99 }[m.lvl] || 4.99) : 0; }
+  fmPack() { const A = this.admLoad(); return A.pack != null ? Number(A.pack) : 69; }
+  fmTotal() { const C = this.fmCat(); let t = 0; C.mods.forEach(m => m.eps.forEach((e, i) => { t += this.fmPrice(m, i); })); return t; }
+  parsePrice(v) { const n = parseFloat(String(v || '').replace(',', '.').replace(/[^0-9.]/g, '')); return isFinite(n) ? Math.max(0, Math.min(999, Math.round(n * 100) / 100)) : null; }
   fmBought() { try { return JSON.parse(window.localStorage.getItem('inoviaBought') || '{}') || {}; } catch (e) { return {}; } }
-  fmLocked(m, i) { return this.fmPrice(m, i) > 0 && !this.fmBought()[m.n + '-' + i]; }
+  fmLocked(m, i) { const b = this.fmBought(); return this.fmPrice(m, i) > 0 && !b.all && !b[m.n + '-' + i]; }
   euro(v) { return (Number(v) || 0).toFixed(2).replace('.', ',') + ' €'; }
   fmVals() {
     const s = this.state, C = this.fmCat();
@@ -2084,7 +2089,7 @@ window.Component = class Component extends DCLogic {
       closeLevel: () => { this.buzz(); this.setState({ levelCard: false }); },
       showLevel: !!s.levelCard && s.screen !== 'intro',
       lvName: s.level === null ? 'Pas encore évalué' : this.levels[s.level].name,
-      lvDesc: s.level === null ? 'Fais le test pour que l’IA règle ton fil et tes formations à ton niveau.' : this.levels[s.level].desc,
+      lvDesc: s.level === null ? 'Fais le test pour que l’IA règle ton fil et tes apprentissages à ton niveau.' : this.levels[s.level].desc,
       lvSegs: [0, 1, 2].map(i => ({ style: 'flex:1;height:10px;border-radius:5px;background:' + (s.level !== null && i <= s.level ? '#7046DC' : '#EBE4F6') })),
       lvBtn: s.level === null ? 'Faire le test (12 questions)' : 'Refaire le test (12 questions)',
       closeQuiz: () => { this.buzz(); if (s.screen === 'onb') this.onbDone(); this.setState({ quiz: null, screen: s.screen === 'onb' ? 'actu' : s.screen }); },
@@ -2471,10 +2476,10 @@ window.Component = class Component extends DCLogic {
     const brands = [{ name: 'OpenAI', re: /openai|chatgpt|\bgpt|\bsora\b|altman/i, fixed: true }, { name: 'Anthropic', re: /anthropic|\bclaude\b/i, fixed: true }, { name: 'Google', re: /google|gemini|deepmind|alphabet/i, fixed: true }];
     const esc = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const custom = (this.admLoad().cats || []).map(c => { const kw = String(c.kw || '').split(',').map(w => w.trim()).filter(Boolean); return { name: c.name, re: kw.length ? new RegExp(kw.map(esc).join('|'), 'i') : null, custom: true }; });
-    return base.concat(brands, custom);
+    const hide = this.admLoad().hide || []; return base.concat(brands, custom).filter(c => c.name === 'Tout' || hide.indexOf(c.name) < 0);
   }
   inCat(n, c) { if ((n.cats || []).indexOf(c.name) >= 0) return true; if (c.tag) return n.tag === c.tag; if (c.re) return c.re.test((n.title || '') + ' ' + (n.lead || '') + ' ' + (n.srcTitle || '')); return false; }
-  admArts() { return (this.admLoad().arts || []).map(a => ({ id: 'a' + a.id, pimg: a.img || '', tag: ['Société', 'Création', 'Business', 'Emploi', 'Image et vidéo', 'Code'].indexOf(a.cat) >= 0 ? a.cat : 'Société', cats: [a.cat], cover: 'a', title: a.title, lead: a.text || '', why: '', fromExcerpt: false, module: 'Module : Vérifier ce que l’IA écrit', course: 'Formation Les bases de l’IA', source: a.url ? (a.src || 'Sélection Inovia') : 'Inovia', date: new Date(a.ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }), srcTitle: a.title, url: a.url || '', ts: a.ts })); }
+  admArts() { return (this.admLoad().arts || []).map(a => ({ id: 'a' + a.id, pimg: a.img || '', tag: ['Société', 'Création', 'Business', 'Emploi', 'Image et vidéo', 'Code'].indexOf(a.cat) >= 0 ? a.cat : 'Société', cats: [a.cat], cover: 'a', title: a.title, lead: a.text || '', why: '', fromExcerpt: false, module: 'Module : Vérifier ce que l’IA écrit', course: 'Parcours Les bases de l’IA', source: a.url ? (a.src || 'Sélection Inovia') : 'Inovia', date: new Date(a.ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }), srcTitle: a.title, url: a.url || '', ts: a.ts })); }
   // ----- listes d'articles (Favoris, À lire plus tard, listes perso) -----
   listsLoad() {
     if (!this._lists) { let L = null; try { L = JSON.parse(window.localStorage.getItem('inoviaLists') || 'null'); } catch (e) {} this._lists = L && L.fav ? L : { fav: { name: 'Favoris', items: {} }, later: { name: 'À lire plus tard', items: {} }, custom: [] }; this._lists.fav.name = 'Favoris'; this._lists.later.name = 'À lire plus tard'; }
@@ -2485,7 +2490,7 @@ window.Component = class Component extends DCLogic {
   listSnaps() { const out = {}; this.listsLoad().all.forEach(l => Object.keys(l.items).forEach(k => { out[k] = l.items[k]; })); return Object.keys(out).map(k => out[k]); }
   openLists(id) { const n = this.allNews().find(x => x.id === id); if (!n) return; this.buzz(8); this.openPanel({ kind: 'lists', any: true, id: id, snap: { id: n.id, pimg: n.pimg || '', photo: n.photo || '', tag: n.tag, cats: n.cats || [], cover: 'a', title: n.title, lead: n.lead, why: n.why || '', fromExcerpt: !!n.fromExcerpt, module: n.module, course: n.course, source: n.source, date: n.date, srcTitle: n.srcTitle, url: n.url, ts: n.ts }, name: '' }); }
   mapRemote(x) {
-    const M = { 'Société': ['Module : Vérifier ce que l’IA écrit', 'Formation Les bases de l’IA'], 'Création': ['Module : Créer avec l’IA, sans risque', 'Formation Créer du contenu avec l’IA'], 'Emploi': ['Module : Progresser avec l’IA, pas seulement aller vite', 'Formation Les bases de l’IA'], 'Business': ['Module : Automatiser une tâche avec un agent IA', 'Formation Lancer un business avec l’IA'], 'Code': ['Module : Ta première appli sans coder', 'Formation Coder avec l’IA'], 'Image et vidéo': ['Module : Repérer une image créée par IA', 'Formation Image et vidéo IA'] };
+    const M = { 'Société': ['Module : Vérifier ce que l’IA écrit', 'Parcours Les bases de l’IA'], 'Création': ['Module : Créer avec l’IA, sans risque', 'Parcours Créer du contenu avec l’IA'], 'Emploi': ['Module : Progresser avec l’IA, pas seulement aller vite', 'Parcours Les bases de l’IA'], 'Business': ['Module : Automatiser une tâche avec un agent IA', 'Parcours Lancer un business avec l’IA'], 'Code': ['Module : Ta première appli sans coder', 'Parcours Coder avec l’IA'], 'Image et vidéo': ['Module : Repérer une image créée par IA', 'Parcours Image et vidéo IA'] };
     const tag = M[x.tag] ? x.tag : 'Société'; const d = new Date(x.published_at); const ok = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u)) ? u : '';
     return { id: 'r' + x.id, pimg: ok(x.image), tag: tag, cover: 'a', title: String(x.title || ''), lead: String(x.lead || x.excerpt || ''), why: String(x.why || ''), fromExcerpt: !x.lead,
       module: x.module || M[tag][0], course: M[tag][1], source: String(x.source || ''), date: isNaN(+d) ? '' : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }), srcTitle: String(x.title || ''), url: ok(x.url), ts: isNaN(+d) ? Date.now() : +d };
@@ -3227,7 +3232,7 @@ window.Component = class Component extends DCLogic {
       bl.push(B.Row({ t: 'Améliore ce prompt', sub: 'Tu réécris une demande ratée · l’IA te note · + 2 à 3', img: IMG.r_redaction, tag: 'Écrire', act: () => this.openWrite() }));
       bl.push(B.Row({ t: 'Le bon outil', sub: 'Quelle vraie appli pour quel besoin ? · + 1', img: IMG.t_perplexity, tag: 'Choisir', act: () => this.openToolQ() }));
       bl.push(B.Row({ t: 'Mini-jeu IA', sub: 'Prompt, vrai ou faux, hallucinations… · + 1', img: IMG.r_recherche, tag: 'Jouer', act: () => this.openTrainGame() }));
-      bl.push(B.Btn('Les formations complètes', () => { this.panel = null; this.go('form'); }, 'light'));
+      bl.push(B.Btn('Tous les apprentissages', () => { this.panel = null; this.go('form'); }, 'light'));
     } else if (p.kind === 'write') {
       kicker = 'Améliore ce prompt'; title = '« ' + p.ex.bad + ' »';
       bl.push(B.P('Ce prompt est trop vague. Réécris-le pour obtenir : ' + p.ex.goal));
@@ -3248,7 +3253,7 @@ window.Component = class Component extends DCLogic {
       bl.push(B.Img(this.photo(m.mode === 'text' ? 'emploi' : m.kind === 'Site web' ? 'code' : 'creation'), 130));
       bl.push(B.P('« ' + m.brief + ' »'));
       bl.push(B.H('Ce que le client va vérifier')); m.crit.forEach(c => bl.push(B.P('✓ ' + c, true)));
-      bl.push(B.Note('Outil conseillé : ' + m.tool + '. Formation utile : ' + m.form + '.'));
+      bl.push(B.Note('Outil conseillé : ' + m.tool + '. Parcours utile : ' + m.form + '.'));
       if (!p.res || !p.res.ok) {
         if (m.mode === 'image') bl.push(B.File(p.preview ? 'Changer d’image' : 'Ajouter la capture de ta création', (ev) => this.pickFile(ev), p.preview));
         else bl.push(B.Area('misText', p.text, 'Colle ici ton texte…', (ev) => { p.text = ev && ev.target ? ev.target.value : ''; p.err = ''; this.refresh(); }));
@@ -3259,7 +3264,7 @@ window.Component = class Component extends DCLogic {
         if (p.res.ok) { bl.push(B.Note('Validé ! + ' + p.res.reward + ', + 5 compétence, + 5 réputation et + 5 % de gains pour toujours.', 'gold')); bl.push(B.Btn('Continuer', () => this.closePanel(), 'dark')); }
         else { bl.push(B.Note('Il faut 70 / 100. Améliore ta création et renvoie-la.', 'gold')); bl.push(B.Btn('Renvoyer', () => this.validateMission())); } }
       else bl.push(B.Btn('Envoyer au client', () => this.validateMission(), 'dark'));
-      bl.push(B.Btn('Apprendre avec la formation', () => { this.panel = null; this.go('form'); }, 'light'));
+      bl.push(B.Btn('Apprendre avec le parcours', () => { this.panel = null; this.go('form'); }, 'light'));
     } else if (p.kind === 'societe') {
       const co = gs.company; kicker = 'Ma société'; title = co ? co.name : 'Ton activité';
       const A = this.totalAgents(), S = this.totalSys(), H = this.totalHum(); const au = this.autonomy();
@@ -3331,7 +3336,7 @@ window.Component = class Component extends DCLogic {
     }
     if (p.kind === 'quizAsk') {
       kicker = 'Petite question'; title = 'Tu veux qu’on trouve ton niveau en IA ?';
-      bl.push(B.P('4 questions, 1 minute. Ton fil d’actu et tes formations s’adaptent ensuite à ton niveau.'));
+      bl.push(B.P('4 questions, 1 minute. Ton fil d’actu et tes apprentissages s’adaptent ensuite à ton niveau.'));
       bl.push(B.Btn('Trouver mon niveau', () => { this.panel = null; this.startQuiz(4); }, 'dark'));
       bl.push(B.Btn('J’ai la flemme', () => this.closePanel(), 'light'));
       bl.push(B.P('Tu pourras toujours le faire plus tard depuis le menu.', true));
@@ -3342,14 +3347,24 @@ window.Component = class Component extends DCLogic {
       bl.push(B.Btn('Créer mon compte', () => { this.panel = null; this.openAuth('create'); }, 'dark'));
       bl.push(B.Btn('Plus tard', () => this.closePanel(), 'light'));
     } else if (p.kind === 'buyVid') {
-      const C = this.fmCat(); const m = C.mods.find(x => x.n === p.n); const ep = m && m.eps[p.i]; const pr = m ? this.fmPrice(m, p.i) : 0;
+      const C = this.fmCat(); const m = C.mods.find(x => x.n === p.n); const ep = m && m.eps[p.i]; const pr = m ? this.fmPrice(m, p.i) : 0; const tot = this.fmTotal(); const pack = this.fmPack();
+      const buy = (key, msg) => { const b0 = this.fmBought(); b0[key] = 1; try { window.localStorage.setItem('inoviaBought', JSON.stringify(b0)); } catch (e) {} this.panel = null; this.celebrate(msg, key === 'all'); this.refresh(); };
       kicker = 'Vidéo payante'; title = ep ? ep[3] : 'Vidéo';
-      if (ep) bl.push(B.Img(ep[0], 170));
-      bl.push(B.Kv('Prix', this.euro(pr), '#260E4F', true));
-      bl.push(B.P('Achat unique : la vidéo reste à toi pour toujours.', true));
-      bl.push(B.Btn('Acheter · ' + this.euro(pr), () => { const b = this.fmBought(); b[p.n + '-' + p.i] = 1; try { window.localStorage.setItem('inoviaBought', JSON.stringify(b)); } catch (e) {} this.panel = null; this.celebrate('Vidéo débloquée !', false); this.refresh(); }, 'dark'));
+      if (ep) bl.push(B.Img(ep[0], 150));
+      bl.push(B.Btn('Acheter cette vidéo · ' + this.euro(pr), () => buy(p.n + '-' + p.i, 'Vidéo débloquée !'), 'light'));
+      bl.push(B.H('Ou tout l’apprentissage'));
+      bl.push(B.P('Toutes les vidéos, de tous les parcours, pour toujours.'));
+      bl.push(B.Kv('À l’unité', this.euro(tot))); bl.push(B.Kv('Apprentissage complet', this.euro(pack), '#7046DC', true));
+      if (tot > pack) bl.push(B.Note('Tu économises ' + this.euro(tot - pack) + '.', 'gold'));
+      bl.push(B.Btn('Tout débloquer · ' + this.euro(pack), () => buy('all', 'Tout l’apprentissage est débloqué !'), 'dark'));
       bl.push(B.Note('Maquette : l’achat est simulé. Dans la vraie appli, le paiement passera par Apple.'));
       bl.push(B.Btn('Plus tard', () => this.closePanel(), 'light'));
+    } else if (p.kind === 'goalInfo') {
+      const g0 = this.goal(); const N = this.goalDefs().length; kicker = g0 ? 'Objectif ' + (g0.k + 1) + ' sur ' + N : 'Objectifs'; title = g0 ? g0.t : 'Tous les objectifs sont atteints';
+      if (g0) { bl.push(B.Kv('Prime', '+ ' + f(g0.r) + ' €', '#7046DC', true)); bl.push(B.Bar((g0.k / N) * 100)); bl.push(B.P(g0.done ? 'Objectif atteint : récupère ta prime.' : 'Continue à jouer : dès que c’est fait, la case Objectifs s’allume.', true));
+        if (g0.done) bl.push(B.Btn('Récupérer la prime', () => { this.panel = null; this.claimGoal(); }, 'dark')); }
+      else bl.push(B.P('Bravo, tu as tout terminé.'));
+      bl.push(B.Btn('Fermer', () => this.closePanel(), 'light'));
     } else if (p.kind === 'lists') {
       const L = this.listsLoad(); kicker = 'Enregistrer'; title = p.snap.title;
       L.all.forEach((l, k) => { const on = !!l.items[p.id]; bl.push(B.Row({ key: 'li' + k, t: l.name, sub: Object.keys(l.items).length + ' article' + (Object.keys(l.items).length > 1 ? 's' : ''), tag: on ? '✓ Enregistré' : 'Ajouter', tagKind: on ? '' : 'light', on: on, act: () => { if (on) delete l.items[p.id]; else l.items[p.id] = p.snap; this.buzz(8); this.listsSave(); } })); });
@@ -3372,7 +3387,7 @@ window.Component = class Component extends DCLogic {
       kicker = 'Mode admin'; title = 'Espace administrateur';
       bl.push(B.Note('Maquette : tout le monde voit ce menu. Dans l’appli finale, il sera réservé à ton compte admin et tes changements passeront par Supabase, sans mise à jour Apple.', 'gold'));
       bl.push(B.Row({ t: 'Le jeu', sub: 'Niveau, argent, déblocages, objectifs, remise à zéro', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admGame', any: true }; this.refresh(); } }));
-      bl.push(B.Row({ t: 'La Formation', sub: 'Modules, vidéos, gratuites ou payantes', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admFm', any: true }; this.refresh(); } }));
+      bl.push(B.Row({ t: 'Apprendre', sub: 'Modules, vidéos, gratuites ou payantes', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admFm', any: true }; this.refresh(); } }));
       bl.push(B.Row({ t: 'L’Actu', sub: 'Catégories et articles ajoutés à la main', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admActu', any: true }; this.refresh(); } }));
     } else if (p.kind === 'admGame') {
       const L = this.gLevels(); const lv = this.lvlIdx(); kicker = 'Mode admin · Jeu'; title = 'Joue chaque étape';
@@ -3396,8 +3411,15 @@ window.Component = class Component extends DCLogic {
       bl.push(B.Btn('Oui, tout effacer', () => { this.pl = this.newPl(this.freshGs()); this.gs = this.pl.cos[0].gs; this.sheet = null; this.panel = null; this.save(); this.say('Partie remise à zéro.'); this.refresh(); }, 'dark'));
       bl.push(B.Btn('Annuler', () => { this.panel = { kind: 'admGame', any: true }; this.refresh(); }, 'light'));
     } else if (p.kind === 'admFm') {
-      const C = this.fmCat(); kicker = 'Mode admin · Formation'; title = 'Modules et vidéos';
+      const C = this.fmCat(); kicker = 'Mode admin · Apprendre'; title = 'Modules et vidéos';
       C.parcours.forEach((pc, pi) => { bl.push(B.H(pc)); C.mods.filter(m => m.p === pi).forEach(m => bl.push(B.Row({ key: 'fm' + m.n, t: 'Module ' + m.n + ' · ' + m.title, sub: m.eps.length + ' vidéo' + (m.eps.length > 1 ? 's' : '') + ' · ' + m.eps.filter((e, i) => this.fmPrice(m, i) > 0).length + ' payante(s)', tag: 'Gérer', act: () => { this.panel = { kind: 'admMod', any: true, n: m.n }; this.refresh(); } }))); });
+      const A0 = this.admLoad(); const tot = this.fmTotal();
+      bl.push(B.H('Prix'));
+      bl.push(B.Kv('Toutes les vidéos à l’unité', this.euro(tot))); bl.push(B.Kv('Apprentissage complet', this.euro(this.fmPack()), '#7046DC', true));
+      bl.push(B.Input('admPack', p.pack != null ? p.pack : String(this.fmPack()).replace('.', ','), 'Prix de l’apprentissage complet en €', (ev) => { p.pack = ev && ev.target ? ev.target.value : ''; }));
+      bl.push(B.Btn('Enregistrer le prix de l’apprentissage complet', () => { const v = this.parsePrice(p.pack); if (v === null) { this.say('Écris un prix, par exemple 69.'); this.refresh(); return; } A0.pack = v; p.pack = null; this.admSave(); this.say('Apprentissage complet : ' + this.euro(v)); }, 'light'));
+      bl.push(B.Input('admAll', p.all || '', 'Un même prix pour toutes les vidéos payantes', (ev) => { p.all = ev && ev.target ? ev.target.value : ''; }));
+      bl.push(B.Btn('Appliquer à toutes les vidéos payantes', () => { const v = this.parsePrice(p.all); if (v === null || v <= 0) { this.say('Écris un prix supérieur à 0.'); this.refresh(); return; } C.mods.forEach(m => m.eps.forEach((e, i) => { if (this.fmPrice(m, i) > 0) A0.price[m.n + '-' + i] = v; })); p.all = ''; this.admSave(); this.say('Toutes les vidéos payantes sont à ' + this.euro(v) + '.'); }, 'light'));
       bl.push(B.H('Nouveau module'));
       bl.push(B.Input('admModName', p.name || '', 'Titre du module', (ev) => { p.name = ev && ev.target ? ev.target.value : ''; }));
       bl.push(B.Row({ t: 'Parcours : ' + C.parcours[p.pc || 0], sub: 'Touche pour changer', tag: 'Changer', tagKind: 'light', act: () => { p.pc = ((p.pc || 0) + 1) % C.parcours.length; this.refresh(); } }));
@@ -3406,20 +3428,28 @@ window.Component = class Component extends DCLogic {
     } else if (p.kind === 'admMod') {
       const C = this.fmCat(); const m = C.mods.find(x => x.n === p.n); const A = this.admLoad(); kicker = 'Mode admin · Module ' + p.n; title = m ? m.title : 'Module';
       const steps = [0, 0.99, 1.99, 2.99, 4.99, 9.99];
-      if (m) m.eps.forEach((e, i) => { const pr = this.fmPrice(m, i); bl.push(B.Row({ key: 'ep' + i, t: (i + 1) + '. ' + e[3], sub: pr > 0 ? 'Payante · ' + this.euro(pr) + ' · touche pour changer' : 'Gratuite · touche pour la rendre payante', img: e[0], tag: pr > 0 ? this.euro(pr) : 'Gratuite', tagKind: pr > 0 ? 'dark' : 'light', act: () => { const k = steps.indexOf(pr); A.price[m.n + '-' + i] = steps[(k + 1) % steps.length]; this.admSave(); } })); });
+      if (m) m.eps.forEach((e, i) => { const pr = this.fmPrice(m, i); bl.push(B.Row({ key: 'ep' + i, t: (i + 1) + '. ' + e[3], sub: pr > 0 ? 'Payante · ' + this.euro(pr) + ' · touche pour changer le prix' : 'Gratuite · touche pour mettre un prix', img: e[0], tag: pr > 0 ? this.euro(pr) : 'Gratuite', tagKind: pr > 0 ? 'dark' : 'light', act: () => { this.panel = { kind: 'admPrice', any: true, n: m.n, i: i, v: pr > 0 ? String(pr).replace('.', ',') : '' }; this.refresh(); } })); });
       if (m && !m.eps.length) bl.push(B.Note('Ce module n’a pas encore de vidéo.'));
       bl.push(B.H('Ajouter une vidéo'));
       const pool = []; this.fmCat0().mods.forEach(mm => mm.eps.forEach(e => { if (pool.indexOf(e[0]) < 0) pool.push(e[0]); }));
       bl.push(B.Area('admEpTitle', p.title || '', 'Titre de la vidéo', (ev) => { p.title = ev && ev.target ? ev.target.value : ''; }));
       bl.push(B.Area('admEpDesc', p.desc || '', 'Description', (ev) => { p.desc = ev && ev.target ? ev.target.value : ''; }));
       bl.push(B.Row({ t: 'Miniature ' + ((p.img || 0) + 1) + ' / ' + pool.length, sub: 'Touche pour changer (dans l’appli finale : tu envoies ta propre image)', img: pool[p.img || 0], tag: 'Changer', tagKind: 'light', act: () => { p.img = ((p.img || 0) + 1) % pool.length; this.refresh(); } }));
-      const npr = p.price || 0; bl.push(B.Row({ t: npr > 0 ? 'Payante · ' + this.euro(npr) : 'Gratuite', sub: 'Touche pour changer le prix', tag: 'Changer', tagKind: 'light', act: () => { const k = steps.indexOf(npr); p.price = steps[(k + 1) % steps.length]; this.refresh(); } }));
-      bl.push(B.Btn('+ Ajouter la vidéo', () => { const t = String(p.title || '').trim(); if (!t || !m) { this.say('Donne un titre à la vidéo.'); this.refresh(); return; } const w = t.split(' '); const cut = Math.max(1, Math.ceil(w.length / 2)); (A.eps[m.n] = A.eps[m.n] || []).push({ img: pool[p.img || 0], t1: w.slice(0, cut).join(' '), t2: w.slice(cut).join(' '), title: t, dur: 6, desc: String(p.desc || '').trim() || 'Nouvelle vidéo.' }); A.price[m.n + '-' + (m.eps.length)] = p.price || 0; p.title = ''; p.desc = ''; p.price = 0; this.admSave(); this.say('Vidéo ajoutée au module.'); }, 'dark'));
+      bl.push(B.Input('admEpPrice', p.priceTxt || '', 'Prix en € (vide = gratuite)', (ev) => { p.priceTxt = ev && ev.target ? ev.target.value : ''; p.price = this.parsePrice(p.priceTxt) || 0; }));
+      bl.push(B.Btn('+ Ajouter la vidéo', () => { const t = String(p.title || '').trim(); if (!t || !m) { this.say('Donne un titre à la vidéo.'); this.refresh(); return; } const w = t.split(' '); const cut = Math.max(1, Math.ceil(w.length / 2)); (A.eps[m.n] = A.eps[m.n] || []).push({ img: pool[p.img || 0], t1: w.slice(0, cut).join(' '), t2: w.slice(cut).join(' '), title: t, dur: 6, desc: String(p.desc || '').trim() || 'Nouvelle vidéo.' }); A.price[m.n + '-' + (m.eps.length)] = p.price || 0; p.title = ''; p.desc = ''; p.price = 0; p.priceTxt = ''; this.admSave(); this.say('Vidéo ajoutée au module.'); }, 'dark'));
       bl.push(B.Btn('Retour', () => { this.panel = { kind: 'admFm', any: true }; this.refresh(); }, 'light'));
+    } else if (p.kind === 'admPrice') {
+      const C = this.fmCat(); const m = C.mods.find(x => x.n === p.n); const ep = m && m.eps[p.i]; const A = this.admLoad(); kicker = 'Mode admin · Prix'; title = ep ? ep[3] : 'Vidéo';
+      bl.push(B.Kv('Prix actuel', m && this.fmPrice(m, p.i) > 0 ? this.euro(this.fmPrice(m, p.i)) : 'Gratuite', '#260E4F', true));
+      bl.push(B.Input('admPriceVal', p.v || '', 'Écris le prix en € (ex. 3,49)', (ev) => { p.v = ev && ev.target ? ev.target.value : ''; }));
+      bl.push(B.Btn('Enregistrer ce prix', () => { const v = this.parsePrice(p.v); if (v === null) { this.say('Écris un prix, par exemple 3,49.'); this.refresh(); return; } A.price[p.n + '-' + p.i] = v; this.panel = { kind: 'admMod', any: true, n: p.n }; this.admSave(); this.say(v > 0 ? 'Prix enregistré : ' + this.euro(v) : 'Vidéo gratuite.'); }, 'dark'));
+      bl.push(B.Btn('Rendre la vidéo gratuite', () => { A.price[p.n + '-' + p.i] = 0; this.panel = { kind: 'admMod', any: true, n: p.n }; this.admSave(); }, 'light'));
+      bl.push(B.Btn('Retour', () => { this.panel = { kind: 'admMod', any: true, n: p.n }; this.refresh(); }, 'light'));
     } else if (p.kind === 'admActu') {
       const A = this.admLoad(); const cats = this.actuCats(); kicker = 'Mode admin · Actu'; title = 'Catégories et articles';
       bl.push(B.H('Catégories'));
-      cats.forEach((c, k) => bl.push(B.Row({ key: 'ac' + k, t: c.name, sub: c.custom ? 'Créée par toi' : (c.re ? 'Actus de la marque (automatique)' : 'Catégorie de base'), tag: c.custom ? 'Supprimer' : 'Fixe', tagKind: c.custom ? 'red' : 'light', act: () => { if (!c.custom) return; A.cats = A.cats.filter(x => x.name !== c.name); this.admSave(); } })));
+      cats.forEach((c, k) => bl.push(B.Row({ key: 'ac' + k, t: c.name, sub: c.name === 'Tout' ? 'Toujours affichée' : c.custom ? 'Créée par toi' : (c.re ? 'Actus de la marque (automatique)' : 'Catégorie de base'), tag: c.name === 'Tout' ? 'Fixe' : 'Supprimer', tagKind: c.name === 'Tout' ? 'light' : 'red', act: () => { if (c.name === 'Tout') return; if (c.custom) A.cats = A.cats.filter(x => x.name !== c.name); else { A.hide = (A.hide || []).concat([c.name]); } if (this.state.theme === c.name) this.setState({ theme: 'Tout' }); this.admSave(); this.say('Catégorie « ' + c.name + ' » supprimée.'); } })));
+      if ((A.hide || []).length) bl.push(B.Row({ t: 'Rétablir les catégories supprimées', sub: A.hide.join(', '), tag: 'Rétablir', tagKind: 'light', act: () => { A.hide = []; this.admSave(); } }));
       bl.push(B.Input('admCatName', p.cname || '', 'Nom de la catégorie', (ev) => { p.cname = ev && ev.target ? ev.target.value : ''; }));
       bl.push(B.Area('admCatKw', p.kw || '', 'Mots-clés séparés par des virgules (ex. Mistral, Le Chat)', (ev) => { p.kw = ev && ev.target ? ev.target.value : ''; }));
       bl.push(B.Btn('+ Créer la catégorie', () => { const nm = String(p.cname || '').trim(); if (!nm) { this.say('Donne un nom à la catégorie.'); this.refresh(); return; } if (cats.some(c => c.name.toLowerCase() === nm.toLowerCase())) { this.say('Cette catégorie existe déjà.'); this.refresh(); return; } A.cats.push({ name: nm, kw: String(p.kw || '') }); p.cname = ''; p.kw = ''; this.admSave(); this.say('Catégorie créée : elle apparaît dans l’Actu.'); }, 'dark'));
@@ -3550,8 +3580,9 @@ window.Component = class Component extends DCLogic {
         return [
           gs.company ? T('Société', this.totalHum() + ' h · ' + nA + ' agent' + (nA > 1 ? 's' : ''), () => this.openPanel({ kind: 'societe' }), false, 0, e.net < 0)
             : T('Société', 'Ouvrir', () => this.openPanel({ kind: 'company', name: '' }), false, 0),
-          gs.company ? T('Argent', this.fmt(this.pl.pat) + ' €', () => this.openPanel({ kind: 'patrimoine', name: '' }), false, 0) : T('Argent', 'Bloqué', lockMsg('Ouvre ta société pour gérer ton argent et ton patrimoine.'), true, 0),
-          inb ? T('Missions', inb + ' à traiter', () => this.openInbox(), false, inb) : T('Missions', (gs.stats && gs.stats.orders) ? 'Aucune' : 'Bloqué', lockMsg((gs.stats && gs.stats.orders) ? 'Aucune demande en attente pour le moment.' : 'Tes premières demandes de clients arrivent bientôt.'), !(gs.stats && gs.stats.orders), 0),
+          gs.company ? T('Patrimoine', this.fmt(this.pl.pat) + ' €', () => this.openPanel({ kind: 'patrimoine', name: '' }), false, 0) : T('Patrimoine', 'Bloqué', lockMsg('Ouvre ta société pour gérer ton argent et ton patrimoine.'), true, 0),
+          (() => { const g0 = this.goal(); const N = this.goalDefs().length; if (!g0) return T('Objectifs', 'Tous faits', () => this.openPanel({ kind: 'goalInfo', any: true }), false, 0);
+            const o = T('Objectifs', g0.done ? 'Récupérer' : (g0.k + 1) + ' / ' + N, () => { if (g0.done) this.claimGoal(); else this.openPanel({ kind: 'goalInfo', any: true }); }, false, g0.done ? '!' : 0); if (g0.done) o.cls += ' goal'; return o; })(),
           nA ? T('Progrès', c0.n + ' / ' + c0.max, () => this.openPanel({ kind: 'collection' }), false, 0) : T('Progrès', 'Bloqué', lockMsg('Crée ton premier agent IA pour commencer ta collection.'), true, 0)
         ]; })(),
       steps: (() => { const L = this.gLevels(); const lv = this.lvlIdx(); const w0 = Math.max(0, Math.min(L.length - 4, lv - 1)); const nx = L[Math.min(L.length - 1, lv + 1)]; const pct = lv >= L.length - 1 ? 100 : Math.min(100, Math.max(0, (gs.total - L[lv].t) / Math.max(1, nx.t - L[lv].t) * 100));
@@ -3561,7 +3592,7 @@ window.Component = class Component extends DCLogic {
       stageName: D.STAGES[st], stageNum: st + 1, nextStage: st < 3 ? 'Prochaine étape : ' + D.STAGES[st + 1] + ' à ' + this.fmt(th[st + 1]) + ' € gagnés' : 'Dernière étape atteinte',
       showHint: false, clicLabel: ((gs.stats && gs.stats.taps) || 0) < 20 ? 'Clic' : '+' + this.fmt(this.tapValue()) + ' € par clic', showWhisper: !!(this.whisp && this.whisp.until > Date.now()) && ((gs.stats && gs.stats.taps) || 0) >= 6, whisper: this.whisp ? this.whisp.t : '',
       dateLabel: (() => { const l = this.gameDate().label; return l.charAt(0).toUpperCase() + l.slice(1); })(), dateCls: this.monthFlip && this.monthFlip > Date.now() ? 'datepill flip' : 'datepill', openDate: () => this.openInfo('date'),
-      hasGoal: !cta && !this.panel && !!this.goal(), goalT: (() => { const g0 = this.goal(); return g0 ? g0.t : ''; })(), goalR: (() => { const g0 = this.goal(); return g0 ? 'Prime : + ' + this.fmt(g0.r) + ' €' : ''; })(), goalDone: !!(this.goal() && this.goal().done), goalTodo: !!(this.goal() && !this.goal().done), claimGoal: () => this.claimGoal(), goalN: 'Objectif ' + ((gs.goal || 0) + 1) + ' / ' + this.goalDefs().length,
+      hasGoal: false, goalT: (() => { const g0 = this.goal(); return g0 ? g0.t : ''; })(), goalR: (() => { const g0 = this.goal(); return g0 ? 'Prime : + ' + this.fmt(g0.r) + ' €' : ''; })(), goalDone: !!(this.goal() && this.goal().done), goalTodo: !!(this.goal() && !this.goal().done), claimGoal: () => this.claimGoal(), goalN: 'Objectif ' + ((gs.goal || 0) + 1) + ' / ' + this.goalDefs().length,
       repLow: gs.rep < 40, repBtn: this.fmt(this.imageCost()) + ' €', repBtnStyle: btn(gs.credits >= this.imageCost()) + ';height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.15;flex:0 0 auto', restoreImage: () => this.restoreImage(),
       hasCta: !!cta && !this.panel, ctaT: cta ? cta.t : '', ctaD: cta ? cta.d : '', ctaB: cta ? cta.b : '', ctaAct: cta ? cta.act : () => {},
       ctaStyle: 'margin-top:12px;width:100%;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;border:none;border-radius:22px;font-family:inherit;cursor:pointer;text-align:left;box-sizing:border-box;' + (cta && cta.gold ? 'background:linear-gradient(135deg,#FFF4D6,#F6D27A);color:#3A2A00' : 'background:#260E4F;color:#FFFFFF'),

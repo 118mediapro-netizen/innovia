@@ -308,7 +308,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </sc-for>
 </div>
 <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px">
-<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #6C5A8C"><span class="ino-live"></span>En direct · {{syncText}}</span>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #6C5A8C"><span class="ino-live"></span>{{syncText}}</span>
 <button class="tap" type="button" onClick="{{refreshNews}}" aria-label="Actualiser l’actu" style="height: 34px; padding: 0 12px; border: none; border-radius: 17px; background: #EBE4F6; color: #260E4F; font-family: inherit; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer"><svg class="{{refreshCls}}" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg>Actualiser</button>
 </div>
 <div class="ino-ptr"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg><span class="ino-ptr-a">Tire pour actualiser</span><span class="ino-ptr-b">Relâche pour actualiser</span></div>
@@ -1888,7 +1888,7 @@ window.Component = class Component extends DCLogic {
     const fontNames = ['Plus Jakarta Sans', 'Manrope', 'Sora', 'Outfit', 'Urbanist', 'DM Sans', 'Space Grotesk', 'Poppins', 'Lexend', 'Nunito', 'Figtree', 'Bricolage Grotesque', 'Unbounded', 'Syne'];
     const levelName = s.level === null ? 'pas encore évalué' : this.levels[s.level].name;
     const themeNames = ['Tout', 'Société', 'Création', 'Business', 'Emploi', 'Image et vidéo', 'Code'];
-    const liveN = this.allNews().filter(n => n.ts); const ordered = (this.remote && this.remote.length) ? this.remote.slice() : liveN.concat(this.news.slice().sort((a, b) => (b.photo ? 1 : 0) - (a.photo ? 1 : 0)));
+    const liveN = this.allNews().filter(n => n.ts); const ordered = (this.remote || []).slice();
     const TAGP = { 'Société': 'assets/photo-societe.jpg', 'Création': 'assets/photo-creation.jpg', 'Emploi': 'assets/photo-emploi.jpg', 'Business': 'assets/photo-business.jpg', 'Code': 'assets/photo-code.jpg', 'Image et vidéo': 'assets/photo-image.jpg' };
     const pic = (n) => { const fb = n.photo || TAGP[n.tag] || TAGP['Société']; return { img: (n.pimg && !(this.badImg && this.badImg[n.pimg])) ? n.pimg : fb, fb: fb, hasPimg: !!n.pimg, when: n.ts ? this.relTime(n.ts) : n.date, isNew: !!(n.ts && Date.now() - n.ts < 15 * 60000) }; };
     const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -1988,10 +1988,10 @@ window.Component = class Component extends DCLogic {
       notRefreshing: !s.refreshing,
       refreshNews: () => this.refreshNews(),
       refreshCls: s.refreshing ? 'ino-rot' : '',
-      syncText: s.refreshing ? 'Actualisation…' : 'Mis à jour ' + this.relTime(this.lastSync || Date.now()),
+      syncText: s.refreshing ? 'Actualisation…' : !this.remoteOk ? (this.remoteTried ? 'Hors connexion' : 'Connexion…') : 'En direct · Mis à jour ' + this.relTime(this.lastSync || Date.now()),
       hasPending: !!(this.newsPending && this.newsPending.length) && !s.refreshing,
       pendingText: (this.newsPending && this.newsPending.length > 1) ? this.newsPending.length + ' nouvelles actus' : '1 nouvelle actu',
-      noNewsText: qWords.length ? 'Aucune actu pour « ' + String(s.q).trim() + ' »' : 'Rien sur ce thème aujourd’hui',
+      noNewsText: !(this.remote && this.remote.length) ? (this.remoteTried ? 'Impossible de charger l’actu pour le moment. Touche « Actualiser ».' : 'Chargement des dernières actus…') : qWords.length ? 'Aucune actu pour « ' + String(s.q).trim() + ' »' : 'Rien sur ce thème aujourd’hui',
       q: s.q || '',
       hasQ: !!(s.q && s.q.length),
       setQ: (e) => { const v = e && e.target ? e.target.value : ''; this.setState({ q: v }); },
@@ -2376,25 +2376,25 @@ window.Component = class Component extends DCLogic {
       const items = rows.map((x) => this.mapRemote(x));
       if (replace || !this.remote.length || this.state.screen !== 'actu') { this.remote = items; this.remoteNext = null; this.newsPending = []; }
       else { const have = new Set(this.remote.map((n) => n.id)); const nu = items.filter((n) => !have.has(n.id)); this.remoteNext = items; this.newsPending = nu.map((n) => ({ id: n.id, ts: n.ts })); if (nu.length) this.buzz(8); }
-      this.remoteOk = true; this.lastSync = Date.now(); return true;
-    } catch (e) { return false; }
+      this.remoteOk = true; this.remoteTried = true; this.lastSync = Date.now(); return true;
+    } catch (e) { this.remoteTried = true; return false; }
   }
-  allNews() { if (this.remote && this.remote.length) return this.remote; const L = this.state.live || []; return L.map(l => Object.assign({}, this.newsPool.find(p => p.id === l.id), { ts: l.ts })).concat(this.news); }
+  allNews() { return (this.remote || []).concat(this.news); const L = this.state.live || []; return L.map(l => Object.assign({}, this.newsPool.find(p => p.id === l.id), { ts: l.ts })).concat(this.news); }
   relTime(ts) { const m = Math.floor((Date.now() - ts) / 60000); return m < 1 ? 'à l’instant' : m < 60 ? 'il y a ' + m + ' min' : 'il y a ' + Math.floor(m / 60) + ' h'; }
   newsSim() {
     if (Date.now() >= this.nextPoll) { this.nextPoll = Date.now() + 60000; this.loadRemote(false).then(() => this.setState({ nsync: Date.now() })); }
-    if (!this.remoteOk && Date.now() >= this.nextDrop && this.newsNext < this.newsPool.length) { this.newsPending.push({ id: this.newsPool[this.newsNext++].id, ts: Date.now() }); this.nextDrop = Date.now() + 60000; if (this.state.screen === 'actu') this.buzz(8); }
+    if (false && Date.now() >= this.nextDrop && this.newsNext < this.newsPool.length) { this.newsPending.push({ id: this.newsPool[this.newsNext++].id, ts: Date.now() }); this.nextDrop = Date.now() + 60000; if (this.state.screen === 'actu') this.buzz(8); }
     if (this.state.screen === 'actu' && !this.state.open) this.setState({ nsync: Date.now() });
   }
-  flushNews() { if (this.remoteOk) { const n = this.newsPending.length; if (this.remoteNext) this.remote = this.remoteNext; this.remoteNext = null; this.newsPending = []; this.lastSync = Date.now(); this.setState({ nsync: Date.now() }); return n; } const p = this.newsPending; this.newsPending = []; this.lastSync = Date.now(); if (p.length) this.setState({ live: p.slice().reverse().concat(this.state.live || []) }); return p.length; }
+  flushNews() { if (true) { const n = this.newsPending.length; if (this.remoteNext) this.remote = this.remoteNext; this.remoteNext = null; this.newsPending = []; this.lastSync = Date.now(); this.setState({ nsync: Date.now() }); return n; } const p = this.newsPending; this.newsPending = []; this.lastSync = Date.now(); if (p.length) this.setState({ live: p.slice().reverse().concat(this.state.live || []) }); return p.length; }
   refreshNews() {
     if (this.state.refreshing) return; this.buzz(); this.sfx('pop', 1.1);
     this.setState({ refreshing: true });
     const t0 = Date.now(); const prev = new Set((this.remote || []).map((x) => x.id));
     this.loadRemote(true).then((ok) => { let n0 = 0; if (ok) { n0 = prev.size ? this.remote.filter((x) => !prev.has(x.id)).length : 0; this.newsPending = []; } else n0 = -1; setTimeout(() => {
-      const n = n0 >= 0 ? n0 : this.flushNews();
+      const n = n0 >= 0 ? n0 : 0;
       try { const t = document.getElementById('actuTop'); if (t && t.parentElement) t.parentElement.scrollTop = 0; } catch (e) {}
-      this.say(n ? (n > 1 ? n + ' nouvelles actus' : '1 nouvelle actu') : 'Tu es à jour : rien de nouveau pour l’instant');
+      this.say(n0 < 0 ? 'Impossible de joindre l’actu pour le moment. Réessaie dans un instant.' : n ? (n > 1 ? n + ' nouvelles actus' : '1 nouvelle actu') : 'Tu es à jour : rien de nouveau pour l’instant');
       this.setState({ refreshing: false, nsync: Date.now() });
     }, Math.max(0, 900 - (Date.now() - t0))); });
   }

@@ -36,6 +36,14 @@ a{color:#260E4F}a:hover{color:#260E4F}
 .drawer{animation:slideIn .3s cubic-bezier(.2,.8,.2,1) both}
 .tap{transition:transform .12s ease}
 .tap:active{transform:scale(.95)}
+.ino-live{width:8px;height:8px;border-radius:4px;background:#E5484D;box-shadow:0 0 0 0 rgba(229,72,77,.6);animation:inoLive 1.6s ease-out infinite;flex:none}
+@keyframes inoLive{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55)}100%{box-shadow:0 0 0 8px rgba(229,72,77,0)}}
+.ino-ptr{height:var(--ino-ptr,0px);overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:800;color:#6C5A8C}
+.ino-ptr svg{transform:rotate(var(--ino-ptr-r,0deg));transition:transform .1s}.ino-ptr-b{display:none}.ino-ptr-go .ino-ptr-a{display:none}.ino-ptr-go .ino-ptr-b{display:inline}
+.ino-spin{width:18px;height:18px;border-radius:9px;border:2.5px solid #EBE4F6;border-top-color:#7046DC;animation:inoSpin .8s linear infinite}
+.ino-rot{animation:inoSpin .8s linear infinite}@keyframes inoSpin{to{transform:rotate(360deg)}}
+@keyframes inoPop{0%{transform:translateY(-12px) scale(.8);opacity:0}100%{transform:none;opacity:1}}
+.night .ino-spin{border-color:#352A48;border-top-color:#8A63F0}
 .orb{animation:floaty 4s ease-in-out infinite, glow 2.4s ease-out infinite}
 .bob1{animation:bob 3s ease-in-out infinite}
 .bob2{animation:bob 3s ease-in-out .4s infinite}
@@ -302,6 +310,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 
 <sc-if value="{{showActu}}" hint-placeholder-val="{{ false }}">
 <div class="screen noscroll ipwide" style="height: 100%; overflow-y: auto; box-sizing: border-box; padding: 108px 16px 150px">
+<div id="actuTop"></div>
 <div style="position: relative; margin-bottom: 12px">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6C5A8C" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 16px; top: 15px; pointer-events: none"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
 <input id="newsSearch" type="text" inputmode="search" enterkeyhint="search" autocomplete="off" aria-label="Rechercher une actu" placeholder="Rechercher une actu, un sujet, un média" value="{{q}}" onInput="{{setQ}}" style="width: 100%; height: 50px; box-sizing: border-box; padding: 0 48px 0 46px; border: 1px solid #DED6EC; border-radius: 26px; background: #FBFAFE; box-shadow: inset 2px 2px 5px rgba(112,70,220,0.06), 0 6px 16px rgba(112,70,220,0.07); font-family: inherit; font-size: 15px; font-weight: 500; color: #260E4F; outline: none; -webkit-appearance: none; appearance: none">
@@ -312,6 +321,19 @@ html, body, #stage, #app { overscroll-behavior: none }
 <button class="tap" type="button" onClick="{{th.pick}}" style="{{th.style}}">{{th.name}}</button>
 </sc-for>
 </div>
+<div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #6C5A8C"><span class="ino-live"></span>En direct · {{syncText}}</span>
+<button class="tap" type="button" onClick="{{refreshNews}}" aria-label="Actualiser l’actu" style="height: 34px; padding: 0 12px; border: none; border-radius: 17px; background: #EBE4F6; color: #260E4F; font-family: inherit; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer"><svg class="{{refreshCls}}" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg>Actualiser</button>
+</div>
+<div class="ino-ptr"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg><span class="ino-ptr-a">Tire pour actualiser</span><span class="ino-ptr-b">Relâche pour actualiser</span></div>
+<sc-if value="{{refreshing}}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 14px; height: 52px; border-radius: 26px; background: #FFFFFF; box-shadow: 0 8px 20px rgba(112,70,220,0.10); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; font-weight: 800; color: #260E4F"><span class="ino-spin"></span>Recherche des dernières actus…</div>
+</sc-if>
+<sc-if value="{{hasPending}}" hint-placeholder-val="{{ false }}">
+<div style="position: sticky; top: 104px; z-index: 6; height: 0; display: flex; justify-content: center">
+<button class="tap" type="button" onClick="{{refreshNews}}" style="margin-top: 8px; height: 40px; padding: 0 18px; border: none; border-radius: 20px; background: #7046DC; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 800; box-shadow: 0 10px 24px rgba(112,70,220,0.45); display: flex; align-items: center; gap: 6px; cursor: pointer; animation: inoPop .35s cubic-bezier(.34,1.56,.64,1)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>{{pendingText}}</button>
+</div>
+</sc-if>
 <sc-if value="{{noNews}}" hint-placeholder-val="{{ false }}">
 <div class="card" style="margin-top: 20px; padding: 28px 20px; border-radius: 26px; background: #EBE4F6; text-align: center">
 <p style="margin: 0; font-size: 16px; font-weight: 700">{{noNewsText}}</p>
@@ -320,10 +342,11 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div class="ipnews" style="margin-top: 16px; display: flex; flex-direction: column; gap: 18px">
 <sc-for list="{{news}}" as="n" hint-placeholder-count="3">
 <button class="tap card" type="button" onClick="{{n.open}}" style="{{n.cardStyle}}">
-<span style="display: block; height: 230px; overflow: hidden">
+<span style="position: relative; display: block; height: 230px; overflow: hidden">
 <sc-if value="{{n.hasPhoto}}" hint-placeholder-val="{{ false }}">
-<img src="{{n.photo}}" alt="" style="width: 100%; height: 230px; object-fit: cover; display: block">
+<img src="{{n.img}}" data-fb="{{n.fb}}" referrerpolicy="no-referrer" alt="" style="width: 100%; height: 230px; object-fit: cover; display: block; background: #EBE4F6">
 </sc-if>
+<sc-if value="{{n.isNew}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 14px; top: 14px; padding: 6px 10px; border-radius: 9px; background: #E5484D; color: #FFFFFF; font-size: 11px; font-weight: 800; letter-spacing: 0.06em">NOUVEAU</span></sc-if>
 <sc-if value="{{n.ca}}" hint-placeholder-val="{{ true }}">
 <svg width="358" height="230" viewBox="0 0 350 230" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="display: block"><rect width="350" height="230" fill="#7046DC"></rect><circle cx="300" cy="30" r="70" fill="#FFFFFF" opacity="0.18"></circle><g transform="rotate(-10 125 125)"><rect x="70" y="60" width="110" height="130" rx="14" fill="#FFFFFF"></rect><rect x="82" y="72" width="86" height="80" rx="8" fill="#EBE4F6"></rect><path d="M86 150l26-30 20 22 14-14 22 22z" fill="#7046DC"></path><circle cx="148" cy="94" r="9" fill="#7046DC"></circle></g><path d="M192 118h36" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"></path><path d="M220 104l14 14-14 14" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path><rect x="248" y="50" width="74" height="134" rx="16" fill="#260E4F"></rect><rect x="254" y="58" width="62" height="118" rx="11" fill="#FFFFFF"></rect><circle cx="285" cy="117" r="18" fill="#7046DC"></circle><path d="M279 107l16 10-16 10z" fill="#FFFFFF"></path></svg>
 </sc-if>
@@ -345,7 +368,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </span>
 <span style="display: block; padding: 16px 18px 18px">
 <span style="display: block; font-size: 23px; font-weight: 800; line-height: 1.2; letter-spacing: -0.015em; color: #260E4F">{{n.title}}</span>
-<span style="display: block; margin-top: 10px; font-size: 13px; font-weight: 700; color: #6C5A8C">{{n.tag}} · {{n.source}} · 1 min</span>
+<span style="display: block; margin-top: 10px; font-size: 13px; font-weight: 700; color: #6C5A8C">{{n.tag}} · {{n.source}} · {{n.when}}</span>
 </span>
 </button>
 </sc-for>
@@ -596,7 +619,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div class="sheet noscroll" style="position: absolute; inset: 0; overflow-y: auto; background: #FFFFFF">
 <div style="position: relative; height: 320px; overflow: hidden">
 <sc-if value="{{det.hasPhoto}}" hint-placeholder-val="{{ false }}">
-<img src="{{det.photo}}" alt="" style="width: 100%; height: 320px; object-fit: cover; display: block">
+<img src="{{det.img}}" data-fb="{{det.fb}}" referrerpolicy="no-referrer" alt="" style="width: 100%; height: 320px; object-fit: cover; display: block; background: #EBE4F6">
 </sc-if>
 <sc-if value="{{det.ca}}" hint-placeholder-val="{{ true }}">
 <svg width="390" height="320" viewBox="0 0 350 230" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="display: block"><rect width="350" height="230" fill="#7046DC"></rect><circle cx="300" cy="30" r="70" fill="#FFFFFF" opacity="0.18"></circle><g transform="rotate(-10 125 125)"><rect x="70" y="60" width="110" height="130" rx="14" fill="#FFFFFF"></rect><rect x="82" y="72" width="86" height="80" rx="8" fill="#EBE4F6"></rect><path d="M86 150l26-30 20 22 14-14 22 22z" fill="#7046DC"></path><circle cx="148" cy="94" r="9" fill="#7046DC"></circle></g><path d="M192 118h36" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"></path><path d="M220 104l14 14-14 14" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path><rect x="248" y="50" width="74" height="134" rx="16" fill="#260E4F"></rect><rect x="254" y="58" width="62" height="118" rx="11" fill="#FFFFFF"></rect><circle cx="285" cy="117" r="18" fill="#7046DC"></circle><path d="M279 107l16 10-16 10z" fill="#FFFFFF"></path></svg>
@@ -629,7 +652,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </button>
 </div>
 <div style="padding: 22px 22px 48px">
-<span style="font-size: 13px; font-weight: 700; color: #6C5A8C">{{det.tag}} · {{det.date}} · 1 min de lecture</span>
+<span style="font-size: 13px; font-weight: 700; color: #6C5A8C">{{det.tag}} · {{det.source}} · {{det.when}}</span>
 <h2 style="margin: 8px 0 0; font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em">{{det.title}}</h2>
 <p style="margin: 22px 0 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6C5A8C">L’essentiel</p>
 <p style="margin: 6px 0 0; font-size: 17px; line-height: 1.55">{{det.lead}}</p>
@@ -645,8 +668,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6C5A8C">Source</span>
 <span style="font-size: 16px; font-weight: 800">{{det.source}} · {{det.date}}</span>
 <span style="font-size: 14px; line-height: 1.45; font-style: italic; color: #6C5A8C">{{det.srcTitle}}</span>
-<a href="{{det.url}}" target="_blank" rel="noopener noreferrer" style="margin-top: 8px; height: 46px; border-radius: 23px; border: 1.5px solid #DED6EC; background: #FFFFFF; color: #260E4F; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px">Lire l’article original<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"></path></svg></a>
-<span style="margin-top: 4px; font-size: 12px; line-height: 1.4; color: #6C5A8C">Résumé rédigé par Inovia à partir de cet article. Photo d’illustration : elle ne provient pas de l’article.</span>
+<a href="{{det.url}}" target="_blank" rel="noopener noreferrer" style="margin-top: 8px; height: 46px; border-radius: 23px; border: 1.5px solid #DED6EC; background: #FFFFFF; color: #260E4F; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px">Lire l’article complet sur {{det.source}}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"></path></svg></a>
+<span style="margin-top: 4px; font-size: 12px; line-height: 1.4; color: #6C5A8C">Résumé rédigé par Inovia à partir de cet article.<sc-if value="{{det.hasPimg}}" hint-placeholder-val="{{ true }}"> Photo : {{det.source}}.</sc-if></span>
 </div>
 <div style="margin-top: 28px; padding: 20px; border-radius: 26px; background: #7046DC">
 <span style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase">
@@ -1000,37 +1023,56 @@ window.Component = class Component extends DCLogic {
         why: 'L’IA s’invite jusque dans la fabrique de la loi. Savoir s’en servir, mais surtout relire et vérifier ce qu’elle écrit, devient une compétence de base.',
         module: 'Module : Vérifier ce que l’IA écrit', course: 'Formation Les bases de l’IA',
         source: 'franceinfo', date: '7 oct. 2026', srcTitle: '« Je vois l’intelligence artificielle comme une aide » : des députés assument d’utiliser l’IA pour rédiger leurs questions et leurs amendements', url: 'https://www.franceinfo.fr/internet/intelligence-artificielle/je-vois-l-intelligence-artificielle-comme-une-aide-des-deputes-assument-d-utiliser-l-ia-pour-rediger-leurs-questions-et-leurs-amendements_8227393.html' },
-      { id: 'n1', tag: 'Création', cover: 'a', impact: 'Agent visuel × 2 aujourd’hui', photo: 'assets/photo-creation.jpg', title: '8 millions avec de fausses écoutes : 18 mois de prison.',
+      { id: 'n1', pimg: 'https://www.musicbusinessworldwide.com/files/2026/10/GettyImages-594350394.jpg', tag: 'Création', cover: 'a', impact: 'Agent visuel × 2 aujourd’hui', photo: 'assets/photo-creation.jpg', title: '8 millions avec de fausses écoutes : 18 mois de prison.',
         lead: 'Aux États-Unis, Michael Smith a fait écouter des centaines de milliers de chansons créées par IA à des milliers de faux comptes sur Spotify, Apple Music ou YouTube Music. Il a touché plus de 8 millions de dollars de droits. Le 6 octobre, il a été condamné à 18 mois de prison.',
         why: 'Créer de la musique avec l’IA est permis. Tricher sur les écoutes, non. Pour vivre de tes créations, mise sur un vrai public.',
         module: 'Module : Créer avec l’IA, sans risque', course: 'Formation Créer du contenu avec l’IA',
         source: 'Music Business Worldwide', date: '7 oct. 2026', srcTitle: 'Michael Smith, man behind $8M AI song and bot streaming fraud, sentenced to 18 months in prison', url: 'https://www.musicbusinessworldwide.com/man-behind-8m-ai-song-and-bot-streaming-fraud-is-sentenced-to-18-months-in-prison/' },
-      { id: 'n2', tag: 'Emploi', cover: 'b', photo: 'assets/photo-emploi.jpg', title: 'L’IA t’aide. Mais elle ne t’apprend pas le métier.',
+      { id: 'n2', pimg: 'https://storage.googleapis.com/gweb-research2023-media/images/HO_previewImage1.width-800.format-jpeg.jpg', tag: 'Emploi', cover: 'b', photo: 'assets/photo-emploi.jpg', title: 'L’IA t’aide. Mais elle ne t’apprend pas le métier.',
         lead: 'Google Research a suivi 133 avocats pendant trois mois. Avec l’IA, tous rédigent mieux et les débutants vont plus vite. Mais une fois privés de l’outil, seuls les plus expérimentés avaient vraiment progressé.',
         why: 'Utiliser l’IA ne suffit pas : il faut comprendre ce qu’elle fait pour progresser toi-même. C’est ce qui fera la différence sur ton CV.',
         module: 'Module : Progresser avec l’IA, pas seulement aller vite', course: 'Formation Les bases de l’IA',
         source: 'Google Research', date: '7 oct. 2026', srcTitle: 'Does better work always mean better workers?', url: 'https://research.google/blog/does-better-work-always-mean-better-workers/' },
-      { id: 'n3', tag: 'Business', cover: 'c', photo: 'assets/photo-business.jpg', title: '90 % de paperasse en moins pour recruter.',
+      { id: 'n3', pimg: 'https://newsroom.ibm.com/image/Providence_health_banner.jpg', tag: 'Business', cover: 'c', photo: 'assets/photo-business.jpg', title: '90 % de paperasse en moins pour recruter.',
         lead: 'Aux États-Unis, le groupe de santé Providence utilise RITA, un agent IA conçu avec IBM. Il crée les offres d’emploi, gère les validations et suit les recrutements. Résultat annoncé : 90 % de tâches administratives en moins pour les managers, et des mutations internes 12 jours plus rapides.',
         why: 'Les agents IA prennent en charge les tâches répétitives des entreprises. Savoir les mettre en place est une compétence très recherchée.',
         module: 'Module : Automatiser une tâche avec un agent IA', course: 'Formation Lancer un business avec l’IA',
         source: 'IBM Newsroom', date: '7 oct. 2026', srcTitle: 'Providence Collaborates with IBM Using AI to Reduce Hiring Admin Time Without Replacing a Single System', url: 'https://newsroom.ibm.com/2026-10-07-providence-health-collaborates-with-ibm-using-ai-to-reduce-hiring-admin-time-without-replacing-a-single-system' },
-      { id: 'n4', tag: 'Code', cover: 'd', photo: 'assets/photo-code.jpg', title: 'Décris ton jeu. Joue-y tout de suite.',
+      { id: 'n4', pimg: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/THUMBNAIL_BLOG.width-1300.png', tag: 'Code', cover: 'd', photo: 'assets/photo-code.jpg', title: 'Décris ton jeu. Joue-y tout de suite.',
         lead: 'Google lance Playground : tu décris en quelques phrases le jeu que tu veux, l’IA le crée, tu y joues dans ton navigateur et tu peux le partager. Pour l’instant, c’est réservé aux États-Unis et aux plus de 18 ans.',
         why: 'Créer un jeu ou une appli sans savoir coder devient réalité. Ce qui compte : savoir décrire précisément ce que tu veux.',
         module: 'Module : Ta première appli sans coder', course: 'Formation Coder avec l’IA',
         source: 'Google', date: '7 oct. 2026', srcTitle: 'Introducing Playground: Create and play custom games', url: 'https://blog.google/innovation-and-ai/technology/ai/playground-experimental-gaming-platform/' },
-      { id: 'n5', tag: 'Image et vidéo', cover: 'e', photo: 'assets/photo-image.jpg', title: 'Vraie photo ou IA ? Google ouvre son détecteur à tous.',
+      { id: 'n5', pimg: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Raccoon_Video_SynthIDDetector.max-1440x810.png', tag: 'Image et vidéo', cover: 'e', photo: 'assets/photo-image.jpg', title: 'Vraie photo ou IA ? Google ouvre son détecteur à tous.',
         lead: 'Le SynthID Detector de Google vérifie si une image, une vidéo ou un son a été créé avec l’IA de Google ou de partenaires comme OpenAI et NVIDIA. Il est désormais ouvert à tout le monde, pour l’instant en anglais.',
         why: 'Les fausses images vont se multiplier. Apprendre à les repérer te protège des arnaques et des fausses infos.',
         module: 'Module : Repérer une image créée par IA', course: 'Formation Image et vidéo IA',
         source: 'Google DeepMind', date: '7 oct. 2026', srcTitle: 'We’re making it easier to identify AI-generated content globally', url: 'https://blog.google/innovation-and-ai/models-and-research/google-deepmind/synth-id-ai-content/' },
-      { id: 'n6', tag: 'Société', cover: 'f', photo: '', title: 'GPT-6 arrive dans ChatGPT, même en gratuit.',
+      { id: 'n6', pimg: 'https://pic.clubic.com/v1/images/2460364/raw', tag: 'Société', cover: 'f', photo: '', title: 'GPT-6 arrive dans ChatGPT, même en gratuit.',
         lead: 'OpenAI ouvre GPT-6 à tous les utilisateurs de ChatGPT. Les comptes gratuits reçoivent la version GPT-6 Luna. Nouveauté : les réponses peuvent contenir de petits outils interactifs, comme une calculette ou une liste de courses.',
         why: 'L’IA la plus récente est gratuite pour tout le monde. La différence ne se fera plus sur l’accès, mais sur qui sait bien s’en servir.',
         module: 'Module : Bien parler à ChatGPT', course: 'Formation Les bases de l’IA',
         source: 'Clubic', date: '8 oct. 2026', srcTitle: 'GPT-6 pour tous : la nouvelle IA d’OpenAI arrive pour le grand public', url: 'https://www.clubic.com/actualite-633151-gpt-6-pour-tous-la-nouvelle-ia-d-openai-arrive-pour-le-grand-public.html' }
     ];
+    // Actus qui arrivent en direct (démo : dans la vraie appli, le serveur lit les médias toutes les minutes)
+    this.newsPool = [
+      { id: 'n7', pimg: 'https://www.lalibre.be/resizer/v2/ODKLKJBY5JHBZGGEX5JO7VIOG4.png?auth=99992c0249edfd0f59ed7caae24c0f483574cfcaa1b362acfcac9717c690a301&width=1200&height=630&quality=85&smart=true', tag: 'Business', cover: 'c', title: 'L’IA fait repartir Wall Street.',
+        lead: 'Lundi, la Bourse de New York a fini en hausse grâce aux valeurs liées à l’intelligence artificielle, après plusieurs séances difficiles. Le Nasdaq a gagné 1,11 % et Nvidia 1,38 %. CoreWeave, très endetté, a encore reculé après avoir perdu un quart de sa valeur la semaine dernière.',
+        why: 'L’IA reste le moteur de la Bourse, mais les entreprises qui s’endettent trop pour suivre sont punies. Comprendre où va l’argent t’aide à voir quels métiers et quels outils vont grandir.',
+        module: 'Module : Comprendre le business de l’IA', course: 'Formation Lancer un business avec l’IA',
+        source: 'La Libre', date: '20 oct. 2026', srcTitle: 'Wall Street profite d’un regain d’intérêt pour l’intelligence artificielle', url: 'https://lalibre.be/dernieres-depeches/2026/10/20/wall-street-profite-dun-regain-dinteret-pour-lintelligence-artificielle-G2GA44DOG5FOPFNLOV7EYOAKRM' },
+      { id: 'n8', pimg: 'https://www.maddyness.com/app/uploads/2025/09/Ballon-dor--scaled.jpg', tag: 'Société', cover: 'a', impact: 'Agent analyste × 2 aujourd’hui', title: 'Ballon d’or 2026 : l’IA a choisi son vainqueur.',
+        lead: 'Le cabinet français Avisia a fait tourner une IA sur les 30 joueurs nommés. Lamine Yamal arrive en tête avec 23 % de chances, devant Harry Kane (21 %), puis Kylian Mbappé et Rodri (19 %). Verdict le 26 octobre à Londres.',
+        why: 'L’IA ne devine pas l’avenir : elle calcule des probabilités à partir du passé. En 2025, ce même modèle donnait Dembélé gagnant à 72 %. Garde toujours un œil critique sur les prédictions.',
+        module: 'Module : Vérifier ce que l’IA écrit', course: 'Formation Les bases de l’IA',
+        source: 'Maddyness', date: '20 oct. 2026', srcTitle: 'Ballon d’or 2026 : voici le vainqueur selon l’IA', url: 'https://maddyness.com/2026/10/20/ballon-dor-2026-voici-le-vainqueur-selon-lia' },
+      { id: 'n9', pimg: 'https://cdn.theneuron.ai/everything-happened-ai-today-october-19-2026.png', tag: 'Emploi', cover: 'b', title: 'Chez Anthropic, les postes juniors fondent.',
+        lead: 'Selon une étude publiée par Anthropic, la part des juniors dans ses équipes techniques est passée de 21 % à 14 % depuis début 2025. Ils ne représentent plus que 9 % des recrutements techniques, contre 27 % avant. L’entreprise recrute pourtant toujours plus au total.',
+        why: 'Les tâches de débutant sont les premières confiées aux agents IA. Pour décrocher un premier poste, savoir piloter ces agents devient un vrai avantage.',
+        module: 'Module : Automatiser une tâche avec un agent IA', course: 'Formation Les bases de l’IA',
+        source: 'The Neuron', date: '20 oct. 2026', srcTitle: 'Everything That Happened in AI Today, Monday, October 19', url: 'https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-october-19-2026/' }
+    ];
+    this.newsPending = []; this.newsNext = 0; this.lastSync = Date.now(); this.nextDrop = Date.now() + 20000;
   }
   // Gains pendant l'absence (50 % du rythme, plafonnés selon le nombre d'agents débloqués)
   // Sauvegarde liée au compte Claude (version Claude uniquement) : la partie survit à la fermeture de la page.
@@ -1459,7 +1501,13 @@ window.Component = class Component extends DCLogic {
     };
     document.addEventListener('pointerdown', this.fxDown, true);
   }
-  componentDidMount() { this.ncMsg = (e) => { const d = e && e.data; if (!d || typeof d !== 'object') return; if (d.type === 'neocorp-ready') this.ncSend(true); else if (d.type === 'neocorp-buzz') this.buzz(d.ms); }; try { window.addEventListener('message', this.ncMsg); } catch (e) {} try { if (this.state.night) { document.documentElement.style.background = '#0A070F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#0A070F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
+  componentDidMount() { this.newsT = setInterval(() => this.newsSim(), 5000);
+    this.ptr = { on: false, y: 0, d: 0 }; const H = document.documentElement;
+    this.imgFb = (e) => { const t = e && e.target; if (t && t.tagName === 'IMG' && t.dataset && t.dataset.fb && t.getAttribute('src') !== t.dataset.fb) { this.badImg = this.badImg || {}; this.badImg[t.getAttribute('src')] = 1; t.setAttribute('src', t.dataset.fb); } };
+    this.ptrS = (e) => { const top = document.getElementById('actuTop'); const sc = top && top.parentElement; if (!sc || !sc.contains(e.target) || sc.scrollTop > 0 || this.state.refreshing) return; this.ptr = { on: true, y: e.touches[0].clientY, d: 0 }; };
+    this.ptrM = (e) => { if (!this.ptr.on) return; const d = Math.max(0, e.touches[0].clientY - this.ptr.y); this.ptr.d = d; const h = Math.min(90, d * 0.5); H.style.setProperty('--ino-ptr', h + 'px'); H.style.setProperty('--ino-ptr-r', Math.round(h * 2) + 'deg'); H.classList.toggle('ino-ptr-go', h >= 60); };
+    this.ptrE = () => { if (!this.ptr.on) return; const go = Math.min(90, this.ptr.d * 0.5) >= 60; this.ptr.on = false; H.style.setProperty('--ino-ptr', '0px'); H.classList.remove('ino-ptr-go'); if (go) this.refreshNews(); };
+    try { document.addEventListener('error', this.imgFb, true); document.addEventListener('touchstart', this.ptrS, { passive: true }); document.addEventListener('touchmove', this.ptrM, { passive: true }); document.addEventListener('touchend', this.ptrE, { passive: true }); } catch (e) {} this.ncMsg = (e) => { const d = e && e.data; if (!d || typeof d !== 'object') return; if (d.type === 'neocorp-ready') this.ncSend(true); else if (d.type === 'neocorp-buzz') this.buzz(d.ms); }; try { window.addEventListener('message', this.ncMsg); } catch (e) {} try { if (this.state.night) { document.documentElement.style.background = '#0A070F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#0A070F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
   componentDidUpdate(pp, ps) { this.planetSync(); if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
@@ -1690,7 +1738,7 @@ window.Component = class Component extends DCLogic {
     try { this.worldEng = this.inoWorld(T, cv, this.worldState()); } catch (e) { this.worldEng = null; }
   }
   stopWorld() { clearTimeout(this.worldT); this.worldT = null; if (this.worldEng) { try { this.worldEng.dispose(); } catch (e) {} this.worldEng = null; } }
-  componentWillUnmount() { if (this.fxDown) { try { document.removeEventListener('pointerdown', this.fxDown, true); if (this.fxLayer) this.fxLayer.remove(); } catch (e) {} this.fxOn = false; } this.planetStop(); clearInterval(this.tickT); clearInterval(this.cloudTimer); if (this.gs) { this.save(); this.cloudFlush(); } this.stopIntro(); this.stopWorld(); }
+  componentWillUnmount() { clearInterval(this.newsT); try { document.removeEventListener('error', this.imgFb, true); document.removeEventListener('touchstart', this.ptrS); document.removeEventListener('touchmove', this.ptrM); document.removeEventListener('touchend', this.ptrE); } catch (e) {} if (this.fxDown) { try { document.removeEventListener('pointerdown', this.fxDown, true); if (this.fxLayer) this.fxLayer.remove(); } catch (e) {} this.fxOn = false; } this.planetStop(); clearInterval(this.tickT); clearInterval(this.cloudTimer); if (this.gs) { this.save(); this.cloudFlush(); } this.stopIntro(); this.stopWorld(); }
   startIntro() {
     this.stopIntro();
     this.introTimer = setTimeout(() => this.runIntro(), 40);
@@ -1810,6 +1858,7 @@ window.Component = class Component extends DCLogic {
   }
 
   go(s) {
+    if (s === 'actu' && this.newsPending && this.newsPending.length) this.flushNews();
     if (s !== this.state.screen) { this.sfx('pop', s === 'jeu' ? 1 : s === 'actu' ? 1.15 : 1.3); this.buzz([8, 30, 12]); } else this.buzz();
     this.setState({ screen: s, menu: false, open: null, world: false, mission: false, info: null, auth: null, levelCard: false, wealth: false, fv: null });
   }
@@ -1851,20 +1900,22 @@ window.Component = class Component extends DCLogic {
     const fontNames = ['Plus Jakarta Sans', 'Manrope', 'Sora', 'Outfit', 'Urbanist', 'DM Sans', 'Space Grotesk', 'Poppins', 'Lexend', 'Nunito', 'Figtree', 'Bricolage Grotesque', 'Unbounded', 'Syne'];
     const levelName = s.level === null ? 'pas encore évalué' : this.levels[s.level].name;
     const themeNames = ['Tout', 'Société', 'Création', 'Business', 'Emploi', 'Image et vidéo', 'Code'];
-    const ordered = this.news.slice().sort((a, b) => (b.photo ? 1 : 0) - (a.photo ? 1 : 0));
+    const liveN = this.allNews().filter(n => n.ts); const ordered = liveN.concat(this.news.slice().sort((a, b) => (b.photo ? 1 : 0) - (a.photo ? 1 : 0)));
+    const TAGP = { 'Société': 'assets/photo-societe.jpg', 'Création': 'assets/photo-creation.jpg', 'Emploi': 'assets/photo-emploi.jpg', 'Business': 'assets/photo-business.jpg', 'Code': 'assets/photo-code.jpg', 'Image et vidéo': 'assets/photo-image.jpg' };
+    const pic = (n) => { const fb = n.photo || TAGP[n.tag] || TAGP['Société']; return { img: (n.pimg && !(this.badImg && this.badImg[n.pimg])) ? n.pimg : fb, fb: fb, hasPimg: !!n.pimg, when: n.ts ? this.relTime(n.ts) : n.date, isNew: !!(n.ts && Date.now() - n.ts < 15 * 60000) }; };
     const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const qn = norm(s.q).trim(); const qWords = qn ? qn.split(/\s+/) : [];
     const byTheme = s.theme === 'Tout' ? ordered : ordered.filter(n => n.tag === s.theme);
     const shown = qWords.length ? byTheme.filter(n => { const hay = norm([n.title, n.lead, n.why, n.tag, n.source, n.module].join(' ')); return qWords.every(w => hay.indexOf(w) >= 0); }) : byTheme;
     const covers = (c) => ({ ca: c === 'a', cb: c === 'b', cc: c === 'c', cd: c === 'd', ce: c === 'e', cf: c === 'f' });
     const toggleSave = (id) => { this.buzz(); this.setState({ saved: { ...this.state.saved, [id]: !this.state.saved[id] } }); };
-    const found = s.open ? this.news.find(n => n.id === s.open) : null;
+    const found = s.open ? this.allNews().find(n => n.id === s.open) : null;
     const det = found ? {
-      ...found, ...covers(found.photo ? '' : found.cover), hasPhoto: !!found.photo, hasImpact: !!found.impact, impact: found.impact || '',
+      ...found, ...covers(''), hasPhoto: true, ...pic(found), hasImpact: !!found.impact, impact: found.impact || '',
       saved: !!s.saved[found.id], unsaved: !s.saved[found.id],
       saveLabel: s.saved[found.id] ? 'Retirer des favoris' : 'Sauvegarder l’article',
       save: () => toggleSave(found.id)
-    } : { tag: '', title: '', lead: '', why: '', module: '', course: '', source: '', date: '', srcTitle: '', url: '', hasImpact: false, impact: '', hasPhoto: false, photo: '', ca: false, cb: false, cc: false, cd: false, ce: false, cf: false, saved: false, unsaved: true, saveLabel: '', save: () => {} };
+    } : { tag: '', title: '', lead: '', why: '', module: '', course: '', source: '', date: '', srcTitle: '', url: '', hasImpact: false, impact: '', hasPhoto: false, photo: '', img: '', fb: '', hasPimg: false, when: '', isNew: false, ca: false, cb: false, cc: false, cd: false, ce: false, cf: false, saved: false, unsaved: true, saveLabel: '', save: () => {} };
     const bubble = (on) => ({
       cls: on ? 'on' : '', ink: on ? '#FFFFFF' : '#260E4F',
       style: FONT + 'width:74px;height:74px;padding:0;border-radius:37px;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s ease,box-shadow .25s ease;' + (on ? 'background:radial-gradient(circle at 35% 30%,#7F58EA,#7046DC 70%);box-shadow:0 10px 22px rgba(112,70,220,.38),inset 0 1px 1px rgba(255,255,255,.25)' : 'background:#F7F5FA;box-shadow:-4px -4px 10px rgba(255,255,255,.95),5px 6px 14px rgba(112,70,220,.14)')
@@ -1945,13 +1996,20 @@ window.Component = class Component extends DCLogic {
         style: FONT + 'flex:0 0 auto;height:44px;padding:0 18px;border-radius:22px;border:none;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s ease;' + (s.theme === n ? 'background:#7046DC;color:#FFFFFF;box-shadow:0 6px 14px rgba(112,70,220,.3)' : 'background:#E7E1F1;color:#260E4F;box-shadow:-2px -2px 6px rgba(255,255,255,.9),3px 3px 8px rgba(112,70,220,.08)')
       })),
       noNews: shown.length === 0,
+      refreshing: !!s.refreshing,
+      notRefreshing: !s.refreshing,
+      refreshNews: () => this.refreshNews(),
+      refreshCls: s.refreshing ? 'ino-rot' : '',
+      syncText: s.refreshing ? 'Actualisation…' : 'Mis à jour ' + this.relTime(this.lastSync || Date.now()),
+      hasPending: !!(this.newsPending && this.newsPending.length) && !s.refreshing,
+      pendingText: (this.newsPending && this.newsPending.length > 1) ? this.newsPending.length + ' nouvelles actus' : '1 nouvelle actu',
       noNewsText: qWords.length ? 'Aucune actu pour « ' + String(s.q).trim() + ' »' : 'Rien sur ce thème aujourd’hui',
       q: s.q || '',
       hasQ: !!(s.q && s.q.length),
       setQ: (e) => { const v = e && e.target ? e.target.value : ''; this.setState({ q: v }); },
       clearQ: () => { this.buzz(); this.setState({ q: '' }); },
       news: shown.map((n, i) => ({
-        ...n, ...covers(n.photo ? '' : n.cover), hasPhoto: !!n.photo,
+        ...n, ...covers(''), hasPhoto: true, ...pic(n),
         open: () => { this.buzz(); this.setState({ open: n.id }); },
         cardStyle: FONT + 'display:block;width:100%;padding:0;overflow:hidden;text-align:left;border-radius:28px;border:none;background:#FFFFFF;box-shadow:0 14px 32px rgba(112,70,220,.10),0 2px 6px rgba(112,70,220,.05);cursor:pointer;animation-delay:' + (i * 90) + 'ms'
       })),
@@ -2317,6 +2375,23 @@ window.Component = class Component extends DCLogic {
     this.inboxPing = Date.now(); this.sfx('tap', 1.4); this.save();
   }
   stat(k, v) { const gs = this.gs; if (!gs.stats) gs.stats = {}; gs.stats[k] = (gs.stats[k] || 0) + v; }
+  allNews() { const L = this.state.live || []; return L.map(l => Object.assign({}, this.newsPool.find(p => p.id === l.id), { ts: l.ts })).concat(this.news); }
+  relTime(ts) { const m = Math.floor((Date.now() - ts) / 60000); return m < 1 ? 'à l’instant' : m < 60 ? 'il y a ' + m + ' min' : 'il y a ' + Math.floor(m / 60) + ' h'; }
+  newsSim() {
+    if (Date.now() >= this.nextDrop && this.newsNext < this.newsPool.length) { this.newsPending.push({ id: this.newsPool[this.newsNext++].id, ts: Date.now() }); this.nextDrop = Date.now() + 60000; if (this.state.screen === 'actu') this.buzz(8); }
+    if (this.state.screen === 'actu' && !this.state.open) this.setState({ nsync: Date.now() });
+  }
+  flushNews() { const p = this.newsPending; this.newsPending = []; this.lastSync = Date.now(); if (p.length) this.setState({ live: p.slice().reverse().concat(this.state.live || []) }); return p.length; }
+  refreshNews() {
+    if (this.state.refreshing) return; this.buzz(); this.sfx('pop', 1.1);
+    this.setState({ refreshing: true });
+    setTimeout(() => {
+      const n = this.flushNews();
+      try { const t = document.getElementById('actuTop'); if (t && t.parentElement) t.parentElement.scrollTop = 0; } catch (e) {}
+      this.say(n ? (n > 1 ? n + ' nouvelles actus' : '1 nouvelle actu') : 'Tu es à jour : rien de nouveau pour l’instant');
+      this.setState({ refreshing: false, nsync: Date.now() });
+    }, 1100);
+  }
   say(text) { this.toast = { text: text, until: Date.now() + 3600 }; }
   refresh() { this.setState({ tk: Date.now() }); }
   celebrate(text, big) {

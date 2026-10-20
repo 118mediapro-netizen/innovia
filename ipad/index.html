@@ -654,10 +654,12 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div style="padding: 22px 22px 48px">
 <span style="font-size: 13px; font-weight: 700; color: #6C5A8C">{{det.tag}} · {{det.source}} · {{det.when}}</span>
 <h2 style="margin: 8px 0 0; font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em">{{det.title}}</h2>
-<p style="margin: 22px 0 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6C5A8C">L’essentiel</p>
+<p style="margin: 22px 0 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6C5A8C">{{det.leadLabel}}</p>
 <p style="margin: 6px 0 0; font-size: 17px; line-height: 1.55">{{det.lead}}</p>
+<sc-if value="{{det.hasWhy}}" hint-placeholder-val="{{ true }}">
 <p style="margin: 20px 0 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6C5A8C">Ce que ça change pour toi</p>
 <p style="margin: 6px 0 0; font-size: 17px; line-height: 1.55">{{det.why}}</p>
+</sc-if>
 <sc-if value="{{det.hasImpact}}" hint-placeholder-val="{{ false }}">
 <div style="margin-top: 24px; padding: 16px 18px; border-radius: 22px; border: 1.5px solid #DED6EC; display: flex; align-items: center; justify-content: space-between; gap: 12px">
 <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6C5A8C">Impact dans Neo Corp</span><span style="font-size: 15px; font-weight: 800">{{det.impact}}</span></span>
@@ -669,7 +671,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <span style="font-size: 16px; font-weight: 800">{{det.source}} · {{det.date}}</span>
 <span style="font-size: 14px; line-height: 1.45; font-style: italic; color: #6C5A8C">{{det.srcTitle}}</span>
 <a href="{{det.url}}" target="_blank" rel="noopener noreferrer" style="margin-top: 8px; height: 46px; border-radius: 23px; border: 1.5px solid #DED6EC; background: #FFFFFF; color: #260E4F; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px">Lire l’article complet sur {{det.source}}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"></path></svg></a>
-<span style="margin-top: 4px; font-size: 12px; line-height: 1.4; color: #6C5A8C">Résumé rédigé par Inovia à partir de cet article.<sc-if value="{{det.hasPimg}}" hint-placeholder-val="{{ true }}"> Photo : {{det.source}}.</sc-if></span>
+<span style="margin-top: 4px; font-size: 12px; line-height: 1.4; color: #6C5A8C">{{det.noteText}}<sc-if value="{{det.hasPimg}}" hint-placeholder-val="{{ true }}"> Photo : {{det.source}}.</sc-if></span>
 </div>
 <div style="margin-top: 28px; padding: 20px; border-radius: 26px; background: #7046DC">
 <span style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase">
@@ -1072,6 +1074,7 @@ window.Component = class Component extends DCLogic {
         module: 'Module : Automatiser une tâche avec un agent IA', course: 'Formation Les bases de l’IA',
         source: 'The Neuron', date: '20 oct. 2026', srcTitle: 'Everything That Happened in AI Today, Monday, October 19', url: 'https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-october-19-2026/' }
     ];
+    this.SB = { url: 'https://swlzdzzfudomdqtgqjjo.supabase.co', key: 'sb_publishable__w68mk60GQjnadt8zAuTtw_mhIX7L8t' }; this.remote = []; this.remoteOk = false; this.remoteNext = null; this.nextPoll = 0;
     this.newsPending = []; this.newsNext = 0; this.lastSync = Date.now(); this.nextDrop = Date.now() + 20000;
   }
   // Gains pendant l'absence (50 % du rythme, plafonnés selon le nombre d'agents débloqués)
@@ -1501,7 +1504,7 @@ window.Component = class Component extends DCLogic {
     };
     document.addEventListener('pointerdown', this.fxDown, true);
   }
-  componentDidMount() { this.newsT = setInterval(() => this.newsSim(), 5000);
+  componentDidMount() { this.newsT = setInterval(() => this.newsSim(), 5000); this.nextPoll = Date.now() + 60000; this.loadRemote(true).then(() => this.setState({ nsync: Date.now() }));
     this.ptr = { on: false, y: 0, d: 0 }; const H = document.documentElement;
     this.imgFb = (e) => { const t = e && e.target; if (t && t.tagName === 'IMG' && t.dataset && t.dataset.fb && t.getAttribute('src') !== t.dataset.fb) { this.badImg = this.badImg || {}; this.badImg[t.getAttribute('src')] = 1; t.setAttribute('src', t.dataset.fb); } };
     this.ptrS = (e) => { const top = document.getElementById('actuTop'); const sc = top && top.parentElement; if (!sc || !sc.contains(e.target) || sc.scrollTop > 0 || this.state.refreshing) return; this.ptr = { on: true, y: e.touches[0].clientY, d: 0 }; };
@@ -1900,7 +1903,7 @@ window.Component = class Component extends DCLogic {
     const fontNames = ['Plus Jakarta Sans', 'Manrope', 'Sora', 'Outfit', 'Urbanist', 'DM Sans', 'Space Grotesk', 'Poppins', 'Lexend', 'Nunito', 'Figtree', 'Bricolage Grotesque', 'Unbounded', 'Syne'];
     const levelName = s.level === null ? 'pas encore évalué' : this.levels[s.level].name;
     const themeNames = ['Tout', 'Société', 'Création', 'Business', 'Emploi', 'Image et vidéo', 'Code'];
-    const liveN = this.allNews().filter(n => n.ts); const ordered = liveN.concat(this.news.slice().sort((a, b) => (b.photo ? 1 : 0) - (a.photo ? 1 : 0)));
+    const liveN = this.allNews().filter(n => n.ts); const ordered = (this.remote && this.remote.length) ? this.remote.slice() : liveN.concat(this.news.slice().sort((a, b) => (b.photo ? 1 : 0) - (a.photo ? 1 : 0)));
     const TAGP = { 'Société': 'assets/photo-societe.jpg', 'Création': 'assets/photo-creation.jpg', 'Emploi': 'assets/photo-emploi.jpg', 'Business': 'assets/photo-business.jpg', 'Code': 'assets/photo-code.jpg', 'Image et vidéo': 'assets/photo-image.jpg' };
     const pic = (n) => { const fb = n.photo || TAGP[n.tag] || TAGP['Société']; return { img: (n.pimg && !(this.badImg && this.badImg[n.pimg])) ? n.pimg : fb, fb: fb, hasPimg: !!n.pimg, when: n.ts ? this.relTime(n.ts) : n.date, isNew: !!(n.ts && Date.now() - n.ts < 15 * 60000) }; };
     const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -1911,11 +1914,11 @@ window.Component = class Component extends DCLogic {
     const toggleSave = (id) => { this.buzz(); this.setState({ saved: { ...this.state.saved, [id]: !this.state.saved[id] } }); };
     const found = s.open ? this.allNews().find(n => n.id === s.open) : null;
     const det = found ? {
-      ...found, ...covers(''), hasPhoto: true, ...pic(found), hasImpact: !!found.impact, impact: found.impact || '',
+      ...found, ...covers(''), hasPhoto: true, ...pic(found), hasWhy: !!found.why, leadLabel: found.fromExcerpt ? 'Extrait de l’article' : 'L’essentiel', noteText: found.fromExcerpt ? 'Extrait publié par le média.' : 'Résumé rédigé par Inovia à partir de cet article.', hasImpact: !!found.impact, impact: found.impact || '',
       saved: !!s.saved[found.id], unsaved: !s.saved[found.id],
       saveLabel: s.saved[found.id] ? 'Retirer des favoris' : 'Sauvegarder l’article',
       save: () => toggleSave(found.id)
-    } : { tag: '', title: '', lead: '', why: '', module: '', course: '', source: '', date: '', srcTitle: '', url: '', hasImpact: false, impact: '', hasPhoto: false, photo: '', img: '', fb: '', hasPimg: false, when: '', isNew: false, ca: false, cb: false, cc: false, cd: false, ce: false, cf: false, saved: false, unsaved: true, saveLabel: '', save: () => {} };
+    } : { tag: '', title: '', lead: '', why: '', module: '', course: '', source: '', date: '', srcTitle: '', url: '', hasImpact: false, impact: '', hasPhoto: false, photo: '', img: '', fb: '', hasPimg: false, when: '', isNew: false, hasWhy: false, leadLabel: '', noteText: '', ca: false, cb: false, cc: false, cd: false, ce: false, cf: false, saved: false, unsaved: true, saveLabel: '', save: () => {} };
     const bubble = (on) => ({
       cls: on ? 'on' : '', ink: on ? '#FFFFFF' : '#260E4F',
       style: FONT + 'width:74px;height:74px;padding:0;border-radius:37px;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s ease,box-shadow .25s ease;' + (on ? 'background:radial-gradient(circle at 35% 30%,#7F58EA,#7046DC 70%);box-shadow:0 10px 22px rgba(112,70,220,.38),inset 0 1px 1px rgba(255,255,255,.25)' : 'background:#F7F5FA;box-shadow:-4px -4px 10px rgba(255,255,255,.95),5px 6px 14px rgba(112,70,220,.14)')
@@ -2375,22 +2378,40 @@ window.Component = class Component extends DCLogic {
     this.inboxPing = Date.now(); this.sfx('tap', 1.4); this.save();
   }
   stat(k, v) { const gs = this.gs; if (!gs.stats) gs.stats = {}; gs.stats[k] = (gs.stats[k] || 0) + v; }
-  allNews() { const L = this.state.live || []; return L.map(l => Object.assign({}, this.newsPool.find(p => p.id === l.id), { ts: l.ts })).concat(this.news); }
+  mapRemote(x) {
+    const M = { 'Société': ['Module : Vérifier ce que l’IA écrit', 'Formation Les bases de l’IA'], 'Création': ['Module : Créer avec l’IA, sans risque', 'Formation Créer du contenu avec l’IA'], 'Emploi': ['Module : Progresser avec l’IA, pas seulement aller vite', 'Formation Les bases de l’IA'], 'Business': ['Module : Automatiser une tâche avec un agent IA', 'Formation Lancer un business avec l’IA'], 'Code': ['Module : Ta première appli sans coder', 'Formation Coder avec l’IA'], 'Image et vidéo': ['Module : Repérer une image créée par IA', 'Formation Image et vidéo IA'] };
+    const tag = M[x.tag] ? x.tag : 'Société'; const d = new Date(x.published_at); const ok = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u)) ? u : '';
+    return { id: 'r' + x.id, pimg: ok(x.image), tag: tag, cover: 'a', title: String(x.title || ''), lead: String(x.lead || x.excerpt || ''), why: String(x.why || ''), fromExcerpt: !x.lead,
+      module: x.module || M[tag][0], course: M[tag][1], source: String(x.source || ''), date: isNaN(+d) ? '' : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }), srcTitle: String(x.title || ''), url: ok(x.url), ts: isNaN(+d) ? Date.now() : +d };
+  }
+  async loadRemote(replace) {
+    try {
+      const r = await fetch(this.SB.url + '/rest/v1/news?select=id,url,source,title,excerpt,image,tag,lead,why,module,published_at&order=published_at.desc&limit=60', { headers: { apikey: this.SB.key, Accept: 'application/json' }, cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status); const rows = await r.json(); if (!Array.isArray(rows) || !rows.length) throw new Error('vide');
+      const items = rows.map((x) => this.mapRemote(x));
+      if (replace || !this.remote.length || this.state.screen !== 'actu') { this.remote = items; this.remoteNext = null; this.newsPending = []; }
+      else { const have = new Set(this.remote.map((n) => n.id)); const nu = items.filter((n) => !have.has(n.id)); this.remoteNext = items; this.newsPending = nu.map((n) => ({ id: n.id, ts: n.ts })); if (nu.length) this.buzz(8); }
+      this.remoteOk = true; this.lastSync = Date.now(); return true;
+    } catch (e) { return false; }
+  }
+  allNews() { if (this.remote && this.remote.length) return this.remote; const L = this.state.live || []; return L.map(l => Object.assign({}, this.newsPool.find(p => p.id === l.id), { ts: l.ts })).concat(this.news); }
   relTime(ts) { const m = Math.floor((Date.now() - ts) / 60000); return m < 1 ? 'à l’instant' : m < 60 ? 'il y a ' + m + ' min' : 'il y a ' + Math.floor(m / 60) + ' h'; }
   newsSim() {
-    if (Date.now() >= this.nextDrop && this.newsNext < this.newsPool.length) { this.newsPending.push({ id: this.newsPool[this.newsNext++].id, ts: Date.now() }); this.nextDrop = Date.now() + 60000; if (this.state.screen === 'actu') this.buzz(8); }
+    if (Date.now() >= this.nextPoll) { this.nextPoll = Date.now() + 60000; this.loadRemote(false).then(() => this.setState({ nsync: Date.now() })); }
+    if (!this.remoteOk && Date.now() >= this.nextDrop && this.newsNext < this.newsPool.length) { this.newsPending.push({ id: this.newsPool[this.newsNext++].id, ts: Date.now() }); this.nextDrop = Date.now() + 60000; if (this.state.screen === 'actu') this.buzz(8); }
     if (this.state.screen === 'actu' && !this.state.open) this.setState({ nsync: Date.now() });
   }
-  flushNews() { const p = this.newsPending; this.newsPending = []; this.lastSync = Date.now(); if (p.length) this.setState({ live: p.slice().reverse().concat(this.state.live || []) }); return p.length; }
+  flushNews() { if (this.remoteOk) { const n = this.newsPending.length; if (this.remoteNext) this.remote = this.remoteNext; this.remoteNext = null; this.newsPending = []; this.lastSync = Date.now(); this.setState({ nsync: Date.now() }); return n; } const p = this.newsPending; this.newsPending = []; this.lastSync = Date.now(); if (p.length) this.setState({ live: p.slice().reverse().concat(this.state.live || []) }); return p.length; }
   refreshNews() {
     if (this.state.refreshing) return; this.buzz(); this.sfx('pop', 1.1);
     this.setState({ refreshing: true });
-    setTimeout(() => {
-      const n = this.flushNews();
+    const t0 = Date.now(); const prev = new Set((this.remote || []).map((x) => x.id));
+    this.loadRemote(true).then((ok) => { let n0 = 0; if (ok) { n0 = prev.size ? this.remote.filter((x) => !prev.has(x.id)).length : 0; this.newsPending = []; } else n0 = -1; setTimeout(() => {
+      const n = n0 >= 0 ? n0 : this.flushNews();
       try { const t = document.getElementById('actuTop'); if (t && t.parentElement) t.parentElement.scrollTop = 0; } catch (e) {}
       this.say(n ? (n > 1 ? n + ' nouvelles actus' : '1 nouvelle actu') : 'Tu es à jour : rien de nouveau pour l’instant');
       this.setState({ refreshing: false, nsync: Date.now() });
-    }, 1100);
+    }, Math.max(0, 900 - (Date.now() - t0))); });
   }
   say(text) { this.toast = { text: text, until: Date.now() + 3600 }; }
   refresh() { this.setState({ tk: Date.now() }); }

@@ -60,6 +60,18 @@ a{color:#260E4F}a:hover{color:#260E4F}
 .fm-price{font-size:12px;font-weight:800;color:#FFFFFF;background:rgba(112,70,220,.9);padding:3px 8px;border-radius:9px}
 .night .ino-mark{background:rgba(24,16,38,.88);box-shadow:0 4px 12px rgba(0,0,0,.4)}
 .night .ino-mark svg[stroke="#260E4F"]{stroke:#FFFFFF}
+.ino-strip{margin-top:10px;display:flex;border-radius:16px;background:#FFFFFF;border:1.5px solid #EBE4F6;overflow:hidden}
+.ino-strip .ino-cell{position:relative;flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 4px 8px;border:none;background:none;font-family:inherit;color:#260E4F;cursor:pointer}
+.ino-strip .ino-cell+.ino-cell{border-left:1px solid #EBE4F6}
+.ino-strip .ino-cell small{font-size:10.5px;font-weight:700;color:#6C5A8C;letter-spacing:.02em}
+.ino-strip .ino-cell b{font-size:12.5px;font-weight:800;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ino-strip .ino-cell.lock{opacity:.45}
+.ino-strip .ino-cell.red b{color:#B4232A}
+.ino-strip .dot{position:absolute;top:4px;right:6px;min-width:15px;height:15px;padding:0 4px;box-sizing:border-box;border-radius:8px;background:#E5484D;color:#FFFFFF;font-size:9.5px;font-weight:800;line-height:15px;text-align:center}
+.night .ino-strip{background:#1A1326;border-color:#2A2140}
+.night .ino-strip .ino-cell{color:#F2EEFA}
+.night .ino-strip .ino-cell+.ino-cell{border-left-color:#2A2140}
+.night .ino-strip .ino-cell small{color:#A99BC4}
 .ino-live{width:8px;height:8px;border-radius:4px;background:#E5484D;box-shadow:0 0 0 0 rgba(229,72,77,.6);animation:inoLive 1.6s ease-out infinite;flex:none}
 @keyframes inoLive{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55)}100%{box-shadow:0 0 0 8px rgba(229,72,77,0)}}
 .ino-ptr{height:var(--ino-ptr,0px);overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:800;color:#6C5A8C}
@@ -446,7 +458,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <sc-if value="{{acc.signedIn}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{acc.logout}}" style="height: 40px; padding: 0 14px; border: 1.5px solid #DED6EC; border-radius: 20px; background: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 800; color: #260E4F; cursor: pointer; flex: 0 0 auto">Se déconnecter</button></sc-if>
 <sc-if value="{{acc.signedOut}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{acc.openCreate}}" style="height: 40px; padding: 0 14px; border: none; border-radius: 20px; background: #7046DC; font-family: inherit; font-size: 13px; font-weight: 800; color: #260E4F; cursor: pointer; flex: 0 0 auto">Créer</button></sc-if>
 </div>
-<button class="tap card" type="button" onClick="{{openMyLists}}" style="width: 100%; box-sizing: border-box; margin: -8px 0 24px; padding: 14px 18px; border-radius: 24px; border: 1.5px solid #DED6EC; background: #FFFFFF; display: flex; align-items: center; gap: 14px; text-align: left; font-family: inherit; color: #260E4F; cursor: pointer"><span style="width: 44px; height: 44px; flex: 0 0 44px; border-radius: 22px; background: #EBE4F6; display: flex; align-items: center; justify-content: center; font-size: 20px">⭐</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 800">Mes listes</span><span style="font-size: 13px; color: #6C5A8C">{{listsSub}}</span></span><span style="font-size: 22px; color: #6C5A8C">›</span></button>
+<button class="tap card" type="button" onClick="{{openMyLists}}" style="width: 100%; box-sizing: border-box; margin: -8px 0 24px; padding: 14px 18px; border-radius: 24px; border: 1.5px solid #DED6EC; background: #FFFFFF; display: flex; align-items: center; gap: 14px; text-align: left; font-family: inherit; color: #260E4F; cursor: pointer"><span style="width: 44px; height: 44px; flex: 0 0 44px; border-radius: 22px; background: #EBE4F6; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 800">Mes listes</span><span style="font-size: 13px; color: #6C5A8C">{{listsSub}}</span></span><span style="font-size: 22px; color: #6C5A8C">›</span></button>
 <h2 style="margin: 0; align-self: flex-start; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Mon avancement</h2>
 <div class="card" style="margin-top: 28px; width: 200px; height: 200px; position: relative">
 <svg width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="Avancement global : 0 %"><circle cx="100" cy="100" r="86" fill="none" stroke="#EBE4F6" stroke-width="16"></circle><circle cx="100" cy="100" r="86" fill="none" stroke="#7046DC" stroke-width="16" stroke-linecap="round" stroke-dasharray="20 540" transform="rotate(-90 100 100)"></circle></svg>
@@ -489,7 +501,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </div>
 </div>
 <div style="margin-top: 8px; display: flex"><button class="tap {{g.dateCls}}" type="button" onClick="{{g.openDate}}" aria-label="Date dans le jeu" style="height: 32px; padding: 0 12px; border: none; border-radius: 16px; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 800; color: #260E4F; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>{{g.dateLabel}}</button></div>
-<div class="ino-tiles"><sc-for list="{{g.tiles}}" as="tl" hint-placeholder-count="4"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}" style="{{tl.style}}"><span class="ic" style="{{tl.icStyle}}">{{tl.icon}}</span><span class="tx"><b>{{tl.t}}</b><small style="{{tl.subStyle}}">{{tl.sub}}</small></span><sc-if value="{{tl.dot}}" hint-placeholder-val="{{ false }}"><span class="dot"></span></sc-if></button></sc-for></div>
+<div class="ino-strip"><sc-for list="{{g.tiles}}" as="tl" hint-placeholder-count="4"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}"><small>{{tl.t}}</small><b>{{tl.sub}}</b><sc-if value="{{tl.dot}}" hint-placeholder-val="{{ false }}"><span class="dot">{{tl.badge}}</span></sc-if></button></sc-for></div>
 <sc-if value="{{g.hasBoost}}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 12px; background: #EBE4F6; font-size: 12px; font-weight: 800">{{g.boostLabel}}</span></sc-if>
 
 <div style="margin-top: 12px; display: flex; align-items: center; gap: 6px">
@@ -1482,7 +1494,8 @@ window.Component = class Component extends DCLogic {
       isQcm: t === 'qcm', isBuild: t === 'build', isSwipe: t === 'swipe', isMatch: t === 'match', isSpot: t === 'spot', isDecision: t === 'decision',
       prompt: g.prompt || (t === 'qcm' && g.qs.length > 1 ? 'Question ' + (Math.min(r.qi, g.qs.length - 1) + 1) + ' sur ' + g.qs.length + ' : il faut tout réussir.' : ''),
       showRetry: s.status === 'lost' && (s.kind === 'module' || s.kind === 'train'), retry: () => this.retry(),
-      close: () => this.closeSheet(), closeLabel: play ? 'Fermer' : 'Continuer'
+      close: () => { if (!play && s.inboxId && (this.gs.inbox || []).length) { this.sheet = null; this.inboxChain = true; this.openInbox(); this.refresh(); } else { this.inboxSeq = 0; this.closeSheet(); } },
+      closeLabel: play ? 'Fermer' : (s.inboxId && (this.gs.inbox || []).length ? 'Message suivant' : 'Continuer')
     });
     if (t === 'qcm') { const q = g.qs[Math.min(r.qi, g.qs.length - 1)]; v.q = q.q;
       v.opts = q.o.map((label, i) => { let look = 'border:2px solid #DED6EC;background:#FFFFFF;';
@@ -2464,7 +2477,7 @@ window.Component = class Component extends DCLogic {
   admArts() { return (this.admLoad().arts || []).map(a => ({ id: 'a' + a.id, pimg: a.img || '', tag: ['Société', 'Création', 'Business', 'Emploi', 'Image et vidéo', 'Code'].indexOf(a.cat) >= 0 ? a.cat : 'Société', cats: [a.cat], cover: 'a', title: a.title, lead: a.text || '', why: '', fromExcerpt: false, module: 'Module : Vérifier ce que l’IA écrit', course: 'Formation Les bases de l’IA', source: a.url ? (a.src || 'Sélection Inovia') : 'Inovia', date: new Date(a.ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }), srcTitle: a.title, url: a.url || '', ts: a.ts })); }
   // ----- listes d'articles (Favoris, À lire plus tard, listes perso) -----
   listsLoad() {
-    if (!this._lists) { let L = null; try { L = JSON.parse(window.localStorage.getItem('inoviaLists') || 'null'); } catch (e) {} this._lists = L && L.fav ? L : { fav: { name: '⭐ Favoris', items: {} }, later: { name: '🕒 À lire plus tard', items: {} }, custom: [] }; }
+    if (!this._lists) { let L = null; try { L = JSON.parse(window.localStorage.getItem('inoviaLists') || 'null'); } catch (e) {} this._lists = L && L.fav ? L : { fav: { name: 'Favoris', items: {} }, later: { name: 'À lire plus tard', items: {} }, custom: [] }; this._lists.fav.name = 'Favoris'; this._lists.later.name = 'À lire plus tard'; }
     const L = this._lists; return { fav: L.fav, later: L.later, custom: L.custom, all: [L.fav, L.later].concat(L.custom) };
   }
   listsSave() { try { window.localStorage.setItem('inoviaLists', JSON.stringify(this._lists)); } catch (e) {} this.refresh(); }
@@ -2740,12 +2753,14 @@ window.Component = class Component extends DCLogic {
   }
   openInbox() {
     const gs = this.gs; const it = (gs.inbox || [])[0]; if (!it) return; this.buzz();
+    if (!this.inboxChain) this.inboxSeq = 0; this.inboxChain = false; this.inboxSeq = (this.inboxSeq || 0) + 1; const seqTot = this.inboxSeq - 1 + gs.inbox.length;
     const ph = this.photo(it.photo);
     if (it.kind === 'order') this.openSheet('order', { kicker: it.big ? 'Gros contrat' : 'Demande client', title: it.big ? 'Un grand compte te consulte' : 'Un client a besoin de toi', lesson: '', deadline: 0, big: it.big, tier: it.tier, inboxId: it.id, photo: ph }, { type: 'qcm', qs: [{ q: it.q, o: it.o, a: it.a }], reveal: true });
     else if (it.kind === 'investor') this.openSheet('decision', { kicker: 'Proposition d’investisseur', title: 'Quelqu’un veut entrer au capital', lesson: '', inboxId: it.id, photo: ph }, { type: 'decision', q: it.q, ch: [{ t: 'Accepter : + ' + this.fmt(it.amt) + ' €, je cède ' + it.pct + ' %', act: 'invest', amt: it.amt, pct: it.pct, res: it.fair ? 'Bon accord : l’argent arrive en trésorerie. Tu touches désormais ' + Math.round(gs.own * (1 - it.pct / 100) * 100) + ' % des dividendes.' : 'Accord signé, mais à ce prix tu as bradé tes parts.' }, { t: 'Refuser et garder le contrôle', res: 'Tu gardes ' + Math.round(gs.own * 100) + ' % de ta société.' }] });
     else if (it.kind === 'bilan') { this.inboxDone({ inboxId: it.id }); this.openPanel({ kind: 'bilan', b: it.b }); }
     else if (it.kind === 'arc') this.openSheet('decision', { kicker: it.kicker, title: it.title, lesson: '', inboxId: it.id, photo: ph, arc: it.arc }, { type: 'decision', q: it.q, ch: it.ch });
     else this.openSheet('decision', { kicker: it.gold ? 'Contrat doré' : it.inc ? 'Incident · ton IA a agi seule' : 'Décision de patron', title: it.gold ? 'Un client en or te contacte' : it.inc ? 'Personne n’a vérifié' : 'À toi de trancher', lesson: '', inboxId: it.id, photo: ph, inc: it.inc, gold: it.gold }, { type: 'decision', q: it.q, ch: it.ch });
+    if (this.sheet && seqTot > 1) this.sheet.kicker = 'Message ' + this.inboxSeq + ' sur ' + seqTot + ' · ' + this.sheet.kicker;
   }
   inboxDone(s) { if (s && s.inboxId && this.gs.inbox) this.gs.inbox = this.gs.inbox.filter(x => x.id !== s.inboxId); }
   decide(k) {
@@ -3356,9 +3371,9 @@ window.Component = class Component extends DCLogic {
     } else if (p.kind === 'admin') {
       kicker = 'Mode admin'; title = 'Espace administrateur';
       bl.push(B.Note('Maquette : tout le monde voit ce menu. Dans l’appli finale, il sera réservé à ton compte admin et tes changements passeront par Supabase, sans mise à jour Apple.', 'gold'));
-      bl.push(B.Row({ t: '🎮 Le jeu', sub: 'Niveau, argent, déblocages, objectifs, remise à zéro', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admGame', any: true }; this.refresh(); } }));
-      bl.push(B.Row({ t: '🎬 La Formation', sub: 'Modules, vidéos, gratuites ou payantes', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admFm', any: true }; this.refresh(); } }));
-      bl.push(B.Row({ t: '📰 L’Actu', sub: 'Catégories et articles ajoutés à la main', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admActu', any: true }; this.refresh(); } }));
+      bl.push(B.Row({ t: 'Le jeu', sub: 'Niveau, argent, déblocages, objectifs, remise à zéro', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admGame', any: true }; this.refresh(); } }));
+      bl.push(B.Row({ t: 'La Formation', sub: 'Modules, vidéos, gratuites ou payantes', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admFm', any: true }; this.refresh(); } }));
+      bl.push(B.Row({ t: 'L’Actu', sub: 'Catégories et articles ajoutés à la main', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admActu', any: true }; this.refresh(); } }));
     } else if (p.kind === 'admGame') {
       const L = this.gLevels(); const lv = this.lvlIdx(); kicker = 'Mode admin · Jeu'; title = 'Joue chaque étape';
       bl.push(B.Kv('Niveau actuel', (lv + 1) + ' / 8 · ' + L[lv].n, '#7046DC', true)); bl.push(B.Kv('Argent', f(gs.credits) + ' €'));
@@ -3530,14 +3545,14 @@ window.Component = class Component extends DCLogic {
       showRate: Math.abs(e.net) > 0.0001, rateLabel: (e.net >= 0 ? '+' : '') + this.fmt(e.net) + ' €/s', rateStyle: 'font-size:13px;font-weight:800;white-space:nowrap;color:' + (e.net >= 0 ? '#8A63F0' : '#B4232A'),
       f: f, nf: nf, chips: chips, showChips: chips.length > 0,
       tiles: (() => { const inb = (gs.inbox || []).length; const c0 = this.collection();
-        const T = (t, sub, icon, open, locked, dot, red) => ({ t: t, sub: sub, icon: icon, open: open, dot: !!dot, cls: 'ino-tile' + (locked ? ' lock' : ''), style: 'border: 1.5px solid ' + (red ? '#F3B7B9' : '#DED6EC') + '; background: #FFFFFF; color: #260E4F', icStyle: 'background: ' + (locked ? '#F9F7FC' : '#EBE4F6') + '; font-size: 17px', subStyle: 'color: ' + (red ? '#B4232A' : '#6C5A8C') });
+        const T = (t, sub, open, locked, badge, red) => ({ t: t, sub: sub, open: open, dot: !!badge, badge: badge ? String(badge) : '', cls: 'ino-cell' + (locked ? ' lock' : '') + (red ? ' red' : '') });
         const lockMsg = (m) => () => { this.buzz([10, 30, 10]); this.say(m); this.refresh(); };
         return [
-          gs.company ? T('Ma société', this.totalHum() + ' humain' + (this.totalHum() > 1 ? 's' : '') + ' · ' + nA + ' agent' + (nA > 1 ? 's' : ''), '🏢', () => this.openPanel({ kind: 'societe' }), false, false, e.net < 0)
-            : T('Ma société', 'Ouvrir · gratuit', '🏢', () => this.openPanel({ kind: 'company', name: '' }), false, gs.credits >= 500),
-          gs.company ? T('Argent', 'Patrimoine · ' + this.fmt(this.pl.pat) + ' €', '💶', () => this.openPanel({ kind: 'patrimoine', name: '' }), false, false) : T('Argent', '🔒 Avec ta société', '💶', lockMsg('Ouvre ta société pour gérer ton argent et ton patrimoine.'), true),
-          inb ? T('Missions', inb + ' message' + (inb > 1 ? 's' : '') + ' à traiter', '📩', () => this.openInbox(), false, true) : T('Missions', (gs.stats && gs.stats.orders) ? 'Rien en attente' : '🔒 Bientôt', '📩', lockMsg((gs.stats && gs.stats.orders) ? 'Aucune demande en attente pour le moment.' : 'Tes premières demandes de clients arrivent bientôt.'), !(gs.stats && gs.stats.orders)),
-          nA ? T('Progression', 'Collection ' + c0.n + ' / ' + c0.max + ((gs.streak || 0) >= 2 ? ' · série ' + gs.streak + ' j' : ''), '🏆', () => this.openPanel({ kind: 'collection' }), false, false) : T('Progression', '🔒 Avec ton 1er agent', '🏆', lockMsg('Crée ton premier agent IA pour commencer ta collection.'), true)
+          gs.company ? T('Société', this.totalHum() + ' h · ' + nA + ' agent' + (nA > 1 ? 's' : ''), () => this.openPanel({ kind: 'societe' }), false, 0, e.net < 0)
+            : T('Société', 'Ouvrir', () => this.openPanel({ kind: 'company', name: '' }), false, 0),
+          gs.company ? T('Argent', this.fmt(this.pl.pat) + ' €', () => this.openPanel({ kind: 'patrimoine', name: '' }), false, 0) : T('Argent', 'Bloqué', lockMsg('Ouvre ta société pour gérer ton argent et ton patrimoine.'), true, 0),
+          inb ? T('Missions', inb + ' à traiter', () => this.openInbox(), false, inb) : T('Missions', (gs.stats && gs.stats.orders) ? 'Aucune' : 'Bloqué', lockMsg((gs.stats && gs.stats.orders) ? 'Aucune demande en attente pour le moment.' : 'Tes premières demandes de clients arrivent bientôt.'), !(gs.stats && gs.stats.orders), 0),
+          nA ? T('Progrès', c0.n + ' / ' + c0.max, () => this.openPanel({ kind: 'collection' }), false, 0) : T('Progrès', 'Bloqué', lockMsg('Crée ton premier agent IA pour commencer ta collection.'), true, 0)
         ]; })(),
       steps: (() => { const L = this.gLevels(); const lv = this.lvlIdx(); const w0 = Math.max(0, Math.min(L.length - 4, lv - 1)); const nx = L[Math.min(L.length - 1, lv + 1)]; const pct = lv >= L.length - 1 ? 100 : Math.min(100, Math.max(0, (gs.total - L[lv].t) / Math.max(1, nx.t - L[lv].t) * 100));
         return [0, 1, 2, 3].map(k => { const i = w0 + k; const Lv = L[i]; return { key: 'st' + i, img: Lv.img, hasBar: k < 3, lab: i < lv ? '✓' : i === lv ? 'Niv. ' + (i + 1) : (i === 0 ? 'Départ' : this.fmt(Lv.t) + ' €'), labStyle: 'font-size:11px;font-weight:800;white-space:nowrap;color:' + (i === lv + 1 ? '#7046DC' : i <= lv ? '#8A63F0' : '#6C5A8C'), style: 'width:58px;height:58px;flex:0 0 58px;box-sizing:border-box;padding:3px;border-radius:16px;' + (i === lv ? 'background:#EBE4F6;border:2px solid #7046DC;' : i < lv ? 'background:#F9F7FC;border:2px solid #EBE4F6;' : 'background:#F9F7FC;border:2px solid #F9F7FC;opacity:.35;filter:grayscale(1);'),

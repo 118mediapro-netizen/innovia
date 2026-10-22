@@ -170,6 +170,32 @@ html.nxbug .screen{filter:hue-rotate(150deg) saturate(1.8) contrast(1.15)}
 .night .nx-price .nx-pl b{color:#F2EEFA}
 .night .nx-price .nx-pl small{color:#A99BC4}
 .night .nx-price .nx-pv{color:#B49BFF}
+.nx-wallet{margin:6px auto 0;width:fit-content;max-width:100%;box-sizing:border-box;display:flex;align-items:baseline;justify-content:center;gap:8px;flex-wrap:wrap;padding:6px 16px;border-radius:18px;background:linear-gradient(135deg,#EBE4F6,#F6F1FF);border:1.5px solid #DED6EC}
+.nx-wallet .nx-wl{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#7046DC}
+.nx-wallet b{font-size:32px;font-weight:800;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;color:#260E4F;line-height:1.1}
+.nx-wallet b.red,.nx-wallet small.red{color:#B4232A}
+.nx-wallet small{font-size:12px;font-weight:800;color:#1F8A5B;white-space:nowrap}
+.ino-strip .ino-cell.buy{background:#7046DC}
+.ino-strip .ino-cell.buy small,.ino-strip .ino-cell.buy b{color:#FFFFFF}
+.ino-strip .ino-cell.lock b{color:#A99BC4}
+.nx-tv{margin-top:8px;padding:5px;border-radius:20px;background:linear-gradient(160deg,#3A2F55,#1A1326);box-shadow:0 6px 16px rgba(38,14,79,.25)}
+.nx-tv .nx-journal{margin-top:0;height:78px;border:none;border-radius:15px;background:radial-gradient(ellipse at 50% 40%,#1C1430 0,#0B0814 75%);font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Courier New",monospace;font-size:11px;line-height:14.5px;color:#BFB3E6;position:relative;box-shadow:inset 0 0 18px rgba(0,0,0,.7)}
+.nx-tv .nx-journal::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:15px;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.035) 0,rgba(255,255,255,.035) 1px,transparent 1px,transparent 3px)}
+.nx-tv .nx-journal .jl{color:#8E80B8;font-weight:500}
+.nx-tv .nx-journal .jl span::before{content:"> ";color:#7046DC}
+.nx-tv .nx-journal .jl.last{color:#F2EEFA;font-weight:600;text-shadow:0 0 6px rgba(180,155,255,.45)}
+.nx-tv .nx-journal .jl.w{color:#F2B451}.nx-tv .nx-journal .jl.d{color:#FF6B7A}.nx-tv .nx-journal .jl.m{color:#5FD39A}.nx-tv .nx-journal .jl.p{color:#B49BFF;font-weight:700}
+.nx-tv .nx-journal .jl.last::after{background:#B49BFF}
+.night .nx-wallet{background:linear-gradient(135deg,#221A33,#1A1326);border-color:#2A2140}
+.night .nx-wallet b{color:#F2EEFA}
+.night .nx-wallet .nx-wl{color:#B49BFF}
+.night .nx-wallet small{color:#5FD39A}
+.night .nx-wallet b.red,.night .nx-wallet small.red{color:#FF6B7A}
+.night .ino-strip .ino-cell.buy{background:#7046DC}
+.night .nx-tv .nx-journal{background:radial-gradient(ellipse at 50% 40%,#1C1430 0,#0B0814 75%)}
+.night .nx-tv .nx-journal .jl{color:#8E80B8}
+.night .nx-tv .nx-journal .jl.last{color:#F2EEFA}
+.night .ino-strip .ino-cell.buy small,.night .ino-strip .ino-cell.buy b{color:#FFFFFF}
 .ino-live{width:8px;height:8px;border-radius:4px;background:#E5484D;box-shadow:0 0 0 0 rgba(229,72,77,.6);animation:inoLive 1.6s ease-out infinite;flex:none}
 @keyframes inoLive{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55)}100%{box-shadow:0 0 0 8px rgba(229,72,77,0)}}
 .ino-ptr{height:var(--ino-ptr,0px);overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:800;color:#6C5A8C}
@@ -406,6 +432,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 #app .fm-small { width: 236px; height: 133px }
 #app .fm-big { width: 420px; height: 236px }
 #app .fm-small { width: 236px; height: 133px }
+#app .fm-big { width: 420px; height: 236px }
+#app .fm-small { width: 236px; height: 133px }
 #app .ipgrid2 { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) }
 #app nav { max-width: 460px; margin: 0 auto }
 #app .sheet:not([style*="inset: 0"]) { max-width: 640px; margin-left: auto; margin-right: auto }
@@ -610,7 +638,6 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div style="display: flex; flex-direction: column; min-width: 0">
 <span class="nx-lab">{{g.headLabel}}</span>
 <span id="inoAmount" style="{{g.bigStyle}}">{{g.big}}</span>
-<span class="nx-money"><b class="{{g.moneyCls}}">{{g.money}}</b><small class="{{g.rateCls}}">{{g.headSub}}</small></span>
 </div>
 <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: 0 0 auto">
 <button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 40px; padding: 0 12px; border: none; border-radius: 20px; font-family: inherit; font-weight: 800; color: #260E4F; cursor: pointer; background: #EBE4F6; display: flex; align-items: center; gap: 6px; font-size: 13px; flex: 0 0 auto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l5-3v14M10 21V4l9 4v13"></path><path d="M13 11h3M13 15h3"></path></svg>Mon monde</button>
@@ -618,9 +645,10 @@ html, body, #stage, #app { overscroll-behavior: none }
 <sc-if value="{{g.showRich}}" hint-placeholder-val="{{ false }}"><button class="tap nx-rich" type="button" onClick="{{g.openRich}}">Classement</button></sc-if>
 </div>
 </div>
+<div class="nx-wallet"><span class="nx-wl">Ton argent</span><b class="{{g.moneyCls}}">{{g.money}}</b><small class="{{g.rateCls}}">{{g.headSub}}</small></div>
 <div class="nx-price {{g.priceCls}}"><span class="nx-pl"><b>{{g.priceLab}}</b><small>{{g.priceSub}}</small></span><span class="nx-pv">{{g.priceV}}</span><sc-if value="{{g.pricePm}}" hint-placeholder-val="{{ true }}"><span class="nx-pm"><button class="tap" type="button" onClick="{{g.priceMinus}}" aria-label="Baisser le prix">−</button><button class="tap" type="button" onClick="{{g.pricePlus}}" aria-label="Monter le prix">+</button></span></sc-if></div>
 <div class="ino-strip"><sc-for list="{{g.tiles}}" as="tl" hint-placeholder-count="3"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}"><small>{{tl.t}}</small><b>{{tl.sub}}</b></button></sc-for></div>
-<div class="nx-journal" aria-live="polite"><sc-for list="{{g.log}}" as="jl" hint-placeholder-count="3"><div class="{{jl.cls}}"><span>{{jl.t}}</span></div></sc-for></div>
+<div class="nx-tv"><div class="nx-journal" aria-live="polite"><sc-for list="{{g.log}}" as="jl" hint-placeholder-count="3"><div class="{{jl.cls}}"><span>{{jl.t}}</span></div></sc-for></div></div>
 
 <div style="margin-top: 10px; position: relative">
 <button class="tap hqbtn" type="button" onClick="{{g.tap}}" aria-label="{{g.tapAria}}" style="position: relative; display: block; width: 100%; height: 290px; padding: 0; border: none; border-radius: 28px; overflow: hidden; cursor: pointer; background: #F2EEFA; touch-action: manipulation; font-family: inherit">
@@ -629,6 +657,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <span class="nx-clic {{g.clicCls}}" style="position: absolute; left: 50%; top: 12px; transform: translateX(-50%); z-index: 2; padding: 7px 16px; border-radius: 16px; background: #260E4F; color: #FFFFFF; font-size: 15px; font-weight: 800; white-space: nowrap; pointer-events: none">{{g.clicLabel}}</span>
 </button>
 </div>
+<div class="ino-strip"><sc-for list="{{g.tiles2}}" as="tl" hint-placeholder-count="2"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}"><small>{{tl.t}}</small><b>{{tl.sub}}</b></button></sc-for></div>
 <div style="margin-top: 10px; display: flex; justify-content: center"><span class="nx-pill {{g.pillCls}}">{{g.phasePill}}</span></div>
 <div style="margin-top: 10px; display: flex; align-items: center; gap: 6px">
 <sc-for list="{{g.steps}}" as="sp" hint-placeholder-count="4">
@@ -1502,7 +1531,7 @@ window.Component = class Component extends DCLogic {
     sats.forEach(p => { if (!p.back) { x.fillStyle = '#FFFFFF'; x.strokeStyle = rgb(pe.cur.acc); x.lineWidth = 2; x.beginPath(); x.arc(p.x, p.y, 5, 0, 6.29); x.fill(); x.stroke(); } });
     for (let w = pe.waves.length - 1; w >= 0; w--) { const wv = pe.waves[w]; wv.r += (180 + wv.w * 20) * dt; wv.a -= dt * 1.6; if (wv.a <= 0) { pe.waves.splice(w, 1); continue; } x.strokeStyle = rgb(wv.col, wv.a); x.lineWidth = wv.w; x.beginPath(); x.arc(c.x, c.y, wv.r, 0, 6.29); x.stroke(); }
     // étoile bonus (seulement quand on joue déjà un peu)
-    if (!pe.bonus && pe.t > pe.nextBonus && ((gs.stats && gs.stats.taps) || 0) > 30) { const dir = Math.random() < 0.5 ? 1 : -1; pe.bonus = { x: dir > 0 ? -30 : W + 30, y: H * (0.16 + Math.random() * 0.1), vx: dir * (W / 5.5), ph: Math.random() * 6, trail: [] }; }
+    if (!this.nx && !pe.bonus && pe.t > pe.nextBonus && ((gs.stats && gs.stats.taps) || 0) > 30) { const dir = Math.random() < 0.5 ? 1 : -1; pe.bonus = { x: dir > 0 ? -30 : W + 30, y: H * (0.16 + Math.random() * 0.1), vx: dir * (W / 5.5), ph: Math.random() * 6, trail: [] }; }
     if (pe.bonus) { const b = pe.bonus; b.x += b.vx * dt; b.ph += dt * 5; const by = b.y + Math.sin(b.ph) * 8; b.cy = by; b.trail.push({ x: b.x, y: by }); if (b.trail.length > 14) b.trail.shift();
       b.trail.forEach((p, i) => { x.fillStyle = 'rgba(255,200,80,' + (i / 14 * 0.5) + ')'; x.beginPath(); x.arc(p.x, p.y, 2 + i * 0.25, 0, 6.29); x.fill(); });
       const bg2 = x.createRadialGradient(b.x, by, 2, b.x, by, 30); bg2.addColorStop(0, 'rgba(255,214,120,0.7)'); bg2.addColorStop(1, 'rgba(255,214,120,0)'); x.fillStyle = bg2; x.beginPath(); x.arc(b.x, by, 30, 0, 6.29); x.fill();
@@ -2892,9 +2921,9 @@ window.Component = class Component extends DCLogic {
     // Les aides : 9 IA et 1 humain. Tout ce qui fait monter l'argent est une IA (ou un endroit qui contient des IA).
     D.H = [
       { id: 'hum', n: 'Humain', ai: false, d: 'Fabrique 3 neurones par seconde. Il touche un salaire, mais il surveille tes IA.', c: 60, g: 1.3, ctl: 1.5, need: (s) => s.neuTot >= 120 || s.t > 240 },
-      { id: 'ast', n: 'Assistant IA', ai: true, d: 'Fabrique 1 neurone par seconde, jour et nuit, sans salaire.', c: 6, g: 1.12, ctl: -0.25, need: (s) => s.neuTot >= 25 || s.t > 150 },
-      { id: 'code', n: 'IA de code', ai: true, d: 'Elle écrit le code de tes neurones : tous tes assistants IA vont 50 % plus vite.', c: 120, g: 1.9, ctl: -1, need: (s) => s.h.ast >= 5 },
-      { id: 'agent', n: 'Agent IA', ai: true, d: 'Il travaille seul : il assemble 1 intelligence artificielle toutes les 50 secondes.', c: 2500, g: 1.15, ctl: -0.6, need: (s) => s.phase >= 1 },
+      { id: 'ast', n: 'Agent IA', ai: true, d: 'Il fabrique des neurones à ta place, en automatique : 1 par seconde, jour et nuit, sans salaire.', c: 6, g: 1.12, ctl: -0.25, need: (s) => s.neuTot >= 25 || s.t > 150 },
+      { id: 'code', n: 'IA de code', ai: true, d: 'Elle écrit le code de tes neurones : tous tes agents IA fabriquent 50 % plus vite.', c: 120, g: 1.9, ctl: -1, need: (s) => s.h.ast >= 5 },
+      { id: 'agent', n: 'Agent assembleur', ai: true, d: 'Un agent IA qui assemble tout seul 1 intelligence artificielle toutes les 50 secondes.', c: 2500, g: 1.15, ctl: -0.6, need: (s) => s.phase >= 1 },
       { id: 'team', n: 'Équipe d’agents IA', ai: true, d: 'Dix agents qui se répartissent le travail : 1 IA toutes les 4 secondes.', c: 40000, g: 1.18, ctl: -2, need: (s) => s.h.agent >= 5 },
       { id: 'dc', n: 'Data center IA', ai: true, d: 'Un bâtiment qui contient des milliers d’IA : chaque data center ajoute + 100 % à toute ta production.', c: 400000, g: 2.2, ctl: -4, need: (s) => s.h.team >= 3 || s.h.dc > 0 },
       { id: 'res', n: 'IA chercheuse', ai: true, d: 'Elle améliore ta propre IA : production + 50 %. Mais ton contrôle baisse tout seul.', c: 2e6, g: 2.5, ctl: -6, need: (s) => s.h.dc >= 1 },
@@ -2905,7 +2934,7 @@ window.Component = class Component extends DCLogic {
     // Les améliorations portent les vrais noms de l'IA (tâche 5) : chaque achat apprend un mot.
     D.U = [
       { id: 'ctx', n: 'Fenêtre de contexte élargie', e: 'Ton IA lit plus de texte d’un coup. Chaque clic fabrique 5 neurones.', c: 25, ph: 0, need: (s) => s.neuTot >= 150 },
-      { id: 'mem', n: 'Mémoire longue', e: 'Ton IA se souvient de chaque client. Tes assistants IA fabriquent 2 fois plus.', c: 60, ph: 0, need: (s) => s.h.ast >= 3 },
+      { id: 'mem', n: 'Mémoire longue', e: 'Ton IA se souvient de chaque client. Tes agents IA fabriquent 2 fois plus.', c: 60, ph: 0, need: (s) => s.h.ast >= 3 },
       { id: 'buy', n: 'Achat de données par IA', e: 'Une IA achète tes données au bon moment. Tu n’y penses plus.', c: 300, ph: 0, ctl: -2, need: (s) => s.neuTot >= 2500 },
       { id: 'price', n: 'Tarification par IA', e: 'Une IA fixe ton prix toute seule, au meilleur niveau. Tu ne vends plus jamais à perte.', c: 900, ph: 0, ctl: -3, need: (s) => s.neuTot >= 7000 },
       { id: 'rsn', n: 'Raisonnement', e: 'Ton IA réfléchit étape par étape avant de répondre. Tes clients paient 50 % de plus.', c: 20000, ph: 1, need: (s) => s.phase >= 1 },
@@ -2939,6 +2968,7 @@ window.Component = class Component extends DCLogic {
     const ok = s && s.v === 1 && s.h && Array.isArray(s.log); this.nx = ok ? Object.assign(this.nxFresh(), s) : this.nxFresh();
     this.nx.h = Object.assign(this.nxFresh().h, this.nx.h || {});
     this.nxLast = Date.now(); this.nxSaveNext = Date.now() + 5000;
+    if (!this.nxTouch) { this.nxTouch = (ev) => { const el = ev.target && ev.target.closest ? ev.target.closest('.hqbtn') : null; if (!el || !this.nx || this.state.screen !== 'jeu') return; try { ev.preventDefault(); } catch (er) {} const L = ev.changedTouches || []; for (let i = 0; i < L.length; i++) this.nxTap({ clientX: L[i].clientX, clientY: L[i].clientY }); }; try { document.addEventListener('touchstart', this.nxTouch, { passive: false, capture: true }); } catch (er) {} }
     if (!ok) this.nxStart(); else { const away = (Date.now() - (this.nx.savedAt || Date.now())) / 1000; if (away > 60) this.nxOffline(away); }
   }
   nxSave() { try { if (this.nx) { this.nx.savedAt = Date.now(); window.localStorage.setItem('inoviaNx1', JSON.stringify(this.nx)); } } catch (e) {} }
@@ -3011,11 +3041,11 @@ window.Component = class Component extends DCLogic {
     if (s.neuTot >= 1) this.nxOnce('n1', 'Premier neurone artificiel. C’est la plus petite brique d’une IA.');
     if (s.neuSold >= 1) this.nxOnce('s1', 'Un client achète ton premier neurone. Neo Corp est une vraie entreprise.', 'm');
     if (s.neuTot >= 10) this.nxOnce('price', 'C’est toi qui fixes ton prix. Trop bas, tu perds de l’argent. Trop haut, personne n’achète.');
-    if (this.nxDef().H[1].need(s)) this.nxOnce('astav', 'Une IA qui existe déjà peut travailler pour toi : l’assistant IA.');
-    if (h.ast >= 1) this.nxOnce('ast1', 'Premier assistant IA activé. Il ne demande ni salaire, ni pause.');
-    if (h.ast >= 10) this.nxOnce('ast10', 'Dix assistants IA tournent jour et nuit.');
+    if (this.nxDef().H[1].need(s)) this.nxOnce('astav', 'Une IA qui existe déjà peut fabriquer à ta place : l’agent IA. Il travaille en automatique.');
+    if (h.ast >= 1) this.nxOnce('ast1', 'Premier agent IA activé. Il fabrique tout seul, sans salaire ni pause.');
+    if (h.ast >= 10) this.nxOnce('ast10', 'Dix agents IA tournent jour et nuit.');
     if (h.hum >= 1) this.nxOnce('hum1', 'Tu as embauché un humain. Il est lent et cher, mais il garde un œil sur tes IA.');
-    if (h.code >= 1) this.nxOnce('code1', 'Ton IA de code réécrit le travail de tes assistants. Tu ne comprends plus tout ce qu’elle écrit.');
+    if (h.code >= 1) this.nxOnce('code1', 'Ton IA de code réécrit le travail de tes agents IA. Tu ne comprends plus tout ce qu’elle écrit.');
     if (s.data < 250 && !s.up.buy) this.nxOnce('data', 'Tes données s’épuisent. Sans données, pas de neurones.', 'w');
     if (s.t >= 420) this.nxOnce('david', 'Un concurrent vient d’ouvrir : David. Il utilise déjà l’IA pour tout.', 'w');
     if (s.t >= 480) this.nxOnce('rent0', 'Dans 2 minutes, ton garage commence à te coûter de l’argent.', 'w');
@@ -3027,7 +3057,7 @@ window.Component = class Component extends DCLogic {
     const unit = this.nxUnit(t); if (!this.nxAutoPrice() && s.price[t] < unit && this.nxStock(t) > 0 && s.t - s.lossAt > 90) { s.lossAt = s.t; this.nxLog('Tu vends à perte : un ' + one + ' te coûte ' + this.nxEur(unit) + ', tu le vends ' + this.nxEur(s.price[t]) + '.', 'w'); }
     if (s.up.price) this.nxOnce('upp', 'Ton IA fixe maintenant tes prix. Elle ne s’est encore jamais trompée.');
     if (s.can1) this.nxOnce('can1', 'Tu as assez de neurones pour assembler ta première intelligence artificielle.', 'p');
-    if (h.agent >= 1) this.nxOnce('ag1', 'Premier agent IA. Il assemble des IA… avec l’aide d’une IA.');
+    if (h.agent >= 1) this.nxOnce('ag1', 'Premier agent assembleur. Une IA qui assemble des IA.');
     if (s.iaSold >= 100) this.nxOnce('ia100', 'Cent entreprises utilisent ton IA.', 'm');
     if (h.team >= 1) this.nxOnce('team1', 'Tes agents IA se parlent entre eux pour se répartir le travail. Tu n’es pas dans la conversation.');
     if (h.dc >= 1) this.nxOnce('dc1', 'Ton premier data center IA sort de terre. Il consomme autant d’électricité qu’une petite ville.');
@@ -3083,7 +3113,7 @@ window.Component = class Component extends DCLogic {
     if (s.phase >= 3 && s.p3 && s.p3.step >= 2) { this.buzz([30, 30, 30]); this.sfx('error', 0.8); if (pe) { pe.shake = 6; pe.texts.push({ x: pt.x, y: pt.y - 14, vy: -1, a: 1, txt: 'Accès refusé', big: false }); } this.refresh(); return; }
     let txt = '';
     if (s.phase >= 2) { s.ctl = Math.min(100, s.ctl + 0.05); txt = 'Validé'; }
-    else { const n = Math.min(this.nxTapPow(), s.data); if (n < 1) { if (s.t - s.dataAt > 8) { s.dataAt = s.t; this.nxLog('Plus de données : impossible de fabriquer. Achète des données.', 'w'); } this.buzz([20, 40, 20]); this.sfx('error', 1); this.refresh(); return; } s.data -= n; s.neu += n; s.neuTot += n; txt = '+' + this.fmt(n) + ' neurone' + (n >= 2 ? 's' : ''); }
+    else { const n = Math.min(this.nxTapPow(), s.data); if (n < 1) { if (s.t - s.dataAt > 8) { s.dataAt = s.t; this.nxLog('Plus de données : impossible de fabriquer. Achète des données.', 'w'); } this.buzz([20, 40, 20]); this.sfx('error', 1); this.refresh(); return; } s.data -= n; s.neu += n; s.neuTot += n; txt = '+' + (n < 1000 ? Math.round(n).toLocaleString('fr-FR') : this.fmt(n)) + ' neurone' + (n >= 2 ? 's' : ''); }
     if (pe) { pe.sq = Math.max(0.84, pe.sq - 0.1); pe.sqv = 0; pe.waves.push({ r: this.planetR(), a: 0.45, col: pe.cur.acc.slice(), w: 3 }); pe.texts.push({ x: pt.x + (Math.random() - 0.5) * 60, y: pt.y - 16 - Math.random() * 18, vy: -1.4, a: 0.85, txt: txt, big: false }); this.planetBurst(pt, 3, pe.cur.acc.slice(), false); }
     this.addNet(1); this.sfx('click', 0.97 + Math.random() * 0.06); this.buzz(9); this.refresh();
   }
@@ -3205,11 +3235,13 @@ window.Component = class Component extends DCLogic {
     const total = t === 0 ? s.neuTot : t === 1 ? s.iaTot : s.robTot; const bigS = Math.floor(total).toLocaleString('fr-FR');
     const rate = s.rate * 60; const dv = this.nxDavid(); const hasAi = this.nxHasAi();
     const T = (tt, sub, open, cls) => ({ key: 'tile' + tt, t: tt, sub: sub, open: open, dot: false, badge: '', cls: 'ino-cell' + (cls ? ' ' + cls : '') });
-    const stockN = this.nxStock(t);
+    const stockN = this.nxStock(t); const marg = s.price[t] - this.nxUnit(t);
+    const perMin = (v) => { const m = v * 60; return m < 1 ? 'moins d’1 par min' : this.fmt(m) + ' par min'; };
     const tiles = [T('Stock', this.fmt(Math.floor(stockN)), () => this.openPanel({ kind: 'nxInfo', k: 'fab' }), ''),
-      T('Demande', '≈ ' + this.fmt(this.nxDemand(t)) + ' / s', () => this.openPanel({ kind: 'nxInfo', k: 'price' }), dv.on && dv.share > 0.5 ? 'red' : ''),
-      T('Marge', (s.price[t] - this.nxUnit(t) >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(s.price[t] - this.nxUnit(t))), () => this.openPanel({ kind: 'nxInfo', k: 'price' }), s.price[t] - this.nxUnit(t) >= 0 ? 'green' : 'red')];
-    if (hasAi || s.ctl < 100) tiles.push(T('Contrôle', Math.round(s.ctl) + ' %', () => this.openPanel({ kind: 'nxInfo', k: 'ctl' }), s.ctl < 30 ? 'red' : ''));
+      T('Achats', perMin(this.nxDemand(t)), () => this.openPanel({ kind: 'nxInfo', k: 'price' }), dv.on && dv.share > 0.5 ? 'red' : '')];
+    const H1 = D.H[1]; if (H1.need(s) || s.h.ast > 0) { const c1 = this.nxCost('ast'); tiles.push(Object.assign(T('Agent IA' + (s.h.ast ? ' · ' + s.h.ast : ''), s.phase >= 3 ? '—' : 'Acheter ' + this.fmt(c1) + ' €', () => { if (s.phase >= 3) return; if (s.money < c1) { this.buzz([10, 30, 10]); this.sfx('error', 1); this.nxLog('Un agent IA fabrique des neurones à ta place, en automatique. Il coûte ' + this.fmt(c1) + ' €.'); this.refresh(); return; } this.nxBuy('ast'); }, s.money >= c1 && s.phase < 3 ? 'buy' : 'lock'), { key: 'tileAgent' })); }
+    const tiles2 = [T('Marge par ' + ['neurone', 'IA', 'robot'][t], (marg >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(marg)), () => this.openPanel({ kind: 'nxInfo', k: 'price' }), marg >= 0 ? 'green' : 'red')];
+    if (hasAi || s.ctl < 100) tiles2.push(T('Contrôle de ton IA', Math.round(s.ctl) + ' %', () => this.openPanel({ kind: 'nxInfo', k: 'ctl' }), s.ctl < 30 ? 'red' : ''));
     const visLog = s.log.slice(-6); const lastId = visLog.length ? visLog[visLog.length - 1].id : 0;
     const log = visLog.map(l => ({ key: 'j' + l.id, t: l.t, cls: 'jl' + (l.c ? ' ' + l.c : '') + (l.id === lastId ? ' last' : '') + (l.id === lastId && Date.now() - l.at < 1600 ? ' new' : '') }));
     const steps = [0, 1, 2, 3].map(i => ({ key: 'nst' + i, img: PH[i].img, hasBar: i < 3, lab: i < s.phase ? '✓' : i === s.phase ? 'Phase ' + (i + 1) : PH[i].s, labStyle: 'font-size:11px;font-weight:800;white-space:nowrap;color:' + (i === s.phase + 1 ? '#7046DC' : i <= s.phase ? '#8A63F0' : '#6C5A8C'), style: 'width:58px;height:58px;flex:0 0 58px;box-sizing:border-box;padding:3px;border-radius:16px;' + (i === s.phase ? 'background:#EBE4F6;border:2px solid #7046DC;' : i < s.phase ? 'background:#F9F7FC;border:2px solid #EBE4F6;' : 'background:#F9F7FC;border:2px solid #F9F7FC;opacity:.35;filter:grayscale(1);'),
@@ -3217,7 +3249,7 @@ window.Component = class Component extends DCLogic {
     const lvlLine = s.phase === 0 ? (s.can1 ? 'Tu peux créer ta première IA : regarde « Fabrication »' : 'Prochaine phase : ' + this.fmt(s.neuTot) + ' / 50 000 neurones fabriqués') : s.phase === 1 ? (s.can2 ? 'Tu peux construire ton premier robot : regarde « Fabrication »' : 'Prochaine phase : ' + this.fmt(s.iaTot) + ' / 20 000 IA assemblées') : s.phase === 2 ? 'Contrôle de ton IA : ' + Math.round(s.ctl) + ' %' : 'Ton IA ne t’écoute plus';
     // cartes de gestion
     const R = (o) => ({ key: o.key, t: o.t, sub: o.sub || '', hasSub: !!o.sub, v: o.v || '', hasV: o.v != null && o.v !== '', vcls: o.vcls || '', hasPm: !!o.pm, minus: () => this.nxPrice(-1), plus: () => this.nxPrice(1), hasBtn: !!o.b, b: o.b || '', bcls: o.bcls || '', act: o.act || (() => {}), cls: 'nx-row' + (o.cls ? ' ' + o.cls : '') });
-    const cards = []; const one = PH[t].one; const unit = this.nxUnit(t); const marg = s.price[t] - unit; const dead = s.phase >= 3;
+    const cards = []; const one = PH[t].one; const unit = this.nxUnit(t); const dead = s.phase >= 3;
     const fab = [];
     const lots = Math.max(1, Math.round(Math.max(1000, this.nxNps() * 60) / 1000));
     fab.push(R({ key: 'fd', t: s.up.buy ? 'Données : achetées par ton IA' : s.data < 1 ? 'Plus de données !' : 'Données : de quoi faire ' + this.fmt(Math.floor(s.data)) + ' neurones', sub: s.up.buy ? 'Tu n’as plus à t’en occuper' : 'Chaque neurone consomme une donnée · ' + this.nxEur(s.dp) + ' les 1 000', b: s.up.buy ? '' : 'Acheter · ' + this.nxEur(lots * s.dp), bcls: s.money >= lots * s.dp ? '' : s.money * 1000 / s.dp >= 50 ? '' : 'off', act: () => this.nxBuyData(), cls: s.data < 1 && !s.up.buy ? 'red' : '' }));
@@ -3237,11 +3269,11 @@ window.Component = class Component extends DCLogic {
     return {
       headLabel: ['Neurones artificiels fabriqués', 'Intelligences artificielles créées', 'Robots construits', 'Robots construits'][Math.min(3, s.phase)], big: bigS, bigStyle: 'font-size:' + (bigS.length <= 6 ? 50 : bigS.length <= 9 ? 40 : 32) + 'px;font-weight:800;letter-spacing:-0.035em;line-height:1.08;font-variant-numeric:tabular-nums;white-space:nowrap',
       money: (s.money < 0 ? '− ' : '') + this.fmt(Math.abs(s.money)) + ' €', moneyCls: s.money < 0 ? 'red' : '', rateCls: rate < 0 ? 'red' : '',
-      headSub: (rate >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(rate)) + ' / min',
+      headSub: (rate >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(rate)) + ' par minute',
       priceLab: 'Prix ' + ['d’un neurone', 'd’une IA', 'd’un robot', 'd’un robot'][Math.min(3, s.phase)], priceSub: this.nxAutoPrice() ? 'Fixé par ton IA' : 'Coût de fabrication : ' + this.nxEur(this.nxUnit(t)) + (s.price[t] < this.nxUnit(t) ? ' · tu vends à perte' : ''), priceV: this.nxEur(s.price[t]), pricePm: !this.nxAutoPrice() && s.phase < 3, priceMinus: () => this.nxPrice(-1), pricePlus: () => this.nxPrice(1), priceCls: s.price[t] < this.nxUnit(t) ? 'red' : '',
       showBourse: s.phase >= 1, bourse: this.fmt(this.nxPortfolio()) + ' €', openBourse: () => { this.nxStocks(); this.openPanel({ kind: 'nxBourse' }); },
       phasePill: 'Phase ' + (s.phase + 1) + ' · ' + ph.n + ' · ' + dur(s.t), pillCls: s.phase >= 3 ? 'red' : '',
-      tiles: tiles, log: log, steps: steps, lvlLine: lvlLine, cards: cards,
+      tiles: tiles, tiles2: tiles2, log: log, steps: steps, lvlLine: lvlLine, cards: cards,
       showHint: P0 && !this.sheet, clicLabel: top, clicCls: s.p3 && s.p3.dead ? 'dead' : '', tapAria: top, tap: (ev) => this.nxTap(ev),
       showRich: s.money + this.nxPortfolio() >= top10 * 0.5, openRich: () => this.openPanel({ kind: 'nxRich' }),
       openWorld: () => { this.buzz(); this.ncLast = ''; this.setState({ world: true, ncLvl: this.ncLevel() }); }, closeWorld: () => { this.buzz(); this.setState({ world: false }); },

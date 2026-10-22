@@ -81,7 +81,7 @@ a{color:#260E4F}a:hover{color:#260E4F}
 .nx-pill.red{background:#FDECEC;color:#B4232A}
 .nx-rich{height:28px;padding:0 10px;border:none;border-radius:14px;background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:#A99BC4;cursor:pointer}
 .ino-strip .ino-cell.green b{color:#1F8A5B}
-.nx-journal{margin-top:10px;height:92px;padding:7px 12px;box-sizing:border-box;border-radius:16px;background:#FFFFFF;border:1.5px solid #EBE4F6;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;font-size:12px;line-height:15.5px;color:#260E4F;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14px);mask-image:linear-gradient(to bottom,transparent 0,#000 14px)}
+.nx-journal{margin-top:8px;height:84px;padding:7px 12px;box-sizing:border-box;border-radius:16px;background:#FFFFFF;border:1.5px solid #EBE4F6;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;font-size:12px;line-height:15.5px;color:#260E4F;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14px);mask-image:linear-gradient(to bottom,transparent 0,#000 14px)}
 .nx-journal .jl{flex:0 0 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;color:#6C5A8C}
 .nx-journal .jl.last{font-weight:700;color:#260E4F;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .nx-journal .jl.new span{animation:nxType 1.3s steps(30,end) both}
@@ -148,6 +148,28 @@ html.nxbug .screen{filter:hue-rotate(150deg) saturate(1.8) contrast(1.15)}
 .night .nx-b.done{background:#221A33;color:#B49BFF}
 .night .nx-v.green,.night .ino-strip .ino-cell.green b{color:#5FD39A}
 .night .nx-v.red{color:#FF6B7A}
+.nx-money{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:2px}
+.nx-money b{font-size:28px;font-weight:800;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;color:#260E4F}
+.nx-money b.red{color:#B4232A}
+.nx-money small{font-size:12px;font-weight:800;color:#1F8A5B;white-space:nowrap}
+.nx-money small.red{color:#B4232A}
+.nx-mini{height:28px;padding:0 10px;border:1.5px solid #EBE4F6;border-radius:14px;background:#FFFFFF;font-family:inherit;font-size:11px;font-weight:800;color:#6C5A8C;cursor:pointer;white-space:nowrap}
+.nx-price{margin-top:8px;display:flex;align-items:center;gap:10px;padding:6px 6px 6px 14px;border-radius:16px;background:#FFFFFF;border:1.5px solid #EBE4F6}
+.nx-price .nx-pl{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.nx-price .nx-pl b{font-size:13px;font-weight:800;color:#260E4F}
+.nx-price .nx-pl small{font-size:11px;font-weight:700;color:#6C5A8C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nx-price .nx-pv{font-size:17px;font-weight:800;color:#7046DC;font-variant-numeric:tabular-nums;white-space:nowrap}
+.nx-price.red .nx-pl small{color:#B4232A}
+.nx-price .nx-pm button{width:36px;height:36px;border-radius:18px}
+.ino-strip .ino-cell small{white-space:nowrap}
+.night .nx-money b{color:#F2EEFA}
+.night .nx-money b.red,.night .nx-money small.red{color:#FF6B7A}
+.night .nx-money small{color:#5FD39A}
+.night .nx-mini{background:#1A1326;border-color:#2A2140;color:#A99BC4}
+.night .nx-price{background:#1A1326;border-color:#2A2140}
+.night .nx-price .nx-pl b{color:#F2EEFA}
+.night .nx-price .nx-pl small{color:#A99BC4}
+.night .nx-price .nx-pv{color:#B49BFF}
 .ino-live{width:8px;height:8px;border-radius:4px;background:#E5484D;box-shadow:0 0 0 0 rgba(229,72,77,.6);animation:inoLive 1.6s ease-out infinite;flex:none}
 @keyframes inoLive{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55)}100%{box-shadow:0 0 0 8px rgba(229,72,77,0)}}
 .ino-ptr{height:var(--ino-ptr,0px);overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:800;color:#6C5A8C}
@@ -382,6 +404,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 #app .fm-small { width: 236px; height: 133px }
 #app .fm-big { width: 420px; height: 236px }
 #app .fm-small { width: 236px; height: 133px }
+#app .fm-big { width: 420px; height: 236px }
+#app .fm-small { width: 236px; height: 133px }
 #app .ipgrid2 { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) }
 #app nav { max-width: 460px; margin: 0 auto }
 #app .sheet:not([style*="inset: 0"]) { max-width: 640px; margin-left: auto; margin-right: auto }
@@ -586,25 +610,27 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div style="display: flex; flex-direction: column; min-width: 0">
 <span class="nx-lab">{{g.headLabel}}</span>
 <span id="inoAmount" style="{{g.bigStyle}}">{{g.big}}</span>
-<span class="nx-headsub">{{g.headSub}}</span>
+<span class="nx-money"><b class="{{g.moneyCls}}">{{g.money}}</b><small class="{{g.rateCls}}">{{g.headSub}}</small></span>
 </div>
-<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex: 0 0 auto">
-<button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 44px; padding: 0 14px; border: none; border-radius: 22px; font-family: inherit; font-weight: 800; color: #260E4F; cursor: pointer; background: #EBE4F6; display: flex; align-items: center; gap: 6px; font-size: 14px; flex: 0 0 auto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l5-3v14M10 21V4l9 4v13"></path><path d="M13 11h3M13 15h3"></path></svg>Mon monde</button>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: 0 0 auto">
+<button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 40px; padding: 0 12px; border: none; border-radius: 20px; font-family: inherit; font-weight: 800; color: #260E4F; cursor: pointer; background: #EBE4F6; display: flex; align-items: center; gap: 6px; font-size: 13px; flex: 0 0 auto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l5-3v14M10 21V4l9 4v13"></path><path d="M13 11h3M13 15h3"></path></svg>Mon monde</button>
+<sc-if value="{{g.showBourse}}" hint-placeholder-val="{{ false }}"><button class="tap nx-mini" type="button" onClick="{{g.openBourse}}">Bourse · {{g.bourse}}</button></sc-if>
 <sc-if value="{{g.showRich}}" hint-placeholder-val="{{ false }}"><button class="tap nx-rich" type="button" onClick="{{g.openRich}}">Classement</button></sc-if>
 </div>
 </div>
-<div style="margin-top: 8px; display: flex"><span class="nx-pill {{g.pillCls}}">{{g.phasePill}}</span></div>
-<div class="ino-strip"><sc-for list="{{g.tiles}}" as="tl" hint-placeholder-count="2"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}"><small>{{tl.t}}</small><b>{{tl.sub}}</b><sc-if value="{{tl.dot}}" hint-placeholder-val="{{ false }}"><span class="dot">{{tl.badge}}</span></sc-if></button></sc-for></div>
+<div class="nx-price {{g.priceCls}}"><span class="nx-pl"><b>{{g.priceLab}}</b><small>{{g.priceSub}}</small></span><span class="nx-pv">{{g.priceV}}</span><sc-if value="{{g.pricePm}}" hint-placeholder-val="{{ true }}"><span class="nx-pm"><button class="tap" type="button" onClick="{{g.priceMinus}}" aria-label="Baisser le prix">−</button><button class="tap" type="button" onClick="{{g.pricePlus}}" aria-label="Monter le prix">+</button></span></sc-if></div>
+<div class="ino-strip"><sc-for list="{{g.tiles}}" as="tl" hint-placeholder-count="3"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}"><small>{{tl.t}}</small><b>{{tl.sub}}</b></button></sc-for></div>
 <div class="nx-journal" aria-live="polite"><sc-for list="{{g.log}}" as="jl" hint-placeholder-count="3"><div class="{{jl.cls}}"><span>{{jl.t}}</span></div></sc-for></div>
 
 <div style="margin-top: 10px; position: relative">
-<button class="tap hqbtn" type="button" onClick="{{g.tap}}" aria-label="{{g.tapAria}}" style="position: relative; display: block; width: 100%; height: 300px; padding: 0; border: none; border-radius: 28px; overflow: hidden; cursor: pointer; background: #F2EEFA; touch-action: manipulation; font-family: inherit">
+<button class="tap hqbtn" type="button" onClick="{{g.tap}}" aria-label="{{g.tapAria}}" style="position: relative; display: block; width: 100%; height: 290px; padding: 0; border: none; border-radius: 28px; overflow: hidden; cursor: pointer; background: #F2EEFA; touch-action: manipulation; font-family: inherit">
 <canvas id="inoPlanet" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none"></canvas>
 <sc-if value="{{g.showHint}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 50%; top: 58px; z-index: 2; padding: 8px 14px; border-radius: 16px; background: #7046DC; color: #FFFFFF; font-size: 14px; font-weight: 800; white-space: nowrap; pointer-events: none; animation: hintBob 1.2s ease-in-out infinite">Touche la planète</span></sc-if>
 <span class="nx-clic {{g.clicCls}}" style="position: absolute; left: 50%; top: 12px; transform: translateX(-50%); z-index: 2; padding: 7px 16px; border-radius: 16px; background: #260E4F; color: #FFFFFF; font-size: 15px; font-weight: 800; white-space: nowrap; pointer-events: none">{{g.clicLabel}}</span>
 </button>
 </div>
-<div style="margin-top: 12px; display: flex; align-items: center; gap: 6px">
+<div style="margin-top: 10px; display: flex; justify-content: center"><span class="nx-pill {{g.pillCls}}">{{g.phasePill}}</span></div>
+<div style="margin-top: 10px; display: flex; align-items: center; gap: 6px">
 <sc-for list="{{g.steps}}" as="sp" hint-placeholder-count="4">
 <span style="display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 0 0 58px"><span class="stg" style="{{sp.style}}"><img src="{{sp.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none"></span><span style="{{sp.labStyle}}">{{sp.lab}}</span></span>
 <sc-if value="{{sp.hasBar}}" hint-placeholder-val="{{ true }}"><span style="flex: 1; height: 6px; border-radius: 3px; background: #EBE4F6; overflow: hidden"><span class="barfx" style="{{sp.bar}}"></span></span></sc-if>
@@ -612,15 +638,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 </div>
 <div style="margin-top: 6px; font-size: 12px; font-weight: 800; color: #6C5A8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.lvlLine}}</div>
 
-<sc-if value="{{g.hasTask}}" hint-placeholder-val="{{ false }}"><div class="nx-task">
-<span class="nx-k">{{g.taskKicker}}</span>
-<span style="font-size: 17px; font-weight: 800; line-height: 1.3">{{g.taskTitle}}</span>
-<span style="font-size: 13px; font-weight: 600; line-height: 1.45; opacity: 0.85">{{g.taskText}}</span>
-<div style="margin-top: 6px; display: flex; gap: 8px">
-<button class="tap nx-go" type="button" onClick="{{g.taskGo}}">{{g.taskGoLabel}}</button>
-<button class="tap nx-lazy" type="button" onClick="{{g.taskLazy}}">J’ai la flemme</button>
-</div>
-</div></sc-if>
+
 
 </div><div class="ipcol"><span class="nx-split"></span>
 <sc-for list="{{g.cards}}" as="cd" hint-placeholder-count="1"><div class="nx-card">
@@ -2098,7 +2116,7 @@ window.Component = class Component extends DCLogic {
       bProfil: bubble(s.screen === 'profil'),
       bJeu: bubble(s.screen === 'jeu', 86),
       showJeu: s.screen === 'jeu',
-      goJeu: () => this.go('jeu'),
+      goJeu: () => { this.go('jeu'); this.sfx('level', 1.15); this.buzz([10, 40, 20]); setTimeout(() => { try { const sc = document.querySelector('.screen'); if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {} const pe = this.pe; if (pe) { pe.waves.push({ r: this.planetR(), a: 0.8, col: pe.cur.acc.slice(), w: 6 }); pe.flash = 0.35; pe.flashCol = '180,150,255'; } }, 40); },
       g: this.gameVals(), nxe: this.nxEndVals(),
       showSheet: !!this.sheet && s.screen === 'jeu' && !s.open && !s.world && !this.panel,
       sh: this.sheetVals(),
@@ -3187,10 +3205,11 @@ window.Component = class Component extends DCLogic {
     const total = t === 0 ? s.neuTot : t === 1 ? s.iaTot : s.robTot; const bigS = Math.floor(total).toLocaleString('fr-FR');
     const rate = s.rate * 60; const dv = this.nxDavid(); const hasAi = this.nxHasAi();
     const T = (tt, sub, open, cls) => ({ key: 'tile' + tt, t: tt, sub: sub, open: open, dot: false, badge: '', cls: 'ino-cell' + (cls ? ' ' + cls : '') });
-    const tiles = [T('Argent', (s.money < 0 ? '− ' : '') + this.fmt(Math.abs(s.money)) + ' €', () => this.openPanel({ kind: 'nxInfo', k: 'money' }), s.money < 0 || rate < 0 ? 'red' : rate > 0 ? 'green' : ''),
-      T('Prix', this.nxEur(s.price[t]), () => this.openPanel({ kind: 'nxInfo', k: 'price' }), s.price[t] < this.nxUnit(t) ? 'red' : '')];
+    const stockN = this.nxStock(t);
+    const tiles = [T('Stock', this.fmt(Math.floor(stockN)), () => this.openPanel({ kind: 'nxInfo', k: 'fab' }), ''),
+      T('Demande', '≈ ' + this.fmt(this.nxDemand(t)) + ' / s', () => this.openPanel({ kind: 'nxInfo', k: 'price' }), dv.on && dv.share > 0.5 ? 'red' : ''),
+      T('Marge', (s.price[t] - this.nxUnit(t) >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(s.price[t] - this.nxUnit(t))), () => this.openPanel({ kind: 'nxInfo', k: 'price' }), s.price[t] - this.nxUnit(t) >= 0 ? 'green' : 'red')];
     if (hasAi || s.ctl < 100) tiles.push(T('Contrôle', Math.round(s.ctl) + ' %', () => this.openPanel({ kind: 'nxInfo', k: 'ctl' }), s.ctl < 30 ? 'red' : ''));
-    if (s.phase >= 1) tiles.push(T('Bourse', this.fmt(this.nxPortfolio()) + ' €', () => { this.nxStocks(); this.openPanel({ kind: 'nxBourse' }); }, ''));
     const visLog = s.log.slice(-6); const lastId = visLog.length ? visLog[visLog.length - 1].id : 0;
     const log = visLog.map(l => ({ key: 'j' + l.id, t: l.t, cls: 'jl' + (l.c ? ' ' + l.c : '') + (l.id === lastId ? ' last' : '') + (l.id === lastId && Date.now() - l.at < 1600 ? ' new' : '') }));
     const steps = [0, 1, 2, 3].map(i => ({ key: 'nst' + i, img: PH[i].img, hasBar: i < 3, lab: i < s.phase ? '✓' : i === s.phase ? 'Phase ' + (i + 1) : PH[i].s, labStyle: 'font-size:11px;font-weight:800;white-space:nowrap;color:' + (i === s.phase + 1 ? '#7046DC' : i <= s.phase ? '#8A63F0' : '#6C5A8C'), style: 'width:58px;height:58px;flex:0 0 58px;box-sizing:border-box;padding:3px;border-radius:16px;' + (i === s.phase ? 'background:#EBE4F6;border:2px solid #7046DC;' : i < s.phase ? 'background:#F9F7FC;border:2px solid #EBE4F6;' : 'background:#F9F7FC;border:2px solid #F9F7FC;opacity:.35;filter:grayscale(1);'),
@@ -3201,20 +3220,11 @@ window.Component = class Component extends DCLogic {
     const cards = []; const one = PH[t].one; const unit = this.nxUnit(t); const marg = s.price[t] - unit; const dead = s.phase >= 3;
     const fab = [];
     const lots = Math.max(1, Math.round(Math.max(1000, this.nxNps() * 60) / 1000));
-    fab.push(R({ key: 'fd', t: 'Données · ' + this.fmt(Math.floor(s.data)), sub: s.up.buy ? 'Achetées par ton IA · ' + this.nxEur(s.dp) + ' les 1 000' : this.nxEur(s.dp) + ' les 1 000 · un neurone te coûte ' + this.nxEur(s.dp / 1000), b: s.up.buy ? '' : 'Acheter ' + this.fmt(lots * 1000) + ' · ' + this.nxEur(lots * s.dp), bcls: s.money >= lots * s.dp ? '' : s.money * 1000 / s.dp >= 50 ? '' : 'off', act: () => this.nxBuyData(), cls: s.data < 1 ? 'red' : '' }));
-    fab.push(R({ key: 'fn', t: 'Neurones en stock', sub: s.phase >= 1 ? 'Il en faut 1 000 pour assembler une IA' : 'Fabriqués : ' + this.fmt(s.neuTot) + ' · vendus : ' + this.fmt(s.neuSold), v: this.fmt(Math.floor(s.neu)) }));
-    if (s.can1 || s.phase >= 1) fab.push(R({ key: 'fi', t: 'Intelligences artificielles', sub: s.phase === 0 ? 'Ta première IA : 1 000 neurones et 300 €' : 'En stock : ' + this.fmt(Math.floor(s.ia)) + (s.phase >= 2 ? ' · il en faut 50 par robot' : ''), b: dead ? '' : s.phase === 0 ? 'Créer ta première IA' : 'Assembler · 1 000 neurones', bcls: s.neu >= 1000 && s.money >= (s.phase === 0 ? 300 : 0) ? '' : 'off', act: () => this.nxMakeIa() }));
-    if (s.can2 || s.phase >= 2) fab.push(R({ key: 'fr', t: 'Robots', sub: s.phase === 1 ? 'Ton premier robot : 50 IA et 1 M €' : 'En stock : ' + this.fmt(Math.floor(s.rob)), b: dead ? '' : s.phase === 1 ? 'Construire ton premier robot' : 'Construire · 50 IA', bcls: s.ia >= 50 && s.money >= (s.phase === 1 ? 1e6 : 0) ? '' : 'off', act: () => this.nxMakeRobot() }));
+    fab.push(R({ key: 'fd', t: s.up.buy ? 'Données : achetées par ton IA' : s.data < 1 ? 'Plus de données !' : 'Données : de quoi faire ' + this.fmt(Math.floor(s.data)) + ' neurones', sub: s.up.buy ? 'Tu n’as plus à t’en occuper' : 'Chaque neurone consomme une donnée · ' + this.nxEur(s.dp) + ' les 1 000', b: s.up.buy ? '' : 'Acheter · ' + this.nxEur(lots * s.dp), bcls: s.money >= lots * s.dp ? '' : s.money * 1000 / s.dp >= 50 ? '' : 'off', act: () => this.nxBuyData(), cls: s.data < 1 && !s.up.buy ? 'red' : '' }));
+    if (s.can1 || s.phase >= 1) fab.push(R({ key: 'fi', t: s.phase === 0 ? 'Ta première IA' : 'Assembler une IA', sub: s.phase === 0 ? '1 000 neurones et 300 €' : '1 000 neurones par IA', b: dead ? '' : s.phase === 0 ? 'Créer' : 'Assembler', bcls: s.neu >= 1000 && s.money >= (s.phase === 0 ? 300 : 0) ? '' : 'off', act: () => this.nxMakeIa() }));
+    if (s.can2 || s.phase >= 2) fab.push(R({ key: 'fr', t: s.phase === 1 ? 'Ton premier robot' : 'Construire un robot', sub: s.phase === 1 ? '50 IA et 1 M €' : '50 IA par robot', b: dead ? '' : 'Construire', bcls: s.ia >= 50 && s.money >= (s.phase === 1 ? 1e6 : 0) ? '' : 'off', act: () => this.nxMakeRobot() }));
+    if (t === 2) fab.push(R({ key: 'si', t: 'Tes IA vendues par ton IA', sub: 'Elle fixe le prix toute seule', v: '+ ' + this.nxEur((s.rev2 || 0) * 60) + ' / min', vcls: 'green' }));
     cards.push({ key: 'cfab', title: 'Fabrication', hasInfo: true, info: () => this.openPanel({ kind: 'nxInfo', k: 'fab' }), rows: fab });
-    if (s.neuTot >= 3 || s.phase >= 1) {
-      const sales = [];
-      sales.push(R({ key: 'sp', t: 'Prix ' + ['d’un neurone', 'd’une IA', 'd’un robot'][t], sub: this.nxAutoPrice() ? (s.up.price && !s.aiPrice ? 'Fixé par ton IA (Tarification par IA)' : 'Fixé par ton IA, sans te demander') : 'Coût de fabrication : ' + this.nxEur(unit), v: this.nxEur(s.price[t]), vcls: 'vio', pm: !this.nxAutoPrice() && !dead }));
-      sales.push(R({ key: 'sd', t: 'Demande', sub: dv.on ? 'Clients partis chez David : ' + Math.round(dv.share * 100) + ' %' : (s.gone ? 'David a fait faillite' : 'Plus ton prix est bas, plus on t’achète'), v: '≈ ' + this.fmt(this.nxDemand(t)) + ' / s', cls: dv.on && dv.share > 0.5 ? 'red' : '' }));
-      sales.push(R({ key: 'sm', t: 'Marge par ' + one, v: (marg >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(marg)), vcls: marg >= 0 ? 'green' : 'red', sub: marg < 0 ? 'Tu vends à perte' : '' }));
-      sales.push(R({ key: 'sb', t: 'Bénéfice', sub: this.nxRent() || s.h.hum ? 'Charges : ' + this.nxEur((this.nxRent() + s.h.hum * this.nxSal()) * 60) + ' par minute' : 'Pas encore de charges (période de lancement)', v: (rate >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(rate)) + ' / min', vcls: rate >= 0 ? 'green' : 'red' }));
-      if (t === 2) sales.push(R({ key: 'si', t: 'IA vendues par ton IA', sub: 'Elle fixe le prix toute seule', v: '+ ' + this.nxEur((s.rev2 || 0) * 60) + ' / min', vcls: 'green' }));
-      cards.push({ key: 'csal', title: 'Ventes', hasInfo: true, info: () => this.openPanel({ kind: 'nxInfo', k: 'price' }), rows: sales });
-    }
     const team = D.H.filter(H => H.need(s) || s.h[H.id] > 0).map(H => { const c = this.nxCost(H.id); const maxed = H.max && s.h[H.id] >= H.max;
       return R({ key: 'h' + H.id, t: H.n + (s.h[H.id] ? ' · ' + s.h[H.id] : ''), sub: H.id === 'hum' ? 'Fabrique 3 neurones/s · salaire ' + this.nxEur(this.nxSal() * 60) + '/min · surveille tes IA' : H.d, b: dead ? '' : maxed ? 'Activé' : this.fmt(c) + ' €', bcls: maxed ? 'done' : s.money >= c ? '' : 'off', act: () => this.nxBuy(H.id) }); });
     if (team.length) cards.push({ key: 'cteam', title: 'Ton équipe', hasInfo: true, info: () => this.openPanel({ kind: 'nxInfo', k: 'team' }), rows: team });
@@ -3226,15 +3236,17 @@ window.Component = class Component extends DCLogic {
     const riches = this.v3d().RICH; const top10 = riches[9][1] * 1e9 / 1.15;
     return {
       headLabel: ['Neurones artificiels fabriqués', 'Intelligences artificielles créées', 'Robots construits', 'Robots construits'][Math.min(3, s.phase)], big: bigS, bigStyle: 'font-size:' + (bigS.length <= 6 ? 50 : bigS.length <= 9 ? 40 : 32) + 'px;font-weight:800;letter-spacing:-0.035em;line-height:1.08;font-variant-numeric:tabular-nums;white-space:nowrap',
-      headSub: (rate >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(rate)) + ' par minute',
+      money: (s.money < 0 ? '− ' : '') + this.fmt(Math.abs(s.money)) + ' €', moneyCls: s.money < 0 ? 'red' : '', rateCls: rate < 0 ? 'red' : '',
+      headSub: (rate >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(rate)) + ' / min',
+      priceLab: 'Prix ' + ['d’un neurone', 'd’une IA', 'd’un robot', 'd’un robot'][Math.min(3, s.phase)], priceSub: this.nxAutoPrice() ? 'Fixé par ton IA' : 'Coût de fabrication : ' + this.nxEur(this.nxUnit(t)) + (s.price[t] < this.nxUnit(t) ? ' · tu vends à perte' : ''), priceV: this.nxEur(s.price[t]), pricePm: !this.nxAutoPrice() && s.phase < 3, priceMinus: () => this.nxPrice(-1), pricePlus: () => this.nxPrice(1), priceCls: s.price[t] < this.nxUnit(t) ? 'red' : '',
+      showBourse: s.phase >= 1, bourse: this.fmt(this.nxPortfolio()) + ' €', openBourse: () => { this.nxStocks(); this.openPanel({ kind: 'nxBourse' }); },
       phasePill: 'Phase ' + (s.phase + 1) + ' · ' + ph.n + ' · ' + dur(s.t), pillCls: s.phase >= 3 ? 'red' : '',
       tiles: tiles, log: log, steps: steps, lvlLine: lvlLine, cards: cards,
       showHint: P0 && !this.sheet, clicLabel: top, clicCls: s.p3 && s.p3.dead ? 'dead' : '', tapAria: top, tap: (ev) => this.nxTap(ev),
-      hasTask: !!tk && !this.sheet && s.phase < 3, taskKicker: tk && tk.type === 'defi' ? 'Défi réel · grosse récompense' : 'Tâche · apprends l’IA', taskTitle: ti[0], taskText: ti[1] + ' Si tu passes, ton IA décide à ta place et ton contrôle baisse.', taskGo: () => this.nxTaskGo(), taskGoLabel: tk && tk.type === 'defi' ? 'Voir le défi' : 'Faire la tâche', taskLazy: () => this.nxTaskLazy(),
       showRich: s.money + this.nxPortfolio() >= top10 * 0.5, openRich: () => this.openPanel({ kind: 'nxRich' }),
       openWorld: () => { this.buzz(); this.ncLast = ''; this.setState({ world: true, ncLvl: this.ncLevel() }); }, closeWorld: () => { this.buzz(); this.setState({ world: false }); },
-      showInbox: false, showCard: !!this.newCard && !this.sheet && !this.panel && !this.state.world, cardTitle: this.newCard ? this.newCard.t : '', cardText: this.newCard ? this.newCard.d : '',
-      closeCard: () => { this.newCard = null; this.sfx('pop', 1.1); this.buzz(8); this.refresh(); }, inboxN: '', inboxAria: '', openInbox: () => {}, inboxPos: ''
+      showInbox: !!tk && s.phase < 3 && !this.sheet && !this.panel && !this.newCard && !this.state.quiz && !this.state.auth, showCard: !!this.newCard && !this.sheet && !this.panel && !this.state.world, cardTitle: this.newCard ? this.newCard.t : '', cardText: this.newCard ? this.newCard.d : '',
+      closeCard: () => { this.newCard = null; this.sfx('pop', 1.1); this.buzz(8); this.refresh(); }, inboxN: '1', inboxAria: 'Nouveau message : ' + ti[0], openInbox: () => { if (Date.now() - (this.inboxDragAt || 0) < 350) return; this.buzz(10); this.sfx('whoosh', 1.05); this.openPanel({ kind: 'nxTask' }); }, inboxPos: (() => { const p = this.inboxXY || (() => { try { return JSON.parse(window.localStorage.getItem('inoviaInboxXY') || 'null'); } catch (e) { return null; } })(); this.inboxXY = p; return p ? 'position: absolute; left: ' + Math.round(p.x) + 'px; top: ' + Math.round(p.y) + 'px;' : 'position: absolute; right: 12px; top: 520px;'; })()
     };
   }
   nxProg() { const s = this.nx; if (s.phase === 0) return Math.min(100, s.neuTot / 50000 * 100); if (s.phase === 1) return Math.min(100, s.iaTot / 20000 * 100); if (s.phase === 2) return Math.min(100, 100 - s.ctl); return 100; }
@@ -3249,6 +3261,13 @@ window.Component = class Component extends DCLogic {
       else if (k === 'ups') { title = 'Les améliorations'; bl.push(B.P('Chaque amélioration porte le vrai nom d’une avancée de l’IA. En les achetant, tu apprends ce qu’elles veulent dire.')); }
       else { title = 'La fabrication'; bl.push(B.P('Neurones artificiels, puis intelligences artificielles, puis robots. Chaque étape sert à fabriquer la suivante.')); bl.push(B.P('Les données sont ta matière première : chaque neurone en consomme une. Leur prix bouge tout le temps.', true)); }
       bl.push(B.Btn('J’ai compris', () => this.closePanel(), 'dark'));
+    } else if (p.kind === 'nxTask') {
+      const tk = s.task; if (!tk) { this.panel = null; return { kicker: '', title: '' }; } const ti = this.nxTaskInfo(tk.type); kicker = tk.type === 'defi' ? 'Message · défi réel' : 'Message · tâche'; title = ti[0];
+      bl.push(B.P(ti[1]));
+      bl.push(B.Note(tk.type === 'defi' ? 'Récompense : 10 minutes de bénéfice et + 8 % de contrôle.' : 'Récompense : de l’argent et + 3 % de contrôle sur ton IA.'));
+      bl.push(B.P('Si tu passes, ton IA fait la tâche à ta place. Elle apprend, pas toi, et ton contrôle baisse.', true));
+      bl.push(B.Btn(tk.type === 'defi' ? 'Voir le défi' : 'Faire la tâche', () => { this.panel = null; this.nxTaskGo(); }, 'dark'));
+      bl.push(B.Btn('J’ai la flemme', () => this.nxTaskLazy(), 'light'));
     } else if (p.kind === 'nxDefi') {
       const D = this.nxDef(); const txt = D.DEFI[p.k || 0]; kicker = 'Défi réel'; title = 'Fais-le avec une vraie IA';
       bl.push(B.P('Ouvre ChatGPT, Claude, Gemini ou Le Chat sur ton téléphone et fais ceci :'));

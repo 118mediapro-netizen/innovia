@@ -1,0 +1,16 @@
+<sc-if value="{{nxe.show}}" hint-placeholder-val="{{ false }}">
+<div class="nx-endwrap {{nxe.cls}}">
+<sc-if value="{{nxe.glitch}}" hint-placeholder-val="{{ false }}"><div class="nx-glitch">
+<sc-for list="{{nxe.nums}}" as="nm" hint-placeholder-count="3"><span class="nx-num" style="{{nm.style}}">{{nm.t}}</span></sc-for>
+<sc-for list="{{nxe.flies}}" as="fl" hint-placeholder-count="3"><span class="nx-fly" style="{{fl.style}}">{{fl.t}}</span></sc-for>
+<sc-for list="{{nxe.alerts}}" as="al" hint-placeholder-count="2"><div class="nx-alert" style="{{al.style}}"><b>{{al.k}}</b><span>{{al.t}}</span></div></sc-for>
+<button class="tap nx-escape" type="button" onClick="{{nxe.escape}}" style="{{nxe.escStyle}}">{{nxe.escLabel}}</button>
+</div></sc-if>
+<sc-if value="{{nxe.text}}" hint-placeholder-val="{{ false }}"><div class="nx-final">
+<p class="nx-f1">{{nxe.l1}}</p>
+<p class="nx-f2">{{nxe.l2}}</p>
+<sc-if value="{{nxe.showStats}}" hint-placeholder-val="{{ false }}"><div class="nx-stats"><sc-for list="{{nxe.stats}}" as="st" hint-placeholder-count="3"><div class="nx-stat"><span>{{st.k}}</span><b>{{st.v}}</b></div></sc-for></div>
+<button class="tap nx-again" type="button" onClick="{{nxe.restart}}">{{nxe.btn}}</button></sc-if>
+</div></sc-if>
+</div>
+</sc-if>

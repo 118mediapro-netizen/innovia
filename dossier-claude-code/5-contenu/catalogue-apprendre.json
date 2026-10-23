@@ -1,0 +1,428 @@
+{
+  "parcours": [
+    "Les bases de l’IA",
+    "Créer",
+    "Travailler",
+    "Automatiser"
+  ],
+  "mods": [
+    {
+      "n": 1,
+      "p": 0,
+      "title": "Les bases de l’IA",
+      "free": true,
+      "lvl": "Débutant",
+      "learn": [
+        "Expliquer simplement ce qu’est une IA",
+        "Savoir ce qu’elle fait bien… et mal",
+        "Avoir ton premier vrai échange avec une IA"
+      ],
+      "mission": "Pose 3 questions à ChatGPT sur ton métier et garde la meilleure réponse.",
+      "eps": [
+        [
+          "/_blob/24b70ffadcffc63c42c161ae33040ce7",
+          "C’est quoi",
+          "l’IA ?",
+          "C’est quoi vraiment l’IA ?",
+          6,
+          "Oublie les robots des films. En 6 minutes, tu comprends ce qu’est vraiment une IA comme ChatGPT, d’où elle vient et pourquoi tout le monde en parle depuis 2023."
+        ],
+        [
+          "/_blob/9c1b4d5091798d713e1f2cb748ebaaeb",
+          "Dans la tête",
+          "d’une IA",
+          "Comment une IA « réfléchit »",
+          7,
+          "Une IA ne pense pas comme toi : elle devine le mot le plus probable, encore et encore. On t’explique ce mécanisme avec un exemple simple, et pourquoi ça la rend parfois géniale, parfois complètement à côté."
+        ],
+        [
+          "/_blob/22af7471d4c06e5f6c02bd98fbbd8c22",
+          "Ce qu’elle",
+          "ne sait pas faire",
+          "Ses forces et ses limites",
+          6,
+          "L’IA écrit, résume, traduit et crée des images en quelques secondes. Mais elle peut aussi inventer des faits avec aplomb. Tu apprends à repérer quand lui faire confiance, et quand vérifier."
+        ],
+        [
+          "/_blob/705f081216c113b07f34a51a713116c5",
+          "Ton premier",
+          "échange",
+          "Ton premier échange avec une IA",
+          7,
+          "On ouvre ChatGPT ensemble, pas à pas. Tu poses ta première vraie question, tu relances, tu corriges. À la fin de la vidéo, tu sais t’en servir pour de vrai."
+        ]
+      ]
+    },
+    {
+      "n": 2,
+      "p": 0,
+      "title": "Bien parler à l’IA",
+      "lvl": "Débutant",
+      "learn": [
+        "Écrire un prompt clair du premier coup",
+        "Obtenir le ton et la longueur que tu veux",
+        "Corriger une mauvaise réponse sans tout recommencer"
+      ],
+      "mission": "Écris ton prompt pour le post Instagram de Burger Nova. L’IA te note sur 100.",
+      "eps": [
+        [
+          "/_blob/57f8d00c38196eff2a0e355f788dd654",
+          "Le prompt",
+          "parfait",
+          "Le prompt parfait en 4 étapes",
+          9,
+          "Pourquoi la même IA donne une réponse géniale à certains et une réponse nulle à d’autres ? Tout se joue dans la façon de demander. Tu découvres la méthode en 4 étapes : le rôle, le contexte, la tâche et le format. Exemple réel : un post Instagram pour un fast-food, d’un résultat banal à un texte prêt à publier."
+        ],
+        [
+          "/_blob/38f02890d4304987752ae6daa08a8d53",
+          "Donne-lui",
+          "un rôle",
+          "Donner un rôle à l’IA",
+          7,
+          "« Tu es un chef cuisinier », « tu es un recruteur »… Donner un rôle change complètement la réponse. On compare la même demande avec et sans rôle, et la différence saute aux yeux."
+        ],
+        [
+          "/_blob/451dc1a9f28755a415896c5943f256d7",
+          "Les 5",
+          "erreurs",
+          "Les 5 erreurs qui ruinent tes résultats",
+          8,
+          "Trop vague, trop long, sans exemple, sans format… Ces 5 erreurs expliquent la plupart des réponses décevantes. Tu apprends à les éviter avec des exemples avant et après."
+        ],
+        [
+          "/_blob/2dc8333cf267d141c4d3bd9c690e944b",
+          "Corriger",
+          "sans tout refaire",
+          "Corriger une réponse sans tout recommencer",
+          6,
+          "La première réponse n’est pas la bonne ? Normal. Tu apprends à guider l’IA en deux ou trois messages pour arriver exactement au résultat voulu."
+        ]
+      ]
+    },
+    {
+      "n": 3,
+      "p": 0,
+      "title": "Choisir le bon outil",
+      "lvl": "Débutant",
+      "learn": [
+        "Savoir quel outil ouvrir pour chaque tâche",
+        "Connaître les points forts de ChatGPT, Claude et Gemini",
+        "Chercher une info fiable avec l’IA"
+      ],
+      "mission": "Pose la même question à ChatGPT, Claude et Gemini, puis choisis la meilleure réponse.",
+      "eps": [
+        [
+          "/_blob/26a0be3998eb3286f18838c03832e3c2",
+          "ChatGPT, Claude ou Gemini ?",
+          "Le match",
+          "Lequel choisir pour quoi faire ?",
+          12,
+          "On met les trois géants face à face sur les mêmes tâches : écrire un mail, résumer un document, trouver une idée. Tu repars en sachant lequel ouvrir selon ce que tu veux faire."
+        ],
+        [
+          "/_blob/6f83e4d112807dab759b603ae582e6da",
+          "Chercher",
+          "sans se tromper",
+          "Chercher une info avec l’IA",
+          7,
+          "Perplexity, Gemini, la recherche de ChatGPT : ces outils citent leurs sources. Tu apprends à t’en servir pour trouver une info fiable, et à la vérifier en un geste."
+        ],
+        [
+          "/_blob/24b70ffadcffc63c42c161ae33040ce7",
+          "Quel outil",
+          "pour quoi ?",
+          "Le bon outil pour chaque tâche",
+          6,
+          "Texte, image, vidéo, code, tableur : il existe un outil IA pour presque tout. Voici une carte simple pour t’y retrouver sans te perdre dans les noms."
+        ]
+      ]
+    },
+    {
+      "n": 4,
+      "p": 1,
+      "title": "Images avec l’IA",
+      "lvl": "Intermédiaire",
+      "learn": [
+        "Créer une image réaliste à partir d’une phrase",
+        "Garder le même style sur plusieurs images",
+        "Éviter les défauts typiques (mains, texte)"
+      ],
+      "mission": "Crée l’affiche d’un concert imaginaire et envoie-la pour être notée.",
+      "eps": [
+        [
+          "/_blob/451dc1a9f28755a415896c5943f256d7",
+          "Ta première",
+          "image IA",
+          "Ta première image en 30 secondes",
+          8,
+          "Une phrase suffit pour obtenir une image. On part de zéro : tu crées ta première image réaliste, puis tu l’améliores étape par étape."
+        ],
+        [
+          "/_blob/9c1b4d5091798d713e1f2cb748ebaaeb",
+          "Décrire",
+          "comme un pro",
+          "Décrire une image comme un photographe",
+          9,
+          "Lumière, cadrage, objectif, ambiance : les mots des photographes donnent des images bien plus belles. Tu apprends le vocabulaire qui change tout."
+        ],
+        [
+          "/_blob/f52ca7d99b8e16c0740b144dbf9ba9f9",
+          "Le même",
+          "style partout",
+          "Garder le même style sur toutes tes images",
+          7,
+          "Pour une marque ou un compte Instagram, toutes les images doivent se ressembler. Tu apprends à fixer un style et à le réutiliser."
+        ]
+      ]
+    },
+    {
+      "n": 5,
+      "p": 1,
+      "title": "Flyers et visuels pro",
+      "lvl": "Intermédiaire",
+      "learn": [
+        "Créer un flyer propre en 10 minutes",
+        "Choisir les bonnes couleurs et les bonnes polices",
+        "Adapter un visuel pour Instagram, TikTok et l’impression"
+      ],
+      "mission": "Crée le flyer de Burger Nova pour sa soirée du vendredi.",
+      "eps": [
+        [
+          "/_blob/1baefaa5c18f6804b392ab9367d71e9b",
+          "Ton premier",
+          "flyer pro",
+          "Crée ton premier flyer pro en 10 min",
+          10,
+          "Un flyer pour un resto, une soirée ou un service : on le crée de A à Z avec l’IA, du texte à l’image finale, prêt à imprimer."
+        ],
+        [
+          "/_blob/801ce93f77cb582f27c9dfb1ceacf3fe",
+          "Les règles",
+          "d’un bon visuel",
+          "Les règles d’un visuel qui attire l’œil",
+          8,
+          "Pourquoi certains visuels arrêtent le pouce et d’autres non ? Contraste, une seule idée, un texte court : les règles simples qu’utilisent les pros."
+        ],
+        [
+          "/_blob/f52ca7d99b8e16c0740b144dbf9ba9f9",
+          "Un visuel,",
+          "3 formats",
+          "Adapter un visuel à chaque réseau",
+          6,
+          "Story, post carré, affiche A4 : l’IA t’aide à décliner le même visuel dans tous les formats sans tout refaire."
+        ]
+      ]
+    },
+    {
+      "n": 6,
+      "p": 1,
+      "title": "Vidéo avec l’IA",
+      "lvl": "Intermédiaire",
+      "learn": [
+        "Créer une courte vidéo à partir d’un texte",
+        "Ajouter une voix naturelle",
+        "Monter une vidéo prête pour TikTok"
+      ],
+      "mission": "Crée une vidéo de 15 secondes pour présenter un produit.",
+      "eps": [
+        [
+          "/_blob/705f081216c113b07f34a51a713116c5",
+          "Ta première",
+          "vidéo IA",
+          "Ta première vidéo IA de 15 secondes",
+          9,
+          "Du texte à la vidéo : tu découvres les outils qui génèrent des plans réalistes, et tu crées ta première vidéo courte."
+        ],
+        [
+          "/_blob/38f02890d4304987752ae6daa08a8d53",
+          "Une voix",
+          "qui sonne vrai",
+          "Ajouter une voix naturelle",
+          7,
+          "Les voix d’IA sont devenues bluffantes. Tu apprends à choisir la bonne voix, le bon rythme, et à éviter l’effet robot."
+        ],
+        [
+          "/_blob/26a0be3998eb3286f18838c03832e3c2",
+          "Monter",
+          "en 5 minutes",
+          "Monter ta vidéo avec l’IA",
+          8,
+          "Sous-titres automatiques, coupes, musique : l’IA fait le plus long du montage. Tu finis avec une vidéo prête à publier."
+        ]
+      ]
+    },
+    {
+      "n": 7,
+      "p": 2,
+      "title": "Ton site sans coder",
+      "lvl": "Intermédiaire",
+      "learn": [
+        "Créer une page web sans écrire de code",
+        "Écrire un texte qui donne envie",
+        "Mettre ton site en ligne"
+      ],
+      "mission": "Mets en ligne une page pour un commerce de ton quartier et envoie le lien.",
+      "eps": [
+        [
+          "/_blob/801ce93f77cb582f27c9dfb1ceacf3fe",
+          "Ton premier site",
+          "sans coder",
+          "En ligne en 20 minutes",
+          14,
+          "Tu décris le site que tu veux, l’IA le construit. On crée ensemble une vraie page pour un commerce, et on la met en ligne avant la fin de la vidéo."
+        ],
+        [
+          "/_blob/1baefaa5c18f6804b392ab9367d71e9b",
+          "Une page",
+          "qui vend",
+          "Écrire une page qui donne envie",
+          9,
+          "Un titre clair, une promesse, une preuve, un bouton : la structure des pages qui marchent, rédigée avec l’IA."
+        ],
+        [
+          "/_blob/2dc8333cf267d141c4d3bd9c690e944b",
+          "Le mettre",
+          "en ligne",
+          "Mettre ton site en ligne",
+          8,
+          "Nom de domaine, hébergement, partage du lien : toutes les étapes, une par une, sans jargon."
+        ]
+      ]
+    },
+    {
+      "n": 8,
+      "p": 2,
+      "title": "L’IA au travail",
+      "lvl": "Débutant",
+      "learn": [
+        "Écrire tes mails deux fois plus vite",
+        "Résumer un long document en quelques points",
+        "Préparer une réunion en 5 minutes"
+      ],
+      "mission": "Résume un long document de ton travail en 5 points avec l’IA.",
+      "eps": [
+        [
+          "/_blob/57f8d00c38196eff2a0e355f788dd654",
+          "Tes mails",
+          "en 2 minutes",
+          "Écrire tes mails deux fois plus vite",
+          7,
+          "Relance, réclamation, candidature : tu apprends à faire écrire tes mails par l’IA avec ton ton à toi, puis à les relire en 30 secondes."
+        ],
+        [
+          "/_blob/451dc1a9f28755a415896c5943f256d7",
+          "Résumer",
+          "n’importe quoi",
+          "Résumer un document de 50 pages",
+          6,
+          "Rapport, contrat, cours : l’IA en sort l’essentiel en quelques secondes. Tu apprends à lui demander le bon format de résumé, et à vérifier les points clés."
+        ],
+        [
+          "/_blob/22af7471d4c06e5f6c02bd98fbbd8c22",
+          "Préparer",
+          "une réunion",
+          "Préparer une réunion avec l’IA",
+          7,
+          "Ordre du jour, questions à poser, compte rendu automatique : l’IA devient ton assistant de réunion."
+        ]
+      ]
+    },
+    {
+      "n": 9,
+      "p": 3,
+      "title": "Ton premier agent IA",
+      "lvl": "Avancé",
+      "learn": [
+        "Comprendre la différence entre une appli IA et un agent",
+        "Créer un agent qui travaille pour toi",
+        "Garder le contrôle sur ce qu’il fait"
+      ],
+      "mission": "Crée un agent qui répond aux questions des clients d’un resto.",
+      "eps": [
+        [
+          "/_blob/24b70ffadcffc63c42c161ae33040ce7",
+          "Ton premier",
+          "agent IA",
+          "C’est quoi un agent IA ?",
+          8,
+          "Une appli IA répond à tes questions. Un agent, lui, agit : il envoie des mails, remplit des tableaux, prend des décisions. Tu comprends ce qui change, et pourquoi c’est la prochaine grande étape."
+        ],
+        [
+          "/_blob/6f83e4d112807dab759b603ae582e6da",
+          "Lui donner",
+          "une mission",
+          "Créer ton premier agent, pas à pas",
+          12,
+          "Instructions, outils, limites : on construit ensemble un agent simple qui accomplit une vraie tâche à ta place."
+        ],
+        [
+          "/_blob/9c1b4d5091798d713e1f2cb748ebaaeb",
+          "Garder",
+          "le contrôle",
+          "Garder le contrôle sur ton agent",
+          9,
+          "Un agent mal réglé peut faire n’importe quoi en ton nom. Tu apprends à fixer des limites, à vérifier ses actions et à tout arrêter en un geste."
+        ]
+      ]
+    },
+    {
+      "n": 10,
+      "p": 3,
+      "title": "Automatiser avec Make et Zapier",
+      "lvl": "Avancé",
+      "learn": [
+        "Créer ta première automatisation sans coder",
+        "Relier tes applis entre elles",
+        "Ajouter l’IA au milieu d’une automatisation"
+      ],
+      "mission": "Automatise l’envoi d’un mail de bienvenue à chaque nouveau client.",
+      "eps": [
+        [
+          "/_blob/3137131f0d92a24f73f7dd918ef6b0a5",
+          "Automatiser",
+          "sans coder",
+          "Ta première automatisation",
+          10,
+          "Un formulaire rempli, un mail envoyé, une ligne ajoutée dans un tableau : tu crées ta première automatisation qui tourne toute seule, jour et nuit."
+        ],
+        [
+          "/_blob/f52ca7d99b8e16c0740b144dbf9ba9f9",
+          "Relier",
+          "tes applis",
+          "Relier tes applis entre elles",
+          9,
+          "Gmail, Google Sheets, Instagram, ton agenda : tu apprends à les faire travailler ensemble sans rien copier-coller."
+        ],
+        [
+          "/_blob/2dc8333cf267d141c4d3bd9c690e944b",
+          "L’IA dans",
+          "tes automatisations",
+          "Ajouter l’IA dans une automatisation",
+          11,
+          "Trier des mails, rédiger des réponses, résumer des avis clients : l’IA au milieu de tes automatisations, c’est là que tout s’accélère."
+        ]
+      ]
+    }
+  ],
+  "hero": [
+    [
+      3,
+      0,
+      "NOUVEAU"
+    ],
+    [
+      7,
+      0,
+      "TOP 1"
+    ],
+    [
+      9,
+      0,
+      "TENDANCE"
+    ]
+  ],
+  "progress": {
+    "1-0": 100,
+    "1-1": 45
+  }
+}

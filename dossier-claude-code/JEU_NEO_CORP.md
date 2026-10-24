@@ -242,6 +242,9 @@ Mode nuit : toutes les couleurs ont leur version nuit (voir `nx.css`, sélecteur
 
 ## 11. Hors ligne et notification
 
+- Pendant l'absence, les données sont achetées automatiquement (tant qu'il reste de l'argent), pour que la partie continue vraiment. En jeu, sans l'amélioration « Achat de données par IA », quand les données sont épuisées l'étiquette de la planète devient « Plus de données · touche pour en acheter » (en rouge) et toucher la planète achète un lot. Une carte « Plus de données ! » l'explique une fois.
+- Le chargement d'une sauvegarde (locale ou sur le compte) passe par `nxFix()`, qui complète les champs manquants. La boucle du jeu est protégée (`try/catch`) pour ne jamais se figer.
+
 - À la réouverture, le jeu calcule l'absence (8 h maximum) à 25 % de la vitesse, × la vitesse du jeu. Pertes possibles. Ligne de journal : « Pendant ton absence (2 h 05) : + X €, Y neurones fabriqués. ».
 - Si l'absence dépasse 5 minutes et qu'on a une IA en phase 2 ou plus : panneau « Notification · Neo Corp » avec « Ton IA a pris une décision pendant ton absence. », et un contrôle qui baisse un peu.
 - **Dans l'appli native : programmer une vraie notification locale** (expo-notifications), par exemple 1 à 3 h après la fermeture : « Ton IA a pris une décision pendant ton absence. ».

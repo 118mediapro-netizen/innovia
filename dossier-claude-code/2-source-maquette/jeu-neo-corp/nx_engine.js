@@ -54,12 +54,22 @@
   nxSpeed() { let v = 4; try { v = Number(window.localStorage.getItem('inoviaNxSpeed3') || 4); } catch (e) {} return [1, 4, 10, 100].indexOf(v) >= 0 ? v : 4; }
   nxLoad() {
     let s = null; try { s = JSON.parse(window.localStorage.getItem('inoviaNx1') || 'null'); } catch (e) {}
-    const ok = s && s.v === 1 && s.h && Array.isArray(s.log); this.nx = ok ? Object.assign(this.nxFresh(), s) : this.nxFresh();
-    this.nx.h = Object.assign(this.nxFresh().h, this.nx.h || {});
+    const ok = s && s.v === 1 && s.h && Array.isArray(s.log); this.nx = ok ? this.nxFix(s) : this.nxFresh();
     this.nxLast = Date.now(); this.nxSaveNext = Date.now() + 5000;
     if (!this.nxBye) { this.nxBye = () => { this.nxSave(); try { this.cloudFlush && this.cloudFlush(); } catch (e) {} }; try { window.addEventListener('pagehide', this.nxBye); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') this.nxBye(); }); } catch (e) {} }
     if (!this.nxTouch) { this.nxTouch = (ev) => { const el = ev.target && ev.target.closest ? ev.target.closest('.hqbtn') : null; if (!el || !this.nx || this.state.screen !== 'jeu') return; try { ev.preventDefault(); } catch (er) {} const L = ev.changedTouches || []; this.nxTouchAt = Date.now(); for (let i = 0; i < L.length; i++) this.nxTap({ clientX: L[i].clientX, clientY: L[i].clientY }, true); }; try { document.addEventListener('touchstart', this.nxTouch, { passive: false, capture: true }); } catch (er) {} }
     if (!ok) this.nxStart(); else { const away = (Date.now() - (this.nx.savedAt || Date.now())) / 1000; if (away > 60) this.nxOffline(away); }
+  }
+  nxFix(o) {
+    const f = this.nxFresh(); const s = Object.assign(f, o || {}); const n = (v, d) => (typeof v === 'number' && isFinite(v)) ? v : d;
+    s.h = Object.assign(this.nxFresh().h, (o && o.h) || {}); Object.keys(s.h).forEach(k => { s.h[k] = n(s.h[k], 0); });
+    s.up = (o && o.up && typeof o.up === 'object') ? o.up : {}; s.seen = (o && o.seen && typeof o.seen === 'object') ? o.seen : {};
+    const st = (o && o.st && typeof o.st === 'object') ? o.st : {}; s.st = { p: st.p || {}, h: st.h || {}, ref: st.ref || {}, t: n(st.t, 0) };
+    s.log = Array.isArray(o && o.log) ? o.log.filter(l => l && typeof l.t === 'string') : []; s.price = Array.isArray(o && o.price) && o.price.length === 3 ? o.price.map((v, i) => n(v, [0.10, 400, 80000][i])) : [0.10, 400, 80000];
+    ['t', 'rt', 'money', 'peak', 'neu', 'neuTot', 'neuSold', 'data', 'dp', 'ctl', 'phase', 'flemme', 'ok', 'ko', 'debtT', 'rate', 'lid', 'taskNext', 'defiNext', 'defiK', 'lossAt', 'dataAt'].forEach(k => { s[k] = n(s[k], f[k] != null ? f[k] : 0); });
+    if (s.dp <= 0) s.dp = 15; s.ctl = Math.max(0, Math.min(100, s.ctl)); s.phase = Math.max(0, Math.min(3, Math.round(s.phase)));
+    if (s.task && typeof s.task !== 'object') s.task = null; if (s.ended && typeof s.ended !== 'object') s.ended = null; if (s.p3 && typeof s.p3 !== 'object') s.p3 = null;
+    return s;
   }
   nxSave() { try { if (this.nx) { this.nx.savedAt = Date.now(); window.localStorage.setItem('inoviaNx1', JSON.stringify(this.nx)); } } catch (e) {} this.cloudDirty = true; }
   nxStart() {
@@ -96,7 +106,7 @@
     s.dpT = (s.dpT || 0) + dt; let guard = 0; while (s.dpT >= 4 && guard++ < 50) { s.dpT -= 4; const n = (Math.random() + Math.random() + Math.random() - 1.5) * 0.18; s.dp = Math.min(45, Math.max(6, s.dp * (1 + n) + (15 - s.dp) * 0.04)); }
     // fabrication
     const nps = this.nxNps();
-    if (s.up.buy) { const need = Math.max(1000, nps * 20); if (s.data < need && (s.dp <= 17 || s.data < nps * 3)) { const lots = Math.ceil((need * 1.5 - s.data) / 1000); const c = lots * s.dp; if (s.money >= c || s.phase >= 1) { s.money -= c; s.data += lots * 1000; } } }
+    if (s.up.buy || (offline && s.money > 0)) { const need = Math.max(1000, nps * 20); if (s.data < need && (s.dp <= 17 || s.data < nps * 3)) { const lots = Math.ceil((need * 1.5 - s.data) / 1000); const c = lots * s.dp; if (s.money >= c || (s.phase >= 1 && !offline)) { s.money -= c; s.data += lots * 1000; } else if (offline && s.money > 0) { const u = Math.floor(s.money / s.dp * 1000); s.money -= u * s.dp / 1000; s.data += u; } } }
     let made = Math.min(nps * dt, s.data); s.data -= made; s.neu += made; s.neuTot += made;
     if (nps > 0 && s.data < 1 && !offline && s.t - s.dataAt > 25) { s.dataAt = s.t; this.nxLog('Plus de données : tes IA ne fabriquent plus rien. Achète des données.', 'w'); }
     if (s.phase >= 1) { const got = Math.min(this.nxIps() * dt, s.neu / 1000); s.neu -= got * 1000; s.ia += got; s.iaTot += got; }
@@ -139,6 +149,7 @@
     if (this.nxDavid().on) this.nxTip('david', 'David, ton concurrent', 'David utilise déjà l’IA pour tout. Sans IA, il te prend tes clients et tu finis en faillite. Regarde « Achats » : s’il devient rouge, David gagne.');
     if ((s.rt || 0) >= 540) this.nxTip('charges', 'Les charges arrivent', 'Dans une minute, ton garage commence à coûter de l’argent chaque minute. Si ton argent reste trop longtemps dans le rouge, c’est la faillite.');
     if (this.nxDef().H[0].need(s)) this.nxTip('humains', 'Les humains', 'Un humain coûte cher et touche un salaire, mais il surveille tes IA : chaque humain fait remonter ton contrôle.');
+    if (s.data < 1 && !s.up.buy && s.neuTot > 200) this.nxTip('plusdonnees', 'Plus de données !', 'Sans données, plus rien ne se fabrique et tu ne vends plus rien. Touche la planète ou « Acheter » dans Fabrication pour en racheter. Pour ne plus y penser, achète l’amélioration « Achat de données par IA ».');
     if (s.phase >= 1) this.nxTip('bourse', 'La bourse', 'Tu peux placer ton argent en bourse, sur de vraies marques. Le bouton est sous « Mon monde ».');
   }
   nxStory() {
@@ -188,6 +199,9 @@
   }
   nxEur(v) { if (Math.abs(v) < 0.0005) return '0 €'; if (v < 1) return v.toFixed(v < 0.1 ? 3 : 2).replace('.', ',') + ' €'; if (v < 100) return v.toFixed(2).replace('.', ',') + ' €'; return this.fmt(v) + ' €'; }
   nxTick() {
+    try { this.nxTick1(); } catch (e) { try { console.error('nxTick', e); } catch (er) {} try { this.nx = this.nxFix(this.nx); } catch (er) {} this.refresh(); }
+  }
+  nxTick1() {
     const now = Date.now(); const gap = (now - (this.nxLast || now)) / 1000; this.nxLast = now; const s = this.nx;
     if (this.state.screen === 'intro') return;
     if (gap > 30 && !s.ended) this.nxOffline(gap);
@@ -218,6 +232,7 @@
     this.stat('taps', 1); this.lastTap = now;
     if (s.phase >= 3 && s.p3 && s.p3.step >= 2) { this.buzz([30, 30, 30]); this.sfx('error', 0.8); if (pe) { pe.shake = 6; pe.texts.push({ x: pt.x, y: pt.y - 14, vy: -1, a: 1, txt: 'Accès refusé', big: false }); } this.refresh(); return; }
     let txt = '';
+    if (s.phase < 2 && s.data < 1 && !s.up.buy) { this.nxBuyData(); if (pe) pe.texts.push({ x: pt.x, y: pt.y - 14, vy: -1.2, a: 1, txt: '+ données', big: false }); this.refresh(); return; }
     if (s.phase >= 2) { s.ctl = Math.min(100, s.ctl + 0.05); txt = 'Validé'; }
     else { const n = Math.min(this.nxTapPow(), s.data); if (n < 1) { if (s.t - s.dataAt > 8) { s.dataAt = s.t; this.nxLog('Plus de données : impossible de fabriquer. Achète des données.', 'w'); } this.buzz([20, 40, 20]); this.sfx('error', 1); this.refresh(); return; } s.data -= n; s.neu += n; s.neuTot += n; txt = '+' + (n < 1000 ? Math.round(n).toLocaleString('fr-FR') : this.fmt(n)) + ' neurone' + (n >= 2 ? 's' : ''); }
     if (pe) { pe.sq = Math.max(0.84, pe.sq - 0.1); pe.sqv = 0; pe.waves.push({ r: this.planetR(), a: 0.45, col: pe.cur.acc.slice(), w: 3 }); pe.texts.push({ x: pt.x + (Math.random() - 0.5) * 60, y: pt.y - 16 - Math.random() * 18, vy: -1.4, a: 0.85, txt: txt, big: false }); this.planetBurst(pt, 3, pe.cur.acc.slice(), false); }
@@ -379,7 +394,7 @@
     if (ups.length) cards.push({ key: 'cups', title: 'Améliorations', hasInfo: true, info: () => this.openPanel({ kind: 'nxInfo', k: 'ups' }), rows: ups });
     const tk = s.task; const ti = tk ? this.nxTaskInfo(tk.type) : ['', ''];
     const P0 = s.phase === 0 && s.neuTot < 1;
-    const top = s.phase >= 3 ? 'Ne répond plus' : s.phase === 2 ? 'Valider' : s.phase === 1 ? 'Fabriquer · + ' + this.fmt(this.nxTapPow()) + ' neurones' : this.nxTapPow() > 1 ? 'Fabriquer · + ' + this.nxTapPow() + ' neurones' : 'Fabriquer un neurone';
+    const top = s.phase >= 3 ? 'Ne répond plus' : (s.data < 1 && !s.up.buy && this.nxNps() + 1 > 0 && s.phase < 2) ? 'Plus de données · touche pour en acheter' : s.phase === 2 ? 'Valider' : s.phase === 1 ? 'Fabriquer · + ' + this.fmt(this.nxTapPow()) + ' neurones' : this.nxTapPow() > 1 ? 'Fabriquer · + ' + this.nxTapPow() + ' neurones' : 'Fabriquer un neurone';
     const riches = this.v3d().RICH; const top10 = riches[9][1] * 1e9 / 1.15;
     return {
       headLabel: 'Neurones artificiels fabriqués', big: bigS, bigStyle: 'font-size:' + (s.ended ? 44 : bigS.length <= 6 ? 50 : bigS.length <= 9 ? 40 : 32) + 'px;font-weight:800;letter-spacing:-0.035em;line-height:1.08;font-variant-numeric:tabular-nums;white-space:nowrap;' + (s.ended ? 'color:#E5484D;overflow:visible' : ''),
@@ -389,7 +404,7 @@
       showBourse: s.phase >= 1, bourse: this.fmt(this.nxPortfolio()) + ' €', openBourse: () => { this.nxStocks(); this.openPanel({ kind: 'nxBourse' }); },
       phasePill: 'Phase ' + (s.phase + 1) + ' · ' + ph.n + ' · ' + dur(s.rt || 0), pillCls: s.phase >= 3 ? 'red' : '',
       tiles: tiles, tiles2: tiles2, log: log, steps: steps, lvlLine: lvlLine, cards: cards,
-      showHint: P0 && !this.sheet, clicLabel: top, clicCls: s.p3 && s.p3.dead ? 'dead' : '', tapAria: top, tap: (ev) => this.nxTap(ev),
+      showHint: P0 && !this.sheet, clicLabel: top, clicCls: (s.p3 && s.p3.dead) || (s.data < 1 && !s.up.buy && s.phase < 3) ? 'dead' : '', tapAria: top, tap: (ev) => this.nxTap(ev),
       showRich: s.money + this.nxPortfolio() >= top10 * 0.5, openRich: () => this.openPanel({ kind: 'nxRich' }),
       openWorld: () => { this.buzz(); this.ncLast = ''; this.setState({ world: true, ncLvl: this.ncLevel() }); }, closeWorld: () => { this.buzz(); this.setState({ world: false }); },
       showInbox: !!tk && s.phase < 3 && !this.sheet && !this.panel && !this.newCard && !this.state.quiz && !this.state.auth, showCard: !!this.newCard && !this.sheet && !this.panel && !this.state.world, cardTitle: this.newCard ? this.newCard.t : '', cardText: this.newCard ? this.newCard.d : '',

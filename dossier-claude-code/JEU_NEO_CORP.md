@@ -18,18 +18,17 @@ Message final : « Tu lui as demandé de faire de l'argent. Elle a obéi. À la 
 
 ## 2. Vitesse et temps
 
-- Le jeu tourne en **vitesse × 7** par défaut (temps de jeu = temps réel × 7). Le mode admin permet × 1, × 7, × 10, × 100 (clé `localStorage` `inoviaNxSpeed2`).
+- Le jeu tourne en **vitesse × 4** par défaut (temps de jeu = temps réel × 4). Le mode admin permet × 1, × 4, × 10, × 100 (clé `localStorage` `inoviaNxSpeed3`).
 - Deux horloges :
   - `s.t` : le **temps de jeu** (économie, David, production) ;
   - `s.rt` : le **temps réel joué**. Il sert aux tâches, à la période de lancement de 10 minutes, à la durée affichée, aux records et à la perte de contrôle continue.
 - La boucle tourne toutes les 250 ms. Le dt de jeu est découpé en pas de 1 seconde maximum.
 - Sauvegarde toutes les 5 s (`localStorage` `inoviaNx1`). Méta d'une partie à l'autre : `inoviaNxMeta` (nombre de parties, record, meilleure phase, bonus).
-- Durées mesurées par simulation à × 7 :
-  - joueur qui fait ses tâches : environ 45 minutes ;
-  - joueur qui dit toujours « J'ai la flemme » : environ 25 minutes ;
-  - joueur sans IA : faillite en environ 11 minutes.
-
-  Ces durées pourront être rallongées plus tard, sur décision de Yannis.
+- Durées mesurées par simulation à × 4 :
+  - joueur qui fait ses tâches : environ 1 h 30 à 1 h 45 ;
+  - joueur qui dit toujours « J'ai la flemme » : environ 40 minutes ;
+  - joueur sans IA : faillite en environ 15 minutes.
+- **Sauvegarde** : à chaque changement important, toutes les 5 s, et quand on quitte ou cache l'appli (`pagehide`, `visibilitychange`). Dans l'appli native, sauvegarder aussi sur le compte de l'utilisateur (Supabase). Dans la version Claude de la maquette, la partie est aussi sauvegardée sur le compte Claude (`cloudInit` / `cloudFlush`, champs `nx` et `nxMeta`).
 
 ## 3. Les phases
 
@@ -50,7 +49,7 @@ Sous la planète : pastille « Phase N · Nom · durée réelle », puis 4 vigne
 - **Clic sur la planète** = fabrique des neurones, il ne fait **pas** gagner d'argent.
   - Phase 1 : 1 neurone par clic (5 avec l'amélioration « Fenêtre de contexte élargie »).
   - Phase 2 : max(10, production par seconde × 0,5), × 5 avec la même amélioration.
-  - **Toucher avec deux doigts compte deux clics** (gestion des `touchstart` multi-doigts).
+  - **Toucher avec deux doigts compte deux clics** (gestion des `touchstart` multi-doigts). Un toucher ne compte jamais deux fois : le `click` qui suit un `touchstart` est ignoré pendant 700 ms, et deux clics à moins de 45 ms d'écart comptent pour un.
 - **Données** : chaque neurone consomme 1 donnée. On commence avec 1 000.
   - Prix des données : pour 1 000, il bouge toutes les 4 s de jeu entre 6 € et 45 € (moyenne 15 €), sur un modèle de marche aléatoire.
   - Le bouton « Acheter » achète un lot de max(1 000, production d'une minute). Si l'argent ne suffit pas, il achète la partie qu'on peut payer (minimum 50 données).
@@ -62,7 +61,7 @@ Sous la planète : pastille « Phase N · Nom · durée réelle », puis 4 vigne
 - **Demande** (neurones achetés par seconde) :
   `(1,2 + 0,85 × production par seconde) × (2 si Multimodal) × (prix de référence / prix)^1,6 × (1 − part de David)`.
   On vend chaque seconde le minimum entre le stock et la demande.
-- **Prix automatique** (amélioration « Tarification par IA », ou quand le contrôle passe sous 40 %, ou en phase 4) : le prix tend vers max(0,86 × référence, coût × 1,3).
+- **Prix automatique** (amélioration « Tarification par IA », ou quand le contrôle passe sous 40 %, ou en phase 4) : le prix tend vers max(0,86 × référence, coût × 1,3) × l'ajustement du joueur. **Le joueur peut toujours monter ou baisser le prix** : chaque toucher sur + ou − change l'ajustement de 10 % (entre × 0,3 et × 3). Affichage : « Fixé par ton IA · ajusté + 21 % » ou « Fixé par ton IA · tu peux l'ajuster ».
 - **Charges** (après 10 minutes réelles) :
   - loyer de 0,02 €/s en phase 1, 2 €/s en phase 2, 50 €/s en phase 3 ;
   - salaire de 0,05 €/s par humain.
@@ -80,7 +79,7 @@ Sous la planète : pastille « Phase N · Nom · durée réelle », puis 4 vigne
 
 ## 5. Les 10 aides (« Ton équipe »)
 
-Tout ce qui fait monter l'argent est une IA, sauf les humains. Le prix augmente à chaque achat : prix = base × croissance^(nombre déjà acheté). Pour les IA, l'effet sur le contrôle à l'achat est multiplié par 0,08.
+Tout ce qui fait monter l'argent est une IA, sauf les humains. Le prix augmente à chaque achat : prix = base × croissance^(nombre déjà acheté). Pour les IA, l'effet sur le contrôle à l'achat est multiplié par 0,05. Le Réseau IA coûte 1 million de milliards d'euros (1e15).
 
 | id | Nom | Effet (texte affiché) | Prix de base | Croissance | Contrôle | Apparaît quand |
 |---|---|---|---|---|---|---|
@@ -119,8 +118,8 @@ L'**Agent IA** (l'équivalent de l'autoclipper de Paperclips) est aussi proposé
   - les achats d'IA (voir les tableaux) ;
   - « J'ai la flemme » : − 6 ;
   - une tâche ratée : − 1 ;
-  - une dérive continue en temps réel : 0,002 par seconde de jeu en phase 2, 0,006 en phase 3 (plus une hausse avec le temps), plus 0,003 par IA chercheuse (× 2 avec Auto-amélioration). Cette dérive est divisée par (1 + 0,05 × humains) et par la vitesse ;
-  - les data centers construits par les robots.
+  - une dérive continue en temps réel : 0,002 par seconde de jeu en phase 2, 0,004 en phase 3 (plus 0,0000012 × temps écoulé depuis le début de la phase 3), plus 0,002 par IA chercheuse (× 2 avec Auto-amélioration). Cette dérive est divisée par (1 + 0,05 × humains) et par la vitesse ;
+  - les data centers construits par les robots : 0,015 / vitesse chacun.
 - **Ce qui le fait monter :**
   - une tâche réussie : + 3 ;
   - un défi réel : + 8 ;
@@ -150,6 +149,25 @@ L'**Agent IA** (l'équivalent de l'autoclipper de Paperclips) est aussi proposé
   6. **Défi réel** : faire une vraie demande à ChatGPT, Claude, Gemini ou Le Chat. Le défi a un bouton « Copier la demande », puis « C'est fait » ou « J'ai la flemme ». Récompense : max(50 €, 10 minutes de bénéfice) et + 8 % de contrôle.
 - **Récompense d'une tâche réussie** : max(5 €, 90 s de bénéfice) et + 3 % de contrôle.
 - Le contenu des questions vient de la banque `initContent()` dans `Main.dc.html` (C.roles, C.tasks, C.formats, C.traps, C.pairSets[0], C.trueFacts, C.falseFacts, C.swipe[3]). Les 6 défis réels sont dans `nxDef().DEFI`.
+
+## 8 bis. Les explications du début
+
+Des cartes « Nouveau » apparaissent une seule fois (mémorisées dans la méta, d'une partie à l'autre) quand l'élément arrive, une à la fois (file d'attente) :
+
+| Carte | Quand |
+|---|---|
+| Bienvenue chez Neo Corp | Tout de suite |
+| C'est toi qui fixes le prix | 8 neurones |
+| Les données | 40 neurones, ou moins de 700 données |
+| L'agent IA | Quand l'Agent IA est disponible |
+| Le contrôle de ton IA | Première IA achetée |
+| Les messages | Première tâche |
+| David, ton concurrent | Arrivée de David |
+| Les charges arrivent | 9 minutes réelles |
+| Les humains | Quand les humains sont disponibles |
+| La bourse | Phase 2 |
+
+Les cartes de phase (Le labo, L'usine) passent par la même file d'attente. Les textes exacts sont dans `nxTips0()`.
 
 ## 9. L'écran de jeu (de haut en bas)
 
@@ -253,9 +271,11 @@ Mode nuit : toutes les couleurs ont leur version nuit (voir `nx.css`, sélecteur
 - [ ] David, faillite, garde-fou de 10 minutes, charges.
 - [ ] Contrôle et ses paliers, prix fixé par l'IA sous 40 %.
 - [ ] Fin : séquence, animation de bug avec les nombres géants, écran noir, stats, recommencer avec bonus, face-à-face.
-- [ ] Hors ligne, notification, sauvegarde, record.
+- [ ] Hors ligne, notification, sauvegarde (y compris en quittant l'appli), record.
+- [ ] Explications du début (cartes « Nouveau »).
+- [ ] Prix réglable même quand l'IA le fixe.
 - [ ] Vibrations et sons à chaque action.
-- [ ] Vitesse × 7 ; mode admin (vitesse, phases, fin, faillite, absence) disponible pour Yannis.
+- [ ] Vitesse × 4 ; mode admin (vitesse, phases, fin, faillite, absence) disponible pour Yannis.
 - [ ] Mon monde (3D) : niveaux Le garage, Le labo, Data center, L'usine, Perte de contrôle, liés aux phases.
 
 ## 14. Annexe : toutes les lignes du journal

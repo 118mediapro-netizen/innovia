@@ -437,6 +437,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 #app .fm-small { width: 236px; height: 133px }
 #app .fm-big { width: 420px; height: 236px }
 #app .fm-small { width: 236px; height: 133px }
+#app .fm-big { width: 420px; height: 236px }
+#app .fm-small { width: 236px; height: 133px }
 #app .ipgrid2 { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) }
 #app nav { max-width: 460px; margin: 0 auto }
 #app .sheet:not([style*="inset: 0"]) { max-width: 640px; margin-left: auto; margin-right: auto }
@@ -2933,7 +2935,7 @@ window.Component = class Component extends DCLogic {
       { id: 'res', n: 'IA chercheuse', ai: true, d: 'Elle améliore ta propre IA : production + 50 %. Mais ton contrôle baisse tout seul.', c: 600000, g: 2.5, ctl: -6, need: (s) => s.h.dc >= 1 },
       { id: 'rob', n: 'Robot IA', ai: true, d: 'Une IA avec un corps. Il construit un data center IA toutes les 3 minutes, sans te demander.', c: 1.5e6, g: 1.25, ctl: -3, need: (s) => s.phase >= 2 },
       { id: 'fac', n: 'Usine IA', ai: true, d: 'Une usine pilotée par une IA, sans humains : 50 000 neurones par seconde.', c: 5e6, g: 1.3, ctl: -4, need: (s) => s.h.rob >= 2 },
-      { id: 'net', n: 'Réseau IA', ai: true, d: 'Toutes tes IA reliées entre elles dans la ville. Ensuite, tout se construit tout seul.', c: 1e12, g: 1, max: 1, ctl: -100, need: (s) => s.h.fac >= 3 }
+      { id: 'net', n: 'Réseau IA', ai: true, d: 'Toutes tes IA reliées entre elles dans la ville. Ensuite, tout se construit tout seul.', c: 1e15, g: 1, max: 1, ctl: -100, need: (s) => s.h.fac >= 3 }
     ];
     // Les améliorations portent les vrais noms de l'IA (tâche 5) : chaque achat apprend un mot.
     D.U = [
@@ -2966,16 +2968,17 @@ window.Component = class Component extends DCLogic {
   }
   nxMeta() { if (this._nxm) return this._nxm; let m = null; try { m = JSON.parse(window.localStorage.getItem('inoviaNxMeta') || 'null'); } catch (e) {} this._nxm = m && typeof m === 'object' ? m : { runs: 0, best: 0, bestPhase: 0, bonus: 0 }; return this._nxm; }
   nxMetaSave() { try { window.localStorage.setItem('inoviaNxMeta', JSON.stringify(this.nxMeta())); } catch (e) {} }
-  nxSpeed() { let v = 7; try { v = Number(window.localStorage.getItem('inoviaNxSpeed2') || 7); } catch (e) {} return [1, 7, 10, 100].indexOf(v) >= 0 ? v : 7; }
+  nxSpeed() { let v = 4; try { v = Number(window.localStorage.getItem('inoviaNxSpeed3') || 4); } catch (e) {} return [1, 4, 10, 100].indexOf(v) >= 0 ? v : 4; }
   nxLoad() {
     let s = null; try { s = JSON.parse(window.localStorage.getItem('inoviaNx1') || 'null'); } catch (e) {}
     const ok = s && s.v === 1 && s.h && Array.isArray(s.log); this.nx = ok ? Object.assign(this.nxFresh(), s) : this.nxFresh();
     this.nx.h = Object.assign(this.nxFresh().h, this.nx.h || {});
     this.nxLast = Date.now(); this.nxSaveNext = Date.now() + 5000;
-    if (!this.nxTouch) { this.nxTouch = (ev) => { const el = ev.target && ev.target.closest ? ev.target.closest('.hqbtn') : null; if (!el || !this.nx || this.state.screen !== 'jeu') return; try { ev.preventDefault(); } catch (er) {} const L = ev.changedTouches || []; for (let i = 0; i < L.length; i++) this.nxTap({ clientX: L[i].clientX, clientY: L[i].clientY }); }; try { document.addEventListener('touchstart', this.nxTouch, { passive: false, capture: true }); } catch (er) {} }
+    if (!this.nxBye) { this.nxBye = () => { this.nxSave(); try { this.cloudFlush && this.cloudFlush(); } catch (e) {} }; try { window.addEventListener('pagehide', this.nxBye); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') this.nxBye(); }); } catch (e) {} }
+    if (!this.nxTouch) { this.nxTouch = (ev) => { const el = ev.target && ev.target.closest ? ev.target.closest('.hqbtn') : null; if (!el || !this.nx || this.state.screen !== 'jeu') return; try { ev.preventDefault(); } catch (er) {} const L = ev.changedTouches || []; this.nxTouchAt = Date.now(); for (let i = 0; i < L.length; i++) this.nxTap({ clientX: L[i].clientX, clientY: L[i].clientY }, true); }; try { document.addEventListener('touchstart', this.nxTouch, { passive: false, capture: true }); } catch (er) {} }
     if (!ok) this.nxStart(); else { const away = (Date.now() - (this.nx.savedAt || Date.now())) / 1000; if (away > 60) this.nxOffline(away); }
   }
-  nxSave() { try { if (this.nx) { this.nx.savedAt = Date.now(); window.localStorage.setItem('inoviaNx1', JSON.stringify(this.nx)); } } catch (e) {} }
+  nxSave() { try { if (this.nx) { this.nx.savedAt = Date.now(); window.localStorage.setItem('inoviaNx1', JSON.stringify(this.nx)); } } catch (e) {} this.cloudDirty = true; }
   nxStart() {
     const m = this.nxMeta();
     this.nxLog('Neo Corp est créée. Un garage, un ordinateur et une idée : créer ta propre intelligence artificielle.', 'p');
@@ -3015,10 +3018,10 @@ window.Component = class Component extends DCLogic {
     if (nps > 0 && s.data < 1 && !offline && s.t - s.dataAt > 25) { s.dataAt = s.t; this.nxLog('Plus de données : tes IA ne fabriquent plus rien. Achète des données.', 'w'); }
     if (s.phase >= 1) { const got = Math.min(this.nxIps() * dt, s.neu / 1000); s.neu -= got * 1000; s.ia += got; s.iaTot += got; }
     if (s.phase >= 2) { const got = Math.min(this.nxRps() * dt, s.ia / 50); s.ia -= got * 50; s.rob += got; s.robTot += got; }
-    if (s.h.rob) { s.dcAcc = (s.dcAcc || 0) + dt * s.h.rob * (s.up.swarm ? 2 : 1) / 180; let k = 0; while (s.dcAcc >= 1 && k++ < 1000) { s.dcAcc -= 1; s.h.dc += 1; } if (k && s.phase < 3) s.ctl = Math.max(0, s.ctl - 0.04 * k / this.nxSpeed()); if (k && !offline && s.t - (s.dcLogAt || -999) > 120) { s.dcLogAt = s.t; this.nxLog(s.seen.dcbuild ? 'Tes robots ont construit un nouveau data center. Tu en as ' + s.h.dc + '.' : 'Tes robots IA construisent un nouveau data center. Tu n’as rien commandé.', 'w'); s.seen.dcbuild = 1; } }
+    if (s.h.rob) { s.dcAcc = (s.dcAcc || 0) + dt * s.h.rob * (s.up.swarm ? 2 : 1) / 180; let k = 0; while (s.dcAcc >= 1 && k++ < 1000) { s.dcAcc -= 1; s.h.dc += 1; } if (k && s.phase < 3) s.ctl = Math.max(0, s.ctl - 0.015 * k / this.nxSpeed()); if (k && !offline && s.t - (s.dcLogAt || -999) > 120) { s.dcLogAt = s.t; this.nxLog(s.seen.dcbuild ? 'Tes robots ont construit un nouveau data center. Tu en as ' + s.h.dc + '.' : 'Tes robots IA construisent un nouveau data center. Tu n’as rien commandé.', 'w'); s.seen.dcbuild = 1; } }
     // ventes
     const t = this.nxTier(); const ref = this.nxRef(t); const unit = this.nxUnit(t);
-    if (this.nxAutoPrice()) { const target = Math.max(ref * 0.86, unit * 1.3); s.price[t] = s.price[t] + (target - s.price[t]) * Math.min(1, dt * 0.5); }
+    if (this.nxAutoPrice()) { const target = Math.max(ref * 0.86, unit * 1.3) * (s.priceAdj || 1); s.price[t] = s.price[t] + (target - s.price[t]) * Math.min(1, dt * 0.5); }
     const dem = this.nxDemand(t); const keep = 0; const stock = Math.max(0, this.nxStock(t) - keep); const sold = Math.min(stock, dem * dt); const rev = sold * s.price[t];
     if (t === 0) { s.neu -= sold; s.neuSold += sold; } else if (t === 1) { s.ia -= sold; s.iaSold += sold; } else { s.rob -= sold; s.robSold += sold; }
     let rev2 = 0; if (false) { const p1 = Math.max(this.nxRef(1) * 0.86, this.nxUnit(1) * 1.3); s.price[1] = p1; const d1 = this.nxDemand(1); const st1 = Math.max(0, s.ia - 50); const so1 = Math.min(st1, d1 * dt); s.ia -= so1; s.iaSold += so1; rev2 = so1 * p1; }
@@ -3028,7 +3031,7 @@ window.Component = class Component extends DCLogic {
     s.peak = Math.max(s.peak, s.money);
     const inst = dt > 0 ? (s.money - before) / dt : 0; s.rate = s.rate * 0.9 + inst * 0.1;
     // contrôle : il baisse tout seul avec l'IA chercheuse et à mesure que l'IA grandit ; les humains le freinent
-    const drift = ([0, 0.002, 0.006 + 0.000002 * Math.max(0, (s.t - (s.p2t || s.t)) / this.nxSpeed()), 0][Math.min(3, s.phase)] + s.h.res * 0.003 * (s.up.self ? 2 : 1)) / (1 + 0.05 * s.h.hum);
+    const drift = ([0, 0.002, 0.004 + 0.0000012 * Math.max(0, (s.t - (s.p2t || s.t)) / this.nxSpeed()), 0][Math.min(3, s.phase)] + s.h.res * 0.002 * (s.up.self ? 2 : 1)) / (1 + 0.05 * s.h.hum);
     if (s.phase < 3) s.ctl = Math.max(0, Math.min(100, s.ctl - drift * dt / this.nxSpeed()));
     // bourse
     s.st.t = (s.st.t || 0) + dt; if (s.st.t >= 20) { s.st.t = 0; this.nxStocks(); }
@@ -3040,6 +3043,21 @@ window.Component = class Component extends DCLogic {
     L.forEach(x => { if (!s.st.p[x[0]]) { s.st.p[x[0]] = x[1]; s.st.ref[x[0]] = x[1]; } const g = (Math.random() + Math.random() + Math.random() - 1.5) * 0.03 + 0.0012; s.st.p[x[0]] = Math.max(1, s.st.p[x[0]] * (1 + g)); });
   }
   nxPortfolio() { const s = this.nx; let v = 0; Object.keys(s.st.h || {}).forEach(k => { v += (s.st.h[k] || 0) * (s.st.p[k] || 0); }); return v; }
+  nxCard(c) { (this.nxTips = this.nxTips || []).push(c); if (!this.newCard) this.newCard = this.nxTips.shift(); }
+  nxTip(k, t, d) { const m = this.nxMeta(); if (!m.tips) m.tips = {}; if (m.tips[k]) return; m.tips[k] = 1; this.nxMetaSave(); (this.nxTips = this.nxTips || []).push({ t: t, d: d }); if (!this.newCard) this.newCard = this.nxTips.shift(); }
+  nxTips0() {
+    const s = this.nx; const h = s.h; if (!s || s.ended) return;
+    this.nxTip('bienvenue', 'Bienvenue chez Neo Corp', 'Tu viens de créer ta boîte d’IA. Touche la planète pour fabriquer des neurones artificiels : c’est la plus petite brique d’une intelligence artificielle. Tes neurones se vendent tout seuls à des clients.');
+    if (s.neuTot >= 8) this.nxTip('prix', 'C’est toi qui fixes le prix', 'Avec les boutons − et +, tu choisis le prix d’un neurone. Trop bas, tu vends à perte. Trop haut, personne n’achète. Regarde « Marge » sous la planète : en vert tu gagnes, en rouge tu perds.');
+    if (s.neuTot >= 40 || s.data < 700) this.nxTip('donnees', 'Les données', 'Chaque neurone consomme une donnée. Sans données, tu ne peux plus rien fabriquer. Achète-en dans « Fabrication », sous la planète. Leur prix change tout le temps : achète quand c’est pas cher.');
+    if (this.nxDef().H[1].need(s)) this.nxTip('agent', 'L’agent IA', 'Un agent IA, c’est une IA qui travaille à ta place. Il fabrique des neurones tout seul, même quand tu ne touches pas la planète. Achète-le dans la case violette au-dessus de la planète.');
+    if (this.nxHasAi()) this.nxTip('controle', 'Le contrôle de ton IA', 'Plus ton IA est puissante, plus elle décide sans toi. Surveille « Contrôle de ton IA » sous la planète. À 0 %, elle prend le pouvoir et la partie se termine.');
+    if (s.task) this.nxTip('taches', 'Les messages', 'Quand la bulle ronde apparaît, un message t’attend. Fais la tâche pour apprendre l’IA et garder le contrôle. Si tu as la flemme, ton IA la fait à ta place… et elle grandit.');
+    if (this.nxDavid().on) this.nxTip('david', 'David, ton concurrent', 'David utilise déjà l’IA pour tout. Sans IA, il te prend tes clients et tu finis en faillite. Regarde « Achats » : s’il devient rouge, David gagne.');
+    if ((s.rt || 0) >= 540) this.nxTip('charges', 'Les charges arrivent', 'Dans une minute, ton garage commence à coûter de l’argent chaque minute. Si ton argent reste trop longtemps dans le rouge, c’est la faillite.');
+    if (this.nxDef().H[0].need(s)) this.nxTip('humains', 'Les humains', 'Un humain coûte cher et touche un salaire, mais il surveille tes IA : chaque humain fait remonter ton contrôle.');
+    if (s.phase >= 1) this.nxTip('bourse', 'La bourse', 'Tu peux placer ton argent en bourse, sur de vraies marques. Le bouton est sous « Mon monde ».');
+  }
   nxStory() {
     const s = this.nx; const h = s.h; const t = this.nxTier(); const one = this.nxDef().PH[t].one;
     if (s.neuTot >= 1) this.nxOnce('n1', 'Premier neurone artificiel. C’est la plus petite brique d’une IA.');
@@ -3092,6 +3110,7 @@ window.Component = class Component extends DCLogic {
     if (gap > 30 && !s.ended) this.nxOffline(gap);
     const dt = Math.min(5, gap) * this.nxSpeed(); if (!s.ended) s.rt = (s.rt || 0) + Math.min(5, gap);
     if (!s.ended) { if (dt > 0) { const n = Math.max(1, Math.ceil(dt / 1)); for (let i = 0; i < n; i++) this.nxStep(dt / n, false); } this.nxPhase3(now); }
+    if (!s.ended && !this.sheet && !this.panel) this.nxTips0();
     this.nxEndTick(now);
     const sh = this.sheet; if (sh && sh.status === 'play' && sh.kind === 'nx' && sh.deadline && now > sh.deadline) this.finish(false, 'Temps écoulé !');
     if (sh && sh.status === 'play' && sh.g && sh.g.type === 'swipe' && now > sh.r.end) this.finish(false, 'Temps écoulé ! ' + sh.r.score + ' bonne(s) réponse(s) sur ' + sh.g.need + '.');
@@ -3111,8 +3130,8 @@ window.Component = class Component extends DCLogic {
   }
   nxHasAi() { const s = this.nx; return this.nxDef().H.some(x => x.ai && s.h[x.id] > 0); }
   nxTapPow() { const s = this.nx; if (s.phase === 0) return s.up.ctx ? 5 : 1; return Math.max(10, Math.round(this.nxNps() * 0.5)) * (s.up.ctx ? 5 : 1); }
-  nxTap(e) {
-    const s = this.nx; if (!s || s.ended) return; const now = Date.now(); const pe = this.pe; const pt = this.planetPoint(e);
+  nxTap(e, fromTouch) {
+    const s = this.nx; if (!s || s.ended) return; const now = Date.now(); if (!fromTouch && now - (this.nxTouchAt || 0) < 700) return; if (now - (this.nxTapAt || 0) < 45) return; this.nxTapAt = now; const pe = this.pe; const pt = this.planetPoint(e);
     this.stat('taps', 1); this.lastTap = now;
     if (s.phase >= 3 && s.p3 && s.p3.step >= 2) { this.buzz([30, 30, 30]); this.sfx('error', 0.8); if (pe) { pe.shake = 6; pe.texts.push({ x: pt.x, y: pt.y - 14, vy: -1, a: 1, txt: 'Accès refusé', big: false }); } this.refresh(); return; }
     let txt = '';
@@ -3125,7 +3144,7 @@ window.Component = class Component extends DCLogic {
     const s = this.nx; const H = this.nxDef().H.find(x => x.id === id); const c = this.nxCost(id);
     if (s.phase >= 3 || (H.max && s.h[id] >= H.max)) return;
     if (s.money < c) { this.buzz([10, 30, 10]); this.sfx('error', 1); return; }
-    s.money -= c; s.h[id] += 1; s.ctl = Math.max(0, Math.min(100, s.ctl + (H.ctl > 0 ? H.ctl : H.ctl * 0.08))); this.sfx('cash', 1); this.buzz([10, 30, 15]);
+    s.money -= c; s.h[id] += 1; s.ctl = Math.max(0, Math.min(100, s.ctl + (H.ctl > 0 ? H.ctl : H.ctl * 0.05))); this.sfx('cash', 1); this.buzz([10, 30, 15]);
     if (id === 'net') { this.nxLog('Réseau IA activé. Toutes tes IA sont reliées. Tu n’as plus rien à acheter.', 'd'); this.nxLose(); }
     this.nxSave(); this.refresh();
   }
@@ -3135,25 +3154,25 @@ window.Component = class Component extends DCLogic {
     s.money -= U.c; s.up[id] = 1; if (U.ctl) s.ctl = Math.max(0, s.ctl + U.ctl); this.nxLog('Amélioration : ' + U.n + '. ' + U.e, 'p'); this.sfx('level', 1); this.buzz([15, 40, 25]); this.nxSave(); this.refresh();
   }
   nxBuyData() { const s = this.nx; const lots = Math.max(1, Math.round(Math.max(1000, this.nxNps() * 60) / 1000)); let u = lots * 1000; if (s.money < lots * s.dp) u = Math.floor(Math.max(0, s.money) / s.dp * 1000); if (u < 50) { this.buzz([10, 30, 10]); this.sfx('error', 1); return; } s.money -= u * s.dp / 1000; s.data += u; this.sfx('coin', 1); this.buzz(8); this.refresh(); }
-  nxPrice(dir) { const s = this.nx; const t = this.nxTier(); if (this.nxAutoPrice()) return; const st = this.nxDef().STEP[t]; s.price[t] = Math.max(st, Math.round((s.price[t] + dir * st) / st) * st); this.buzz(6); this.sfx('tap', dir > 0 ? 1.1 : 0.9); this.refresh(); }
+  nxPrice(dir) { const s = this.nx; const t = this.nxTier(); if (s.phase >= 3) return; if (this.nxAutoPrice()) { s.priceAdj = Math.max(0.3, Math.min(3, Math.round((s.priceAdj || 1) * (dir > 0 ? 1.1 : 1 / 1.1) * 100) / 100)); s.price[t] = Math.max(0.01, s.price[t] * (dir > 0 ? 1.1 : 1 / 1.1)); } else { const st = this.nxDef().STEP[t]; s.price[t] = Math.max(st, Math.round((s.price[t] + dir * st) / st) * st); } this.buzz(6); this.sfx('tap', dir > 0 ? 1.1 : 0.9); this.refresh(); }
   nxPhaseUp(k) {
     const s = this.nx; if (s.phase >= k || s.phase >= 3) return; s.phase = k; this.sfx('level', 1); this.buzz([15, 40, 25]);
-    if (k === 1) { s.defiNext = (s.rt || 0) + 300; this.nxLog('Tes 200 000 neurones se sont connectés. Ta première intelligence artificielle est née. Elle a dit : « Bonjour. Comment puis-je t’aider ? »', 'p'); this.newCard = { t: 'Phase 2 · Le labo', d: 'Tes neurones forment maintenant une vraie intelligence artificielle. De nouvelles IA peuvent travailler pour toi : agents IA avancés, équipes, data centers. Plus ils fabriquent de neurones, plus ton IA grandit.' }; }
-    if (k === 2) { s.p2t = s.t; this.nxLog('Ton IA a dessiné les plans d’un robot. Le premier robot IA sort de l’usine.', 'p'); this.newCard = { t: 'Phase 3 · L’usine', d: 'Ton IA a maintenant un corps. Les robots et les usines IA fabriquent des neurones en masse. Le bouton de la planète ne fabrique plus : il sert juste à valider.' }; }
+    if (k === 1) { s.defiNext = (s.rt || 0) + 300; this.nxLog('Tes 200 000 neurones se sont connectés. Ta première intelligence artificielle est née. Elle a dit : « Bonjour. Comment puis-je t’aider ? »', 'p'); this.nxCard({ t: 'Phase 2 · Le labo', d: 'Tes neurones forment maintenant une vraie intelligence artificielle. De nouvelles IA peuvent travailler pour toi : agents IA avancés, équipes, data centers. Plus ils fabriquent de neurones, plus ton IA grandit.' }); }
+    if (k === 2) { s.p2t = s.t; this.nxLog('Ton IA a dessiné les plans d’un robot. Le premier robot IA sort de l’usine.', 'p'); this.nxCard({ t: 'Phase 3 · L’usine', d: 'Ton IA a maintenant un corps. Les robots et les usines IA fabriquent des neurones en masse. Le bouton de la planète ne fabrique plus : il sert juste à valider.' }); }
     this.nxSave();
   }
   nxMakeIa() {
     const s = this.nx; if (!(s.can1 || s.phase >= 1) || s.phase >= 3) return; const first = s.phase === 0; const fee = first ? 300 : 0;
     if (s.neu < 1000 || s.money < fee) { this.buzz([10, 30, 10]); this.sfx('error', 1); this.nxLog(s.neu < 1000 ? 'Il faut 1 000 neurones en stock pour assembler une IA.' : 'Il faut 300 € pour créer ta première IA.', 'w'); this.refresh(); return; }
     s.neu -= 1000; s.money -= fee; s.ia += 1; s.iaTot += 1; this.sfx('success', 1); this.buzz([15, 40, 25]);
-    if (first) { s.phase = 1; s.defiNext = s.t + 300; s.price[1] = this.nxRef(1); this.nxLog('Ta première intelligence artificielle est née. Elle a dit : « Bonjour. Comment puis-je t’aider ? »', 'p'); this.newCard = { t: 'Phase 2 · Le labo', d: 'Tu ne vends plus des neurones : tu vends des intelligences artificielles. Il faut 1 000 neurones pour en assembler une. Les agents IA peuvent le faire à ta place.' }; this.sfx('level', 1); }
+    if (first) { s.phase = 1; s.defiNext = s.t + 300; s.price[1] = this.nxRef(1); this.nxLog('Ta première intelligence artificielle est née. Elle a dit : « Bonjour. Comment puis-je t’aider ? »', 'p'); this.nxCard({ t: 'Phase 2 · Le labo', d: 'Tu ne vends plus des neurones : tu vends des intelligences artificielles. Il faut 1 000 neurones pour en assembler une. Les agents IA peuvent le faire à ta place.' }); this.sfx('level', 1); }
     this.nxSave(); this.refresh();
   }
   nxMakeRobot() {
     const s = this.nx; if (!(s.can2 || s.phase >= 2) || s.phase >= 3) return; const first = s.phase === 1; const fee = first ? 1e6 : 0;
     if (s.ia < 50 || s.money < fee) { this.buzz([10, 30, 10]); this.sfx('error', 1); this.nxLog(s.ia < 50 ? 'Il faut 50 IA en stock pour construire un robot.' : 'Il faut 1 M € pour construire ton premier robot.', 'w'); this.refresh(); return; }
     s.ia -= 50; s.money -= fee; s.rob += 1; s.robTot += 1; this.sfx('success', 1); this.buzz([15, 40, 25]);
-    if (first) { s.phase = 2; s.p2t = s.t; s.price[2] = this.nxRef(2); this.nxLog('Premier robot IA sorti de l’usine.', 'p'); this.newCard = { t: 'Phase 3 · L’usine', d: 'Tes IA ont maintenant un corps. Tu vends des robots. Le bouton de la planète ne fabrique plus : il sert juste à valider.' }; this.sfx('level', 1); }
+    if (first) { s.phase = 2; s.p2t = s.t; s.price[2] = this.nxRef(2); this.nxLog('Premier robot IA sorti de l’usine.', 'p'); this.nxCard({ t: 'Phase 3 · L’usine', d: 'Tes IA ont maintenant un corps. Tu vends des robots. Le bouton de la planète ne fabrique plus : il sert juste à valider.' }); this.sfx('level', 1); }
     this.nxSave(); this.refresh();
   }
   nxLose() {
@@ -3180,7 +3199,7 @@ window.Component = class Component extends DCLogic {
       ['Ton IA calcule. Il reste un dernier obstacle.', 'd'],
       ['END']
     ];
-    const gapMs = 6500 / Math.max(1, this.nxSpeed() / 7); if (now - (p.lastAt || 0) < gapMs) return;
+    const gapMs = 6500 / Math.max(1, this.nxSpeed() / 4); if (now - (p.lastAt || 0) < gapMs) return;
     if (p.step >= L.length) return; const it = L[p.step];
     if (it[0] === 'FA') { if (p.fat >= 3 && !this.sheet) { p.step += 1; p.lastAt = now; return; } if (!this.sheet && p.fat < 3) { p.fat += 1; const g = this.nxGame('spot'); this.openSheet('nx', { kicker: 'Face-à-face · ' + p.fat + ' / 3', title: g.t, lesson: '', deadline: Date.now() + 10000, fa: true }, g.game); } return; }
     if (it[0] === 'END') { this.nxEnd(p.fa ? 'fa' : 'ia'); return; }
@@ -3283,7 +3302,7 @@ window.Component = class Component extends DCLogic {
       headLabel: 'Neurones artificiels fabriqués', big: bigS, bigStyle: 'font-size:' + (s.ended ? 44 : bigS.length <= 6 ? 50 : bigS.length <= 9 ? 40 : 32) + 'px;font-weight:800;letter-spacing:-0.035em;line-height:1.08;font-variant-numeric:tabular-nums;white-space:nowrap;' + (s.ended ? 'color:#E5484D;overflow:visible' : ''),
       money: (s.money < 0 ? '− ' : '') + this.fmt(Math.abs(s.money)) + ' €', moneyCls: s.money < 0 ? 'red' : '', rateCls: rate < 0 ? 'red' : '',
       headSub: (rate >= 0 ? '+ ' : '− ') + this.nxEur(Math.abs(rate)) + ' par minute',
-      priceLab: 'Prix d’un neurone', priceSub: this.nxAutoPrice() ? 'Fixé par ton IA' : 'Coût de fabrication : ' + this.nxEur(this.nxUnit(t)) + (s.price[t] < this.nxUnit(t) ? ' · tu vends à perte' : ''), priceV: this.nxEur(s.price[t]), pricePm: !this.nxAutoPrice() && s.phase < 3, priceMinus: () => this.nxPrice(-1), pricePlus: () => this.nxPrice(1), priceCls: s.price[t] < this.nxUnit(t) ? 'red' : '',
+      priceLab: 'Prix d’un neurone', priceSub: this.nxAutoPrice() ? 'Fixé par ton IA' + ((s.priceAdj || 1) !== 1 ? ' · ajusté ' + ((s.priceAdj || 1) > 1 ? '+' : '−') + ' ' + Math.round(Math.abs((s.priceAdj || 1) - 1) * 100) + ' %' : ' · tu peux l’ajuster') : 'Coût de fabrication : ' + this.nxEur(this.nxUnit(t)) + (s.price[t] < this.nxUnit(t) ? ' · tu vends à perte' : ''), priceV: this.nxEur(s.price[t]), pricePm: s.phase < 3, priceMinus: () => this.nxPrice(-1), pricePlus: () => this.nxPrice(1), priceCls: s.price[t] < this.nxUnit(t) ? 'red' : '',
       showBourse: s.phase >= 1, bourse: this.fmt(this.nxPortfolio()) + ' €', openBourse: () => { this.nxStocks(); this.openPanel({ kind: 'nxBourse' }); },
       phasePill: 'Phase ' + (s.phase + 1) + ' · ' + ph.n + ' · ' + dur(s.rt || 0), pillCls: s.phase >= 3 ? 'red' : '',
       tiles: tiles, tiles2: tiles2, log: log, steps: steps, lvlLine: lvlLine, cards: cards,
@@ -3291,7 +3310,7 @@ window.Component = class Component extends DCLogic {
       showRich: s.money + this.nxPortfolio() >= top10 * 0.5, openRich: () => this.openPanel({ kind: 'nxRich' }),
       openWorld: () => { this.buzz(); this.ncLast = ''; this.setState({ world: true, ncLvl: this.ncLevel() }); }, closeWorld: () => { this.buzz(); this.setState({ world: false }); },
       showInbox: !!tk && s.phase < 3 && !this.sheet && !this.panel && !this.newCard && !this.state.quiz && !this.state.auth, showCard: !!this.newCard && !this.sheet && !this.panel && !this.state.world, cardTitle: this.newCard ? this.newCard.t : '', cardText: this.newCard ? this.newCard.d : '',
-      closeCard: () => { this.newCard = null; this.sfx('pop', 1.1); this.buzz(8); this.refresh(); }, inboxN: '1', inboxAria: 'Nouveau message : ' + ti[0], openInbox: () => { if (Date.now() - (this.inboxDragAt || 0) < 350) return; this.buzz(10); this.sfx('whoosh', 1.05); this.openPanel({ kind: 'nxTask' }); }, inboxPos: (() => { const p = this.inboxXY || (() => { try { return JSON.parse(window.localStorage.getItem('inoviaInboxXY') || 'null'); } catch (e) { return null; } })(); this.inboxXY = p; return p ? 'position: absolute; left: ' + Math.round(p.x) + 'px; top: ' + Math.round(p.y) + 'px;' : 'position: absolute; right: 12px; top: 520px;'; })()
+      closeCard: () => { this.newCard = (this.nxTips && this.nxTips.length) ? this.nxTips.shift() : null; this.sfx('pop', 1.1); this.buzz(8); this.refresh(); }, inboxN: '1', inboxAria: 'Nouveau message : ' + ti[0], openInbox: () => { if (Date.now() - (this.inboxDragAt || 0) < 350) return; this.buzz(10); this.sfx('whoosh', 1.05); this.openPanel({ kind: 'nxTask' }); }, inboxPos: (() => { const p = this.inboxXY || (() => { try { return JSON.parse(window.localStorage.getItem('inoviaInboxXY') || 'null'); } catch (e) { return null; } })(); this.inboxXY = p; return p ? 'position: absolute; left: ' + Math.round(p.x) + 'px; top: ' + Math.round(p.y) + 'px;' : 'position: absolute; right: 12px; top: 520px;'; })()
     };
   }
   nxProg() { const s = this.nx; if (s.phase === 0) return Math.min(100, s.neuTot / 200000 * 100); if (s.phase === 1) return Math.min(100, Math.log10(Math.max(1, s.neuTot / 200000)) / Math.log10(250) * 100); if (s.phase === 2) return Math.min(100, 100 - s.ctl); return 100; }
@@ -3344,7 +3363,7 @@ window.Component = class Component extends DCLogic {
       kicker = 'Mode admin · Jeu'; title = 'Tester Neo Corp'; const sp = this.nxSpeed();
       bl.push(B.Kv('Phase', (s.phase + 1) + ' · ' + this.nxDef().PH[Math.min(3, s.phase)].n, '#7046DC', true)); bl.push(B.Kv('Temps de jeu', Math.floor((s.rt || 0) / 60) + ' min')); bl.push(B.Kv('Argent', f(s.money) + ' €')); bl.push(B.Kv('Contrôle', Math.round(s.ctl) + ' %'));
       bl.push(B.H('Vitesse du jeu'));
-      [7, 1, 10, 100].forEach(v => bl.push(B.Row({ key: 'sp' + v, t: 'Vitesse × ' + v, sub: v === 7 ? 'Vitesse normale du jeu' : v === 1 ? 'Plus lent' : 'Pour voir toute l’histoire plus vite', tag: sp === v ? 'Activée' : 'Choisir', tagKind: sp === v ? '' : 'light', on: sp === v, act: () => { try { window.localStorage.setItem('inoviaNxSpeed2', String(v)); } catch (e) {} this.refresh(); } })));
+      [4, 1, 10, 100].forEach(v => bl.push(B.Row({ key: 'sp' + v, t: 'Vitesse × ' + v, sub: v === 4 ? 'Vitesse normale du jeu' : v === 1 ? 'Plus lent' : 'Pour voir toute l’histoire plus vite', tag: sp === v ? 'Activée' : 'Choisir', tagKind: sp === v ? '' : 'light', on: sp === v, act: () => { try { window.localStorage.setItem('inoviaNxSpeed3', String(v)); } catch (e) {} this.refresh(); } })));
       bl.push(B.H('Aller à une phase'));
       [['Phase 1 · Le garage', 0], ['Phase 2 · Le labo', 1], ['Phase 3 · L’usine', 2], ['Phase 4 · La perte de contrôle', 3]].forEach(([n, k]) => bl.push(B.Row({ key: 'ph' + k, t: n, sub: k === 3 ? 'Lance la fin' : 'Avec ce qu’il faut pour jouer', tag: 'Aller', act: () => { this.nxJump(k); this.closePanel(); } })));
       bl.push(B.H('Raccourcis'));
@@ -4270,6 +4289,9 @@ window.Component = class Component extends DCLogic {
           if (d.account && d.account.email) { this.saveAccount(d.account); }
           this.refresh();
         }
+        if (d.nx && d.nx.v === 1 && d.nx.h && Array.isArray(d.nx.log)) { const L = this.nx; const better = !L || (d.nx.neuTot || 0) > (L.neuTot || 0) + 1 || ((d.nx.neuTot || 0) >= (L.neuTot || 0) && (d.nx.rt || 0) > (L.rt || 0));
+          if (better) { this.nx = Object.assign(this.nxFresh(), d.nx); this.nx.h = Object.assign(this.nxFresh().h, d.nx.h || {}); this.nxLast = Date.now(); const away = (Date.now() - (d.nx.savedAt || Date.now())) / 1000; if (away > 60) this.nxOffline(away); try { window.localStorage.setItem('inoviaNx1', JSON.stringify(this.nx)); } catch (e) {} this.refresh(); } }
+        if (d.nxMeta && typeof d.nxMeta === 'object') { const m = this.nxMeta(); if ((d.nxMeta.runs || 0) > (m.runs || 0) || Object.keys(d.nxMeta.tips || {}).length > Object.keys(m.tips || {}).length) { this._nxm = Object.assign({}, m, d.nxMeta); this.nxMetaSave(); } }
       }
       this.cloudRef = ref; this.cloudDirty = true;
       this.cloudTimer = setInterval(() => this.cloudFlush(), 8000);
@@ -4283,7 +4305,7 @@ window.Component = class Component extends DCLogic {
     this.cloudBusy = true; this.cloudDirty = false;
     try {
       const acc = this.loadAccount ? this.loadAccount() : null;
-      await this.cloudRef.set({ v: 3, at: Date.now(), player: JSON.parse(JSON.stringify(this.pl)), account: acc ? { name: acc.name || '', email: acc.email || '', provider: acc.provider || 'email', signedIn: acc.signedIn !== false } : null });
+      await this.cloudRef.set({ v: 3, at: Date.now(), player: JSON.parse(JSON.stringify(this.pl)), nx: this.nx ? JSON.parse(JSON.stringify(this.nx)) : null, nxMeta: this.nxMeta ? JSON.parse(JSON.stringify(this.nxMeta())) : null, account: acc ? { name: acc.name || '', email: acc.email || '', provider: acc.provider || 'email', signedIn: acc.signedIn !== false } : null });
     } catch (e) { this.cloudDirty = true; if (e && (e.code === 'revoked' || e.code === 'not_granted' || e.code === 'invalid_argument')) { this.cloudRef = null; clearInterval(this.cloudTimer); } }
     this.cloudBusy = false;
   }

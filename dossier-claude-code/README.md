@@ -1,3 +1,11 @@
+# PRIORITÉ ACTUELLE : Neo Corp d'abord
+
+Le projet sort **d'abord l'appli Neo Corp** (le jeu seul, gratuit avec pubs), puis Inovia. Commencer par lire `neocorp/NEOCORP_APPLI.md` et `neocorp/FICHE_APP_STORE.md`, puis `JEU_NEO_CORP.md`. Le reste de ce README concerne la future appli Inovia (étape suivante).
+
+La maquette de Neo Corp est `neocorp/index.html` à la racine du dépôt (en ligne : https://118mediapro-netizen.github.io/innovia/neocorp/?phone).
+
+---
+
 # Inovia — dossier de passation pour Claude Code
 
 Ce dossier contient tout ce qu'il faut pour transformer la maquette Inovia en vraie application iPhone publiée sur l'App Store.

@@ -879,7 +879,7 @@ Apprends à le faire
 <sc-if value="{{b.isTile}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{b.act}}" style="{{b.style}}"><img src="{{b.img}}" alt="" draggable="false" style="{{b.imgStyle}}"><span style="font-size: 12px; font-weight: 800; line-height: 1.2">{{b.t}}</span><span style="font-size: 11px; font-weight: 800; color: #E8B04A">{{b.sub}}</span></button></sc-if>
 <sc-if value="{{b.isBtn}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{b.act}}" style="{{b.style}}">{{b.t}}</button></sc-if>
 <sc-if value="{{b.isOpt}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{b.act}}" style="{{b.style}}"><span style="{{b.lstyle}}">{{b.letter}}</span><span style="flex: 1; line-height: 1.35">{{b.t}}</span></button></sc-if>
-<sc-if value="{{b.isInput}}" hint-placeholder-val="{{ false }}"><input id="{{b.id}}" type="text" autocomplete="off" maxlength="28" value="{{b.v}}" onInput="{{b.set}}" placeholder="{{b.ph}}" style="width: 100%; height: 52px; box-sizing: border-box; padding: 0 16px; border: 1.5px solid #DED6EC; border-radius: 18px; background: #F9F7FC; font-family: inherit; font-size: 16px; font-weight: 700; color: #260E4F; outline: none; -webkit-appearance: none; appearance: none"></sc-if>
+<sc-if value="{{b.isInput}}" hint-placeholder-val="{{ false }}"><input id="{{b.id}}" type="text" autocomplete="off" maxlength="80" value="{{b.v}}" onInput="{{b.set}}" placeholder="{{b.ph}}" style="width: 100%; height: 52px; box-sizing: border-box; padding: 0 16px; border: 1.5px solid #DED6EC; border-radius: 18px; background: #F9F7FC; font-family: inherit; font-size: 16px; font-weight: 700; color: #260E4F; outline: none; -webkit-appearance: none; appearance: none"></sc-if>
 <sc-if value="{{b.isArea}}" hint-placeholder-val="{{ false }}"><textarea id="{{b.id}}" rows="6" value="{{b.v}}" onInput="{{b.set}}" placeholder="{{b.ph}}" style="width: 100%; min-height: 150px; box-sizing: border-box; padding: 14px 16px; border: 1.5px solid #DED6EC; border-radius: 18px; background: #F9F7FC; font-family: inherit; font-size: 15px; font-weight: 600; line-height: 1.45; color: #260E4F; outline: none; resize: vertical; -webkit-appearance: none; appearance: none">{{b.v}}</textarea></sc-if>
 <sc-if value="{{b.isBar}}" hint-placeholder-val="{{ false }}"><span style="display: block; width: 100%; height: 10px; border-radius: 5px; background: #EBE4F6; overflow: hidden"><span style="{{b.fill}}"></span></span></sc-if>
 <sc-if value="{{b.isSteps}}" hint-placeholder-val="{{ false }}"><div style="width: 100%; display: flex; gap: 6px"><sc-if value="{{b.h0}}" hint-placeholder-val="{{ true }}"><span style="{{b.st0}}">{{b.s0}}</span></sc-if><sc-if value="{{b.h1}}" hint-placeholder-val="{{ true }}"><span style="{{b.st1}}">{{b.s1}}</span></sc-if><sc-if value="{{b.h2}}" hint-placeholder-val="{{ true }}"><span style="{{b.st2}}">{{b.s2}}</span></sc-if></div></sc-if>
@@ -913,7 +913,7 @@ Apprends à le faire
 <p class="nx-f1">{{nxe.l1}}</p>
 <p class="nx-f2">{{nxe.l2}}</p>
 <sc-if value="{{nxe.showStats}}" hint-placeholder-val="{{ false }}"><div class="nx-stats"><sc-for list="{{nxe.stats}}" as="st" hint-placeholder-count="3"><div class="nx-stat"><span>{{st.k}}</span><b>{{st.v}}</b></div></sc-for></div>
-<button class="tap nx-again" type="button" onClick="{{nxe.restart}}">{{nxe.btn}}</button><button class="tap nc-ino" type="button" onClick="{{nxe.inovia}}">Apprends à contrôler l’IA avec Inovia</button></sc-if>
+<button class="tap nx-again" type="button" onClick="{{nxe.restart}}">{{nxe.btn}}</button><button class="tap nc-ino" type="button" onClick="{{nxe.inovia}}">Inovia arrive bientôt · préviens-moi</button></sc-if>
 </div></sc-if>
 </div>
 </sc-if>
@@ -1018,7 +1018,7 @@ Apprends à le faire
 <button id="snd" class="tap" type="button" onClick="{{toggleSound}}" aria-pressed="{{soundOn}}" style="{{soundStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(38,14,79,0.25)"></span></button>
 </div>
 <button class="tap" type="button" onClick="{{buzzOnly}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Aide</button>
-<button class="tap" type="button" onClick="{{openAdmin}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #7046DC; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Mode admin</button>
+<sc-if value="{{showAdminBtn}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{openAdmin}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #7046DC; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Mode admin</button></sc-if>
 </div>
 </sc-if>
 
@@ -2138,7 +2138,7 @@ window.Component = class Component extends DCLogic {
       bJeu: bubble(s.screen === 'jeu', 86),
       showJeu: s.screen === 'jeu',
       goJeu: () => { this.go('jeu'); this.sfx('level', 1.15); this.buzz([10, 40, 20]); setTimeout(() => { try { const sc = document.querySelector('.screen'); if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {} const pe = this.pe; if (pe) { pe.waves.push({ r: this.planetR(), a: 0.8, col: pe.cur.acc.slice(), w: 6 }); pe.flash = 0.35; pe.flashCol = '180,150,255'; } }, 40); },
-      g: this.gameVals(), nxe: this.nxEndVals(), ad: this.ncAdVals(), ncBonus: () => { this.buzz(); this.openPanel({ kind: 'nxAds', any: true }); }, ncOpenInovia: () => { this.setState({ menu: false }); this.openPanel({ kind: 'nxInovia', any: true }); },
+      g: this.gameVals(), nxe: this.nxEndVals(), ad: this.ncAdVals(), showAdminBtn: !(typeof window !== 'undefined' && window.__ncProd), ncBonus: () => { this.buzz(); this.openPanel({ kind: 'nxAds', any: true }); }, ncOpenInovia: () => { this.setState({ menu: false }); this.openPanel({ kind: 'nxInovia', any: true }); },
       showSheet: !!this.sheet && s.screen === 'jeu' && !s.open && !s.world && !this.panel,
       sh: this.sheetVals(),
       showToast: !!this.toast && this.toast.until > Date.now() && s.screen !== 'intro' && !this.hackFx,
@@ -2964,13 +2964,24 @@ window.Component = class Component extends DCLogic {
     if (!this.nxTouch) { this.nxTouch = (ev) => { const el = ev.target && ev.target.closest ? ev.target.closest('.hqbtn') : null; if (!el || !this.nx || this.state.screen !== 'jeu') return; try { ev.preventDefault(); } catch (er) {} const L = ev.changedTouches || []; this.nxTouchAt = Date.now(); for (let i = 0; i < L.length; i++) this.nxTap({ clientX: L[i].clientX, clientY: L[i].clientY }, true); }; try { document.addEventListener('touchstart', this.nxTouch, { passive: false, capture: true }); } catch (er) {} }
     if (!ok) this.nxStart(); else { const away = (Date.now() - (this.nx.savedAt || Date.now())) / 1000; if (away > 60) this.nxOffline(away); }
   }
-  ncAdStart(kind, reward) { this.ncAd = { kind: kind, reward: reward || null, at: Date.now(), dur: kind === 'force' ? 5000 : 15000 }; this.panel = null; this.sfx('whoosh', 0.9); this.refresh(); }
+  ncAdDone(ok) { const p = this.ncAdPending; this.ncAdPending = null; if (!p) return; if (p.kind === 'force') { if (p.then) p.then(); } else if (ok) this.ncReward(p.reward); this.refresh(); }
+  ncAdStart(kind, reward) {
+    if (typeof window !== 'undefined' && window.ReactNativeWebView && window.__nativeAds) { this.ncAdPending = { kind: kind, reward: reward || null }; this.panel = null; try { window.ReactNativeWebView.postMessage(JSON.stringify({ t: 'ad', kind: kind, reward: reward || null })); } catch (e) {} const pend = this.ncAdPending; setTimeout(() => { if (this.ncAdPending === pend) this.ncAdDone(false); }, 60000); this.refresh(); return; } this.ncAd = { kind: kind, reward: reward || null, at: Date.now(), dur: kind === 'force' ? 5000 : 15000 }; this.panel = null; this.sfx('whoosh', 0.9); this.refresh(); }
   ncAdVals() {
     const a = this.ncAd; if (!a) return { show: false, left: '', title: '', sub: '', done: false, close: () => {}, closeLabel: '' };
     const left = Math.max(0, Math.ceil((a.at + a.dur - Date.now()) / 1000)); const done = left <= 0;
     const R = { x2: 'Production × 2 pendant 5 minutes', ctl: '+ 15 % de contrôle sur ton IA', data: 'Des données gratuites', cash: '5 minutes de bénéfice offertes' };
     return { show: true, left: done ? 'Terminée' : left + ' s', title: a.kind === 'force' ? 'Publicité' : 'Pub bonus', sub: a.kind === 'force' ? (done ? 'Merci, la partie reprend.' : 'La partie reprend dans un instant.') : (done ? 'Bonus gagné : ' + R[a.reward] : 'Regarde jusqu’au bout pour gagner : ' + R[a.reward]),
       done: done, closeLabel: a.kind === 'force' ? 'Fermer' : 'Récupérer mon bonus', close: () => { this.ncAd = null; if (a.kind !== 'force') this.ncReward(a.reward); else if (a.then) a.then(); this.refresh(); } };
+  }
+  async ncJoin() {
+    const w = this.ncWait || (this.ncWait = { email: '', state: '' }); const e = String(w.email || '').trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(e) || e.length > 200) { w.state = 'bad'; this.buzz([10, 30, 10]); this.refresh(); return; }
+    if (w.state === 'busy') return; w.state = 'busy'; this.refresh();
+    try { const r = await fetch(this.SB.url + '/rest/v1/waitlist', { method: 'POST', headers: { apikey: this.SB.key, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify({ email: e, source: 'neocorp' }) });
+      if (r.ok || r.status === 409) { w.state = 'ok'; try { window.localStorage.setItem('ncWaitOk', '1'); } catch (er) {} this.sfx('success', 1); this.buzz([15, 40, 25]); } else { w.state = 'err'; }
+    } catch (er) { w.state = 'err'; }
+    this.refresh();
   }
   ncReward(k) {
     const s = this.nx; if (!s || s.ended) return; s.adCd = s.adCd || {}; s.adCd[k] = (s.rt || 0) + 240;
@@ -2999,7 +3010,7 @@ window.Component = class Component extends DCLogic {
     this.nxLog('Touche la planète pour fabriquer ton premier neurone artificiel.');
   }
   nxNew() {
-    if (!this.ncAdGo) { this.ncAdGo = true; this.ncAdStart('force'); this.ncAd.then = () => { this.ncAdGo = false; this.nxNew(); }; return; } this.ncAdGo = false;
+    if (!this.ncAdGo) { this.ncAdGo = true; const go = () => { this.nxNew(); this.ncAdGo = false; }; this.ncAdStart('force'); if (this.ncAd) this.ncAd.then = go; if (this.ncAdPending) this.ncAdPending.then = go; return; } this.ncAdGo = false;
     const m = this.nxMeta(); m.bonus = Math.min(0.25, Math.round(((m.bonus || 0) + 0.05) * 100) / 100); this.nxMetaSave();
     this.nx = this.nxFresh(); this.sheet = null; this.panel = null; this.nxAway = null; this.nxEndFx = null;
     try { document.documentElement.classList.remove('nxbug'); } catch (e) {}
@@ -3358,11 +3369,18 @@ window.Component = class Component extends DCLogic {
       [['x2', 'Production × 2', 'Pendant 5 minutes, tout ton empire fabrique 2 fois plus.'], ['cash', '5 minutes de bénéfice', 'L’argent de 5 minutes de ventes, tout de suite.'], ['data', 'Données gratuites', 'De quoi fabriquer pendant 5 minutes sans rien acheter.'], ['ctl', '+ 15 % de contrôle', 'Reprends un peu la main sur ton IA.']].forEach(([k, t, sub]) => { const wait = Math.max(0, Math.ceil(((cd[k] || 0) - rt) / 60)); const off = wait > 0 || s.ended || (k === 'ctl' && s.phase >= 3);
         bl.push(B.Row({ key: 'ad' + k, t: t, sub: sub, tag: off ? (wait ? 'Dans ' + wait + ' min' : 'Indisponible') : 'Regarder', tagKind: off ? 'light' : '', dim: off, act: () => { if (off) { this.buzz([10, 30, 10]); return; } this.ncAdStart('bonus', k); } })); });
     } else if (p.kind === 'nxInovia') {
-      kicker = 'De la même équipe'; title = 'Inovia, l’appli pour apprendre l’IA';
+      kicker = 'Bientôt, de la même équipe'; title = 'Inovia, l’appli pour apprendre l’IA'; const w = this.ncWait || (this.ncWait = { email: '', state: (() => { try { return window.localStorage.getItem('ncWaitOk') === '1' ? 'ok' : ''; } catch (e) { return ''; } })() });
       bl.push(B.P('Dans Neo Corp, ton IA finit toujours par t’échapper. Dans la vraie vie, tu peux apprendre à la contrôler.'));
       bl.push(B.Note('Inovia : les actus de l’IA en temps réel, des vidéos courtes pour apprendre, et un jeu de gestion à suivre chaque jour.'));
-      bl.push(B.Btn('Télécharger Inovia sur l’App Store', () => { this.buzz(); this.closePanel(); }, 'dark'));
-      bl.push(B.P('Dans la maquette, ce bouton ne fait rien. Dans l’appli finale, il ouvrira la fiche App Store d’Inovia.', true));
+      if (w.state === 'ok') { bl.push(B.Note('C’est noté. On te prévient dès qu’Inovia sort.', 'gold')); bl.push(B.Btn('Fermer', () => this.closePanel(), 'light')); }
+      else {
+        bl.push(B.H('Inovia arrive bientôt. On te prévient ?'));
+        bl.push(B.Input('ncWaitMail', w.email, 'Ton adresse email', (ev) => { w.email = ev && ev.target ? ev.target.value : ''; if (w.state === 'bad') { w.state = ''; } }));
+        if (w.state === 'bad') bl.push(B.Note('Cette adresse email ne semble pas valide.', 'red'));
+        if (w.state === 'err') bl.push(B.Note('Pas de connexion pour l’instant. Réessaie dans un moment.', 'red'));
+        bl.push(B.Btn(w.state === 'busy' ? 'Envoi…' : 'Me prévenir', () => this.ncJoin(), 'dark'));
+        bl.push(B.P('Ton email sert uniquement à te prévenir de la sortie d’Inovia. Jamais de revente, désinscription en un message.', true));
+      }
     } else if (p.kind === 'nxDefi') {
       const D = this.nxDef(); const txt = D.DEFI[p.k || 0]; kicker = 'Défi réel'; title = 'Fais-le avec une vraie IA';
       bl.push(B.P('Ouvre ChatGPT, Claude, Gemini ou Le Chat sur ton téléphone et fais ceci :'));

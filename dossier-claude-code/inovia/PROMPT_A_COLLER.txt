@@ -1,0 +1,19 @@
+Salut Claude Code. Je m'appelle Yannis, je suis débutant en technique. Parle-moi en français simple et explique-moi chaque étape une par une.
+
+Mon projet est sur GitHub : https://github.com/118mediapro-netizen/innovia
+S'il n'est pas encore dans ce dossier, commence par le télécharger ici (git clone), en m'expliquant ce que tu fais. S'il est déjà là, récupère la dernière version (git pull).
+
+On code l'appli iPhone Inovia complète : l'Actu, le jeu et Apprendre.
+- Lis d'abord CLAUDE.md, puis dossier-claude-code/inovia/INOVIA_APPLI.md, puis dossier-claude-code/APPLI.md.
+- La maquette qui fait foi est en ligne : https://118mediapro-netizen.github.io/innovia/?phone (index.html à la racine, le jeu dans jeu/, Mon monde dans monde-inovia/).
+
+Règles importantes :
+1. Le résultat doit être EXACTEMENT comme la maquette : mêmes écrans, mêmes textes, mêmes couleurs, mêmes animations, mêmes sons et vibrations. N'invente rien et n'"améliore" rien sans me demander.
+2. Le jeu (jeu/index.html et monde-inovia/index.html) doit être repris tel quel dans une WebView, comme expliqué dans INOVIA_APPLI.md.
+3. Crée l'appli dans un nouveau dossier appli-inovia/. Ne touche pas au reste du dépôt, qui est en ligne.
+4. Jamais le mot "formation", aucun emoji, tutoiement.
+5. Avant chaque livraison, vérifie que rien de ce qui marchait avant n'est cassé. Je ne veux aucun bug.
+
+Suis l'ordre de travail de INOVIA_APPLI.md (étape 1). À la fin de chaque étape, dis-moi exactement comment la tester sur mon iPhone avec Expo Go, pas à pas, et attends ma validation avant de passer à la suivante.
+
+Avant de commencer, vérifie ce qui est installé sur mon ordinateur (Node.js, Git) et installe avec moi ce qui manque, une chose à la fois.

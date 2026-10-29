@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Ma Boîte Inovia</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<style>
+/* Le jeu d'Inovia : on clique, et chaque clic fait grandir une vraie entreprise. Une colonne téléphone. */
+:root{
+  --bg:#F4F2F8; --card:#FFFFFF; --soft:#EBE4F6; --line:#DED6EC;
+  --ink:#260E4F; --mute:#6C5A8C; --acc:#7046DC; --acc2:#8A63F0;
+  --good:#1F8A5B; --goodbg:#E3F6EC; --bad:#B4232A; --badbg:#FDECEC; --gold:#F5B400; --goldbg:#FFF4D6;
+  --f:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif; color-scheme:light;
+}
+html.night{--bg:#0A070F; --card:#1A1326; --soft:#281E38; --line:#2A2140; --ink:#F2EEFA; --mute:#A99BC4; --acc:#8A63F0; --acc2:#A88BFF; --good:#3DD68C; --goodbg:#173F31; --bad:#FF7A7F; --badbg:#3A1A1D; --goldbg:#3A2F14; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);overflow-x:hidden;-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+input{font:inherit}
+.app{max-width:430px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px;display:flex;flex-direction:column;gap:11px}
+.embed .app{padding-top:4px;padding-bottom:150px}
+.embed .toast{top:8px}
+.head{display:flex;align-items:center;gap:8px}
+.co{flex:1;min-width:0;display:flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;font-weight:800;font-size:13.5px;text-align:left}
+.co .dot{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#FFFFFF;display:grid;place-items:center;font-size:12px;flex:0 0 26px}
+.co .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.co .ch{margin-left:auto;color:var(--mute);font-size:12px}
+.lvl{font-size:12px;font-weight:800;color:var(--acc);background:var(--soft);padding:7px 10px;border-radius:999px;white-space:nowrap}
+.pause{width:36px;height:36px;border-radius:50%;background:var(--soft);display:grid;place-items:center;flex:0 0 36px}
+.pause svg{width:14px;height:14px}
+.pause.on{background:var(--acc)}
+.month{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;color:var(--mute)}
+.mbtn{font-weight:800;color:var(--acc);padding:2px 0}
+.mbar{flex:1;height:6px;border-radius:6px;background:var(--soft);overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--acc2);width:0}
+.cash{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.cash .k{font-size:12px;font-weight:800;color:var(--mute)}
+.cash .v{font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1.05;font-variant-numeric:tabular-nums;display:inline-block;transition:transform .15s}
+.cash .v.neg{color:var(--bad)}
+.cash .v.bump{transform:scale(1.07);color:var(--good)}
+.cash .side{text-align:right;font-size:12.5px;font-weight:700;color:var(--mute);line-height:1.5}
+.cash .side b{color:var(--ink);font-variant-numeric:tabular-nums}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tool{display:flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:7px 11px;font-size:13px;font-weight:800}
+.tool svg{width:16px;height:16px}
+.tool small{font-weight:700;color:var(--mute);font-variant-numeric:tabular-nums}
+.tool.new{border-color:var(--gold);animation:tnew 1.2s 3}
+@keyframes tnew{50%{box-shadow:0 0 0 5px rgba(245,180,0,.25)}}
+.goal{display:flex;align-items:center;gap:10px;background:var(--acc);color:#FFFFFF;border-radius:18px;padding:10px 12px 10px 14px;font-weight:700;font-size:14px;width:100%;text-align:left}
+.goal small{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;font-weight:800}
+.goal .dot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:0 0 28px}
+.goal>span:nth-child(2){flex:1;min-width:0}
+.goal .go{flex:0 0 auto;font-size:12.5px;font-weight:800;background:#FFFFFF;color:#7046DC;border-radius:12px;padding:7px 10px;white-space:nowrap}
+.goal .go:empty{display:none}
+.goal .go.off{background:rgba(255,255,255,.22);color:#FFFFFF}
+.goal.flash{animation:gflash .7s}
+@keyframes gflash{30%{background:#1F8A5B;transform:scale(1.02)}}
+.work{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:2px 0}
+.client{font-size:13px;font-weight:700;color:var(--mute);min-height:18px;text-align:center}
+.client b{color:var(--ink)}
+.clicpill{background:#260E4F;color:#FFFFFF;font-weight:800;font-size:15px;padding:7px 18px;border-radius:999px;box-shadow:0 6px 14px rgba(38,14,79,.25);transition:transform .08s}
+html.night .clicpill{background:#F2EEFA;color:#0A070F}
+.clicpill.hit{transform:scale(1.12)}
+.ringwrap{position:relative;width:260px;height:260px;touch-action:none}
+svg.ring{position:absolute;inset:0;overflow:visible;pointer-events:none}
+.track{fill:none;stroke:var(--soft);stroke-width:14}
+.bar{fill:none;stroke:url(#gold);stroke-width:14;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(245,180,0,.55));transition:stroke-width .12s}
+.bar.pulse{stroke-width:19}
+.rhead{fill:#FFFFFF;filter:drop-shadow(0 0 8px #FFD54D) drop-shadow(0 0 3px #F5B400)}
+.planet{position:absolute;left:50px;top:50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#D2C2FF 0%,#9C7BFF 22%,#7046DC 55%,#4A23B8 85%,#3A1A96 100%);box-shadow:0 0 0 10px rgba(112,70,220,.08),0 0 50px 8px rgba(138,99,240,.35),inset -14px -18px 30px rgba(30,0,90,.45);transition:transform .07s ease-out;overflow:hidden;touch-action:none}
+.planet::after{content:"";position:absolute;inset:0;border-radius:50%;background-image:radial-gradient(rgba(255,255,255,.75) 1.1px,transparent 1.5px);background-size:7px 7px;-webkit-mask-image:radial-gradient(circle at 78% 40%,#000 0%,transparent 48%);mask-image:radial-gradient(circle at 78% 40%,#000 0%,transparent 48%);pointer-events:none}
+.planet::before{content:"";position:absolute;left:18%;top:10%;width:40%;height:26%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,255,255,.45),rgba(255,255,255,0) 70%);pointer-events:none}
+.planet.press{transform:scale(.93)}
+.planet.wait{filter:grayscale(.6) brightness(.9)}
+.planet.boom{animation:boom .35s ease-out}
+@keyframes boom{35%{transform:scale(1.08)}}
+.paused .planet{filter:grayscale(.7);opacity:.75}
+#fx{position:absolute;left:-60px;top:-60px;width:380px;height:380px;pointer-events:none;z-index:2}
+.what{font-size:14px;font-weight:700;color:var(--mute);text-align:center}
+.what b{color:var(--ink);font-weight:800}
+.what span{color:var(--acc);font-weight:800}
+.float{position:absolute;left:50%;top:38%;pointer-events:none;font-weight:800;font-size:22px;color:var(--good);animation:fl .9s ease-out forwards;white-space:nowrap;z-index:3}
+.float.small{font-size:15px;color:var(--acc)}
+@keyframes fl{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,-80px);opacity:0}}
+.nx{width:100%;max-width:300px;display:flex;flex-direction:column;gap:5px;padding:7px 12px;border-radius:14px;background:var(--card);border:1.5px solid var(--line)}
+.nx .r{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:700;color:var(--mute)}
+.nx .r b{color:var(--ink);font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nx .r span{flex:0 0 auto;font-variant-numeric:tabular-nums}
+.nx .b{height:5px;border-radius:5px;background:var(--soft);overflow:hidden}
+.nx .b i{display:block;height:100%;background:linear-gradient(90deg,#F5B400,#FFD54D);border-radius:5px;transition:width .25s}
+.nx.ready{border-color:#F5B400;animation:nxr 1.2s infinite}
+@keyframes nxr{50%{box-shadow:0 0 0 4px rgba(245,180,0,.22)}}
+.pricebar{display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:5px 6px 5px 14px;font-weight:700;font-size:14px}
+.pricebar b{font-variant-numeric:tabular-nums;min-width:52px;text-align:center}
+.pricebar button{width:34px;height:34px;border-radius:50%;background:var(--soft);font-size:18px;font-weight:800;color:var(--acc)}
+.auto{font-size:12.5px;font-weight:700;color:var(--mute);text-align:center}
+.boost{display:inline-block;background:var(--gold);color:#3A2A00;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;margin-left:6px}
+.ino{display:flex;gap:10px;align-items:flex-end}
+.ino svg{width:44px;height:52px;flex:0 0 44px}
+.bubble{flex:1;min-width:0;background:var(--card);border:1.5px solid var(--line);border-radius:18px 18px 18px 6px;padding:10px 12px;font-size:14px;font-weight:600;line-height:1.4}
+.bubble small{display:block;font-size:11px;font-weight:800;color:var(--acc);margin-bottom:2px}
+h2{margin:8px 0 0;font-size:18px;font-weight:800}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:11px 12px;text-align:left;width:100%}
+.item .ic{width:40px;height:40px;border-radius:12px;background:var(--soft);display:grid;place-items:center;flex:0 0 40px;font-weight:800;color:var(--acc);font-size:14px}
+.item .tx{flex:1;min-width:0}
+.item .n{display:block;font-weight:800;font-size:14.5px}
+.item .d{display:block;font-size:12.5px;color:var(--mute);line-height:1.35;margin-top:1px}
+.item .fx{display:block;font-size:12px;font-weight:800;color:var(--good);margin-top:3px}
+.item .pr{flex:0 0 auto;text-align:right;font-weight:800;font-size:13px;background:var(--acc);color:#FFFFFF;border-radius:12px;padding:8px 10px;line-height:1.25}
+.item .pr small{display:block;font-size:10.5px;opacity:.85}
+.item.off .pr{background:var(--soft);color:var(--mute)}
+.item.new{animation:pop .5s}
+@keyframes pop{0%{transform:scale(.9);opacity:0}60%{transform:scale(1.02)}}
+.box{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:6px 14px}
+.charges .row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--soft);font-size:13.5px;font-weight:600}
+.charges .row:last-child{border-bottom:0}
+.charges .row b{font-variant-numeric:tabular-nums}
+.cut{font-size:12px;font-weight:800;color:var(--bad);background:var(--badbg);border-radius:10px;padding:6px 9px;margin-left:8px}
+.foot{display:flex;justify-content:center;gap:8px;margin-top:8px}
+.foot button{font-size:12px;font-weight:700;color:var(--mute);padding:8px 10px;border-radius:10px;background:var(--soft)}
+.ov{position:fixed;inset:0;z-index:20;background:rgba(38,14,79,.45);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{width:100%;max-width:430px;max-height:92%;overflow-y:auto;background:var(--bg);border-radius:26px 26px 0 0;padding:20px max(18px,env(safe-area-inset-left,0px)) calc(24px + env(safe-area-inset-bottom,0px));animation:up .28s cubic-bezier(.2,.9,.3,1)}
+@keyframes up{from{transform:translateY(60px);opacity:0}}
+.sheet .kick{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.sheet h3{margin:4px 0 10px;font-size:24px;font-weight:800;letter-spacing:-.01em}
+.sheet h4{margin:16px 0 8px;font-size:16px;font-weight:800}
+.sheet p{margin:0 0 12px;font-size:15px;line-height:1.5}
+.sheet .x{float:right;width:36px;height:36px;border-radius:50%;background:var(--soft);font-weight:800;font-size:16px}
+.tbl{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:4px 14px;margin-bottom:12px}
+.tbl .r{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--soft);font-size:14px;font-weight:600}
+.tbl .r:last-child{border-bottom:0}
+.tbl .r b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl .r.tot{font-size:16px;font-weight:800}
+.neg{color:var(--bad)} .pos{color:var(--good)}
+.learn{background:var(--soft);border-radius:16px;padding:12px 14px;font-size:14px;font-weight:600;line-height:1.45;margin-bottom:12px}
+.learn b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:3px}
+.cta{width:100%;height:54px;border-radius:18px;background:#7046DC;color:#FFFFFF;font-weight:800;font-size:16px;box-shadow:0 5px 0 #4A2A9E}
+.cta:active{transform:translateY(3px);box-shadow:0 2px 0 #4A2A9E}
+.cta.sec{background:var(--card);color:var(--ink);border:1.5px solid var(--line);box-shadow:none;margin-top:8px}
+.cta:disabled{opacity:.45}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+.choice{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 14px}
+.choice b{display:block;font-size:15.5px}
+.choice span{display:block;font-size:13px;color:var(--mute);margin-top:2px;line-height:1.4}
+.choice.rec{border-color:var(--acc)}
+.choice.on{border-color:var(--acc);background:var(--soft)}
+.choice .tag{display:inline-block;font-size:10.5px;font-weight:800;color:#FFFFFF;background:#7046DC;padding:2px 7px;border-radius:999px;margin-left:6px;vertical-align:2px}
+.mini{display:inline-flex;gap:6px;flex-wrap:wrap}
+.mini button{font-size:12.5px;font-weight:800;padding:7px 10px;border-radius:10px;background:var(--soft);color:var(--acc)}
+.mini button.pri{background:#7046DC;color:#FFFFFF}
+.mini button:disabled{opacity:.4}
+.field{width:100%;height:48px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:0 14px;font-size:16px;font-weight:700;margin-bottom:12px;-webkit-user-select:auto;user-select:auto}
+.hnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 10px}
+.hnav button{width:40px;height:40px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);font-size:20px;font-weight:800;color:var(--acc)}
+.hnav button:disabled{opacity:.3}
+.hnav span{font-weight:800;font-size:14px;color:var(--mute)}
+.spark{display:flex;align-items:flex-end;gap:4px;height:54px;margin:0 0 12px;padding:0 2px}
+.spark i{flex:1;min-width:4px;border-radius:4px 4px 0 0;background:var(--soft)}
+.spark i.p{background:var(--acc2)}.spark i.n{background:var(--bad)}
+.spark i.cur{outline:2px solid var(--gold);outline-offset:1px}
+.big3{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.big3 div{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:10px 12px}
+.big3 small{display:block;font-size:11.5px;font-weight:800;color:var(--mute)}
+.big3 b{font-size:19px;font-variant-numeric:tabular-nums}
+.big3 .wide{grid-column:1/-1}
+.stock .r span small{display:block;font-size:11.5px;color:var(--mute);font-weight:700}
+.world{position:fixed;inset:0;z-index:40;background:#05070d;display:flex;flex-direction:column}
+.world iframe{flex:1;border:0;width:100%}
+.world .wbar{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:2}
+.world .wbar{bottom:auto!important;top:calc(92px + env(safe-area-inset-top,0px))}
+.world .wbar button{background:#FFFFFF;color:#260E4F;font-weight:800;font-size:14px;padding:11px 16px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.toast{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;background:#260E4F;color:#FFFFFF;font-weight:700;font-size:14px;padding:11px 16px;border-radius:14px;max-width:calc(100% - 32px);width:max-content;text-align:center;animation:tin .3s}
+@keyframes tin{from{transform:translate(-50%,-20px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="head">
+    <button type="button" class="co" id="co"><span class="dot" id="codot">T</span><span class="nm" id="conm">Toi, en freelance</span><span class="ch" id="coch"></span></button>
+    <span class="lvl" id="lvl">Tu te lances</span>
+    <button type="button" class="pause" id="pause" aria-label="Mettre en pause"></button>
+  </div>
+  <div class="month"><button type="button" class="mbtn" id="mlab">Mois 1</button><div class="mbar"><i id="mbar"></i></div><span id="mleft">60 s</span></div>
+  <div class="cash">
+    <div><div class="k">Trésorerie de ta boîte</div><div class="v" id="cash">0 €</div></div>
+    <div class="side">Ventes ce mois<br><b id="camonth">0 €</b></div>
+  </div>
+  <div class="tools">
+    <button type="button" class="tool" id="tMonde"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 21V9l8-5 8 5v12z"/><path d="M9 21v-6h6v6"/></svg>Mon monde <small id="tMondeS">Ta chambre</small></button>
+    <button type="button" class="tool" id="tPat" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 20h18M5 20V10M10 20V6M15 20v-8M20 20V4"/></svg>Patrimoine <small id="tPatS">0 €</small></button>
+  </div>
+  <button type="button" class="goal" id="goal"><span class="dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></span><span><small>Objectif</small><span id="goalt">Fais ton premier flyer</span></span><span class="go" id="goalgo"></span></button>
+  <div class="work" id="work">
+    <div class="client" id="client">Client : <b>Boulangerie Martin</b></div>
+    <div class="clicpill" id="clicpill">Clic</div>
+    <div class="ringwrap" id="ringwrap" role="button" tabindex="0" aria-label="Clic : travailler">
+      <canvas id="fx" width="760" height="760"></canvas>
+      <svg class="ring" viewBox="0 0 260 260" aria-hidden="true">
+        <defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE38A"/><stop offset=".5" stop-color="#F5B400"/><stop offset="1" stop-color="#FF9F1A"/></linearGradient></defs>
+        <circle class="track" cx="130" cy="130" r="118"/>
+        <circle class="bar" id="bar" cx="130" cy="130" r="118" stroke-dasharray="0 742" transform="rotate(-90 130 130)"/>
+        <circle class="rhead" id="headDot" cx="130" cy="12" r="7"/>
+      </svg>
+      <div class="planet" id="planet"></div>
+    </div>
+    <div class="what"><b id="bt1">Faire le flyer</b> · <span id="bt2">15 €</span></div>
+    <div class="nx" id="next" hidden></div>
+    <div class="pricebar" id="pricebar" hidden><span id="plab">Prix</span><button type="button" id="pm" aria-label="Baisser le prix">−</button><b id="price">15 €</b><button type="button" id="pp" aria-label="Monter le prix">+</button></div>
+    <div class="auto" id="auto"></div>
+  </div>
+  <div class="ino" id="ino"></div>
+  <div id="growWrap" hidden><h2>Développe ta boîte</h2><div class="list" id="list"></div></div>
+  <div id="chWrap" hidden><h2>Tes charges chaque mois</h2><div class="box charges" id="charges"></div></div>
+  <div class="foot"><button type="button" id="reset">Recommencer la partie</button></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const QS=new URLSearchParams(location.search),EMBED=QS.get('embed')==='1';
+if(EMBED)document.documentElement.classList.add('embed');
+const MONTH=60;            // 1 mois de jeu = 60 secondes
+const $=s=>document.querySelector(s);
+function fmt(n){const a=Math.abs(n);let s;
+  if(a>=1e9)s=(a/1e9).toFixed(a>=1e10?0:1).replace('.',',')+' Md';else if(a>=1e6)s=(a/1e6).toFixed(a>=1e7?0:1).replace('.',',')+' M';else s=Math.round(a).toLocaleString('fr-FR');
+  return (n<0?'− ':'')+s+' €';}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const R=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ================= les métiers (ce que ta boîte vend, de plus en plus cher) ================= */
+const LADDER=[{p:15,c:7,at:0},{p:40,c:9,at:1200,need:'canva'},{p:90,c:11,at:5000,need:'site'},{p:250,c:14,at:12000,need:'agent'},{p:600,c:17,at:0,need:'societe'},{p:1800,c:20,at:0,need:'salarie'},{p:6000,c:24,at:0,need:'bureaux'},{p:25000,c:28,at:0,need:'ville'},{p:120000,c:32,at:0,need:'inter'},{p:600000,c:36,at:0,need:'rachat'}];
+const SECTORS={
+ agence:{n:'Agence de communication',short:'Agence',cl:['Boulangerie Martin','Coiffure Léa','Snack Le Rapide','Pizzeria Bella','Garage Dupont','Fleuriste Rose','Salle de sport Fit','Pharmacie du Centre','Barber Kenzo','Café des Amis','Tacos Express','Auto-école Pilote'],big:['Mairie de Carcassonne','Groupe Hôtelier Sud','Réseau de franchises','Clinique Saint-Paul','Club de foot local','Centre commercial Odyssée'],
+  o:[['Flyers','Faire le flyer'],['Logos','Créer le logo'],['Posts réseaux sociaux','Faire les posts'],['Sites web','Créer le site'],['Vidéos pub IA','Faire la vidéo'],['Campagnes complètes','Lancer la campagne'],['Contrats annuels','Signer le contrat'],['Contrats nationaux','Signer le contrat'],['Contrats internationaux','Signer le contrat'],['Contrats mondiaux','Signer le contrat']]},
+ snack:{n:'Restauration rapide',short:'Snack',cl:['Une cliente pressée','Des étudiants','Un livreur','Une famille','Des collègues de bureau','Un habitué'],big:['Un festival','Une entreprise de 300 salariés','Un club de sport','Une école'],
+  o:[['Sandwichs','Préparer le sandwich'],['Menus','Servir le menu'],['Plateaux repas','Préparer le plateau'],['Livraisons d’entreprises','Livrer la commande'],['Traiteur événements','Gérer l’événement'],['Nouveaux restaurants','Ouvrir le restaurant'],['Franchises','Signer la franchise'],['Chaîne nationale','Ouvrir 10 restaurants'],['Chaîne européenne','Ouvrir 50 restaurants'],['Chaîne mondiale','Ouvrir 200 restaurants']]},
+ eshop:{n:'Boutique en ligne',short:'E-shop',cl:['Commande de Lyon','Commande de Lille','Commande de Nice','Commande de Bordeaux','Commande de Rennes','Commande de Paris'],big:['Un grossiste','Une chaîne de magasins','Une marketplace'],
+  o:[['Commandes','Préparer le colis'],['Packs','Préparer le pack'],['Abonnements','Lancer l’abonnement'],['Marque à toi','Créer la collection'],['Marketplaces','Vendre en gros'],['Magasins partenaires','Livrer les magasins'],['Export européen','Expédier en Europe'],['Export mondial','Expédier dans le monde'],['Marque internationale','Lancer la collection'],['Leader mondial','Lancer la collection']]},
+ ia:{n:'Start-up d’IA',short:'Start-up IA',cl:['Un garagiste','Une agence immobilière','Un cabinet d’avocats','Une école','Un e-commerçant','Un hôtel'],big:['Une banque','Un groupe hospitalier','Une région','Un ministère'],
+  o:[['Chatbots','Installer le chatbot'],['Assistants IA','Configurer l’assistant'],['Agents IA','Déployer l’agent'],['Logiciel IA par abonnement','Vendre l’abonnement'],['IA pour PME','Signer la PME'],['IA pour grands groupes','Signer le groupe'],['Plateforme IA','Signer le partenariat'],['Licences nationales','Vendre la licence'],['Licences internationales','Vendre la licence'],['IA mondiale','Signer le contrat']]}
+};
+// Ce qu'on peut acheter : chaque carte est une vraie notion d'entreprise
+const SHOP=[
+ {id:'chatgpt',ic:'IA',n:'ChatGPT Plus',d:'Ton assistant IA écrit tes textes, tes messages et tes devis à ta place.',fx:'Travaille un peu tout seul, même sans toi',once:0,mo:23,auto:1,at:40},
+ {id:'canva',ic:'Ca',n:'Canva Pro',d:'Des visuels pro : ton travail inspire confiance, les clients acceptent un prix plus haut.',fx:'Les clients acceptent + 40 % de prix',once:0,mo:12,ref:1.4,at:400},
+ {id:'site',ic:'W',n:'Ton site web',d:'Les clients te trouvent sur Google et te font plus confiance.',fx:'Les clients acceptent + 20 % de prix',once:200,mo:10,ref:1.2,at:1200},
+ {id:'agent',ic:'Ag',n:'Agent IA de prospection',d:'Une IA trouve des clients et prépare les commandes pendant que tu dors.',fx:'Ta boîte travaille 2 × plus sans toi',once:0,mo:49,auto:2,at:2500},
+ {id:'stage',ic:'St',n:'Un stagiaire',d:'Il apprend avec toi. En France, un stage de plus de 2 mois est payé (environ 650 € par mois). Il te faut un local.',fx:'Beaucoup plus de travail fait sans toi',once:0,mo:650,auto:6,at:6000},
+ {id:'societe',ic:'SA',n:'Créer ta société (SASU)',d:'Les grandes entreprises veulent travailler avec une société. Frais de création environ 250 €, plus un comptable.',fx:'Gros clients : + 30 % de prix, et un nouveau produit',once:250,mo:120,at:12000},
+ {id:'salarie',ic:'Sa',n:'Un salarié',d:'Un salarié à temps plein coûte bien plus que son salaire : il faut ajouter les cotisations de l’employeur.',fx:'+ 10 clics par seconde en continu',once:0,mo:2700,auto:10,at:35000,need:'societe',rep:true},
+ {id:'bureaux',ic:'Bu',n:'De vrais bureaux',d:'Un vrai lieu pour recevoir tes clients. Ça rassure, mais c’est un loyer chaque mois.',fx:'Les clients acceptent + 30 % de prix',once:1500,mo:900,ref:1.3,at:60000,need:'salarie'},
+ {id:'agents',ic:'IA',n:'Une équipe d’agents IA',d:'Des agents qui créent, livrent et relancent les clients. L’IA fait grandir une boîte sans embaucher.',fx:'+ 4 clics par seconde en continu',once:0,mo:199,auto:4,at:80000,need:'societe',rep:true},
+ {id:'ville',ic:'Vi',n:'Ouvrir dans une autre ville',d:'Une nouvelle équipe à Toulouse, Lyon ou Lille. Plus de clients, plus de charges.',fx:'+ 16 clics par seconde en continu',once:80000,mo:15000,auto:16,at:150000,need:'bureaux',rep:true},
+ {id:'inter',ic:'In',n:'Partir à l’international',d:'Un bureau à l’étranger : de nouveaux marchés, de nouvelles règles, de nouveaux risques.',fx:'+ 50 clics par seconde en continu',once:2e6,mo:250000,auto:50,at:5e6,need:'ville',rep:true},
+ {id:'rachat',ic:'Ra',n:'Racheter un concurrent',d:'Ses clients et ses équipes deviennent les tiens. C’est comme ça que les grands groupes grandissent vite.',fx:'+ 160 clics par seconde en continu',once:3e7,mo:3e6,auto:160,at:1e8,need:'inter',rep:true}
+];
+const LVN=[[0,'Tu te lances'],[300,'Indépendant'],[2000,'Petite boîte'],[8000,'Boîte qui tourne'],[40000,'PME'],[2e5,'Belle PME'],[1e6,'Grande entreprise'],[1e7,'Groupe'],[1e8,'Grand groupe'],[1e9,'Géant'],[1e10,'Empire']];
+function lvlName(t){let k=0;for(let i=0;i<LVN.length;i++)if(t>=LVN[i][0])k=i;return LVN[k][1];}
+const STOCKS=[['ETF Monde',100,.006,.03],['Apple',190,.008,.07],['Nvidia',130,.012,.12],['LVMH',650,.006,.06],['Airbus',160,.007,.06],['TotalEnergies',60,.004,.05],['Tesla',240,.01,.15]];
+const IMMO=[['Un studio',90000,450],['Un appartement T3',250000,1100],['Un petit immeuble de 6 appartements',1200000,5400],['Un immeuble de bureaux',8000000,36000],['Une tour de bureaux',120000000,500000]];
+
+/* ================= l'état ================= */
+const KEY='inoviaJeu2';
+function newCo(sector,name,cash,statut){return {id:Date.now()+''+Math.floor(Math.random()*1000),sector:sector,name:name,statut:statut||'aucun',offer:0,price:LADDER[0].p,job:0,cash:cash||0,total:0,ca:0,own:{},jobs:0,client:'',special:null,late:0,best:null,hist:[],flags:{},boostT:0,panneT:0,wait:0};}
+function fresh(){return {v:2,cos:[newCo('agence','Toi, en freelance',0)],act:0,month:1,mt:0,paused:false,perso:0,hold:{},paid:{},prices:Object.fromEntries(STOCKS.map(s=>[s[0],s[1]])),pm:{},immo:{},flags:{},at:Date.now(),seen:{}};}
+let G=fresh();
+try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(d&&d.v===2&&d.cos&&d.cos.length)G=Object.assign(fresh(),d);}}catch(e){}
+let S=G.cos[G.act]||G.cos[0];
+function save(){G.at=Date.now();try{localStorage.setItem(KEY,JSON.stringify(G));}catch(e){}}
+const cntC=(C,id)=>C.own[id]||0, cnt=id=>cntC(S,id);
+const offerOf=C=>{const L=LADDER[C.offer||0],N=SECTORS[C.sector].o[C.offer||0];return {p:L.p,c:L.c,n:N[0],v:N[1]};};
+function autoRateC(C){let a=0;SHOP.forEach(x=>{if(x.auto)a+=x.auto*cntC(C,x.id);});if(C.panneT>0)a=0;if(C.boostT>0)a*=2;return a;}
+function refPriceC(C){let r=LADDER[C.offer||0].p;SHOP.forEach(x=>{if(x.ref&&cntC(C,x.id))r*=x.ref;});if(cntC(C,'societe'))r*=1.3;r*=1+(C.flags.rep||0);return r;}
+function acceptP(C){const p=refPriceC(C)/C.price;return Math.min(1,p*p);}
+function monthlyC(C){const L=[];SHOP.forEach(x=>{const c=cntC(C,x.id);if(c&&x.mo)L.push({id:x.id,n:x.n+(c>1?' × '+c:''),v:x.mo*c});});return L;}
+function itemCost(x){return Math.round(x.once*Math.pow(1.6,cnt(x.id)));}
+function valo(C){if(C.statut!=='sasu')return Math.max(0,C.cash);const h=C.hist.slice(-3);const avg=h.length?h.reduce((a,x)=>a+x.p,0)/h.length:0;return Math.max(0,avg*12*8)+Math.max(0,C.cash);}
+function stocksValue(){return STOCKS.reduce((a,s)=>a+(G.hold[s[0]]||0)*G.prices[s[0]],0);}
+function immoValue(){return IMMO.reduce((a,x,i)=>a+(G.immo[i]||0)*x[1],0);}
+function immoRent(){return IMMO.reduce((a,x,i)=>a+(G.immo[i]||0)*x[2],0);}
+function patrimoine(){return G.perso+stocksValue()+immoValue()+G.cos.reduce((a,C)=>a+valo(C),0);}
+function hasSociete(){return G.cos.some(C=>C.statut==='sasu');}
+function stage(C){const v=valo(C);if(v>=1e10)return 9;if(v>=1e9)return 8;if(v>=1e8)return 7;if(v>=1e7)return 6;if(cntC(C,'bureaux'))return 5;if(cntC(C,'salarie'))return 4;if(cntC(C,'societe'))return 3;if(cntC(C,'stage'))return 2;return 1;}
+const STAGEN=['','Ta chambre','Ton local','Un étage à toi','Tes bureaux','Bureaux agrandis','Ton immeuble','Ta tour','Ton siège','Ton empire'];
+function staff(C){return cntC(C,'stage')+cntC(C,'salarie')+cntC(C,'ville')*12+cntC(C,'inter')*60+cntC(C,'rachat')*400;}
+
+/* ================= son et vibration (recettes de l'appli Inovia) ================= */
+let AC=null,SOUND=true;const BUF={};
+function ctx(){if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC;}
+function synth(name,sr){
+  const D={pop:.14,click:.09,coin:.2,cash:.62,success:.7,error:.3,level:.95}[name]||.06;
+  const n=Math.floor(D*sr),out=new Float32Array(n),TAU=Math.PI*2;
+  const note=(t0,f,len,amp,harm,dec)=>{const a=Math.floor(t0*sr),L=Math.floor(len*sr);let ph=0;for(let i=0;i<L&&a+i<n;i++){const t=i/sr;const env=Math.min(1,t/.004)*Math.exp(-t*dec);ph+=TAU*f/sr;out[a+i]+=amp*env*(Math.sin(ph)+harm*Math.sin(ph*2)+harm*.4*Math.sin(ph*3));}};
+  if(name==='click'){let sd=17;const rnd=()=>{sd=(sd*16807)%2147483647;return sd/2147483647*2-1;};
+    const tick=(t0,amp,f1,f2)=>{const a=Math.floor(t0*sr);let p1=0,p2=0;for(let i=0;i<Math.floor(.012*sr)&&a+i<n;i++){const t=i/sr;const w=rnd();const hp=w-2*p1+p2;p2=p1;p1=w;out[a+i]+=amp*(.55*hp*Math.exp(-t*2600)+.5*Math.sin(TAU*f1*t)*Math.exp(-t*900)+.32*Math.sin(TAU*f2*t)*Math.exp(-t*1500)+.25*Math.sin(TAU*950*t)*Math.exp(-t*600));}};
+    tick(0,1,3400,7800);tick(.072,.5,3900,8600);}
+  else if(name==='coin'){note(0,1567.98,.07,.22,.25,38);note(.055,2093,.145,.26,.25,22);}
+  else if(name==='cash'){let sd=7,prev=0;const rnd=()=>{sd=(sd*16807)%2147483647;return sd/2147483647*2-1;};for(let i=0;i<Math.floor(.07*sr);i++){const t=i/sr;const w=rnd();const hp=w-prev;prev=w;out[i]+=.16*Math.exp(-t*45)*hp;}note(.02,1318.51,.3,.2,.2,14);note(.09,1760,.3,.2,.2,13);note(.16,2637.02,.46,.22,.15,9);}
+  else if(name==='success'){[523.25,659.25,783.99,1046.5].forEach((f,k)=>note(k*.085,f,.7-k*.085,.2,.3,7+k));}
+  else if(name==='level'){[523.25,659.25,783.99,1046.5,1318.51].forEach((f,k)=>note(k*.07,f,.9-k*.07,.17,.25,6+k));note(.36,2093,.5,.07,0,9);note(.42,2637.02,.45,.05,0,10);}
+  else if(name==='pop'){let ph=0;for(let i=0;i<n;i++){const t=i/sr;const f=420+900*Math.exp(-t*38);ph+=TAU*f/sr;out[i]+=.5*Math.min(1,t/.002)*Math.exp(-t*34)*Math.sin(ph);}note(.004,1760,.06,.08,0,60);}
+  else if(name==='error'){let ph=0;for(let i=0;i<n;i++){const t=i/sr;const f=240-70*Math.min(1,t/.2);ph+=TAU*f/sr;out[i]=.3*Math.min(1,t/.006)*Math.exp(-t*11)*(Math.sin(ph)+.25*Math.sin(ph*3));}}
+  let pk=0;for(let i=0;i<n;i++)pk=Math.max(pk,Math.abs(out[i]));
+  const target={pop:.55,level:.72,click:.8,coin:.6}[name]||.72;if(pk>0)for(let i=0;i<n;i++)out[i]*=target/pk;
+  const fade=Math.floor(.004*sr);for(let i=0;i<fade&&i<n;i++)out[n-1-i]*=i/fade;
+  return out;
+}
+function play(name,vol){if(!SOUND)return;try{const a=ctx();if(!BUF[name]){const d=synth(name,a.sampleRate);const b=a.createBuffer(1,d.length,a.sampleRate);b.getChannelData(0).set(d);BUF[name]=b;}const s=a.createBufferSource(),g=a.createGain();s.buffer=BUF[name];g.gain.value=vol==null?.6:vol;s.connect(g);g.connect(a.destination);s.start();}catch(e){}}
+const sfx={click:()=>play('click',.7),coin:()=>play('coin',.6),cash:()=>play('cash',.5),bad:()=>play('error',.5),win:()=>play('success',.5),pop:()=>play('pop',.45),level:()=>play('level',.55)};
+let HAPT=true;
+const buzz=p=>{if(!HAPT)return;try{if(window.parent!==window)parent.postMessage({type:'inovia-buzz',p:p},'*');if(navigator.vibrate)navigator.vibrate(p);}catch(e){}};
+
+/* ================= Ino, ton associé IA ================= */
+const BOT='<svg viewBox="0 0 60 70" aria-hidden="true"><line x1="30" y1="4" x2="30" y2="13" stroke="#B9AEE0" stroke-width="3"/><circle cx="30" cy="5" r="4" fill="#F5B400"/><rect x="8" y="13" width="44" height="34" rx="14" fill="#EDE7FF"/><rect x="13" y="19" width="34" height="22" rx="9" fill="#8A63F0"/><circle cx="22" cy="30" r="3.6" fill="#120A26"/><circle cx="38" cy="30" r="3.6" fill="#120A26"/><path d="M25 37q5 3 10 0" stroke="#120A26" stroke-width="2.4" fill="none" stroke-linecap="round"/><rect x="16" y="49" width="28" height="16" rx="8" fill="#7046DC"/><circle cx="30" cy="57" r="3" fill="#F5B400"/></svg>';
+function say(t){$('#ino').innerHTML=BOT+'<div class="bubble"><small>Ino, ton associé IA</small>'+esc(t)+'</div>';}
+function toast(t){const o=document.querySelector('.toast');if(o)o.remove();const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2800);}
+
+/* ================= fenêtres ================= */
+let modal=0;
+function sheet(html,onReady){modal++;const ov=document.createElement('div');ov.className='ov';ov.innerHTML='<div class="sheet" role="dialog">'+html+'</div>';document.body.appendChild(ov);
+  const close=()=>{if(!ov.parentNode)return;ov.remove();modal=Math.max(0,modal-1);render(true);};
+  ov.addEventListener('click',e=>{if(e.target===ov&&ov.dataset.soft)close();});onReady(ov,close);return ov;}
+function lesson(t,body){if(modal)return;sheet('<div class="kick">À savoir</div><h3>'+esc(t)+'</h3><p>'+esc(body)+'</p><button class="cta" type="button">Compris</button>',(ov,close)=>{ov.querySelector('.cta').onclick=()=>{sfx.pop();close();};});}
+function celebrate(t){toast(t);sfx.win();buzz([20,40,30,40,60]);}
+
+/* ================= objectifs (un seul affiché, cliquable) ================= */
+const GOALS=[
+ ['Fais ta première commande',()=>S.jobs>=1],
+ ['Gagne 25 €',()=>S.total>=25],
+ ['Déclare ton activité',()=>S.statut!=='aucun','decl'],
+ ['Abonne-toi à ChatGPT Plus',()=>cnt('chatgpt')>0,'chatgpt'],
+ ['Termine ton premier mois',()=>G.month>=2],
+ ['Règle ton prix',()=>!!S.flags.priced,'price'],
+ ['Prends Canva Pro',()=>cnt('canva')>0,'canva'],
+ ['Atteins 1 500 € de ventes au total',()=>S.total>=1500],
+ ['Crée ton site web',()=>cnt('site')>0,'site'],
+ ['Fais travailler un agent IA',()=>cnt('agent')>0,'agent'],
+ ['Prends un stagiaire',()=>cnt('stage')>0,'stage'],
+ ['Crée ta société',()=>cnt('societe')>0,'societe'],
+ ['Verse-toi ton premier dividende',()=>!!G.flags.divid,'divid'],
+ ['Embauche ton premier salarié',()=>cnt('salarie')>0,'salarie'],
+ ['Investis en bourse',()=>Object.values(G.hold).some(q=>q>0),'bourse'],
+ ['Prends de vrais bureaux',()=>cnt('bureaux')>0,'bureaux'],
+ ['Achète ton premier bien immobilier',()=>IMMO.some((x,i)=>G.immo[i]),'immo'],
+ ['Ouvre dans une autre ville',()=>cnt('ville')>0,'ville'],
+ ['Crée une deuxième société',()=>G.cos.length>=2,'newco'],
+ ['Atteins 1 million d’euros de patrimoine',()=>patrimoine()>=1e6],
+ ['Pars à l’international',()=>G.cos.some(C=>cntC(C,'inter')>0),'inter'],
+ ['Atteins 100 millions de patrimoine',()=>patrimoine()>=1e8],
+ ['Deviens milliardaire',()=>patrimoine()>=1e9],
+ ['Atteins 10 milliards de patrimoine',()=>patrimoine()>=1e10],
+ ['Atteins 100 milliards de patrimoine',()=>patrimoine()>=1e11],
+ ['Entre dans le cercle des plus grandes fortunes du monde',()=>patrimoine()>=5e11]
+];
+function goalCur(){for(const g of GOALS)if(!g[1]())return g;return null;}
+function goalText(){const g=goalCur();return g?g[0]:'Bats ton record de patrimoine : '+fmt(G.flags.bestPat||0);}
+function goalAct(){const g=goalCur();if(!g||!g[2])return null;const a=g[2];
+  if(a==='decl')return S.total>=25?{l:'Déclarer ›',ok:true,run:askStatut}:null;
+  if(a==='price')return G.month>=2?{l:'Régler ›',ok:true,run:()=>{const pb=$('#pricebar');pb.scrollIntoView({behavior:'smooth',block:'center'});pb.animate([{transform:'scale(1)'},{transform:'scale(1.1)'},{transform:'scale(1)'}],{duration:500});}}:null;
+  if(a==='divid')return S.statut==='sasu'&&S.cash>0?{l:'Verser ›',ok:true,run:openPat}:null;
+  if(a==='bourse'||a==='immo')return G.flags['u_'+a]?{l:'Ouvrir ›',ok:true,run:openPat}:null;
+  if(a==='newco')return G.flags.u_newco?{l:'Créer ›',ok:true,run:()=>newCompany()}:null;
+  const x=SHOP.find(y=>y.id===a);if(!x||(x.need&&!cnt(x.need)))return null;if(S.total<x.at||S.statut==='aucun')return null;const c=itemCost(x);
+  return S.cash>=c?{l:(x.once?fmt(c):'Activer')+' ›',ok:true,run:()=>buy(x)}:{l:'Il manque '+fmt(c-S.cash),ok:false,run:()=>toast('Continue : il te manque '+fmt(c-S.cash)+'.')};}
+
+/* ================= le travail : 1 doigt = un demi-pas, 2 doigts = un pas ================= */
+function nextClient(C){const L=SECTORS[C.sector];C.client=R(cntC(C,'societe')&&Math.random()<.5?L.big:L.cl);}
+function addWork(C,n,fromClick){
+  if(C.wait>0)return;
+  if(C.special){C.special.p+=n;if(C.special.p>=C.special.need){const g=C.special.reward;C.special=null;earn(C,g);if(C===S){celebrate('Commande spéciale livrée : + '+fmt(g));ringDone(true);}}return;}
+  C.job+=n;const need=offerOf(C).c;
+  while(C.job>=need-1e-9){C.job-=need;finishJob(C,fromClick);if(C.wait>0){C.job=0;break;}}
+}
+function finishJob(C,fromClick){
+  if(Math.random()<=acceptP(C)){
+    C.jobs++;earn(C,C.price);
+    if(C===S){if(fromClick){floatTxt('+ '+fmt(C.price));sfx.coin();buzz([10,30,14]);}ringDone(fromClick);
+      if(C.jobs===1)say('Ton premier client est content ! Chaque clic fait avancer le travail. Quand l’anneau doré est plein, la commande est livrée et tu es payé. Astuce : tape avec 2 doigts, ça va 2 fois plus vite.');}
+    nextClient(C);
+  } else {
+    if(C===S&&fromClick){floatTxt('Trop cher pour lui',true);sfx.bad();buzz([20,50,20]);}
+    if(C===S&&!C.flags.toocher){C.flags.toocher=1;lesson('Ton prix est trop haut','Le client est parti voir ailleurs. Un prix trop haut fait fuir les clients. Un prix trop bas te fait travailler pour rien. Le bon prix dépend de la qualité de ton travail : améliore-la et tu pourras monter ton prix.');}
+    C.wait=.7;nextClient(C);
+  }
+}
+function earn(C,v){C.cash+=v;C.total+=v;C.ca+=v;if(C===S){const cv=$('#cash');cv.classList.remove('bump');void cv.offsetWidth;cv.classList.add('bump');}}
+function floatTxt(t,small){const d=document.createElement('div');d.className='float'+(small?' small':'');d.textContent=t;d.style.left=(40+Math.random()*20)+'%';$('#work').appendChild(d);setTimeout(()=>d.remove(),900);}
+
+/* ---------- l'anneau doré : une barre continue qui glisse ---------- */
+const RR=118,LL=2*Math.PI*RR;let shown=0,drain=0;
+function ringTarget(){if(S.special)return Math.min(1,S.special.p/S.special.need);return Math.min(1,S.job/offerOf(S).c);}
+function ringDone(big){drain=1;wave=1;const p=$('#planet');p.classList.remove('boom');void p.offsetWidth;p.classList.add('boom');
+  for(let k=0;k<(big?24:12);k++){const a=-Math.PI/2+k/(big?24:12)*2*Math.PI;sparks(190+RR*Math.cos(a),190+RR*Math.sin(a),big?2:1,true);}}
+function ringFrame(){
+  let t=ringTarget();if(drain>0){drain-=.08;t=Math.max(t,drain);}
+  shown+=(t-shown)*(t<shown?.3:.42);if(Math.abs(t-shown)<.0005)shown=t;
+  $('#bar').setAttribute('stroke-dasharray',(shown*LL).toFixed(1)+' '+LL.toFixed(1));
+  const a=-Math.PI/2+shown*2*Math.PI,h=$('#headDot');h.setAttribute('cx',(130+RR*Math.cos(a)).toFixed(1));h.setAttribute('cy',(130+RR*Math.sin(a)).toFixed(1));h.style.opacity=shown>.005?1:0;
+}
+/* ---------- étincelles ---------- */
+const fxc=$('#fx'),fx=fxc.getContext('2d');fx.scale(2,2);const P=[];let wave=0;
+function headXY(){const a=-Math.PI/2+shown*2*Math.PI;return [190+RR*Math.cos(a),190+RR*Math.sin(a)];}
+function sparks(x,y,n,big){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=(big?3:1.5)+Math.random()*(big?5:2.5);P.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:1,r:big?3+Math.random()*3:1.5+Math.random()*2,c:Math.random()<.6?'#FFD54D':'#FFFFFF'});}}
+function fxFrame(){fx.clearRect(0,0,380,380);
+  if(wave>0){fx.strokeStyle='rgba(255,213,77,'+wave+')';fx.lineWidth=Math.max(.1,6*wave);fx.beginPath();fx.arc(190,190,RR+(1-wave)*60,0,7);fx.stroke();wave-=.04;}
+  for(let i=P.length-1;i>=0;i--){const p=P[i];p.x+=p.vx;p.y+=p.vy;p.vx*=.96;p.vy*=.96;p.l-=.035;if(p.l<=0){P.splice(i,1);continue;}fx.globalAlpha=p.l;fx.fillStyle=p.c;fx.beginPath();fx.arc(p.x,p.y,Math.max(.1,p.r*p.l),0,7);fx.fill();}
+  fx.globalAlpha=1;}
+/* ---------- le toucher ---------- */
+let lastT=0,lastN=0;
+function hit(){
+  if(modal)return;if(G.paused){G.paused=false;toast('C’est reparti !');}
+  const now=performance.now();let add;
+  if(now-lastT<60&&lastN===1){add=.5;lastN=2;}           // 2e doigt posé en même temps : le pas devient entier
+  else if(now-lastT<150)return;                          // pas plus de 6 touches comptées par seconde
+  else{add=.5;lastN=1;lastT=now;}
+  const p=$('#planet');p.classList.add('press');setTimeout(()=>p.classList.remove('press'),70);
+  const pl=$('#clicpill');pl.classList.add('hit');setTimeout(()=>pl.classList.remove('hit'),80);
+  const b=$('#bar');b.classList.add('pulse');setTimeout(()=>b.classList.remove('pulse'),110);
+  sfx.click();buzz(6);
+  addWork(S,add,true);
+  const [x,y]=headXY();sparks(x,y,lastN===2?8:4);
+  if(lastN===2&&!G.flags.two){G.flags.two=1;toast('2 doigts : 2 fois plus vite !');}
+  render();
+}
+const RW=$('#ringwrap');
+RW.addEventListener('pointerdown',e=>{e.preventDefault();hit();});
+RW.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();hit();}});
+RW.addEventListener('contextmenu',e=>e.preventDefault());
+
+/* ================= prix ================= */
+function setPrice(d){const p=S.price,step=p>=1e6?50000:p>=1e5?5000:p>=1e4?500:p>=1000?50:p>=100?10:p>=40?5:1;S.price=Math.max(1,p+d*step);S.flags.priced=1;play('click',.4);buzz(6);render(true);save();}
+$('#pm').onclick=()=>setPrice(-1);$('#pp').onclick=()=>setPrice(1);
+
+/* ================= acheter ================= */
+const BUYMSG={chatgpt:'Ton IA travaille même quand tu ne touches rien. Mais 23 € seront retirés chaque mois : un abonnement, c’est une charge qui revient.',canva:'Ton travail est plus beau. Tu peux maintenant monter ton prix : touche le +.',site:'Les clients te trouvent tout seuls sur Google. Ton prix peut monter.',agent:'Ton agent IA travaille jour et nuit. C’est ça, la force de l’IA : grandir sans tout faire soi-même.',stage:'Pour accueillir ton stagiaire, tu loues un petit local. Va voir Mon monde ! Vérifie au prochain bilan qu’il rapporte plus qu’il ne coûte.',salarie:'Un salarié coûte environ 2 700 € par mois à ta société : son salaire plus les cotisations de l’employeur. C’est souvent la plus grosse charge d’une entreprise.',bureaux:'De vrais bureaux ! Ça rassure les gros clients, mais le loyer tombe tous les mois, même quand les ventes baissent.',agents:'Encore des agents IA : ta boîte grandit sans embaucher.',ville:'Une nouvelle ville, une nouvelle équipe. Grandir, c’est aussi multiplier les charges : surveille tes bilans.',inter:'Ta boîte part à l’étranger. Nouveaux pays, nouvelles lois, nouveaux clients.',rachat:'Tu as racheté un concurrent : ses clients sont maintenant les tiens.'};
+function buy(x){
+  const c=itemCost(x);
+  if(S.cash<c){toast('Il te manque '+fmt(c-S.cash)+'.');sfx.bad();return;}
+  if(x.id==='societe'){chooseCompany(c);return;}
+  const st0=stage(S);S.cash-=c;S.own[x.id]=cnt(x.id)+1;sfx.cash();buzz([15,40,25]);
+  if(BUYMSG[x.id])say(BUYMSG[x.id]);
+  if(stage(S)>st0)worldUp();
+  render(true);save();
+}
+function chooseCompany(c){
+  let pick='agence';
+  sheet('<div class="kick">Grande étape</div><h3>Ta société est prête à naître</h3><p>Avec une société, tu peux signer de gros contrats. Donne-lui un nom.</p><input class="field" id="cname" maxlength="24" placeholder="Nom de ta société" value="Studio '+esc((G.flags.first||'Créa'))+'"><p style="font-size:13px;color:var(--mute)">Création : '+fmt(c)+' une fois (frais de dossier), puis un comptable environ 120 € par mois. En société, tu ne paies plus de cotisations sur tes ventes, mais un impôt sur ton bénéfice.</p><button class="cta" type="button" id="ok">Créer ma société</button><button class="cta sec" type="button" id="later">Plus tard</button>',(ov,close)=>{
+    ov.querySelector('#later').onclick=()=>{sfx.pop();close();};
+    ov.querySelector('#ok').onclick=()=>{const nm=(ov.querySelector('#cname').value||'').trim().slice(0,24)||'Ma société';
+      S.cash-=c;S.own.societe=1;S.statut='sasu';S.name=nm;close();celebrate(nm+' est née !');worldUp();
+      say('Bienvenue dans la cour des grands ! L’argent de la société n’est plus ton argent perso : pour te payer, tu te verses un dividende. Touche « Patrimoine ».');save();render(true);};
+  });
+}
+function askStatut(){
+  sheet('<div class="kick">Première vraie étape</div><h3>Déclare ton activité</h3><p>Pour vendre légalement en France, il te faut un statut. Sans statut, tu travailles au noir : interdit, et risqué.</p><div class="choices"><button type="button" class="choice rec" data-s="micro"><b>Micro-entreprise <span class="tag">Conseillé pour démarrer</span></b><span>Gratuite et rapide à créer en ligne. Tu paies des cotisations sur ce que tu vends (environ 22 % pour un service), et rien si tu ne vends rien.</span></button><button type="button" class="choice" data-s="noir"><b>Continuer sans rien déclarer</b><span>Pas de papiers… mais pas de facture possible, pas de gros clients, et une amende si tu es contrôlé.</span></button></div>',(ov,close)=>{
+    ov.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+      if(b.dataset.s==='micro'){S.statut='micro';S.name='Ta micro-entreprise';close();celebrate('Ta micro-entreprise est créée !');say('Tu as un numéro SIRET, tu peux faire des factures. Chaque mois, environ 22 % de tes ventes partent en cotisations (ta retraite, ta santé). Garde-le en tête !');}
+      else{sfx.bad();b.querySelector('span').textContent='Ino : « On fait les choses bien. Sans statut, aucun client sérieux ne voudra de toi. »';}
+      save();render(true);});
+  });
+}
+
+/* ================= l'offre évolue ================= */
+function checkOffer(C){
+  const k=(C.offer||0)+1;if(k>=LADDER.length||modal)return;const L=LADDER[k];
+  if(C.total>=L.at&&(!L.need||cntC(C,L.need))){
+    C.offer=k;C.job=0;C.price=Math.round(refPriceC(C));
+    if(C!==S){save();return;}
+    const o=offerOf(C);celebrate('Ta boîte évolue : '+o.n+' !');
+    sheet('<div class="kick">Ta boîte évolue</div><h3>Tu vends maintenant : '+esc(o.n)+'</h3><div class="tbl"><div class="r"><span>Prix conseillé</span><b>'+fmt(C.price)+'</b></div><div class="r"><span>Travail par commande</span><b>'+(o.c*2)+' clics (ou '+o.c+' à 2 doigts)</b></div></div><div class="learn"><b>À retenir</b>Une entreprise qui dure fait évoluer ce qu’elle vend. Plus tu sais faire, plus tu vends cher.</div><button class="cta" type="button">C’est parti</button>',(ov,close)=>{ov.querySelector('.cta').onclick=()=>{sfx.pop();close();};});
+    save();
+  }
+}
+
+/* ================= fin du mois : les bilans ================= */
+function monthCompany(C){
+  const L=monthlyC(C);const fixed=L.reduce((a,x)=>a+x.v,0);
+  let rec=0;if(C.sector==='ia'&&C.offer>=3)rec=Math.round(C.ca*.25);
+  const lateIn=C.late;C.late=0;const ca=C.ca+rec+lateIn;
+  let tax=0,taxLab='';
+  if(C.statut==='micro'){tax=Math.round((C.ca+rec)*.22);taxLab='Cotisations URSSAF (environ 22 %)';}
+  else if(C.statut==='sasu'){const pre=ca-fixed;tax=pre>0?Math.round(.15*Math.min(pre,3542)+.25*Math.max(0,pre-3542)):0;taxLab='Impôt sur le bénéfice (15 %, puis 25 %)';}
+  const profit=ca-fixed-tax;C.cash+=rec+lateIn-fixed-tax;
+  const rows=[['Tes ventes',ca,'pos']];if(rec)rows.push(['dont abonnements de tes clients',rec,'pos']);if(lateIn)rows.push(['dont paiement en retard reçu',lateIn,'pos']);
+  L.forEach(x=>rows.push([x.n,-x.v,'neg']));if(tax)rows.push([taxLab,-tax,'neg']);
+  const isBest=C.best==null||profit>C.best;if(isBest)C.best=profit;
+  C.hist.push({m:G.month,p:profit,rows:rows});if(C.hist.length>60)C.hist.shift();
+  C.ca=0;
+  // plafond de la micro-entreprise (environ 77 000 € de ventes par an pour un service)
+  if(C.statut==='micro'&&!C.flags.plafond){const y=C.hist.slice(-12).reduce((a,h)=>a+h.rows[0][1],0);if(y>77000)C.flags.plafond=1;}
+  return {profit,isBest};
+}
+function endMonth(){
+  const m=G.month;let others=0;let res=null;
+  G.cos.forEach(C=>{const r=monthCompany(C);if(C===S)res=r;else others+=r.profit;});
+  const rent=immoRent();if(rent)G.perso+=rent;
+  STOCKS.forEach(s=>G.pm[s[0]]=G.prices[s[0]]);
+  G.month++;G.mt=0;
+  const pat=patrimoine();if(pat>(G.flags.bestPat||0))G.flags.bestPat=pat;
+  let learn='';
+  if(!G.flags.bilan){G.flags.bilan=1;learn='<div class="learn"><b>Le déclic</b>Ce que tu vends (le chiffre d’affaires) n’est pas ce que tu gagnes. Ce qu’il te reste après les charges et les cotisations, c’est le bénéfice. C’est lui qui compte.</div>';}
+  else if(res.profit<0)learn='<div class="learn"><b>Attention</b>Ce mois-ci, ta boîte a dépensé plus qu’elle n’a gagné. Monte ton prix, vends plus, ou résilie une charge qui ne rapporte pas.</div>';
+  else if(res.isBest&&m>2)learn='<div class="learn"><b>Nouveau record</b>Ton meilleur mois jusqu’ici. Ta boîte grandit.</div>';
+  if(S.flags.plafond===1){S.flags.plafond=2;learn+='<div class="learn"><b>Plafond de la micro-entreprise</b>Tu dépasses environ 77 000 € de ventes sur un an : c’est le plafond de la micro-entreprise pour un service. Il est temps de créer une société.</div>';}
+  if(others)learn+='<div class="learn"><b>Tes autres sociétés</b>Elles ont fait '+fmt(others)+' de bénéfice ce mois-ci.</div>';
+  if(rent)learn+='<div class="learn"><b>Tes loyers</b>Tes biens immobiliers t’ont rapporté '+fmt(rent)+' (sur ton argent perso).</div>';
+  if(S.cash<0)learn+='<div class="learn" style="background:var(--badbg);color:var(--bad)"><b>Ta banque te prévient</b>Ta boîte est à découvert. Rien n’est perdu : réduis tes charges et remets ta trésorerie dans le vert.</div>';
+  sfx.win();showHist(S.hist.length-1,learn,()=>{if(m===1)say('Bravo pour ton premier mois ! Tu peux maintenant régler ton prix avec − et +. Cherche le prix le plus rentable.');save();});
+  unlockCheck();
+}
+function histHTML(i,learn){
+  const H=S.hist,h=H[i];if(!h)return '<h3>Pas encore de bilan</h3><button class="cta" type="button">Fermer</button>';const mx=Math.max(1,...H.map(x=>Math.abs(x.p)));
+  const sp='<div class="spark">'+H.slice(-24).map((x,j,arr)=>{const idx=H.length-arr.length+j;return '<i class="'+(x.p>=0?'p':'n')+(idx===i?' cur':'')+'" style="height:'+Math.max(6,Math.abs(x.p)/mx*100)+'%"></i>';}).join('')+'</div>';
+  return '<div class="kick">'+esc(S.name)+' · fin du mois '+h.m+'</div><h3>Ton bilan du mois</h3><div class="hnav"><button type="button" id="hp" aria-label="Mois précédent"'+(i<=0?' disabled':'')+'>‹</button><span>Mois '+h.m+'</span><button type="button" id="hn" aria-label="Mois suivant"'+(i>=H.length-1?' disabled':'')+'>›</button></div>'+sp+'<div class="tbl">'+(h.rows||[]).map(r=>'<div class="r"><span>'+esc(r[0])+'</span><b class="'+r[2]+'">'+fmt(r[1])+'</b></div>').join('')+'<div class="r tot"><span>Bénéfice</span><b class="'+(h.p>=0?'pos':'neg')+'">'+fmt(h.p)+'</b></div></div>'+(i===H.length-1&&learn?learn:'')+'<button class="cta" type="button">'+(learn!=null&&i===H.length-1?'Mois suivant':'Fermer')+'</button>';
+}
+function showHist(i,learn,after){
+  sheet(histHTML(i,learn),(ov,close)=>{const bind=()=>{const sh=ov.querySelector('.sheet');
+    const hp=sh.querySelector('#hp'),hn=sh.querySelector('#hn');
+    if(hp)hp.onclick=()=>{if(i>0){i--;play('click',.4);sh.innerHTML=histHTML(i,learn);bind();}};
+    if(hn)hn.onclick=()=>{if(i<S.hist.length-1){i++;play('click',.4);sh.innerHTML=histHTML(i,learn);bind();}};
+    sh.querySelector('.cta').onclick=()=>{sfx.pop();close();if(after)after();};};bind();});
+}
+
+/* ================= patrimoine, bourse, immobilier, sociétés (débloqués petit à petit) ================= */
+function unlockCheck(){
+  const p=patrimoine(),f=G.flags;let msg='';
+  if(hasSociete()&&!f.u_pat){f.u_pat=1;G.seen.pat=0;}
+  if(G.perso>=5000&&!f.u_bourse){f.u_bourse=1;msg='Tu as de l’argent perso qui dort. Tu peux maintenant investir en bourse, dans Patrimoine.';}
+  else if(G.perso>=60000&&!f.u_immo){f.u_immo=1;msg='Tu peux acheter de l’immobilier : un bien qui te rapporte un loyer chaque mois. Va dans Patrimoine.';}
+  else if(p>=500000&&!f.u_newco){f.u_newco=1;msg='Tu peux créer une deuxième société ! Les grands patrons possèdent plusieurs entreprises. Touche le nom de ta société, en haut.';}
+  if(msg){say(msg);toast('Nouveau : '+msg.split('.')[0]);sfx.level();}
+}
+function openPat(){
+  G.seen.pat=1;
+  const draw=()=>{
+    const p=patrimoine(),sv=stocksValue(),iv=immoValue(),cv=G.cos.reduce((a,C)=>a+valo(C),0);
+    let h='<button class="x" type="button" data-x="1" aria-label="Fermer">✕</button><div class="kick">Ton argent à toi</div><h3>Ton patrimoine</h3><div class="big3"><div class="wide"><small>Patrimoine total</small><b>'+fmt(p)+'</b></div><div><small>Argent perso</small><b>'+fmt(G.perso)+'</b></div><div><small>Tes sociétés</small><b>'+fmt(cv)+'</b></div>'+(G.flags.u_bourse?'<div><small>Bourse</small><b>'+fmt(sv)+'</b></div>':'')+(G.flags.u_immo?'<div><small>Immobilier</small><b>'+fmt(iv)+'</b></div>':'')+'</div>';
+    // se payer
+    h+='<h4>Te payer</h4>';
+    if(S.statut==='sasu'){h+='<p style="font-size:13.5px;color:var(--mute)">Tu verses une partie de la trésorerie de '+esc(S.name)+' sur ton compte perso. Sur un dividende, l’État prend environ 30 % (impôt et prélèvements sociaux).</p><div class="mini">'+[25,50,100].map(k=>'<button type="button" class="pri" data-div="'+k+'"'+(S.cash>0?'':' disabled')+'>'+k+' %</button>').join('')+'</div>';}
+    else if(S.statut==='micro'){h+='<p style="font-size:13.5px;color:var(--mute)">En micro-entreprise, l’argent de ton activité est déjà à toi (les cotisations sont payées chaque mois).</p><div class="mini">'+[50,100].map(k=>'<button type="button" class="pri" data-div="'+k+'"'+(S.cash>0?'':' disabled')+'>Prendre '+k+' %</button>').join('')+'</div>';}
+    else h+='<p style="font-size:13.5px;color:var(--mute)">Déclare ton activité d’abord.</p>';
+    // bourse
+    if(G.flags.u_bourse){h+='<h4>La bourse</h4><p style="font-size:13px;color:var(--mute)">Cours simulés dans le jeu. Ça monte souvent sur le long terme, mais ça peut baisser fort. Ne mets jamais tout au même endroit.</p><div class="tbl stock">'+STOCKS.map(s=>{const nm=s[0],pr=G.prices[nm],q=G.hold[nm]||0,pm=G.pm[nm]||s[1],ch=(pr/pm-1)*100,val=q*pr,gain=q?val-(G.paid[nm]||0):0;
+      return '<div class="r"><span>'+esc(nm)+'<small>'+fmt(pr)+' · <span class="'+(ch>=0?'pos':'neg')+'">'+(ch>=0?'+':'')+ch.toFixed(1).replace('.',',')+' % ce mois</span>'+(q?' · à toi : '+fmt(val)+' ('+(gain>=0?'+':'')+fmt(gain)+')':'')+'</small></span><span class="mini"><button type="button" class="pri" data-buy="'+esc(nm)+'"'+(G.perso>=1?'':' disabled')+'>Acheter</button>'+(q?'<button type="button" data-sell="'+esc(nm)+'">Vendre</button>':'')+'</span></div>';}).join('')+'</div><p style="font-size:12.5px;color:var(--mute)">Acheter investit 25 % de ton argent perso.</p>';}
+    // immobilier
+    if(G.flags.u_immo){h+='<h4>L’immobilier</h4><div class="tbl">'+IMMO.map((x,i)=>'<div class="r"><span>'+esc(x[0])+(G.immo[i]?' · '+G.immo[i]:'')+'<small style="display:block;font-size:11.5px;color:var(--mute);font-weight:700">'+fmt(x[1])+' · loyer '+fmt(x[2])+' / mois</small></span><span class="mini"><button type="button" class="pri" data-immo="'+i+'"'+(G.perso>=x[1]?'':' disabled')+'>Acheter</button></span></div>').join('')+'</div>';}
+    // sociétés
+    h+='<h4>Tes sociétés</h4><div class="tbl">'+G.cos.map((C,i)=>'<div class="r"><span>'+esc(C.name)+'<small style="display:block;font-size:11.5px;color:var(--mute);font-weight:700">'+esc(SECTORS[C.sector].short)+' · valeur '+fmt(valo(C))+'</small></span><span class="mini">'+(i===G.act?'<button type="button" disabled>Ouverte</button>':'<button type="button" data-sw="'+i+'">Ouvrir</button>')+'</span></div>').join('')+'</div>'+(G.flags.u_newco?'<button class="cta" type="button" data-new="1">Créer une nouvelle société</button>':'<p style="font-size:12.5px;color:var(--mute)">À 500 000 € de patrimoine, tu pourras créer une deuxième société.</p>');
+    h+='<div class="learn" style="margin-top:12px"><b>La valeur de ta société</b>Une société vaut à peu près ce qu’elle rapporte : environ 8 années de bénéfice, plus l’argent qu’elle a en caisse. Plus elle gagne, plus elle vaut cher.</div>';
+    return h;};
+  sheet(draw(),(ov,close)=>{ov.dataset.soft=1;
+    const sh=ov.querySelector('.sheet');
+    const refresh=()=>{const st=sh.scrollTop;sh.innerHTML=draw();sh.scrollTop=st;bind();render(true);save();};
+    const bind=()=>{
+      sh.querySelector('[data-x]').onclick=()=>{sfx.pop();close();};
+      sh.querySelectorAll('[data-div]').forEach(b=>b.onclick=()=>{const k=+b.dataset.div/100,amt=Math.floor(Math.max(0,S.cash)*k);if(amt<=0)return;const net=S.statut==='sasu'?Math.round(amt*.7):amt;S.cash-=amt;G.perso+=net;sfx.coin();buzz([10,30,14]);
+        if(!G.flags.divid){G.flags.divid=1;say(S.statut==='sasu'?'Ton premier dividende ! Sur '+fmt(amt)+', tu touches '+fmt(net)+' : environ 30 % partent en impôt et prélèvements sociaux. C’est ça, l’argent de la société qui devient ton argent.':'Cet argent est maintenant sur ton compte perso.');}
+        toast('+ '+fmt(net)+' sur ton compte perso');unlockCheck();refresh();});
+      sh.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{const nm=b.dataset.buy,amt=G.perso*.25;if(amt<1)return;G.perso-=amt;G.hold[nm]=(G.hold[nm]||0)+amt/G.prices[nm];G.paid[nm]=(G.paid[nm]||0)+amt;sfx.cash();
+        if(!G.flags.bourse1){G.flags.bourse1=1;say('Tu possèdes maintenant un petit bout de '+nm+'. Si l’entreprise grandit, ton argent grandit avec. Si elle chute, tu perds. C’est pour ça qu’on répartit son argent.');}refresh();});
+      sh.querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>{const nm=b.dataset.sell,q=G.hold[nm]||0;if(!q)return;const v=q*G.prices[nm];G.perso+=v;G.hold[nm]=0;G.paid[nm]=0;sfx.coin();toast('Vendu : + '+fmt(v));refresh();});
+      sh.querySelectorAll('[data-immo]').forEach(b=>b.onclick=()=>{const i=+b.dataset.immo,x=IMMO[i];if(G.perso<x[1])return;G.perso-=x[1];G.immo[i]=(G.immo[i]||0)+1;celebrate('Tu as acheté '+x[0].toLowerCase()+' !');
+        if(!G.flags.immo1){G.flags.immo1=1;say('Ton premier bien ! Chaque mois, son loyer arrive sur ton compte perso, que tes sociétés marchent ou pas. C’est ça, un patrimoine.');}refresh();});
+      sh.querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{switchCo(+b.dataset.sw);close();});
+      const nb=sh.querySelector('[data-new]');if(nb)nb.onclick=()=>{close();newCompany();};
+    };bind();});
+}
+function switchCo(i){if(i===G.act||!G.cos[i])return;G.act=i;S=G.cos[i];shown=0;sfx.pop();toast('Tu gères maintenant : '+S.name);say('Tu es dans '+S.name+'. Tes autres sociétés continuent de tourner sans toi grâce à leurs équipes.');render(true);save();}
+function openCos(){
+  if(G.cos.length<2&&!G.flags.u_newco){toast(S.name+' · '+SECTORS[S.sector].n);return;}
+  sheet('<button class="x" type="button" data-x="1" aria-label="Fermer">✕</button><div class="kick">Tes sociétés</div><h3>Choisis ta société</h3><div class="choices">'+G.cos.map((C,i)=>'<button type="button" class="choice'+(i===G.act?' on':'')+'" data-i="'+i+'"><b>'+esc(C.name)+'</b><span>'+esc(SECTORS[C.sector].n)+' · trésorerie '+fmt(C.cash)+' · valeur '+fmt(valo(C))+'</span></button>').join('')+'</div>'+(G.flags.u_newco?'<button class="cta" type="button" id="nc">Créer une nouvelle société</button>':''),(ov,close)=>{ov.dataset.soft=1;
+    ov.querySelector('[data-x]').onclick=()=>close();
+    ov.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{close();switchCo(+b.dataset.i);});
+    const nc=ov.querySelector('#nc');if(nc)nc.onclick=()=>{close();newCompany();};});
+}
+function newCompany(){
+  const CAP=50000;let sec='snack';
+  if(G.perso<CAP){sheet('<div class="kick">Nouvelle société</div><h3>Il te faut un capital de départ</h3><p>Pour lancer une nouvelle société, tu mets '+fmt(CAP)+' de ton argent perso. Tu as '+fmt(G.perso)+'. Verse-toi des dividendes depuis ta société actuelle.</p><button class="cta" type="button">Compris</button>',(ov,close)=>{ov.querySelector('.cta').onclick=close;});return;}
+  sheet('<div class="kick">Nouvelle société</div><h3>Lance une autre boîte</h3><p>Tu mets '+fmt(CAP)+' de ton argent perso comme capital de départ. Elle commence petite, mais tu sais déjà comment faire grandir une boîte.</p><div class="choices">'+Object.keys(SECTORS).map(k=>'<button type="button" class="choice'+(k===sec?' on':'')+'" data-s="'+k+'"><b>'+esc(SECTORS[k].n)+'</b><span>Tu commences par : '+esc(SECTORS[k].o[0][0].toLowerCase())+'</span></button>').join('')+'</div><input class="field" id="nname" maxlength="24" placeholder="Nom de la société"><button class="cta" type="button" id="ok">Créer la société</button><button class="cta sec" type="button" id="no">Annuler</button>',(ov,close)=>{
+    ov.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{sec=b.dataset.s;ov.querySelectorAll('[data-s]').forEach(x=>x.classList.toggle('on',x===b));play('click',.4);});
+    ov.querySelector('#no').onclick=close;
+    ov.querySelector('#ok').onclick=()=>{const nm=(ov.querySelector('#nname').value||'').trim().slice(0,24)||SECTORS[sec].short+' '+(G.cos.length+1);
+      G.perso-=CAP;const C=newCo(sec,nm,CAP-250,'sasu');C.own.societe=1;C.price=LADDER[0].p;G.cos.push(C);close();G.act=G.cos.length-1;S=C;shown=0;nextClient(C);
+      celebrate(nm+' est née !');say('Nouvelle société ! Elle repart de zéro, mais avec toi aux commandes. Tes autres sociétés continuent sans toi.');render(true);save();};
+  });
+}
+
+/* ================= Mon monde (3D) ================= */
+function full(on){try{if(window.parent!==window)parent.postMessage({type:'inovia-full',on:on},'*');}catch(e){}}
+function worldUp(){const st=stage(S);if(st>(S.flags.wst||1)){S.flags.wst=st;const el=$('#tMonde');el.classList.remove('new');void el.offsetWidth;el.classList.add('new');toast('Mon monde : '+STAGEN[st]+' !');sfx.level();}}
+function worldMsg(){return {type:'inovia',lvl:stage(S),worth:fmt(valo(S)),wl:'Valeur',staff:staff(S),night:document.documentElement.classList.contains('night')};}
+function openWorld(){
+  const w=document.createElement('div');w.className='world';
+  w.innerHTML='<iframe title="Mon monde" allow="fullscreen" src="../monde-inovia/index.html?embed=1&lvl='+stage(S)+'&name='+encodeURIComponent(S.name.replace(/^(Ta micro-entreprise|Toi, en freelance)$/,'Ma boîte'))+'"></iframe><div class="wbar"><button type="button">‹ Retour au jeu</button></div>';
+  document.body.appendChild(w);modal++;full(true);
+  const fr=w.querySelector('iframe');const send=()=>{try{fr.contentWindow.postMessage(worldMsg(),'*');}catch(e){}};
+  const onMsg=e=>{if(e.source===fr.contentWindow&&e.data&&e.data.type==='neocorp-ready')send();};addEventListener('message',onMsg);
+  fr.addEventListener('load',()=>setTimeout(send,300));
+  w.querySelector('button').onclick=()=>{removeEventListener('message',onMsg);w.remove();full(false);modal=Math.max(0,modal-1);sfx.pop();};
+  sfx.pop();
+}
+$('#tMonde').onclick=openWorld;
+$('#tPat').onclick=()=>{sfx.pop();openPat();};
+$('#co').onclick=()=>{sfx.pop();openCos();};
+
+/* ================= surprises ================= */
+let nextEv=performance.now()+45000;
+function event(){
+  if(modal||G.month<2)return;
+  const k=R(['buzz','late','avis','panne','special']);
+  if(k==='buzz'){S.boostT=30;celebrate('Une vidéo TikTok sur ta boîte fait le buzz : ton équipe travaille × 2 pendant 30 s !');say('Les réseaux sociaux, c’est de la pub gratuite quand ça marche. Une bonne vidéo peut changer un mois entier.');}
+  if(k==='late'){const v=Math.round(S.price*4);S.late+=v;toast('Un client paie en retard : '+fmt(v)+' arriveront le mois prochain.');say('Un client qui paie en retard, c’est très fréquent. Ta trésorerie en souffre même si tu as bien travaillé. Garde toujours de l’avance.');}
+  if(k==='avis'){S.flags.rep=(S.flags.rep||0)+.05;celebrate('Un client te laisse 5 étoiles sur Google !');say('Ta réputation monte : les clients acceptent un prix un peu plus haut.');}
+  if(k==='panne'){if(!autoRateC(S))return;S.panneT=15;toast('Panne : tes outils IA ne répondent plus pendant 15 s.');sfx.bad();say('Quand tout repose sur un seul outil, une panne bloque toute la boîte. Les pros ont toujours un plan B.');}
+  if(k==='special'){const who=R(SECTORS[S.sector].big),reward=Math.round(S.price*8),need=offerOf(S).c*3;
+    sheet('<div class="kick">Commande spéciale</div><h3>'+esc(who)+' veut une grosse commande</h3><p>C’est '+fmt(reward)+' pour toi, mais il faut tout livrer avant de reprendre les autres clients.</p><button class="cta" type="button" id="ok">Accepter</button><button class="cta sec" type="button" id="no">Refuser</button>',(ov,close)=>{
+      ov.querySelector('#ok').onclick=()=>{S.special={need:need,p:0,reward:reward,who:who};sfx.pop();close();};ov.querySelector('#no').onclick=()=>{sfx.pop();close();};});}
+}
+
+/* ================= affichage ================= */
+let lastGoal='',lastList='',lastCh='',lastNext='';const seenItems={};
+function render(force){
+  const doc=document.documentElement;document.body.classList.toggle('paused',!!G.paused);
+  $('#pause').classList.toggle('on',!!G.paused);
+  const pz=G.paused?'<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4v16l13-8z"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--acc)"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+  if($('#pause').dataset.s!==String(G.paused)){$('#pause').dataset.s=String(G.paused);$('#pause').innerHTML=pz;$('#pause').setAttribute('aria-label',G.paused?'Reprendre':'Mettre en pause');}
+  $('#conm').textContent=S.name;$('#codot').textContent=(S.name.replace(/^(Toi|Ta) /,'')[0]||'T').toUpperCase();$('#coch').textContent=(G.cos.length>1||G.flags.u_newco)?'▾ '+G.cos.length:'';
+  $('#cash').textContent=fmt(S.cash);$('#cash').classList.toggle('neg',S.cash<0);
+  $('#camonth').textContent=fmt(S.ca);
+  $('#lvl').textContent=lvlName(S.total);
+  $('#mlab').textContent='Mois '+G.month;$('#mbar').style.width=Math.min(100,G.mt/MONTH*100)+'%';$('#mleft').textContent=Math.max(0,Math.ceil(MONTH-G.mt))+' s';
+  $('#tMondeS').textContent=STAGEN[stage(S)];
+  const showPat=!!G.flags.u_pat;$('#tPat').hidden=!showPat;if(showPat){$('#tPatS').textContent=fmt(patrimoine());$('#tPat').classList.toggle('new',!G.seen.pat);}
+  const g=goalText();if(g!==lastGoal){if(lastGoal){const ge=$('#goal');ge.classList.remove('flash');void ge.offsetWidth;ge.classList.add('flash');}lastGoal=g;$('#goalt').textContent=g;}
+  const ga=goalAct(),go=$('#goalgo'),gl=ga?ga.l:'';if(go.textContent!==gl)go.textContent=gl;go.classList.toggle('off',!!ga&&!ga.ok);
+  const wait=S.wait>0,o=offerOf(S);
+  if(S.special){$('#client').innerHTML='Commande spéciale : <b>'+esc(S.special.who)+'</b>';$('#bt1').textContent='Livre la commande';$('#bt2').textContent=fmt(S.special.reward);}
+  else{$('#client').innerHTML=wait?'Le client est parti…':'Client : <b>'+esc(S.client||'…')+'</b>';$('#bt1').textContent=wait?'Client suivant':o.v;$('#bt2').textContent=wait?'…':fmt(S.price);}
+  $('#planet').classList.toggle('wait',wait);
+  $('#pricebar').hidden=!(G.month>=2);$('#price').textContent=fmt(S.price);$('#plab').textContent='Prix : '+o.n.toLowerCase();
+  const a=autoRateC(S);
+  $('#auto').innerHTML=a?('Ton équipe livre '+Math.round(a*.5*MONTH/o.c*acceptP(S))+' commandes par mois sans toi'+(S.boostT>0?'<span class="boost">× 2 BUZZ</span>':'')):(S.panneT>0?'Panne en cours…':'');
+  // ce qu'on peut acheter : seulement ce qui est débloqué
+  const L=[];let teaser=null;
+  if(S.statut==='aucun'&&S.total>=25)L.push('<button type="button" class="item" id="decl"><span class="ic">§</span><span class="tx"><span class="n">Déclarer ton activité</span><span class="d">Obligatoire pour vendre en France.</span></span><span class="pr">Gratuit</span></button>');
+  if(S.statut!=='aucun')SHOP.forEach(x=>{
+    if(x.need&&!cnt(x.need))return;
+    if(S.total<x.at&&!cnt(x.id)){if(!teaser)teaser=x;return;}
+    if(cnt(x.id)&&!x.rep)return;
+    const c=itemCost(x),key=S.id+x.id,isNew=!seenItems[key];seenItems[key]=1;
+    const mo=x.mo>0?'<small>+ '+fmt(x.mo)+' / mois</small>':'';
+    L.push('<button type="button" class="item'+(S.cash>=c?'':' off')+(isNew?' new':'')+'" data-id="'+x.id+'"><span class="ic">'+x.ic+'</span><span class="tx"><span class="n">'+esc(x.n)+(cnt(x.id)?' · '+cnt(x.id):'')+'</span><span class="d">'+esc(x.d)+'</span><span class="fx">'+esc(x.fx)+'</span></span><span class="pr">'+(c?fmt(c):'0 €')+mo+'</span></button>');
+  });
+  renderNext(teaser);
+  $('#growWrap').hidden=!L.length;const lh=L.join('');
+  if(lh!==lastList||force){lastList=lh;$('#list').innerHTML=lh;const dc=$('#decl');if(dc)dc.onclick=()=>{sfx.pop();askStatut();};
+    $('#list').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>buy(SHOP.find(x=>x.id===b.dataset.id)));}
+  const M=monthlyC(S);$('#chWrap').hidden=!M.length&&S.statut==='aucun';
+  let ch=M.map(x=>'<div class="row"><span>'+esc(x.n)+'</span><span><b>'+fmt(x.v)+'</b><button type="button" class="cut" data-cut="'+x.id+'">Résilier</button></span></div>').join('');
+  if(S.statut==='micro')ch+='<div class="row"><span>Cotisations URSSAF</span><b>≈ 22 % des ventes</b></div>';
+  if(S.statut==='sasu')ch+='<div class="row"><span>Impôt sur le bénéfice</span><b>15 %, puis 25 %</b></div>';
+  if(ch!==lastCh||force){lastCh=ch;$('#charges').innerHTML=ch;
+    $('#charges').querySelectorAll('[data-cut]').forEach(b=>b.onclick=()=>{const id=b.dataset.cut;S.own[id]=Math.max(0,cnt(id)-1);if(!S.own[id])delete S.own[id];sfx.pop();toast('Résilié : cette charge ne sera plus prélevée.');render(true);save();});}
+}
+function renderNext(teaser){
+  let h='',ready=false,target=null;const k=(S.offer||0)+1,L=LADDER[k];
+  if(teaser&&S.statut!=='aucun')target={n:teaser.n,at:teaser.at};
+  if(L&&L.at&&(!L.need||cnt(L.need))&&(!target||L.at<target.at))target={n:SECTORS[S.sector].o[k][0],at:L.at};
+  if(target){const pct=Math.min(100,S.total/target.at*100);ready=pct>=100;h='<div class="r"><b>Prochaine étape : '+esc(target.n)+'</b><span>'+fmt(Math.min(S.total,target.at))+' / '+fmt(target.at)+'</span></div><div class="b"><i style="width:'+pct.toFixed(1)+'%"></i></div>';}
+  const el=$('#next');el.hidden=!h;el.classList.toggle('ready',ready);if(h!==lastNext){lastNext=h;el.innerHTML=h;}
+}
+
+/* ================= boucle ================= */
+let last=performance.now(),saveT=0,stockT=0,rT=0;
+function step(dt){
+  G.mt+=dt;
+  G.cos.forEach(C=>{
+    if(C.boostT>0)C.boostT-=dt;if(C.panneT>0)C.panneT-=dt;if(C.wait>0)C.wait-=dt;
+    C._acc=(C._acc||0)+autoRateC(C)*dt*.5;   // les équipes avancent d'un demi-pas par « clic »
+    if(C._acc>=.5){const n=Math.floor(C._acc/.5)*.5;C._acc-=n;addWork(C,n,false);}
+    checkOffer(C);
+  });
+  stockT+=dt;if(stockT>=2){stockT=0;const dm=2/MONTH;STOCKS.forEach(s=>{const z=(Math.random()+Math.random()+Math.random()-1.5)*1.4;G.prices[s[0]]=Math.max(1,G.prices[s[0]]*Math.exp(s[2]*dm+s[3]*Math.sqrt(dm)*z));});}
+  if(G.mt>=MONTH)endMonth();
+  if(S.total>=25&&S.statut==='aucun'&&!S.flags.askedStat){S.flags.askedStat=1;say('Tu gagnes tes premiers euros ! Mais pour vendre légalement, il faut déclarer ton activité. Touche l’objectif en haut.');}
+  const st=stage(S);if(st>(S.flags.wst||1))worldUp();
+}
+function loop(now){
+  const dt=Math.min(.25,(now-last)/1000);last=now;
+  if(!modal&&!G.paused){step(dt);if(now>nextEv){nextEv=now+40000+Math.random()*35000;event();}}
+  saveT+=dt;if(saveT>3){saveT=0;save();}
+  ringFrame();fxFrame();rT+=dt;if(rT>.1){rT=0;render();}
+  requestAnimationFrame(loop);
+}
+// pendant ton absence, tes équipes ont continué (au ralenti, 2 heures au maximum)
+(function offline(){const away=Math.min(7200,(Date.now()-(G.at||Date.now()))/1000);if(away<30)return;let tot=0;
+  G.cos.forEach(C=>{const a=autoRateC(C);if(a>0&&C.statut!=='aucun'){const jobs=Math.floor(a*.5*away*.5/offerOf(C).c*acceptP(C));const gg=jobs*C.price;if(gg>0){earn(C,gg);tot+=gg;}}});
+  if(tot>0)setTimeout(()=>toast('Pendant ton absence, tes équipes ont gagné '+fmt(tot)+'.'),700);})();
+$('#pause').onclick=()=>{G.paused=!G.paused;sfx.pop();buzz(8);toast(G.paused?'Jeu en pause':'C’est reparti !');render(true);save();};
+$('#mlab').onclick=()=>{if(S.hist.length)showHist(S.hist.length-1);else toast('Ton premier bilan arrive à la fin du mois.');};
+$('#goal').onclick=()=>{const ga=goalAct();sfx.pop();if(ga)ga.run();else toast('Objectif : '+goalText());};
+$('#reset').onclick=()=>{sheet('<h3>Recommencer la partie ?</h3><p>Toute ta partie sera effacée : tes sociétés, ton patrimoine, tes bilans.</p><button class="cta" type="button" id="y">Oui, tout recommencer</button><button class="cta sec" type="button" id="n">Annuler</button>',(ov,close)=>{ov.querySelector('#y').onclick=()=>{G=fresh();S=G.cos[0];nextClient(S);shown=0;save();close();intro();};ov.querySelector('#n').onclick=close;});};
+// l'appli Inovia règle le mode nuit, le son et les vibrations
+addEventListener('message',e=>{const d=e.data;if(!d||d.type!=='inovia-app')return;if(d.night!=null)document.documentElement.classList.toggle('night',!!d.night);if(d.sound!=null)SOUND=!!d.sound;if(d.hapt!=null)HAPT=!!d.hapt;if(d.pause)G.paused=true;render(true);});
+if(QS.get('night')==='1')document.documentElement.classList.add('night');
+function intro(){say(S.jobs?'Content de te revoir, patron. On continue ?':'Salut, moi c’est Ino, ton associé IA. Tu te lances : tu fais des flyers pour les commerces de ton quartier. Touche la planète pour travailler. Avec 2 doigts, ça va 2 fois plus vite !');}
+if(!S.client)nextClient(S);
+intro();
+window.__jeu={get G(){return G},get S(){return S},endMonth,event,unlockCheck,openPat,step};
+try{if(window.parent!==window)parent.postMessage({type:'inovia-jeu-ready'},'*');}catch(e){}
+render(true);requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

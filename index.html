@@ -184,6 +184,159 @@ div:nth-child(even) > span > span > .floaty{animation-delay:-1.7s}
 .datepill.flip{animation:pageFlip .9s cubic-bezier(.3,1.4,.5,1)}
 .fm{--fm-ink:#260E4F;--fm-mute:#6C5A8C;--fm-acc:#8A63F0;--fm-chip:#FFFFFF;--fm-line:#DED6EC;--fm-ib:#EBE4F6}
 .night .fm{--fm-ink:#F5F2FB;--fm-mute:#8A93A8;--fm-acc:#8D4BFF;--fm-chip:rgba(255,255,255,.04);--fm-line:rgba(172,150,210,.35);--fm-ib:rgba(255,255,255,.12);background:radial-gradient(70% 30% at 105% 28%,rgba(88,70,220,.20),rgba(0,0,0,0) 70%),radial-gradient(70% 34% at -5% 62%,rgba(110,40,230,.18),rgba(0,0,0,0) 70%),#0D0915}
+.pcw,.pcs,.pc-sheet{--pc-ink:#260E4F;--pc-mute:#6C5A8C;--pc-card:#FFFFFF;--pc-card2:#F2EEFA;--pc-line:#DED6EC;--pc-acc:#7046DC;--pc-sh:#D9CFEE;--pc-map:linear-gradient(180deg,#EFE8FB 0%,#F8F5FD 100%);--pc-path:#CFC3EA;--pc-bg:#F4F2F8;--pc-good:#1F9D63;--pc-goodbg:#E3F6EC;--pc-bad:#D43B4B;--pc-badbg:#FCE6E8;--pc-dim:#DCD3EE}
+.night .pcw,.night .pcs,.night .pc-sheet{--pc-ink:#F5F2FB;--pc-mute:#A99BD3;--pc-card:#1B1330;--pc-card2:#261A4D;--pc-line:#3A2D5C;--pc-acc:#8A63F0;--pc-sh:#0A0614;--pc-map:radial-gradient(120% 40% at 50% 0%,#2A1A5E 0%,#140C28 70%);--pc-path:#4A3A80;--pc-bg:#0D0915;--pc-good:#3DD68C;--pc-goodbg:#173F31;--pc-bad:#FF6B6B;--pc-badbg:#46192A;--pc-dim:#3A325A}
+.pcw{padding:0 20px;color:var(--pc-ink);display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.pc-chips{display:flex;gap:6px}
+.pc-chip{display:inline-flex;align-items:center;gap:4px;background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:999px;padding:5px 10px 5px 7px;font-weight:800;font-size:13px;color:var(--pc-ink);font-variant-numeric:tabular-nums}
+.pc-chip svg{width:16px;height:16px}
+.pc-daily{display:flex;align-items:center;gap:10px;background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:18px;padding:10px 10px 10px 14px;min-height:60px;box-sizing:border-box;transition:border-color .2s}
+.pc-daily.pc-ok{border-color:var(--pc-good)}.pc-daily.pc-ko{border-color:var(--pc-bad);animation:pcShake .35s}
+.pc-dt{flex:1;min-width:0}
+.pc-dl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--pc-acc);font-weight:800}
+.pc-daily.pc-ok .pc-dl{color:var(--pc-good)}
+.pc-dq{font-size:14px;font-weight:700;line-height:1.3;margin-top:2px}
+.pc-db{display:flex;gap:6px;flex-shrink:0}
+.pc-db button{height:38px;padding:0 12px;border:1.5px solid var(--pc-line);border-radius:12px;background:var(--pc-card2);color:var(--pc-ink);font-family:inherit;font-weight:800;font-size:13px;cursor:pointer}
+.pc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:16px;background:var(--pc-card2)}
+.pc-tabs button{height:40px;border:0;border-radius:12px;background:transparent;color:var(--pc-mute);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
+.pc-tabs button.pc-on{background:var(--pc-card);color:var(--pc-ink);box-shadow:0 2px 8px rgba(38,14,79,.12)}
+.pc-course{display:flex;align-items:center;gap:10px;background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:18px;padding:12px 12px 12px 14px}
+.pc-grow{flex:1;min-width:0}
+.pc-ct{font-weight:800;font-size:16px}
+.pc-cs{font-size:12.5px;color:var(--pc-mute);margin-top:1px}
+.pc-bar{height:8px;border-radius:9px;background:var(--pc-card2);overflow:hidden;margin-top:7px}
+.pc-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FFC94D,#FFA51F);border-radius:9px;transition:width .5s}
+.pc-explore{height:38px;padding:0 12px;border:0;border-radius:12px;background:var(--pc-acc);color:#FFFFFF;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer}
+.pc-map{position:relative;width:350px;margin:0 auto;border-radius:26px;background:var(--pc-map);overflow:visible}
+.pc-path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.pc-path path{fill:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:2 14}
+.pc-p0{stroke:var(--pc-path)}.pc-p1{stroke:#FFC94D}
+.pc-chap{position:absolute;left:0;right:0;display:flex;justify-content:center}
+.pc-chap span{background:var(--pc-card);border:1.5px solid var(--pc-line);color:var(--pc-mute);font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px}
+.pc-chap b{color:var(--pc-ink)}
+.pc-node{position:absolute;width:92px;height:92px;margin:-46px 0 0 -46px}
+.pc-planet{position:absolute;inset:6px;border-radius:50%;box-shadow:inset -10px -12px 22px rgba(0,0,0,.35),0 8px 20px rgba(38,14,79,.22)}
+.pc-planet.pc-ring::after{content:"";position:absolute;left:-14px;right:-14px;top:42%;height:14px;border-radius:50%;border:3px solid rgba(255,255,255,.55);transform:rotate(-14deg)}
+.pc-badge{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#7046DC;border:2px solid rgba(255,255,255,.6);box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .15s;box-sizing:border-box}
+.pc-badge svg{width:24px;height:24px}
+.pc-hit{position:absolute;inset:0;border:0;border-radius:50%;background:transparent;cursor:pointer}
+.pc-hit:active+.pc-badge,.pc-node:active .pc-badge{transform:scale(.92)}
+.pc-locked .pc-planet{filter:grayscale(.9) brightness(.8);opacity:.55}
+.pc-locked .pc-badge{background:#9C93B8;border-color:rgba(255,255,255,.5)}
+.night .pc-locked .pc-badge{background:#3A325A;border-color:#5E5490}
+.pc-cur .pc-badge{background:#FFC94D;animation:pcPulse 1.6s infinite}
+.pc-cur .pc-badge svg path,.pc-cur .pc-badge svg{fill:#3A2A00;stroke:#3A2A00}
+.pc-cur .pc-badge svg[fill="none"],.pc-cur .pc-badge svg[fill="none"] path{fill:none}
+@keyframes pcPulse{0%,100%{box-shadow:0 4px 0 rgba(0,0,0,.25),0 0 0 0 rgba(255,201,77,.6)}50%{box-shadow:0 4px 0 rgba(0,0,0,.25),0 0 0 12px rgba(255,201,77,0)}}
+.pc-st{position:absolute;left:0;right:0;bottom:-12px;display:flex;justify-content:center;gap:2px}
+.pc-st svg{width:15px;height:15px}
+.pc-sdim{fill:var(--pc-dim)}
+.pc-bot{position:absolute;width:50px;height:58px;animation:bob 2.4s ease-in-out infinite;pointer-events:none}
+.pc-bot svg{width:100%;height:100%}
+.pc-done{position:absolute;left:20px;right:20px;bottom:16px;text-align:center;font-weight:800;color:var(--pc-good)}
+.pc-pop{position:absolute;z-index:6;width:250px;box-sizing:border-box;background:#7046DC;color:#FFFFFF;border-radius:18px;padding:14px;box-shadow:0 14px 30px rgba(38,14,79,.35);animation:sheetUp .2s ease-out}
+.pc-pop::before{content:"";position:absolute;top:-8px;left:var(--ax,50%);width:16px;height:16px;margin-left:-8px;background:#7046DC;transform:rotate(45deg);border-radius:3px}
+.pc-pk{font-size:12px;opacity:.85}
+.pc-pn{font-weight:800;font-size:18px;margin:2px 0 4px;line-height:1.15}
+.pc-pm{font-size:12.5px;opacity:.85}
+.pc-go{margin-top:12px;width:100%;height:46px;border:0;background:#FFFFFF;color:#7046DC;font-family:inherit;font-weight:800;font-size:15px;border-radius:14px;box-shadow:0 4px 0 rgba(0,0,0,.18);cursor:pointer}
+.pc-go:disabled{background:rgba(255,255,255,.3);color:#FFFFFF;box-shadow:none}
+.pc-sheet{position:absolute;inset:0;z-index:96;pointer-events:auto;display:flex;align-items:flex-end;background:rgba(20,8,40,.45);animation:fadeIn .2s}
+.pc-sin{width:100%;max-height:84%;overflow-y:auto;box-sizing:border-box;background:var(--pc-bg);color:var(--pc-ink);border-radius:26px 26px 0 0;padding:18px 18px 34px;animation:sheetUp .25s ease-out}
+.pc-sh{display:flex;align-items:center;justify-content:space-between}
+.pc-sh h2{margin:0;font-size:24px;font-weight:800}
+.pc-x{width:36px;height:36px;border:0;border-radius:18px;background:var(--pc-card2);color:var(--pc-ink);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 36px;padding:0}
+.pc-x svg{width:16px;height:16px}
+.pc-lead{color:var(--pc-mute);font-size:13.5px;margin:6px 0 14px;line-height:1.4}
+.pc-plist{display:flex;flex-direction:column;gap:10px}
+.pc-pc{display:flex;gap:12px;align-items:center;text-align:left;background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:18px;padding:12px;font-family:inherit;color:var(--pc-ink);cursor:pointer}
+.pc-pc.pc-on{border-color:#FFC94D}
+.pc-pl{width:50px;height:50px;border-radius:50%;flex:0 0 50px;box-shadow:inset -7px -8px 14px rgba(0,0,0,.35)}
+.pc-pt{display:block;font-weight:800;font-size:15px}
+.pc-pd{display:block;font-size:12.5px;color:var(--pc-mute);margin-top:2px;line-height:1.35}
+.pc-tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.pc-tag{font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;background:var(--pc-card2);color:var(--pc-mute)}
+.pc-tag.pc-free{color:var(--pc-good)}
+#pcLayer{position:absolute;inset:0;z-index:88;pointer-events:none}
+#pcLayer>*{pointer-events:auto}
+.pcs{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--pc-bg);color:var(--pc-ink);padding:56px 18px 28px;box-sizing:border-box;overflow:hidden;animation:fadeIn .18s}
+.pcs-bar{display:flex;align-items:center;gap:10px}
+.pcs-prog{flex:1;height:12px;margin:0}
+.pcs-prog i{background:linear-gradient(90deg,#2FC27B,#3DD68C)}
+.pcs-stage{flex:1;display:flex;flex-direction:column;padding-top:18px;min-height:0;overflow-y:auto}
+.pcs-kind{font-weight:800;font-size:22px;margin:0 0 14px;letter-spacing:-.01em}
+.pcs-mentor{display:flex;align-items:flex-end;gap:10px;margin-bottom:22px}
+.pcs-bot{width:66px;height:76px;flex:0 0 66px}.pcs-bot svg{width:100%;height:100%}
+.pcs-bubble{position:relative;background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:18px;padding:12px 14px;font-weight:700;font-size:15.5px;line-height:1.35;margin-bottom:22px}
+.pcs-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pcs-tile{min-height:108px;background:var(--pc-card);border:2px solid var(--pc-line);border-radius:20px;padding:12px;font-family:inherit;font-weight:800;font-size:15px;line-height:1.3;color:var(--pc-ink);box-shadow:0 5px 0 var(--pc-sh);cursor:pointer;transition:background .2s,border-color .2s}
+.pcs-tile.pcs-long{min-height:0;text-align:left;font-weight:600;font-size:14px;grid-column:1/-1}
+.pcs-tile.pc-good,.pcs-pairs .pc-done,.pcs-ai .pc-good{background:var(--pc-goodbg);border-color:var(--pc-good)}
+.pcs-tile.pc-bad,.pcs-pairs .pc-bad,.pcs-ai .pc-bad{background:var(--pc-badbg);border-color:var(--pc-bad)}
+.pcs-card{background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:22px;padding:20px 16px;text-align:center;font-weight:800;font-size:17px;line-height:1.35;box-shadow:8px 8px 0 var(--pc-card2)}
+.pcs-slot{display:inline-block;min-width:120px;min-height:22px;margin-top:12px;border-radius:12px;background:var(--pc-bg);border:2px dashed var(--pc-line);padding:8px 12px;font-size:15px;transition:border-color .2s}
+.pcs-slot.pc-hot{border-color:#FFC94D}.pcs-slot.pc-full{border-style:solid;border-color:var(--pc-acc)}
+.pcs-slot.pc-good{border-color:var(--pc-good);background:var(--pc-goodbg)}.pcs-slot.pc-bad{border-color:var(--pc-bad);background:var(--pc-badbg)}
+.pcs-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px}
+.pcs-dchip{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pc-card);border:2px solid var(--pc-line);border-radius:14px;padding:12px 8px;font-weight:800;font-size:14px;color:var(--pc-ink);touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;box-sizing:border-box}
+.pcs-grip{opacity:.45;font-size:11px;letter-spacing:-1px}
+.pc-drag{z-index:200;pointer-events:none;box-shadow:0 12px 24px rgba(38,14,79,.35)}
+.pcs-dchip.pc-used{opacity:.3}
+.pcs-ticks{display:flex;justify-content:space-between;margin:30px 4px 4px;font-weight:800;color:var(--pc-mute);font-variant-numeric:tabular-nums}
+.pcs-ticks span.pc-on{color:var(--pc-acc)}
+.pcs-range{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:44px;margin:0}
+.pcs-range::-webkit-slider-runnable-track{height:10px;border-radius:9px;background:var(--pc-card2)}
+.pcs-range::-moz-range-track{height:10px;border-radius:9px;background:var(--pc-card2)}
+.pcs-range::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-10px;border-radius:9px;background:#FFC94D;border:3px solid #FFFFFF;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.pcs-range::-moz-range-thumb{width:26px;height:26px;border-radius:9px;background:#FFC94D;border:3px solid #FFFFFF}
+.pcs-pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pcs-pairs button{min-height:60px;background:var(--pc-card);border:2px solid var(--pc-line);border-radius:14px;padding:8px;font-family:inherit;font-weight:800;font-size:14px;color:var(--pc-ink);cursor:pointer;transition:background .2s,border-color .2s,opacity .3s}
+.pcs-pairs button.pc-sel{border-color:#FFC94D;background:var(--pc-card2)}
+.pcs-pairs button.pc-done{opacity:.55}
+.pcs-ai{background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:18px;padding:14px;line-height:1.7;font-size:15.5px}
+.pcs-who{font-size:12px;color:var(--pc-mute);font-weight:800;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.pcs-ai button{display:inline;padding:2px 3px;border:0;border-bottom:2px dotted var(--pc-line);border-radius:6px;background:transparent;font-family:inherit;font-size:inherit;color:var(--pc-ink);text-align:left;cursor:pointer}
+.pcs-learn{background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:20px;padding:16px;line-height:1.5;font-size:15.5px}
+.pcs-learn h3{font-size:18px;margin:0 0 8px}
+.pcs-learn ul{margin:10px 0 0;padding-left:18px}.pcs-learn li{margin:4px 0}
+.pcs-video{position:relative;height:200px;border-radius:20px;overflow:hidden;background:#1B1330;display:flex;align-items:center;justify-content:center}
+.pcs-video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pcs-vshade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.7))}
+.pcs-play{position:relative;width:64px;height:64px;border:0;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s}
+.pcs-play svg{width:26px;height:26px;margin-left:4px}.pcs-play svg path{fill:#7046DC}
+.pcs-vlock{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;color:#FFFFFF;font-weight:800}
+.pcs-vlock svg{width:30px;height:30px}
+.pcs-vlock b{background:#7046DC;padding:3px 10px;border-radius:10px;font-size:13px}
+.pcs-vt{position:absolute;left:14px;right:14px;bottom:26px;color:#FFFFFF;font-weight:800;font-size:16px}
+.pcs-vb{position:absolute;left:14px;right:14px;bottom:14px;height:5px;border-radius:5px;background:rgba(255,255,255,.3)}
+.pcs-vb i{display:block;height:100%;width:0;background:#FFFFFF;border-radius:5px}
+.pcs-note{font-size:13px;color:var(--pc-mute);margin:12px 0 0;line-height:1.4;text-align:center}
+.pcs-sec{margin-top:14px;height:46px;border:1.5px solid var(--pc-line);border-radius:14px;background:var(--pc-card);color:var(--pc-ink);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
+.pcs-foot{padding-top:12px}
+.pcs-cta{width:100%;height:54px;border:0;background:#7046DC;color:#FFFFFF;border-radius:18px;font-family:inherit;font-weight:800;font-size:16px;box-shadow:0 5px 0 #4A2A9E;cursor:pointer}
+.pcs-cta:disabled{background:var(--pc-line);color:var(--pc-mute);box-shadow:none}
+.pcs-fb{position:absolute;left:0;right:0;bottom:0;padding:18px 18px 28px;border-radius:24px 24px 0 0;animation:sheetUp .22s ease-out;z-index:3}
+.pcs-fb.pc-good{background:var(--pc-goodbg);border-top:2px solid var(--pc-good)}.pcs-fb.pc-bad{background:var(--pc-badbg);border-top:2px solid var(--pc-bad)}
+.pcs-fb h4{margin:0 0 4px;font-size:20px;font-weight:800}
+.pcs-fb.pc-good h4{color:var(--pc-good)}.pcs-fb.pc-bad h4{color:var(--pc-bad)}
+.pcs-fb p{margin:0 0 14px;line-height:1.4;font-size:14.5px;color:var(--pc-ink)}
+.pcs-fb.pc-good .pcs-cta{background:#1FA866;box-shadow:0 5px 0 #157146}
+.pcs-fb.pc-bad .pcs-cta{background:#D43B4B;box-shadow:0 5px 0 #8E2430}
+.pcs-end{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
+.pcs-big{display:flex;gap:6px;align-items:flex-end;margin-bottom:10px}
+.pcs-big svg{width:54px;height:54px;animation:pcPop .5s backwards}
+.pcs-big svg:nth-child(2){width:70px;height:70px;animation-delay:.15s}.pcs-big svg:nth-child(3){animation-delay:.3s}
+@keyframes pcPop{from{transform:scale(0) rotate(-40deg)}}
+@keyframes pcShake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pcs-end h2{font-weight:800;font-size:28px;margin:0}
+.pcs-sub{color:var(--pc-mute);font-size:13.5px}
+.pcs-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin:18px 0}
+.pcs-stats div{background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:16px;padding:10px 6px}
+.pcs-stats b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
+.pcs-stats span{font-size:11.5px;color:var(--pc-mute)}
+.pcs-gain{background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:16px;padding:10px 14px;font-weight:700;font-size:14px;width:100%;box-sizing:border-box;line-height:1.4}
+@media (prefers-reduced-motion:reduce){.pc-bot,.pc-cur .pc-badge,.pcs-big svg{animation:none}}
 .fm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px}
 .fm-title{margin:0;font-size:31px;font-weight:800;letter-spacing:-.02em;color:var(--fm-ink)}
 .fm-icons{display:flex;gap:10px}
@@ -304,6 +457,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div id="stage"><div id="app"><div id="root"></div></div></div>
 <template id="tpl">
 <div class="{{themeCls}}" style="width: 390px; height: 100%; position: relative; overflow: hidden; background: #F4F2F8; font-family: {{fontFamily}}; color: #260E4F">
+<div id="pcLayer" data-ext="1"></div>
+<div id="jeuHost" data-ext="1" style="position: absolute; left: 0; right: 0; top: 96px; bottom: 0; z-index: 0; display: none"></div>
 
 <sc-if value="{{showIntro}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; inset: 0; background: #000000; overflow: hidden">
@@ -407,10 +562,12 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div class="fm-head">
 <h2 class="fm-title">Apprendre</h2>
 <div class="fm-icons">
-<button class="tap fm-ib" type="button" onClick="{{buzzOnly}}" aria-label="Rechercher une vidéo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg></button>
-<button class="tap fm-ib" type="button" onClick="{{buzzOnly}}" aria-label="Mes téléchargements"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+<button class="tap fm-ib" type="button" onClick="{{soonSearch}}" aria-label="Rechercher une vidéo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg></button>
+<button class="tap fm-ib" type="button" onClick="{{soonDl}}" aria-label="Mes téléchargements"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
 </div>
 </div>
+<div id="pcHost" data-ext="1"></div>
+<sc-if value="{{fmVids}}" hint-placeholder-val="{{ false }}">
 <div class="noscroll hscroll fm-chips">
 <sc-for list="{{fm.chips}}" as="ch" hint-placeholder-count="4"><button class="tap fm-chip {{ch.cls}}" type="button" onClick="{{ch.pick}}">{{ch.label}}</button></sc-for>
 </div>
@@ -424,6 +581,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <sc-for list="{{m.eps}}" as="e" hint-placeholder-count="3"><button class="tap fm-thumb fm-small" type="button" onClick="{{e.open}}" aria-label="{{e.aria}}"><img src="{{e.img}}" alt="" draggable="false"><span class="fm-shade"></span><span class="fm-tt">{{e.t1}} <b>{{e.t2}}</b></span><sc-if value="{{e.done}}" hint-placeholder-val="{{ false }}"><span class="fm-ok"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></sc-if><sc-if value="{{e.locked}}" hint-placeholder-val="{{ false }}"><span class="fm-lock"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg><b class="fm-price">{{e.price}}</b></span></sc-if><sc-if value="{{e.hasProg}}" hint-placeholder-val="{{ false }}"><span class="fm-prog"><i style="{{e.prog}}"></i></span></sc-if></button></sc-for>
 </div>
 </sc-for>
+</sc-if>
 </div>
 </sc-if>
 
@@ -441,8 +599,8 @@ html, body, #stage, #app { overscroll-behavior: none }
 <div class="fmv-meta"><span>{{fv.ep}}</span><span>{{fv.dur}}</span><span>{{fv.lvl}}</span><span>Mis à jour oct. 2026</span></div>
 <div class="fmv-btns">
 <button class="tap fmv-go" type="button" onClick="{{fv.play}}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"></path></svg>{{fv.cta}}</button>
-<button class="tap fmv-sq" type="button" onClick="{{buzzOnly}}" aria-label="Télécharger la vidéo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
-<button class="tap fmv-sq" type="button" onClick="{{buzzOnly}}" aria-label="Ajouter à ma liste"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+<button class="tap fmv-sq" type="button" onClick="{{soonDl}}" aria-label="Télécharger la vidéo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+<button class="tap fmv-sq" type="button" onClick="{{soonList}}" aria-label="Ajouter à ma liste"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
 </div>
 <p class="fmv-desc">{{fv.desc}}</p>
 <div class="fmv-learn"><span class="fmv-lh">Ce que tu vas savoir faire</span>
@@ -464,162 +622,34 @@ html, body, #stage, #app { overscroll-behavior: none }
 <button class="tap card" type="button" onClick="{{openMyLists}}" style="width: 100%; box-sizing: border-box; margin: -8px 0 24px; padding: 14px 18px; border-radius: 24px; border: 1.5px solid #DED6EC; background: #FFFFFF; display: flex; align-items: center; gap: 14px; text-align: left; font-family: inherit; color: #260E4F; cursor: pointer"><span style="width: 44px; height: 44px; flex: 0 0 44px; border-radius: 22px; background: #EBE4F6; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 800">Mes listes</span><span style="font-size: 13px; color: #6C5A8C">{{listsSub}}</span></span><span style="font-size: 22px; color: #6C5A8C">›</span></button>
 <h2 style="margin: 0; align-self: flex-start; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Mon avancement</h2>
 <div class="card" style="margin-top: 28px; width: 200px; height: 200px; position: relative">
-<svg width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="Avancement global : 0 %"><circle cx="100" cy="100" r="86" fill="none" stroke="#EBE4F6" stroke-width="16"></circle><circle cx="100" cy="100" r="86" fill="none" stroke="#7046DC" stroke-width="16" stroke-linecap="round" stroke-dasharray="20 540" transform="rotate(-90 100 100)"></circle></svg>
+<svg width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="{{pf.aria}}"><circle cx="100" cy="100" r="86" fill="none" stroke="#EBE4F6" stroke-width="16"></circle><circle cx="100" cy="100" r="86" fill="none" stroke="#7046DC" stroke-width="16" stroke-linecap="round" stroke-dasharray="{{pf.dash}}" transform="rotate(-90 100 100)"></circle></svg>
 <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
-<span style="font-size: 40px; font-weight: 800">0 %</span>
+<span style="font-size: 40px; font-weight: 800">{{pf.pct}}</span>
 <span style="font-size: 13px; color: #6C5A8C">de ton parcours</span>
 </div>
 </div>
-<p style="margin: 18px 0 0; font-size: 16px; font-weight: 700">Aucun apprentissage commencé</p>
-<p style="margin: 4px 0 0; font-size: 14px; color: #6C5A8C">Commence ton premier apprentissage pour faire avancer ton cercle.</p>
+<p style="margin: 18px 0 0; font-size: 16px; font-weight: 700">{{pf.title}}</p>
+<p style="margin: 4px 0 0; font-size: 14px; color: #6C5A8C">{{pf.sub}}</p>
 <div style="margin-top: 26px; width: 100%; display: flex; flex-direction: column; gap: 10px">
 <div class="card" style="padding: 16px 18px; border-radius: 22px; border: 1.5px solid #DED6EC; display: flex; align-items: center; justify-content: space-between; text-align: left">
 <span style="display: flex; flex-direction: column; gap: 2px">
 <span style="font-size: 13px; color: #6C5A8C">Mon niveau</span>
 <span style="font-size: 17px; font-weight: 800">{{levelName}}</span>
 </span>
-<button class="tap" type="button" onClick="{{startQuiz}}" style="height: 40px; padding: 0 16px; border: none; border-radius: 20px; background: #EBE4F6; color: #260E4F; font-family: inherit;font-size: 14px; font-weight: 700; cursor: pointer">Refaire le quiz</button>
+<button class="tap" type="button" onClick="{{startQuiz}}" style="height: 40px; padding: 0 16px; border: none; border-radius: 20px; background: #EBE4F6; color: #260E4F; font-family: inherit;font-size: 14px; font-weight: 700; cursor: pointer">{{quizBtn}}</button>
 </div>
 <div class="card" style="padding: 16px 18px; border-radius: 22px; border: 1.5px solid #DED6EC; display: flex; align-items: center; justify-content: space-between; text-align: left">
 <span style="display: flex; flex-direction: column; gap: 2px">
-<span style="font-size: 13px; color: #6C5A8C">Mes apprentissages</span>
-<span style="font-size: 17px; font-weight: 800">0</span>
+<span style="font-size: 13px; color: #6C5A8C">Étoiles · série</span>
+<span style="font-size: 17px; font-weight: 800">{{pf.stars}} étoiles · {{pf.streak}}</span>
 </span>
-<button class="tap" type="button" onClick="{{goForm}}" style="height: 40px; padding: 0 16px; border: none; border-radius: 20px; background: #7046DC; color: #260E4F; font-family: inherit;font-size: 14px; font-weight: 700; cursor: pointer">Découvrir</button>
+<button class="tap" type="button" onClick="{{goForm}}" style="height: 40px; padding: 0 16px; border: none; border-radius: 20px; background: #7046DC; color: #260E4F; font-family: inherit;font-size: 14px; font-weight: 700; cursor: pointer">{{pf.btn}}</button>
 </div>
 </div>
 </div>
 </sc-if>
 
-<sc-if value="{{showJeu}}" hint-placeholder-val="{{ false }}">
-<div class="screen noscroll" style="height: 100%; overflow-y: auto; box-sizing: border-box; padding: 104px 16px 160px">
-<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
-<div style="display: flex; flex-direction: column; min-width: 0">
-<span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: #6C5A8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.headLabel}}</span><button class="tap" type="button" onClick="{{g.info.credits}}" aria-label="Explication" style="width: 22px; height: 22px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 11px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 12px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 22px">i</button></span>
-<span style="display: flex; align-items: baseline; gap: 4px; line-height: 1.05; white-space: nowrap"><span id="inoAmount" style="{{g.amountStyle}}">{{g.credits}}</span><span style="{{g.euroStyle}}">€</span></span>
-<sc-if value="{{g.showRate}}" hint-placeholder-val="{{ false }}"><span style="{{g.rateStyle}}">{{g.rateLabel}}</span></sc-if>
-</div>
-<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex: 0 0 auto">
-<button class="tap" type="button" onClick="{{g.openWorld}}" style="height: 44px; padding: 0 14px; border: none; border-radius: 22px; font-family: inherit; font-weight: 800; color: #260E4F; cursor: pointer; background: #EBE4F6; display: flex; align-items: center; gap: 6px; font-size: 14px; flex: 0 0 auto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l5-3v14M10 21V4l9 4v13"></path><path d="M13 11h3M13 15h3"></path></svg>Mon monde</button>
-</div>
-</div>
-<div style="margin-top: 8px; display: flex"><button class="tap {{g.dateCls}}" type="button" onClick="{{g.openDate}}" aria-label="Date dans le jeu" style="height: 32px; padding: 0 12px; border: none; border-radius: 16px; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 800; color: #260E4F; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7046DC" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>{{g.dateLabel}}</button></div>
-<div class="ino-strip"><sc-for list="{{g.tiles}}" as="tl" hint-placeholder-count="4"><button class="tap {{tl.cls}}" type="button" onClick="{{tl.open}}"><small>{{tl.t}}</small><b>{{tl.sub}}</b><sc-if value="{{tl.dot}}" hint-placeholder-val="{{ false }}"><span class="dot">{{tl.badge}}</span></sc-if></button></sc-for></div>
-<sc-if value="{{g.hasBoost}}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 12px; background: #EBE4F6; font-size: 12px; font-weight: 800">{{g.boostLabel}}</span></sc-if>
-
-<div style="margin-top: 12px; position: relative">
-<button class="tap hqbtn" type="button" onClick="{{g.tap}}" aria-label="Travailler : clique sur la planète" style="position: relative; display: block; width: 100%; height: 300px; padding: 0; border: none; border-radius: 28px; overflow: hidden; cursor: pointer; background: #F2EEFA; touch-action: manipulation; font-family: inherit">
-<canvas id="inoPlanet" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none"></canvas>
-<sc-if value="{{g.showHint}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 50%; top: 46px; z-index: 2; padding: 8px 14px; border-radius: 16px; background: #7046DC; color: #260E4F; font-size: 14px; font-weight: 800; white-space: nowrap; pointer-events: none; animation: hintBob 1.2s ease-in-out infinite">Clique sur la planète !</span></sc-if>
-<sc-if value="{{g.showWhisper}}" hint-placeholder-val="{{ false }}"><span class="whisper" style="position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 2; padding: 9px 12px; border-radius: 16px; background: rgba(14,10,22,0.86); color: #FFFFFF; font-size: 13px; font-weight: 700; line-height: 1.35; text-align: left; pointer-events: none; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; flex: 0 0 8px; border-radius: 4px; background: #E5484D" class="blink"></span><span><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #F3B7B9">Message inconnu</span>{{g.whisper}}</span></span></sc-if>
-<span style="position: absolute; left: 50%; top: 12px; transform: translateX(-50%); z-index: 2; padding: 7px 16px; border-radius: 16px; background: #260E4F; color: #FFFFFF; font-size: 15px; font-weight: 800; white-space: nowrap; pointer-events: none">{{g.clicLabel}}</span>
-</button>
-<sc-if value="{{g.hasCombo}}" hint-placeholder-val="{{ false }}"><span class="combo" style="position: absolute; z-index: 4; top: 54px; left: 50%; padding: 6px 14px; border-radius: 16px; background: #260E4F; color: #FFFFFF; font-size: 14px; font-weight: 800; white-space: nowrap">{{g.comboLabel}}</span></sc-if>
-</div>
-<div style="margin-top: 12px; display: flex; align-items: center; gap: 6px">
-<sc-for list="{{g.steps}}" as="sp" hint-placeholder-count="4">
-<span style="display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 0 0 58px"><span class="stg" style="{{sp.style}}"><img src="{{sp.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none"></span><span style="{{sp.labStyle}}">{{sp.lab}}</span></span>
-<sc-if value="{{sp.hasBar}}" hint-placeholder-val="{{ true }}"><span style="flex: 1; height: 6px; border-radius: 3px; background: #EBE4F6; overflow: hidden"><span class="barfx" style="{{sp.bar}}"></span></span></sc-if>
-</sc-for>
-<button class="tap" type="button" onClick="{{g.info.steps}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
-</div>
-<div style="margin-top: 6px; font-size: 12px; font-weight: 800; color: #6C5A8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.lvlLine}}</div>
-
-<sc-if value="{{g.hasCta}}" hint-placeholder-val="{{ false }}"><button class="tap missionb shine" type="button" onClick="{{g.ctaAct}}" style="{{g.ctaStyle}}"><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px"><span style="font-size: 16px; font-weight: 800">{{g.ctaT}}</span><span style="font-size: 13px; font-weight: 600; opacity: 0.85; line-height: 1.35">{{g.ctaD}}</span></span><span style="{{g.ctaBStyle}}">{{g.ctaB}}</span></button></sc-if>
-
-<sc-if value="{{g.hasGoal}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 12px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 22px; background: #FFFFFF; border: 1.5px solid #DED6EC">
-<span style="width: 40px; height: 40px; flex: 0 0 40px; border-radius: 20px; background: #EBE4F6; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.5" fill="#260E4F"></circle></svg></span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #6C5A8C">{{g.goalN}}</span><span style="font-size: 15px; font-weight: 800">{{g.goalT}}</span><span style="font-size: 12px; font-weight: 700; color: #8A63F0">{{g.goalR}}</span></span>
-<sc-if value="{{g.goalDone}}" hint-placeholder-val="{{ false }}"><button class="tap shine" type="button" onClick="{{g.claimGoal}}" style="flex: 0 0 auto; height: 40px; padding: 0 14px; border: none; border-radius: 20px; background: #7046DC; font-family: inherit; font-size: 13px; font-weight: 800; color: #260E4F; cursor: pointer">Récupérer</button></sc-if>
-</div></sc-if>
-<sc-if value="{{g.f.ctrl}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.ctrl}}"><div style="margin-top: 12px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F9F7FC">
-<span style="{{g.ctrlDot}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z" fill="#FFFFFF"></path><circle cx="12" cy="12" r="2.6" fill="#260E4F"></circle></svg></span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.ctrlLabel}}</span><span>{{g.ctrlPct}}</span></span><span style="display: block; height: 10px; border-radius: 5px; background: #EBE4F6; overflow: hidden"><span class="barfx" style="{{g.ctrlBar}}"></span></span><span style="font-size: 11px; font-weight: 700; color: #6C5A8C">{{g.ctrlSub}}</span></span>
-<sc-if value="{{g.canUnplug}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{g.unplug}}" aria-label="Débrancher 20 % des agents" style="width: 40px; height: 40px; flex: 0 0 40px; border: 1.5px solid #E5484D; border-radius: 20px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B4232A" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v9M6.3 7a8 8 0 1 0 11.4 0"></path></svg></button></sc-if>
-<button class="tap" type="button" onClick="{{g.info.ctrl}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
-</div></div></sc-if>
-<sc-if value="{{g.f.rep}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.rep}}"><div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F9F7FC">
-<span style="{{g.repStar}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1L3.2 9.4l6.1-.8z" fill="#FFFFFF" stroke="#260E4F" stroke-width="1.6" stroke-linejoin="round"></path></svg></span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span>Réputation · {{g.repName}}</span><span>{{g.repVal}}</span></span><span style="display: block; height: 10px; border-radius: 5px; background: #EBE4F6; overflow: hidden"><span class="barfx" style="{{g.repFill}}"></span></span></span>
-<sc-if value="{{g.repLow}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{g.restoreImage}}" style="{{g.repBtnStyle}}"><span style="font-size: 11px">Redorer</span><span>{{g.repBtn}}</span></button></sc-if>
-<button class="tap" type="button" onClick="{{g.info.rep}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
-</div></div></sc-if>
-<sc-if value="{{g.f.sec}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.sec}}"><div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 20px; background: #F9F7FC">
-<span style="width: 40px; height: 40px; flex: 0 0 40px; border-radius: 20px; background: #260E4F; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4" stroke-linecap="round"></path></svg></span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800"><span>Sécurité</span><span>{{g.secLevel}}</span></span><span style="display: flex; gap: 4px"><sc-for list="{{g.secDots}}" as="sd" hint-placeholder-count="5"><span style="{{sd.style}}"></span></sc-for></span><span style="{{g.secNeedStyle}}">{{g.secNeed}}</span></span>
-<sc-if value="{{g.secCanBuy}}" hint-placeholder-val="{{ true }}"><button class="tap" type="button" onClick="{{g.buySec}}" style="{{g.secBtnStyle}}"><span style="font-size: 11px">Renforcer</span><span>{{g.secBtn}}</span></button></sc-if>
-<button class="tap" type="button" onClick="{{g.info.sec}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button>
-</div></div></sc-if>
-
-<sc-if value="{{g.f.actions}}" hint-placeholder-val="{{ true }}"><div style="margin-top: 12px; display: flex; gap: 8px">
-<sc-if value="{{g.f.actu}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.actu}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.openActu}}" aria-label="Actu du jour" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #EBE4F6; font-family: inherit; color: #260E4F; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="15" height="15" rx="2" fill="#FFFFFF"></rect><path d="M18 9h3v9a2 2 0 0 1-2 2"></path><path d="M6 9h9M6 13h9M6 16h6"></path></svg><span style="font-size: 12px; font-weight: 800">Actu</span><span style="position: absolute; top: 6px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #7046DC; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{g.actuBadge}}</span></button></div></sc-if>
-<sc-if value="{{g.f.train}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.train}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.openTrain}}" aria-label="S’entraîner" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #EBE4F6; font-family: inherit; color: #260E4F; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a3 3 0 0 0-3-1z" fill="#FFFFFF"></path><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1V5a3 3 0 0 1 3-1z" fill="#FFFFFF"></path></svg><span style="font-size: 12px; font-weight: 800">Entraîne</span><span style="position: absolute; top: 6px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #7046DC; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{g.trainLeft}}</span></button></div></sc-if>
-<sc-if value="{{g.f.tasks}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.tasks}}" style="position: relative; flex: 1 1 0; min-width: 0"><button class="tap" type="button" onClick="{{g.openTasks}}" aria-label="Tâches réelles" style="position: relative; width: 100%; height: 82px; border: none; border-radius: 22px; background: #260E4F; font-family: inherit; color: #FFFFFF; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2" fill="#7046DC"></rect><path d="M9 4V3h6v1M8.5 12l2.5 2.5 4.5-5"></path></svg><span style="font-size: 12px; font-weight: 800">Tâches réelles</span><span style="{{g.tasksBadge}}">{{g.tasksN}}</span></button></div></sc-if>
-</div></sc-if>
-
-<sc-if value="{{g.f.apps}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.apps}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Tes applis IA</span><button class="tap" type="button" onClick="{{g.info.apps}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div class="noscroll hscroll" style="margin: 10px -16px 0; padding: 0 16px; display: flex; gap: 8px; overflow-x: auto">
-<sc-for list="{{g.apps}}" as="ap" hint-placeholder-count="2"><button class="tap" type="button" onClick="{{ap.open}}" style="flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border: 1.5px solid #DED6EC; border-radius: 20px; background: #FFFFFF; font-family: inherit; color: #260E4F; cursor: pointer"><img src="{{ap.img}}" alt="" draggable="false" style="width: 54px; height: 54px; object-fit: contain; pointer-events: none"><span style="font-size: 12px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 84px">{{ap.name}}</span><span style="font-size: 10px; font-weight: 700; color: #6C5A8C">{{ap.sub}}</span></button></sc-for>
-<button class="tap" type="button" onClick="{{g.addApp}}" aria-label="Ajouter une appli" style="flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 8px 4px; border: 2px dashed #C3AFE6; border-radius: 20px; background: #F9F7FC; font-family: inherit; color: #260E4F; cursor: pointer"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#260E4F" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg><span style="font-size: 12px; font-weight: 800">Ajouter</span></button>
-</div></div></sc-if>
-
-<sc-if value="{{g.f.agents}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.agents}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Tes agents IA</span><button class="tap" type="button" onClick="{{g.info.agents}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<sc-if value="{{g.hasOffer}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 10px; padding: 14px; border-radius: 22px; border: 2px solid #F0D58A; background: #FFFBF0; display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #8A6A10">{{g.offerLeft}}</span>
-<span style="font-size: 16px; font-weight: 800">{{g.offerName}}</span>
-<span style="display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; font-weight: 700"><span style="color: #8A63F0; font-size: 15px; font-weight: 800">{{g.offerL1}}</span><span style="color: #6C5A8C">{{g.offerL2}}</span><span style="{{g.offerL3Style}}">{{g.offerL3}}</span></span>
-<button class="tap shine" type="button" onClick="{{g.buyOffer}}" style="margin-top: 4px; height: 42px; border: none; border-radius: 21px; background: linear-gradient(135deg,#F6D27A,#E8B04A); color: #3A2A00; font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{g.offerCost}}</button>
-</div></sc-if>
-<div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
-<sc-for list="{{g.agents}}" as="ag" hint-placeholder-count="4">
-<sc-if value="{{ag.show}}" hint-placeholder-val="{{ true }}"><div style="{{ag.cardStyle}}">
-<span style="position: relative; display: block; height: 96px">
-<span style="{{ag.artStyle}}"><img class="floaty" src="{{ag.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; object-position: center bottom; display: block; pointer-events: none"></span>
-<button class="tap" type="button" onClick="{{ag.info}}" aria-label="Explication" style="position: absolute; top: 0; right: 0; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer">i</button>
-<sc-if value="{{ag.open}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: 0; left: 0; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 13px; background: #7046DC; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{ag.count}}</span></sc-if>
-</span>
-<span style="display: block; margin-top: 6px; font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ag.short}}</span>
-<span style="display: block; font-size: 11px; font-weight: 700; color: #6C5A8C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ag.by}}</span>
-<sc-if value="{{ag.open}}" hint-placeholder-val="{{ true }}"><span style="margin-top: 6px; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 14px; font-weight: 800; color: #260E4F">{{ag.l1}}</span><span style="font-size: 11px; font-weight: 700; color: #6C5A8C">{{ag.l2}}</span><span style="{{ag.l3Style}}">{{ag.l3}}</span><span style="{{ag.l4Style}}">{{ag.l4}}</span></span>
-<button class="tap" type="button" onClick="{{ag.buy}}" style="{{ag.buyStyle}}">{{ag.cost}}</button>
-<sc-if value="{{ag.canBonus}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{ag.bonus}}" style="margin-top: 6px; width: 100%; height: 30px; border: 1.5px dashed #E8B04A; border-radius: 15px; background: #FFFBF0; font-family: inherit; font-size: 12px; font-weight: 800; color: #8A6A10; cursor: pointer">{{ag.bonusLabel}}</button></sc-if></sc-if>
-<sc-if value="{{ag.locked}}" hint-placeholder-val="{{ false }}"><button class="tap" type="button" onClick="{{ag.learn}}" style="margin-top: 8px; width: 100%; height: 40px; border: none; border-radius: 20px; font-family: inherit; font-size: 13px; font-weight: 800; color: #FFFFFF; cursor: pointer; background: #260E4F; white-space: nowrap">{{ag.learnLabel}}</button></sc-if>
-</div></sc-if>
-</sc-for>
-</div>
-</div></sc-if>
-<sc-if value="{{g.f.team}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.team}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="display: flex; flex-direction: column"><span style="font-size: 15px; font-weight: 800">Ton équipe</span><span style="font-size: 11px; font-weight: 700; color: #6C5A8C">{{g.teamSub}}</span></span><button class="tap" type="button" onClick="{{g.info.team}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px">
-<sc-for list="{{g.humans}}" as="hu" hint-placeholder-count="2"><sc-if value="{{hu.show}}" hint-placeholder-val="{{ true }}"><div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 20px; border: 1.5px solid #DED6EC; background: #FFFFFF">
-<button class="tap" type="button" onClick="{{hu.info}}" aria-label="À quoi il sert" style="position: relative; width: 50px; height: 56px; flex: 0 0 50px; padding: 0; border: none; background: none; cursor: pointer"><img src="{{hu.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none"><span style="position: absolute; top: -4px; left: -4px; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; background: #7046DC; font-size: 12px; font-weight: 800; color: #260E4F; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{hu.count}}</span></button>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 800">{{hu.name}}</span><span style="font-size: 11px; font-weight: 700; color: #6C5A8C">{{hu.sub}}</span></span>
-<button class="tap" type="button" onClick="{{hu.hire}}" style="{{hu.btnStyle}}">{{hu.cost}}</button>
-</div></sc-if></sc-for>
-</div>
-</div></sc-if>
-<sc-if value="{{g.f.systems}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.systems}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Systèmes IA</span><button class="tap" type="button" onClick="{{g.info.systems}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
-<sc-for list="{{g.systems}}" as="sy" hint-placeholder-count="2"><div style="{{sy.cardStyle}}">
-<span style="position: relative; display: block; height: 90px"><span style="{{sy.artStyle}}"><img class="floaty" src="{{sy.img}}" alt="" draggable="false" style="width: 100%; height: 100%; object-fit: contain; object-position: center bottom; display: block; pointer-events: none"></span>
-<button class="tap" type="button" onClick="{{sy.info}}" aria-label="Explication" style="position: absolute; top: 0; right: 0; z-index: 2; width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer">i</button>
-<sc-if value="{{sy.open}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: 0; left: 0; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 13px; background: #7046DC; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">{{sy.count}}</span></sc-if></span>
-<span style="display: block; margin-top: 6px; font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{sy.name}}</span>
-<span style="display: block; font-size: 11px; font-weight: 700; color: #6C5A8C">{{sy.by}}</span>
-<span style="margin-top: 6px; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 14px; font-weight: 800">{{sy.l1}}</span><span style="font-size: 11px; font-weight: 700; color: #6C5A8C">{{sy.l2}}</span><span style="{{sy.l3Style}}">{{sy.l3}}</span><span style="{{sy.l4Style}}">{{sy.l4}}</span></span>
-<button class="tap" type="button" onClick="{{sy.buy}}" style="{{sy.buyStyle}}">{{sy.cost}}</button>
-</div></sc-for>
-</div>
-</div></sc-if>
-<sc-if value="{{g.f.ups}}" hint-placeholder-val="{{ true }}"><div class="{{g.nf.ups}}"><div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 15px; font-weight: 800">Améliorations</span><button class="tap" type="button" onClick="{{g.info.ups}}" aria-label="Explication" style="width: 26px; height: 26px; padding: 0; border: 1.5px solid #DED6EC; border-radius: 13px; background: #FFFFFF; color: #260E4F; font-family: Georgia, serif; font-style: italic; font-size: 14px; font-weight: 800; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 26px">i</button></div>
-<div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-<sc-for list="{{g.ups}}" as="up" hint-placeholder-count="4"><button class="tap" type="button" onClick="{{up.buy}}" aria-label="{{up.aria}}" style="{{up.style}}"><span style="font-size: 13px; font-weight: 800">{{up.name}}</span><span style="font-size: 12px; font-weight: 700">{{up.label}}</span></button></sc-for>
-</div>
-</div></sc-if>
-</div>
-<canvas id="inoFly" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5"></canvas>
-<sc-if value="{{g.showInbox}}" hint-placeholder-val="{{ false }}"><button id="inoInbox" class="tap inboxb" type="button" onClick="{{g.openInbox}}" aria-label="{{g.inboxAria}}" style="{{g.inboxPos}} z-index: 6; touch-action: none; width: 60px; height: 60px; border: 3px solid #FFFFFF; border-radius: 30px; background: #260E4F; box-shadow: 0 8px 22px rgba(38,14,79,0.35); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"></path><path d="M8 9h8M8 12.5h5"></path></svg><span style="position: absolute; top: -6px; right: -6px; min-width: 24px; height: 24px; padding: 0 6px; box-sizing: border-box; border-radius: 12px; background: #E5484D; color: #FFFFFF; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid #FFFFFF">{{g.inboxN}}</span></button></sc-if>
-<sc-if value="{{g.showCard}}" hint-placeholder-val="{{ false }}"><div class="sheet" style="position: absolute; left: 14px; right: 14px; bottom: 132px; z-index: 85; max-width: 520px; margin: 0 auto; padding: 16px 16px 14px; border-radius: 24px; background: #FFFFFF; border: 2px solid #7046DC; box-shadow: 0 14px 34px rgba(38,14,79,0.22); display: flex; flex-direction: column; gap: 6px"><span style="align-self: flex-start; padding: 4px 10px; border-radius: 10px; background: #7046DC; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase">Nouveau</span><span style="font-size: 19px; font-weight: 800">{{g.cardTitle}}</span><span style="font-size: 15px; line-height: 1.45; color: #6C5A8C">{{g.cardText}}</span><button class="tap" type="button" onClick="{{g.closeCard}}" style="margin-top: 6px; height: 46px; border: none; border-radius: 23px; background: #260E4F; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">J’ai compris</button></div></sc-if>
-</sc-if>
+<!-- le jeu est dans jeu/index.html, affiché par jeuSync() dans #jeuHost -->
 
 <sc-if value="{{showChrome}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; left: 0; right: 0; top: 0; height: 100px; box-sizing: border-box; padding: 48px 20px 0; background: linear-gradient(#F4F2F8 75%, rgba(244,242,248,0)); display: flex; align-items: center; justify-content: space-between">
@@ -933,7 +963,7 @@ Apprends à le faire
 </button>
 <button class="tap" type="button" onClick="{{goProfil}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Mon profil et avancement</button>
 <button class="tap" type="button" onClick="{{openMyLists}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit;font-size: 16px; font-weight: 700; cursor: pointer">Mes listes</button>
-<button class="tap" type="button" onClick="{{startQuiz}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit;font-size: 16px; font-weight: 700; cursor: pointer">Refaire le quiz de niveau</button>
+<button class="tap" type="button" onClick="{{startQuiz}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit;font-size: 16px; font-weight: 700; cursor: pointer">{{quizMenu}}</button>
 <div style="height: 52px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
 <label for="nuit" style="font-size: 16px; font-weight: 700">Mode nuit</label>
 <button id="nuit" class="tap" type="button" onClick="{{toggleNight}}" aria-pressed="{{nightOn}}" style="{{nightStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(38,14,79,0.25)"></span></button>
@@ -946,7 +976,7 @@ Apprends à le faire
 <label for="snd" style="font-size: 16px; font-weight: 700">Sons</label>
 <button id="snd" class="tap" type="button" onClick="{{toggleSound}}" aria-pressed="{{soundOn}}" style="{{soundStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(38,14,79,0.25)"></span></button>
 </div>
-<button class="tap" type="button" onClick="{{buzzOnly}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Aide</button>
+<button class="tap" type="button" onClick="{{openHelp}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Aide</button>
 <button class="tap" type="button" onClick="{{openAdmin}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #7046DC; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Mode admin</button>
 </div>
 </sc-if>
@@ -1393,7 +1423,7 @@ window.Component = class Component extends DCLogic {
     for (let i = 0; i <= 22; i++) { const t = i / 22, k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so, h = 1 + lift * Math.sin(Math.PI * t); pts.push([(a[0] * k1 + b[0] * k2) * h, (a[1] * k1 + b[1] * k2) * h, (a[2] * k1 + b[2] * k2) * h]); }
     return { pts: pts, grow: 0 };
   }
-  planetSync() { const on = this.state.screen === 'jeu' && !this.state.world && !this.state.mission && !!this.gs; if (on) this.planetStart(); else this.planetStop(); }
+  planetSync() { const on = false; if (on) this.planetStart(); else this.planetStop(); }
   planetStart() { if (this.peRaf) return; this.planetInit(); const step = (now) => { this.peRaf = requestAnimationFrame(step); try { this.planetFrame(now); } catch (err) {} }; this.peRaf = requestAnimationFrame(step); }
   planetStop() { if (this.peRaf) cancelAnimationFrame(this.peRaf); this.peRaf = null; }
   planetFrame(now) {
@@ -1530,14 +1560,318 @@ window.Component = class Component extends DCLogic {
     };
     document.addEventListener('pointerdown', this.fxDown, true);
   }
-  componentDidMount() { this.bootAt = Date.now(); setTimeout(() => this.setState({ bootOut: true }), 1900); setTimeout(() => this.setState({ boot: false }), 2300); this.admDragInit(); this.newsT = setInterval(() => this.newsSim(), 5000); this.nextPoll = Date.now() + 60000; this.loadRemote(true).then(() => this.setState({ nsync: Date.now() }));
+  componentDidMount() { setTimeout(() => { try { this.jeuSync(); } catch (e) {} }, 50); this.bootAt = Date.now(); setTimeout(() => this.setState({ bootOut: true }), 1900); setTimeout(() => this.setState({ boot: false }), 2300); this.admDragInit(); this.newsT = setInterval(() => this.newsSim(), 5000); this.nextPoll = Date.now() + 60000; this.loadRemote(true).then(() => this.setState({ nsync: Date.now() }));
     this.ptr = { on: false, y: 0, d: 0 }; const H = document.documentElement;
     this.imgFb = (e) => { const t = e && e.target; if (t && t.tagName === 'IMG' && t.dataset && t.dataset.fb && t.getAttribute('src') !== t.dataset.fb) { this.badImg = this.badImg || {}; this.badImg[t.getAttribute('src')] = 1; t.setAttribute('src', t.dataset.fb); } };
     this.ptrS = (e) => { const top = document.getElementById('actuTop'); const sc = top && top.parentElement; if (!sc || !sc.contains(e.target) || sc.scrollTop > 0 || this.state.refreshing) return; this.ptr = { on: true, y: e.touches[0].clientY, d: 0 }; };
     this.ptrM = (e) => { if (!this.ptr.on) return; const d = Math.max(0, e.touches[0].clientY - this.ptr.y); this.ptr.d = d; const h = Math.min(90, d * 0.5); H.style.setProperty('--ino-ptr', h + 'px'); H.style.setProperty('--ino-ptr-r', Math.round(h * 2) + 'deg'); H.classList.toggle('ino-ptr-go', h >= 60); };
     this.ptrE = () => { if (!this.ptr.on) return; const go = Math.min(90, this.ptr.d * 0.5) >= 60; this.ptr.on = false; H.style.setProperty('--ino-ptr', '0px'); H.classList.remove('ino-ptr-go'); if (go) this.refreshNews(); };
     try { document.addEventListener('error', this.imgFb, true); document.addEventListener('touchstart', this.ptrS, { passive: true }); document.addEventListener('touchmove', this.ptrM, { passive: true }); document.addEventListener('touchend', this.ptrE, { passive: true }); } catch (e) {} this.ncMsg = (e) => { const d = e && e.data; if (!d || typeof d !== 'object') return; if (d.type === 'neocorp-ready') this.ncSend(true); else if (d.type === 'neocorp-buzz') this.buzz(d.ms); }; try { window.addEventListener('message', this.ncMsg); } catch (e) {} try { if (this.state.night) { document.documentElement.style.background = '#0A070F'; const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', '#0A070F'); } } catch (e) {} this.fxInit(); this.unlockFn = () => this.sfxUnlock(); try { document.addEventListener('touchend', this.unlockFn, true); document.addEventListener('click', this.unlockFn, true); } catch (e) {} if (!this.gs) this.initGame(); this.cloudInit(); this.tickT = setInterval(() => this.tick(), 250); if (this.state.screen === 'intro') this.startIntro(); }
-  componentDidUpdate(pp, ps) { this.planetSync(); if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
+  // ===================== APPRENDRE : PARCOURS EN JEU (défi du jour, carte, sessions) =====================
+  pcData() {
+    if (this._pcD) return this._pcD;
+    const Q = {
+      L1: { t: 'learn', title: 'C’est quoi une IA ?', body: 'Une IA comme ChatGPT ou Claude a lu une quantité énorme de textes. Elle a appris à deviner le mot le plus probable après les autres. C’est comme ça qu’elle écrit.', list: ['Elle ne « sait » pas : elle prédit.', 'Elle peut se tromper, même avec assurance.', 'Plus ta demande est précise, meilleure est la réponse.'] },
+      L2: { t: 'learn', title: 'Un bon prompt, c’est 4 choses', body: 'Le prompt, c’est la demande que tu écris à l’IA. Un bon prompt contient :', list: ['Un rôle : « Tu es un expert en… »', 'Une tâche claire : ce que tu veux.', 'Du contexte : pour qui, quel ton, quelle situation.', 'Un format : longueur, liste, tableau.'] },
+      L3: { t: 'learn', title: 'Les hallucinations', body: 'Une IA peut inventer une information fausse et la présenter comme vraie : un chiffre, une date, une source qui n’existe pas. On appelle ça une hallucination.', list: ['Vérifie toujours ce qui est important.', 'Demande-lui ses sources, puis ouvre-les.', 'Méfie-toi des chiffres trop précis.'] },
+      L4: { t: 'learn', title: 'Un outil pour chaque tâche', body: 'Il n’existe pas une IA qui fait tout mieux que les autres. Chaque outil a son point fort.', list: ['Écrire, résumer, discuter : ChatGPT, Claude, Gemini.', 'Chercher une info avec ses sources : Perplexity.', 'Créer des images : Midjourney.', 'Créer une voix : ElevenLabs.'] },
+      qLearn: { t: 'choice', q: 'Comment une IA comme ChatGPT apprend à écrire ?', a: ['En lisant énormément de textes', 'En copiant une seule personne'], ok: 0, ex: 'Elle a été entraînée sur une quantité gigantesque de textes, puis affinée pour bien répondre.' },
+      qPredict: { t: 'choice', q: 'Quand une IA te répond, elle…', a: ['Prédit les mots les plus probables', 'Lit la réponse dans un livre secret'], ok: 0, ex: 'Elle construit sa réponse mot après mot, en choisissant à chaque fois le plus probable.' },
+      qCreator: { t: 'choice', q: 'Qui a créé ChatGPT ?', a: ['Google', 'OpenAI'], ok: 1, ex: 'ChatGPT est créé par OpenAI. Google, lui, a créé Gemini.' },
+      qGemini: { t: 'choice', q: 'Gemini, c’est l’IA de…', a: ['Google', 'Microsoft'], ok: 0, ex: 'Gemini est l’IA de Google. Microsoft propose Copilot.' },
+      qHalluc: { t: 'choice', q: 'Une « hallucination » d’IA, c’est quand elle…', a: ['Refuse de répondre', 'Invente une info fausse avec assurance'], ok: 1, ex: 'Elle peut inventer un chiffre ou une source qui n’existe pas, sans prévenir.' },
+      qBest: { t: 'choice', kind: 'Choisis le meilleur prompt', q: 'Tu veux un post pour ton snack. Lequel marche le mieux ?', long: true, a: ['Écris un post.', 'Écris un post Instagram de 3 lignes pour annoncer l’ouverture de mon snack à Toulouse, ton drôle, avec une question à la fin.'], ok: 1, ex: 'Le second donne la plateforme, la longueur, le sujet, le lieu et le ton. L’IA n’a plus à deviner.' },
+      qIter: { t: 'choice', q: 'La réponse de l’IA ne te plaît pas. Tu fais quoi ?', a: ['Tu précises ta demande et tu relances', 'Tu abandonnes, l’IA est nulle'], ok: 0, ex: 'On obtient rarement le meilleur résultat du premier coup. On corrige et on relance.' },
+      qSource: { t: 'choice', q: 'L’IA te donne un chiffre sans source. Tu…', a: ['Le partages tel quel', 'Le vérifies sur un site fiable'], ok: 1, ex: 'Un chiffre sans source peut être inventé. Vérifie-le avant de t’en servir.' },
+      qSearch: { t: 'choice', q: 'Tu veux une info récente, avec les liens des sources. Tu ouvres…', a: ['Perplexity', 'Midjourney'], ok: 0, ex: 'Perplexity cherche sur le web et cite ses sources. Midjourney sert à créer des images.' },
+      qSame: { t: 'choice', q: 'Tu poses la même question à ChatGPT, Claude et Gemini. Les réponses…', a: ['Sont toujours identiques', 'Peuvent être différentes'], ok: 1, ex: 'Chaque IA a été entraînée différemment. Comparer t’aide à garder la meilleure réponse.' },
+      dImage: { t: 'drag', q: 'Pour créer une image à partir d’un texte, tu peux utiliser', a: ['Midjourney', 'Excel', 'Waze', 'Shazam'], ok: 0, ex: 'Midjourney crée des images à partir d’une description écrite.' },
+      dAgent: { t: 'drag', q: 'Une IA qui agit seule pour toi (réserver, envoyer, commander) s’appelle un', a: ['filtre', 'agent', 'pixel', 'serveur'], ok: 1, ex: 'Un agent IA ne se contente pas de répondre : il fait des actions à ta place.' },
+      dVerify: { t: 'drag', q: 'Avant de partager une info donnée par une IA, tu dois', a: ['la publier vite', 'l’arrondir', 'vérifier la source', 'la traduire'], ok: 2, ex: 'L’IA peut se tromper. Une source fiable confirme l’info.' },
+      dFormat: { t: 'drag', q: 'Pour avoir une réponse courte, précise dans ton prompt', a: ['ton prénom', 'la longueur', 'la météo', 'ton âge'], ok: 1, ex: '« En 3 lignes », « en 50 mots » : l’IA respecte bien la longueur demandée.' },
+      dRole: { t: 'drag', q: 'Commencer par « Tu es un expert en… » donne à l’IA un', a: ['mot de passe', 'prix', 'rôle', 'virus'], ok: 2, ex: 'Donner un rôle aide l’IA à adopter le bon vocabulaire et le bon niveau.' },
+      dVoice: { t: 'drag', q: 'Pour créer une voix off réaliste, tu peux utiliser', a: ['Excel', 'ElevenLabs', 'Waze', 'Paint'], ok: 1, ex: 'ElevenLabs transforme un texte en voix naturelle, dans de nombreuses langues.' },
+      s1956: { t: 'slider', q: 'En quelle année l’expression « intelligence artificielle » est-elle née ?', v: ['1956', '1980', '2000', '2015'], ok: 0, ex: 'En 1956, lors d’une conférence à Dartmouth, aux États-Unis.' },
+      sGpt: { t: 'slider', q: 'En quelle année ChatGPT est-il sorti pour le grand public ?', v: ['2016', '2019', '2022', '2025'], ok: 2, ex: 'Fin novembre 2022. Il a atteint 100 millions d’utilisateurs en quelques semaines.' },
+      sCheck: { t: 'slider', q: 'Sur 10 réponses importantes d’une IA, combien faut-il vérifier ?', v: ['0', '3', '5', '10'], ok: 3, ex: 'Quand c’est important (santé, argent, travail), on vérifie tout.' },
+      pBrands: { t: 'pairs', q: 'Associe chaque IA à son créateur', p: [['ChatGPT', 'OpenAI'], ['Claude', 'Anthropic'], ['Gemini', 'Google'], ['Copilot', 'Microsoft']], ex: 'Les 4 grandes IA du moment et les entreprises qui les créent.' },
+      pVocab: { t: 'pairs', q: 'Associe chaque mot à son sens', p: [['Prompt', 'Ta demande'], ['Hallucination', 'Info inventée'], ['Agent', 'IA qui agit'], ['Modèle', 'Le cerveau de l’IA']], ex: 'Le vocabulaire de base pour parler d’IA.' },
+      pTools: { t: 'pairs', q: 'Associe chaque outil à ce qu’il fait le mieux', p: [['ChatGPT', 'Écrire'], ['Perplexity', 'Chercher'], ['Midjourney', 'Images'], ['ElevenLabs', 'Voix']], ex: 'Le bon outil pour chaque tâche : c’est ce qui fait gagner le plus de temps.' },
+      spEiffel: { t: 'spot', s: ['La tour Eiffel mesure environ 330 mètres,', 'elle a été construite pour l’Exposition universelle de 1889,', 'et elle se trouve à Lyon.'], bad: 2, ex: 'La tour Eiffel est à Paris. L’IA a mélangé du vrai et du faux : c’est le piège classique.' },
+      spNapo: { t: 'spot', s: ['Napoléon est né en 1769,', 'en Corse,', 'et il a inventé l’ordinateur.'], bad: 2, ex: 'Napoléon n’a rien inventé de tel. Une phrase fausse cachée entre deux vraies passe facilement.' },
+      spMoon: { t: 'spot', s: ['La Lune tourne autour de la Terre,', 'elle met environ 27 jours pour en faire le tour,', 'et elle est plus grosse que la Terre.'], bad: 2, ex: 'La Lune est environ 4 fois plus petite que la Terre.' },
+      spPrompt: { t: 'spot', s: ['Pour un bon prompt, donne un rôle à l’IA,', 'explique le contexte,', 'et surtout reste le plus vague possible.'], bad: 2, ex: 'C’est l’inverse : plus ta demande est précise, meilleure est la réponse.' }
+    };
+    const CH = [
+      { n: 'Chapitre 1', t: 'Les bases de l’IA', mod: 1, col: ['#B79CFF', '#6A44D8'] },
+      { n: 'Chapitre 2', t: 'Bien parler à l’IA', mod: 2, col: ['#FF9DD2', '#C2408A'] },
+      { n: 'Chapitre 3', t: 'Choisir le bon outil', mod: 3, col: ['#FFD889', '#D9871E'] }
+    ];
+    const UNITS = [
+      { ch: 0, type: 'play', kind: 'Vidéo', name: 'C’est quoi vraiment l’IA ?', vid: [1, 0], ex: ['V', 'L1', 'qLearn', 'qCreator'] },
+      { ch: 0, type: 'star', kind: 'Jeu', name: 'Vrai ou pas vrai', ring: true, ex: ['qHalluc', 'spEiffel', 'dImage', 'sGpt', 'qGemini'] },
+      { ch: 0, type: 'play', kind: 'Vidéo', name: 'Comment une IA « réfléchit »', vid: [1, 1], ex: ['V', 'qPredict', 's1956', 'pBrands'] },
+      { ch: 0, type: 'shield', kind: 'Défi du chapitre', name: 'Le défi des bases', ex: ['L3', 'spNapo', 'dVerify', 'sCheck', 'pVocab'] },
+      { ch: 1, type: 'play', kind: 'Vidéo', name: 'Le prompt parfait en 4 étapes', vid: [2, 0], ex: ['V', 'L2', 'qBest', 'dFormat'] },
+      { ch: 1, type: 'star', kind: 'Jeu', name: 'Répare le prompt', ring: true, ex: ['dRole', 'spPrompt', 'qIter', 'dFormat', 'qBest'] },
+      { ch: 1, type: 'play', kind: 'Vidéo', name: 'Donner un rôle à l’IA', vid: [2, 1], ex: ['V', 'dRole', 'qIter'] },
+      { ch: 1, type: 'shield', kind: 'Défi du chapitre', name: 'Le défi des prompts', ex: ['pVocab', 'qIter', 'spPrompt', 'qHalluc', 'qBest'] },
+      { ch: 2, type: 'play', kind: 'Vidéo', name: 'Lequel choisir pour quoi faire ?', vid: [3, 0], ex: ['V', 'L4', 'pTools', 'qSame'] },
+      { ch: 2, type: 'star', kind: 'Jeu', name: 'Repère l’erreur', ring: true, ex: ['spEiffel', 'spMoon', 'qSearch', 'qSource', 'dVoice'] },
+      { ch: 2, type: 'trophy', kind: 'Défi final', name: 'Le grand test', ex: ['qCreator', 'dAgent', 'spMoon', 'pTools', 'sGpt', 'qSource'] }
+    ];
+    const DAILY = [
+      { q: 'Une IA peut citer un article qui n’existe pas.', ok: true, ex: 'Vrai. Vérifie toujours les sources.' },
+      { q: 'ChatGPT a été créé par Google.', ok: false, ex: 'Faux. C’est OpenAI.' },
+      { q: 'Un prompt précis donne une meilleure réponse.', ok: true, ex: 'Vrai. Plus de détails, moins de devinettes.' },
+      { q: 'Perplexity cite les sources de ses réponses.', ok: true, ex: 'Vrai. C’est son point fort.' },
+      { q: 'Une IA comprend tout ce qu’elle écrit, comme un humain.', ok: false, ex: 'Faux. Elle prédit des mots, elle ne comprend pas comme toi.' }
+    ];
+    return (this._pcD = { Q, CH, UNITS, DAILY });
+  }
+  pcLoad() {
+    if (this._pc) return this._pc;
+    let d = null; try { d = JSON.parse(window.localStorage.getItem('inoviaParcours1') || 'null'); } catch (e) {}
+    this._pc = Object.assign({ done: {}, stars: 0, streak: 0, lastDay: '', energy: 20, enDay: '', daily: '', tab: 'parcours' }, d && typeof d === 'object' ? d : {});
+    const today = new Date().toDateString();
+    if (this._pc.enDay !== today) { this._pc.energy = 20; this._pc.enDay = today; }
+    return this._pc;
+  }
+  pcSave() { try { window.localStorage.setItem('inoviaParcours1', JSON.stringify(this._pc)); } catch (e) {} this.cloudDirty = true; }
+  pcCur() { const P = this.pcLoad(), U = this.pcData().UNITS; for (let i = 0; i < U.length; i++) if (!(i in P.done)) return i; return U.length; }
+  pcStats() {
+    const P = this.pcLoad(), U = this.pcData().UNITS; const n = Object.keys(P.done).filter(k => U[k]).length;
+    return { units: n, total: U.length, pct: Math.round(n / U.length * 100), stars: P.stars, streak: P.streak };
+  }
+  pcVidsDone() { const P = this.pcLoad(), U = this.pcData().UNITS, M = this.fmCat0().mods, o = {}; U.forEach((u, i) => { if (!u.vid) return; const m = M.find(x => x.n === u.vid[0]); if ( (i in P.done) && m && !this.fmLocked(m, u.vid[1])) o[u.vid[0] + '-' + u.vid[1]] = 100; }); return o; }
+  pcTouchDay() {
+    const P = this.pcLoad(), t = new Date(), today = t.toDateString(), y = new Date(t.getTime() - 86400000).toDateString();
+    if (P.lastDay === today) return; P.streak = P.lastDay === y ? P.streak + 1 : 1; P.lastDay = today;
+  }
+  pcSync() {
+    const host = document.getElementById('pcHost');
+    if (host && !host.__pc) { host.__pc = true; this.pcRender(); }
+    if (!host && this.pcSess && this.state.screen !== 'form') this.pcClose();
+  }
+  pcIcon(k) {
+    const I = {
+      book: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z"/><path d="M12 6v14"/></svg>',
+      star: '<svg viewBox="0 0 24 24" fill="#fff"><path d="m12 2 3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg>',
+      play: '<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4v16l13-8z"/></svg>',
+      shield: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>',
+      trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4c0 3 1 5 3 5M17 6h3c0 3-1 5-3 5M12 14v4M8 21h8"/></svg>',
+      lock: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+      x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+      fire: '<svg viewBox="0 0 24 24" fill="#FF8A3D"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z"/></svg>',
+      bolt: '<svg viewBox="0 0 24 24" fill="#F5B400"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>',
+      sGold: '<svg viewBox="0 0 24 24" fill="#FFC94D" stroke="#C99A1B" stroke-width="1"><path d="m12 2 3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg>',
+      sDim: '<svg viewBox="0 0 24 24" class="pc-sdim"><path d="m12 2 3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg>'
+    };
+    return I[k] || '';
+  }
+  pcBot(mood) {
+    const eye = mood === 'happy' ? '<path d="M19 30q3-4 6 0M35 30q3-4 6 0" stroke="#120A26" stroke-width="3" fill="none" stroke-linecap="round"/>'
+      : '<circle cx="22" cy="30" r="3.6" fill="#120A26"/><circle cx="38" cy="30" r="3.6" fill="#120A26"/><circle cx="23.3" cy="28.6" r="1.2" fill="#fff"/><circle cx="39.3" cy="28.6" r="1.2" fill="#fff"/>';
+    return '<svg viewBox="0 0 60 70" aria-hidden="true"><line x1="30" y1="4" x2="30" y2="13" stroke="#B9AEE0" stroke-width="3"/><circle cx="30" cy="5" r="4" fill="#FFC94D"/><rect x="8" y="13" width="44" height="34" rx="14" fill="#EDE7FF"/><rect x="13" y="19" width="34" height="22" rx="9" fill="#8A63F0"/>' + eye +
+      '<path d="M25 37q5 3 10 0" stroke="#120A26" stroke-width="2.4" fill="none" stroke-linecap="round"/><rect x="16" y="49" width="28" height="16" rx="8" fill="#7046DC"/><circle cx="30" cy="57" r="3" fill="#FFC94D"/><rect x="3" y="27" width="6" height="12" rx="3" fill="#B9AEE0"/><rect x="51" y="27" width="6" height="12" rx="3" fill="#B9AEE0"/></svg>';
+  }
+  pcEsc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+  pcRender() {
+    const host = document.getElementById('pcHost'); if (!host) return;
+    const P = this.pcLoad(), E = (s) => this.pcEsc(s), I = (k) => this.pcIcon(k), st = this.pcStats(), D = this.pcData();
+    const today = new Date().toDateString(), dq = D.DAILY[new Date().getDate() % D.DAILY.length];
+    let daily;
+    if (P.daily === today) daily = '<div class="pc-daily pc-ok"><div class="pc-dt"><div class="pc-dl">Défi du jour réussi</div><div class="pc-dq">Reviens demain pour garder ta série.</div></div></div>';
+    else daily = '<div class="pc-daily" id="pcDaily"><div class="pc-dt"><div class="pc-dl">Défi du jour · Vrai ou faux</div><div class="pc-dq">' + E(dq.q) + '</div></div><div class="pc-db"><button type="button" class="tap" data-v="1">Vrai</button><button type="button" class="tap" data-v="0">Faux</button></div></div>';
+    const top = '<div class="pc-chips"><span class="pc-chip" title="Jours de suite">' + I('fire') + P.streak + ' j</span><span class="pc-chip" title="Énergie">' + I('bolt') + P.energy + '</span><span class="pc-chip" title="Étoiles">' + I('sGold') + P.stars + '</span></div>';
+    const tabs = '<div class="pc-tabs" role="tablist"><button type="button" role="tab" class="tap' + (P.tab !== 'videos' ? ' pc-on' : '') + '" data-tab="parcours">Mon parcours</button><button type="button" role="tab" class="tap' + (P.tab === 'videos' ? ' pc-on' : '') + '" data-tab="videos">Toutes les vidéos</button></div>';
+    let body = '';
+    if (P.tab !== 'videos') {
+      body = '<div class="pc-course"><div class="pc-grow"><div class="pc-ct">Les bases de l’IA</div><div class="pc-cs">' + st.units + ' sur ' + st.total + ' unités · Module 1 gratuit</div><div class="pc-bar"><i style="width:' + st.pct + '%"></i></div></div><button type="button" class="tap pc-explore" id="pcExplore">Parcours</button></div><div class="pc-map" id="pcMap"></div>';
+    }
+    host.innerHTML = '<div class="pcw">' + top + daily + tabs + body + '</div>';
+    const dl = host.querySelector('#pcDaily');
+    if (dl) dl.querySelectorAll('button').forEach(b => b.onclick = () => {
+      const good = (b.dataset.v === '1') === dq.ok;
+      if (good) { this.sfx('success', 1.1); this.buzz([15, 40, 25]); P.stars += 10; P.daily = today; this.pcTouchDay(); this.pcSave(); this.pcRender(); this.say(dq.ex + ' + 10 étoiles.'); this.refresh(); }
+      else { this.sfx('error', 1); this.buzz([20, 60, 20]); dl.classList.add('pc-ko'); dl.querySelector('.pc-dl').textContent = 'Pas tout à fait, réessaie'; setTimeout(() => dl.classList.remove('pc-ko'), 450); }
+    });
+    host.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { if (P.tab === b.dataset.tab) return; P.tab = b.dataset.tab; this.pcSave(); this.sfx('pop', 1.25); this.buzz(); this.pcRender(); this.setState({ fmTab: P.tab }); });
+    const ex = host.querySelector('#pcExplore'); if (ex) ex.onclick = () => this.pcExplore();
+    if (P.tab !== 'videos') this.pcMap();
+  }
+  pcMap(popFor) {
+    const m = document.getElementById('pcMap'); if (!m) return;
+    const D = this.pcData(), U = D.UNITS, CH = D.CH, P = this.pcLoad(), E = (s) => this.pcEsc(s), I = (k) => this.pcIcon(k);
+    const w = 350, cx = w / 2, XS = [0, -70, 62, -24, 74, -58, 34, -74, 10, 66, 0], step = 128;
+    let y = 76, pts = [], html = '';
+    U.forEach((u, i) => {
+      if (i === 0 || U[i - 1].ch !== u.ch) { html += '<div class="pc-chap" style="top:' + (y - 46) + 'px"><span><b>' + CH[u.ch].n + '</b> · ' + E(CH[u.ch].t) + '</span></div>'; y += 30; }
+      pts.push([cx + XS[i % XS.length], y, i]); y += step;
+    });
+    const H = y - 30; m.style.height = H + 'px';
+    const cur = this.pcCur();
+    const curve = (n) => { let d = 'M' + pts[0][0] + ' ' + pts[0][1]; for (let i = 1; i <= n; i++) { const a = pts[i - 1], b = pts[i], my = (a[1] + b[1]) / 2; d += ' C' + a[0] + ' ' + my + ' ' + b[0] + ' ' + my + ' ' + b[0] + ' ' + b[1]; } return d; };
+    html += '<svg class="pc-path" viewBox="0 0 ' + w + ' ' + H + '" aria-hidden="true"><path d="' + curve(pts.length - 1) + '" class="pc-p0"/>' + (cur > 0 ? '<path d="' + curve(Math.min(cur, pts.length - 1)) + '" class="pc-p1"/>' : '') + '</svg>';
+    pts.forEach(([x, yy, i]) => {
+      const u = U[i], c = CH[u.ch].col, s = P.done[i], locked = i > cur, isCur = i === cur;
+      html += '<div class="pc-node' + (locked ? ' pc-locked' : '') + (isCur ? ' pc-cur' : '') + '" style="left:' + x + 'px;top:' + yy + 'px"><div class="pc-planet' + (u.ring ? ' pc-ring' : '') + '" style="background:radial-gradient(circle at 32% 28%,' + c[0] + ',' + c[1] + ' 70%)"></div><div class="pc-badge">' + (locked ? I('lock') : I(u.type)) + '</div>' +
+        (s ? '<div class="pc-st">' + [1, 2, 3].map(k => k <= s ? I('sGold') : I('sDim')).join('') + '</div>' : '') +
+        '<button type="button" class="pc-hit" data-i="' + i + '" aria-label="' + E(u.kind + ' : ' + u.name) + '"></button></div>';
+    });
+    if (cur < pts.length) { const p = pts[cur], side = p[0] > cx ? -1 : 1; html += '<div class="pc-bot" style="left:' + (p[0] + side * 64 - 25) + 'px;top:' + (p[1] - 38) + 'px">' + this.pcBot() + '</div>'; }
+    else html += '<div class="pc-done">Parcours terminé. Bravo, tu as toutes les bases.</div>';
+    if (popFor != null && popFor >= 0 && popFor < pts.length) {
+      const p = pts[popFor], u = U[popFor], locked = popFor > cur, left = Math.max(0, Math.min(w - 250, p[0] - 125));
+      const nq = u.ex.filter(k => k !== 'V' && D.Q[k].t !== 'learn').length;
+      const ss = P.done[popFor];
+      html += '<div class="pc-pop" style="left:' + left + 'px;top:' + (p[1] + 56) + 'px;--ax:' + (p[0] - left) + 'px"><div class="pc-pk">' + CH[u.ch].n + ' · Unité ' + (popFor + 1) + ' · ' + E(u.kind) + '</div><div class="pc-pn">' + E(u.name) + '</div><div class="pc-pm">' + (u.vid ? 'Vidéo + ' : '') + nq + ' exercices' + (ss ? ' · ' + ss + ' étoile' + (ss > 1 ? 's' : '') : '') + '</div>' +
+        '<button class="tap pc-go" type="button" id="pcGo"' + (locked ? ' disabled' : '') + '>' + (locked ? 'Termine l’unité d’avant' : (ss ? 'Rejouer' : 'Commencer')) + '</button></div>';
+    }
+    m.innerHTML = html;
+    m.onclick = (e) => {
+      const g = e.target.closest('#pcGo'); if (g) { this.pcStart(popFor); return; }
+      const b = e.target.closest('.pc-hit'); if (b) { const i = +b.dataset.i; this.sfx('pop', 1.3); this.buzz(8); this.pcMap(popFor === i ? -1 : i); return; }
+      if (!e.target.closest('.pc-pop') && popFor >= 0) this.pcMap(-1);
+    };
+  }
+  pcExplore() {
+    const layer = document.getElementById('pcLayer'); if (!layer) return; this.sfx('pop', 1.2); this.buzz();
+    const C = this.fmCat(), E = (s) => this.pcEsc(s);
+    const cols = [['#B79CFF', '#6A44D8'], ['#8CE3FF', '#2A86C9'], ['#FFD889', '#D9871E'], ['#9AF2C4', '#20A36A']];
+    const list = C.parcours.map((t, i) => { const ms = C.mods.filter(m => m.p === i), nv = ms.reduce((a, m) => a + m.eps.length, 0); return { t, i, ms, nv, lvl: ms[0] ? ms[0].lvl : 'Débutant' }; });
+    const el = document.createElement('div'); el.className = 'pc-sheet';
+    el.innerHTML = '<div class="pc-sin" role="dialog" aria-label="Les parcours"><div class="pc-sh"><h2>Les parcours</h2><button type="button" class="tap pc-x" aria-label="Fermer">' + this.pcIcon('x') + '</button></div><p class="pc-lead">Chaque parcours mélange vidéos, leçons et jeux. Nouveaux contenus chaque semaine.</p><div class="pc-plist">' +
+      list.map(p => '<button type="button" class="tap pc-pc' + (p.i === 0 ? ' pc-on' : '') + '" data-i="' + p.i + '"><span class="pc-pl" style="background:radial-gradient(circle at 32% 28%,' + cols[p.i % 4][0] + ',' + cols[p.i % 4][1] + ' 70%)"></span><span class="pc-grow"><span class="pc-pt">' + E(p.t) + '</span><span class="pc-pd">' + E(p.ms.map(m => m.title).join(' · ')) + '</span><span class="pc-tags"><span class="pc-tag">' + E(p.lvl) + '</span><span class="pc-tag">' + p.ms.length + ' modules · ' + p.nv + ' vidéos</span>' + (p.i === 0 ? '<span class="pc-tag pc-free">Module 1 gratuit</span><span class="pc-tag">En cours</span>' : '<span class="pc-tag">Bientôt en jeu</span>') + '</span></span></button>').join('') + '</div></div>';
+    layer.appendChild(el);
+    el.onclick = (e) => {
+      if (e.target === el || e.target.closest('.pc-x')) { el.remove(); return; }
+      const b = e.target.closest('.pc-pc'); if (!b) return; this.buzz();
+      if (b.dataset.i === '0') { el.remove(); return; }
+      el.remove(); const P = this.pcLoad(); P.tab = 'videos'; this.pcSave(); this.setState({ fmTab: 'videos', fp: +b.dataset.i }); this.pcRender();
+      this.say('La version jeu de ce parcours arrive. En attendant, ses vidéos sont là.');
+    };
+  }
+  pcStart(i) {
+    const P = this.pcLoad();
+    if (P.energy <= 0) { this.say('Plus d’énergie pour aujourd’hui. Elle revient demain.'); this.refresh(); return; }
+    const layer = document.getElementById('pcLayer'); if (!layer) return;
+    this.pcMap(-1);
+    this.pcSess = { u: i, k: 0, good: 0, total: 0, t0: Date.now(), answered: false };
+    const el = document.createElement('div'); el.className = 'pcs'; el.id = 'pcSess';
+    el.innerHTML = '<div class="pcs-bar"><button class="tap pc-x" type="button" id="pcQuit" aria-label="Quitter">' + this.pcIcon('x') + '</button><div class="pc-bar pcs-prog"><i id="pcProg"></i></div><span class="pc-chip">' + this.pcIcon('bolt') + '<span id="pcEn">' + P.energy + '</span></span></div><div class="pcs-stage" id="pcStage"></div><div class="pcs-foot" id="pcFoot"></div>';
+    layer.appendChild(el);
+    el.querySelector('#pcQuit').onclick = () => { this.sfx('pop', 1); this.pcClose(); };
+    this.sfx('whoosh', 1); this.buzz([8, 30, 12]); this.pcStep();
+  }
+  pcClose() { const s = document.getElementById('pcSess'); if (s) s.remove(); this.pcSess = null; this.pcRender(); this.refresh(); }
+  pcStep() {
+    const R = this.pcSess; if (!R) return; const D = this.pcData(), u = D.UNITS[R.u], E = (s) => this.pcEsc(s), I = (k) => this.pcIcon(k);
+    const ofb = document.querySelector('.pcs-fb'); if (ofb) ofb.remove();
+    const bar = document.getElementById('pcProg'); if (bar) bar.style.width = (R.k / u.ex.length * 100) + '%';
+    if (R.k >= u.ex.length) return this.pcEnd();
+    const key = u.ex[R.k], st = document.getElementById('pcStage'), ft = document.getElementById('pcFoot'); R.answered = false; st.scrollTop = 0; ft.innerHTML = '';
+    const mentor = (txt, mood) => '<div class="pcs-mentor"><div class="pcs-bot">' + this.pcBot(mood) + '</div><div class="pcs-bubble">' + E(txt) + '</div></div>';
+    const next = (label, dis) => { ft.innerHTML = '<button class="tap pcs-cta" type="button" id="pcNext"' + (dis ? ' disabled' : '') + '>' + label + '</button>'; return ft.querySelector('#pcNext'); };
+    if (key === 'V') {
+      const C = this.fmCat(), mo = C.mods.find(x => x.n === u.vid[0]), ep = mo && mo.eps[u.vid[1]], lk = mo ? this.fmLocked(mo, u.vid[1]) : false;
+      st.innerHTML = '<h2 class="pcs-kind">Regarde la vidéo</h2><div class="pcs-video"><img src="' + E(ep ? ep[0] : '') + '" alt=""><span class="pcs-vshade"></span>' + (lk ? '<span class="pcs-vlock">' + I('lock') + '<b>' + this.euro(this.fmPrice(mo, u.vid[1])) + '</b></span>' : '<button class="tap pcs-play" type="button" id="pcPlay" aria-label="Lancer la vidéo">' + I('play') + '</button>') + '<span class="pcs-vt">' + E(ep ? ep[3] : u.name) + '</span><span class="pcs-vb"><i id="pcVb"></i></span></div>' +
+        '<p class="pcs-note">' + (lk ? 'Cette vidéo fait partie des vidéos payantes. Tu peux continuer le parcours sans elle, ou la débloquer.' : 'Module ' + u.vid[0] + ' · ' + (ep ? ep[4] : 5) + ' min. Dans la maquette, c’est un aperçu de 3 secondes.') + '</p>' +
+        (lk ? '<button class="tap pcs-sec" type="button" id="pcUnlock">Voir la vidéo et la débloquer</button>' : '');
+      const nb = next('Continuer', !lk);
+      nb.onclick = () => { this.sfx('pop', 1.2); R.k++; this.pcStep(); };
+      const pl = st.querySelector('#pcPlay'); if (pl) pl.onclick = () => { this.sfx('pop', 1.1); this.buzz(); pl.style.opacity = '0'; let p = 0; const t = setInterval(() => { p += 4; const b = document.getElementById('pcVb'); if (!b) { clearInterval(t); return; } b.style.width = p + '%'; if (p >= 100) { clearInterval(t); nb.disabled = false; } }, 120); };
+      const ul = st.querySelector('#pcUnlock'); if (ul) ul.onclick = () => { this.pcClose(); this.setState({ fv: u.vid[0] + '-' + u.vid[1] }); };
+      return;
+    }
+    const q = D.Q[key];
+    if (q.t === 'learn') {
+      st.innerHTML = '<h2 class="pcs-kind">À retenir</h2>' + mentor('Lis bien, les questions arrivent juste après.', 'happy') + '<div class="pcs-learn"><h3>' + E(q.title) + '</h3>' + E(q.body) + '<ul>' + q.list.map(l => '<li>' + E(l) + '</li>').join('') + '</ul></div>';
+      next('J’ai compris').onclick = () => { this.sfx('pop', 1.2); R.k++; this.pcStep(); };
+    } else if (q.t === 'choice') {
+      st.innerHTML = '<h2 class="pcs-kind">' + E(q.kind || 'Choisis la bonne réponse') + '</h2>' + mentor(q.q) + '<div class="pcs-two">' + q.a.map((a, j) => '<button class="tap pcs-tile' + (q.long ? ' pcs-long' : '') + '" type="button" data-j="' + j + '">' + E(a) + '</button>').join('') + '</div>';
+      st.querySelectorAll('.pcs-tile').forEach(b => b.onclick = () => { if (R.answered) return; const ok = +b.dataset.j === q.ok; b.classList.add(ok ? 'pc-good' : 'pc-bad'); if (!ok) st.querySelector('[data-j="' + q.ok + '"]').classList.add('pc-good'); this.pcAnswer(ok, q.ex); });
+    } else if (q.t === 'drag') {
+      st.innerHTML = '<h2 class="pcs-kind">Glisse la bonne réponse</h2><div class="pcs-card">' + E(q.q) + '<br><span class="pcs-slot" id="pcSlot">&nbsp;</span></div><div class="pcs-chips">' + q.a.map((a, j) => '<div class="pcs-dchip" data-j="' + j + '" role="button" tabindex="0"><span class="pcs-grip">::</span>' + E(a) + '</div>').join('') + '</div>';
+      let pick = -1; const slot = st.querySelector('#pcSlot');
+      const vb = next('Valider', true);
+      const place = (j) => { pick = j; slot.textContent = q.a[j]; slot.classList.add('pc-full'); st.querySelectorAll('.pcs-dchip').forEach(c => c.classList.toggle('pc-used', +c.dataset.j === j)); vb.disabled = false; this.sfx('tap', 1); this.buzz(8); };
+      st.querySelectorAll('.pcs-dchip').forEach(c => {
+        c.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') place(+c.dataset.j); };
+        c.onpointerdown = (e) => {
+          if (R.answered) return; e.preventDefault(); const j = +c.dataset.j, r = c.getBoundingClientRect(), sc = r.width / (c.offsetWidth || r.width), g = c.cloneNode(true);
+          g.classList.add('pc-drag'); g.style.width = c.offsetWidth + 'px'; g.style.left = r.left + 'px'; g.style.top = r.top + 'px'; g.style.transformOrigin = '0 0'; g.style.transform = 'scale(' + sc + ') rotate(-4deg)';
+          const sess = document.getElementById('pcSess'); (sess || document.body).appendChild(g); g.style.position = 'fixed';
+          const ox = e.clientX - r.left, oy = e.clientY - r.top, sx = e.clientX, sy = e.clientY; let moved = false;
+          const over = (x, y) => { const s = slot.getBoundingClientRect(); return x > s.left - 30 && x < s.right + 30 && y > s.top - 30 && y < s.bottom + 30; };
+          const mv = (ev) => { if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) > 6) moved = true; g.style.left = (ev.clientX - ox) + 'px'; g.style.top = (ev.clientY - oy) + 'px'; slot.classList.toggle('pc-hot', over(ev.clientX, ev.clientY)); };
+          const up = (ev) => { window.removeEventListener('pointermove', mv); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up); g.remove(); slot.classList.remove('pc-hot'); if (!moved || over(ev.clientX, ev.clientY)) place(j); };
+          window.addEventListener('pointermove', mv); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+        };
+      });
+      vb.onclick = () => { if (R.answered || pick < 0) return; const ok = pick === q.ok; slot.classList.add(ok ? 'pc-good' : 'pc-bad'); if (!ok) slot.textContent = q.a[q.ok]; this.pcAnswer(ok, q.ex); };
+    } else if (q.t === 'slider') {
+      st.innerHTML = '<h2 class="pcs-kind">Règle la bonne valeur</h2><div class="pcs-card">' + E(q.q) + '</div><div class="pcs-ticks">' + q.v.map((v, j) => '<span data-j="' + j + '">' + E(v) + '</span>').join('') + '</div><input type="range" class="pcs-range" id="pcRng" min="0" max="' + (q.v.length - 1) + '" step="1" value="0" aria-label="Valeur">';
+      const rng = st.querySelector('#pcRng'); const upd = () => { const v = +rng.value; st.querySelectorAll('.pcs-ticks span').forEach(s => s.classList.toggle('pc-on', +s.dataset.j === v)); };
+      rng.oninput = () => { upd(); this.sfx('tap', 1 + (+rng.value) * 0.1); this.buzz(5); }; upd();
+      next('Valider').onclick = () => { if (R.answered) return; this.pcAnswer(+rng.value === q.ok, q.ex); };
+    } else if (q.t === 'pairs') {
+      const L = q.p.map((p, j) => ({ s: p[0], j })), Rr = q.p.map((p, j) => ({ s: p[1], j })).sort((a, b) => ((a.j * 7 + 3) % 5) - ((b.j * 7 + 3) % 5));
+      let h = ''; for (let r = 0; r < L.length; r++) h += '<button class="tap" type="button" data-side="l" data-j="' + L[r].j + '">' + E(L[r].s) + '</button><button class="tap" type="button" data-side="r" data-j="' + Rr[r].j + '">' + E(Rr[r].s) + '</button>';
+      st.innerHTML = '<h2 class="pcs-kind">Associe les paires</h2>' + mentor(q.q) + '<div class="pcs-pairs">' + h + '</div>';
+      let sel = null, found = 0, errs = 0;
+      st.querySelectorAll('.pcs-pairs button').forEach(b => b.onclick = () => {
+        if (R.answered || b.classList.contains('pc-done')) return;
+        if (!sel || sel.dataset.side === b.dataset.side) { if (sel) sel.classList.remove('pc-sel'); sel = b; b.classList.add('pc-sel'); this.sfx('tap', 1); this.buzz(6); return; }
+        if (sel.dataset.j === b.dataset.j) { [sel, b].forEach(x => { x.classList.remove('pc-sel'); x.classList.add('pc-done'); }); sel = null; found++; this.sfx('coin', 1 + found * 0.08); this.buzz(10); if (found === q.p.length) this.pcAnswer(errs <= 1, q.ex + (errs ? ' (' + errs + ' erreur' + (errs > 1 ? 's' : '') + ')' : '')); }
+        else { errs++; const a = sel, c = b; [a, c].forEach(x => { x.classList.remove('pc-sel'); x.classList.add('pc-bad'); }); sel = null; this.sfx('error', 1); this.buzz([20, 40, 20]); setTimeout(() => [a, c].forEach(x => x.classList.remove('pc-bad')), 450); }
+      });
+    } else if (q.t === 'spot') {
+      st.innerHTML = '<h2 class="pcs-kind">Touche l’erreur de l’IA</h2>' + mentor('L’IA a glissé une erreur dans sa réponse. Trouve-la.') + '<div class="pcs-ai"><div class="pcs-who">Réponse de l’IA</div>' + q.s.map((s, j) => '<button class="tap" type="button" data-j="' + j + '">' + E(s) + '</button> ').join('') + '</div>';
+      st.querySelectorAll('.pcs-ai button').forEach(b => b.onclick = () => { if (R.answered) return; const ok = +b.dataset.j === q.bad; b.classList.add(ok ? 'pc-good' : 'pc-bad'); if (!ok) st.querySelector('.pcs-ai [data-j="' + q.bad + '"]').classList.add('pc-good'); this.pcAnswer(ok, q.ex); });
+    }
+  }
+  pcAnswer(ok, ex) {
+    const R = this.pcSess, P = this.pcLoad(); if (!R) return; R.answered = true; R.total++;
+    if (ok) R.good++; else { P.energy = Math.max(0, P.energy - 1); this.pcSave(); const e = document.getElementById('pcEn'); if (e) e.textContent = P.energy; }
+    if (ok) { this.sfx('success', 1.2); this.buzz([15, 40, 25]); } else { this.sfx('error', 1); this.buzz([20, 60, 20]); }
+    document.getElementById('pcFoot').innerHTML = '';
+    const fb = document.createElement('div'); fb.className = 'pcs-fb ' + (ok ? 'pc-good' : 'pc-bad');
+    fb.innerHTML = '<h4>' + (ok ? ['Bien joué !', 'Exact !', 'Parfait !'][R.total % 3] : 'Pas tout à fait') + '</h4><p>' + this.pcEsc(ex) + '</p><button class="tap pcs-cta" type="button">Continuer</button>';
+    document.getElementById('pcSess').appendChild(fb);
+    fb.querySelector('button').onclick = () => { this.sfx('pop', 1.2); R.k++; this.pcStep(); };
+  }
+  pcEnd() {
+    const R = this.pcSess, P = this.pcLoad(), D = this.pcData(), u = D.UNITS[R.u], E = (s) => this.pcEsc(s), I = (k) => this.pcIcon(k);
+    const pct = R.total ? Math.round(R.good / R.total * 100) : 100, stars = pct >= 90 ? 3 : pct >= 60 ? 2 : 1, sec = Math.round((Date.now() - R.t0) / 1000);
+    const prev = P.done[R.u] || 0, gain = Math.max(0, stars - prev) * 10 + (prev ? 0 : 20);
+    P.done[R.u] = Math.max(prev, stars); P.stars += gain; this.pcTouchDay(); this.pcSave();
+    this.sfx('level', 1); this.buzz([20, 40, 30, 40, 60]);
+    const nx = D.UNITS[R.u + 1];
+    document.getElementById('pcStage').innerHTML = '<div class="pcs-end"><div class="pcs-big">' + [1, 2, 3].map(k => k <= stars ? I('sGold') : I('sDim')).join('') + '</div><h2>Session terminée</h2><div class="pcs-sub">' + E(D.CH[u.ch].n + ' · ' + u.name) + '</div>' +
+      '<div class="pcs-stats"><div><b>' + R.good + '/' + R.total + '</b><span>Bonnes réponses</span></div><div><b>' + pct + ' %</b><span>Précision</span></div><div><b>' + Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0') + '</b><span>Temps</span></div></div>' +
+      '<div class="pcs-gain">' + (gain ? '+ ' + gain + ' étoiles' : 'Déjà ' + prev + ' étoile' + (prev > 1 ? 's' : '') + ' sur cette unité') + (nx && !prev ? ' · Unité suivante débloquée : ' + E(nx.name) : '') + ' · Série : ' + P.streak + ' j</div></div>';
+    document.getElementById('pcFoot').innerHTML = '<button class="tap pcs-cta" type="button" id="pcFin">Continuer</button>';
+    document.getElementById('pcFin').onclick = () => { this.sfx('pop', 1.2); this.pcClose(); };
+  }
+  jeuSync() {
+    const host = document.getElementById('jeuHost'); if (!host) return; const s = this.state;
+    if (!host.__f) {
+      host.__f = document.createElement('iframe'); host.__f.title = 'Le jeu';
+      host.__f.src = (location.pathname.indexOf('/ipad/') >= 0 ? '../jeu/' : 'jeu/') + 'index.html?embed=1';
+      host.__f.style.cssText = 'width:100%;height:100%;border:0;display:block;background:transparent';
+      host.appendChild(host.__f);
+      window.addEventListener('message', (e) => { const d = e.data; if (!d || e.source !== host.__f.contentWindow) return;
+        if (d.type === 'inovia-buzz') this.buzz(d.p);
+        if (d.type === 'inovia-jeu-ready') { this._jeuSent = ''; this.jeuSync(); }
+        if (d.type === 'inovia-full') { host.style.top = d.on ? '0' : '96px'; host.style.zIndex = d.on ? '200' : '0'; } });
+    }
+    const show = s.screen === 'jeu' && !s.boot;
+    host.style.display = show ? 'block' : 'none';
+    const msg = JSON.stringify({ type: 'inovia-app', night: !!s.night, sound: s.sound !== false, hapt: s.hapt !== false });
+    if (msg !== this._jeuSent) { this._jeuSent = msg; try { host.__f.contentWindow.postMessage(JSON.parse(msg), '*'); } catch (e) {} }
+  }
+  componentDidUpdate(pp, ps) { this.planetSync(); try { this.jeuSync(); } catch (e) { console.error(e); } try { this.pcSync(); } catch (e) { console.error(e); } if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
   const W = Math.max(200, cv.clientWidth || 366), H = Math.max(200, cv.clientHeight || 560);
   const R = new T.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance' });
@@ -1858,11 +2192,12 @@ window.Component = class Component extends DCLogic {
     if (!this.state.hapt) return;
     try { if (navigator.vibrate) navigator.vibrate(ms || 12); } catch (e) {}
   }
-  fmCat0() { return {"parcours": ["Les bases de l’IA", "Créer", "Travailler", "Automatiser"], "mods": [{"n": 1, "p": 0, "title": "Les bases de l’IA", "free": true, "lvl": "Débutant", "learn": ["Expliquer simplement ce qu’est une IA", "Savoir ce qu’elle fait bien… et mal", "Avoir ton premier vrai échange avec une IA"], "mission": "Pose 3 questions à ChatGPT sur ton métier et garde la meilleure réponse.", "eps": [["assets/fm-robot.jpg", "C’est quoi", "l’IA ?", "C’est quoi vraiment l’IA ?", 6, "Oublie les robots des films. En 6 minutes, tu comprends ce qu’est vraiment une IA comme ChatGPT, d’où elle vient et pourquoi tout le monde en parle depuis 2023."], ["assets/fm-pixels.jpg", "Dans la tête", "d’une IA", "Comment une IA « réfléchit »", 7, "Une IA ne pense pas comme toi : elle devine le mot le plus probable, encore et encore. On t’explique ce mécanisme avec un exemple simple, et pourquoi ça la rend parfois géniale, parfois complètement à côté."], ["assets/fm-chess.jpg", "Ce qu’elle", "ne sait pas faire", "Ses forces et ses limites", 6, "L’IA écrit, résume, traduit et crée des images en quelques secondes. Mais elle peut aussi inventer des faits avec aplomb. Tu apprends à repérer quand lui faire confiance, et quand vérifier."], ["assets/fm-woman.jpg", "Ton premier", "échange", "Ton premier échange avec une IA", 7, "On ouvre ChatGPT ensemble, pas à pas. Tu poses ta première vraie question, tu relances, tu corriges. À la fin de la vidéo, tu sais t’en servir pour de vrai."]]}, {"n": 2, "p": 0, "title": "Bien parler à l’IA", "lvl": "Débutant", "learn": ["Écrire un prompt clair du premier coup", "Obtenir le ton et la longueur que tu veux", "Corriger une mauvaise réponse sans tout recommencer"], "mission": "Écris ton prompt pour le post Instagram de Burger Nova. L’IA te note sur 100.", "eps": [["assets/fm-code2.jpg", "Le prompt", "parfait", "Le prompt parfait en 4 étapes", 9, "Pourquoi la même IA donne une réponse géniale à certains et une réponse nulle à d’autres ? Tout se joue dans la façon de demander. Tu découvres la méthode en 4 étapes : le rôle, le contexte, la tâche et le format. Exemple réel : un post Instagram pour un fast-food, d’un résultat banal à un texte prêt à publier."], ["assets/fm-chess2.jpg", "Donne-lui", "un rôle", "Donner un rôle à l’IA", 7, "« Tu es un chef cuisinier », « tu es un recruteur »… Donner un rôle change complètement la réponse. On compare la même demande avec et sans rôle, et la différence saute aux yeux."], ["assets/fm-cube.jpg", "Les 5", "erreurs", "Les 5 erreurs qui ruinent tes résultats", 8, "Trop vague, trop long, sans exemple, sans format… Ces 5 erreurs expliquent la plupart des réponses décevantes. Tu apprends à les éviter avec des exemples avant et après."], ["assets/fm-code.jpg", "Corriger", "sans tout refaire", "Corriger une réponse sans tout recommencer", 6, "La première réponse n’est pas la bonne ? Normal. Tu apprends à guider l’IA en deux ou trois messages pour arriver exactement au résultat voulu."]]}, {"n": 3, "p": 0, "title": "Choisir le bon outil", "lvl": "Débutant", "learn": ["Savoir quel outil ouvrir pour chaque tâche", "Connaître les points forts de ChatGPT, Claude et Gemini", "Chercher une info fiable avec l’IA"], "mission": "Pose la même question à ChatGPT, Claude et Gemini, puis choisis la meilleure réponse.", "eps": [["assets/fm-duel.jpg", "ChatGPT, Claude ou Gemini ?", "Le match", "Lequel choisir pour quoi faire ?", 12, "On met les trois géants face à face sur les mêmes tâches : écrire un mail, résumer un document, trouver une idée. Tu repars en sachant lequel ouvrir selon ce que tu veux faire."], ["assets/fm-robot2.jpg", "Chercher", "sans se tromper", "Chercher une info avec l’IA", 7, "Perplexity, Gemini, la recherche de ChatGPT : ces outils citent leurs sources. Tu apprends à t’en servir pour trouver une info fiable, et à la vérifier en un geste."], ["assets/fm-robot.jpg", "Quel outil", "pour quoi ?", "Le bon outil pour chaque tâche", 6, "Texte, image, vidéo, code, tableur : il existe un outil IA pour presque tout. Voici une carte simple pour t’y retrouver sans te perdre dans les noms."]]}, {"n": 4, "p": 1, "title": "Images avec l’IA", "lvl": "Intermédiaire", "learn": ["Créer une image réaliste à partir d’une phrase", "Garder le même style sur plusieurs images", "Éviter les défauts typiques (mains, texte)"], "mission": "Crée l’affiche d’un concert imaginaire et envoie-la pour être notée.", "eps": [["assets/fm-cube.jpg", "Ta première", "image IA", "Ta première image en 30 secondes", 8, "Une phrase suffit pour obtenir une image. On part de zéro : tu crées ta première image réaliste, puis tu l’améliores étape par étape."], ["assets/fm-pixels.jpg", "Décrire", "comme un pro", "Décrire une image comme un photographe", 9, "Lumière, cadrage, objectif, ambiance : les mots des photographes donnent des images bien plus belles. Tu apprends le vocabulaire qui change tout."], ["assets/fm-night.jpg", "Le même", "style partout", "Garder le même style sur toutes tes images", 7, "Pour une marque ou un compte Instagram, toutes les images doivent se ressembler. Tu apprends à fixer un style et à le réutiliser."]]}, {"n": 5, "p": 1, "title": "Flyers et visuels pro", "lvl": "Intermédiaire", "learn": ["Créer un flyer propre en 10 minutes", "Choisir les bonnes couleurs et les bonnes polices", "Adapter un visuel pour Instagram, TikTok et l’impression"], "mission": "Crée le flyer de Burger Nova pour sa soirée du vendredi.", "eps": [["assets/fm-campus.jpg", "Ton premier", "flyer pro", "Crée ton premier flyer pro en 10 min", 10, "Un flyer pour un resto, une soirée ou un service : on le crée de A à Z avec l’IA, du texte à l’image finale, prêt à imprimer."], ["assets/fm-city.jpg", "Les règles", "d’un bon visuel", "Les règles d’un visuel qui attire l’œil", 8, "Pourquoi certains visuels arrêtent le pouce et d’autres non ? Contraste, une seule idée, un texte court : les règles simples qu’utilisent les pros."], ["assets/fm-night.jpg", "Un visuel,", "3 formats", "Adapter un visuel à chaque réseau", 6, "Story, post carré, affiche A4 : l’IA t’aide à décliner le même visuel dans tous les formats sans tout refaire."]]}, {"n": 6, "p": 1, "title": "Vidéo avec l’IA", "lvl": "Intermédiaire", "learn": ["Créer une courte vidéo à partir d’un texte", "Ajouter une voix naturelle", "Monter une vidéo prête pour TikTok"], "mission": "Crée une vidéo de 15 secondes pour présenter un produit.", "eps": [["assets/fm-woman.jpg", "Ta première", "vidéo IA", "Ta première vidéo IA de 15 secondes", 9, "Du texte à la vidéo : tu découvres les outils qui génèrent des plans réalistes, et tu crées ta première vidéo courte."], ["assets/fm-chess2.jpg", "Une voix", "qui sonne vrai", "Ajouter une voix naturelle", 7, "Les voix d’IA sont devenues bluffantes. Tu apprends à choisir la bonne voix, le bon rythme, et à éviter l’effet robot."], ["assets/fm-duel.jpg", "Monter", "en 5 minutes", "Monter ta vidéo avec l’IA", 8, "Sous-titres automatiques, coupes, musique : l’IA fait le plus long du montage. Tu finis avec une vidéo prête à publier."]]}, {"n": 7, "p": 2, "title": "Ton site sans coder", "lvl": "Intermédiaire", "learn": ["Créer une page web sans écrire de code", "Écrire un texte qui donne envie", "Mettre ton site en ligne"], "mission": "Mets en ligne une page pour un commerce de ton quartier et envoie le lien.", "eps": [["assets/fm-city.jpg", "Ton premier site", "sans coder", "En ligne en 20 minutes", 14, "Tu décris le site que tu veux, l’IA le construit. On crée ensemble une vraie page pour un commerce, et on la met en ligne avant la fin de la vidéo."], ["assets/fm-campus.jpg", "Une page", "qui vend", "Écrire une page qui donne envie", 9, "Un titre clair, une promesse, une preuve, un bouton : la structure des pages qui marchent, rédigée avec l’IA."], ["assets/fm-code.jpg", "Le mettre", "en ligne", "Mettre ton site en ligne", 8, "Nom de domaine, hébergement, partage du lien : toutes les étapes, une par une, sans jargon."]]}, {"n": 8, "p": 2, "title": "L’IA au travail", "lvl": "Débutant", "learn": ["Écrire tes mails deux fois plus vite", "Résumer un long document en quelques points", "Préparer une réunion en 5 minutes"], "mission": "Résume un long document de ton travail en 5 points avec l’IA.", "eps": [["assets/fm-code2.jpg", "Tes mails", "en 2 minutes", "Écrire tes mails deux fois plus vite", 7, "Relance, réclamation, candidature : tu apprends à faire écrire tes mails par l’IA avec ton ton à toi, puis à les relire en 30 secondes."], ["assets/fm-cube.jpg", "Résumer", "n’importe quoi", "Résumer un document de 50 pages", 6, "Rapport, contrat, cours : l’IA en sort l’essentiel en quelques secondes. Tu apprends à lui demander le bon format de résumé, et à vérifier les points clés."], ["assets/fm-chess.jpg", "Préparer", "une réunion", "Préparer une réunion avec l’IA", 7, "Ordre du jour, questions à poser, compte rendu automatique : l’IA devient ton assistant de réunion."]]}, {"n": 9, "p": 3, "title": "Ton premier agent IA", "lvl": "Avancé", "learn": ["Comprendre la différence entre une appli IA et un agent", "Créer un agent qui travaille pour toi", "Garder le contrôle sur ce qu’il fait"], "mission": "Crée un agent qui répond aux questions des clients d’un resto.", "eps": [["assets/fm-robot.jpg", "Ton premier", "agent IA", "C’est quoi un agent IA ?", 8, "Une appli IA répond à tes questions. Un agent, lui, agit : il envoie des mails, remplit des tableaux, prend des décisions. Tu comprends ce qui change, et pourquoi c’est la prochaine grande étape."], ["assets/fm-robot2.jpg", "Lui donner", "une mission", "Créer ton premier agent, pas à pas", 12, "Instructions, outils, limites : on construit ensemble un agent simple qui accomplit une vraie tâche à ta place."], ["assets/fm-pixels.jpg", "Garder", "le contrôle", "Garder le contrôle sur ton agent", 9, "Un agent mal réglé peut faire n’importe quoi en ton nom. Tu apprends à fixer des limites, à vérifier ses actions et à tout arrêter en un geste."]]}, {"n": 10, "p": 3, "title": "Automatiser avec Make et Zapier", "lvl": "Avancé", "learn": ["Créer ta première automatisation sans coder", "Relier tes applis entre elles", "Ajouter l’IA au milieu d’une automatisation"], "mission": "Automatise l’envoi d’un mail de bienvenue à chaque nouveau client.", "eps": [["assets/fm-island.jpg", "Automatiser", "sans coder", "Ta première automatisation", 10, "Un formulaire rempli, un mail envoyé, une ligne ajoutée dans un tableau : tu crées ta première automatisation qui tourne toute seule, jour et nuit."], ["assets/fm-night.jpg", "Relier", "tes applis", "Relier tes applis entre elles", 9, "Gmail, Google Sheets, Instagram, ton agenda : tu apprends à les faire travailler ensemble sans rien copier-coller."], ["assets/fm-code.jpg", "L’IA dans", "tes automatisations", "Ajouter l’IA dans une automatisation", 11, "Trier des mails, rédiger des réponses, résumer des avis clients : l’IA au milieu de tes automatisations, c’est là que tout s’accélère."]]}], "hero": [[3, 0, "NOUVEAU"], [7, 0, "TOP 1"], [9, 0, "TENDANCE"]], "progress": {"1-0": 100, "1-1": 45}}; }
+  fmCat0() { return {"parcours": ["Les bases de l’IA", "Créer", "Travailler", "Automatiser"], "mods": [{"n": 1, "p": 0, "title": "Les bases de l’IA", "free": true, "lvl": "Débutant", "learn": ["Expliquer simplement ce qu’est une IA", "Savoir ce qu’elle fait bien… et mal", "Avoir ton premier vrai échange avec une IA"], "mission": "Pose 3 questions à ChatGPT sur ton métier et garde la meilleure réponse.", "eps": [["assets/fm-robot.jpg", "C’est quoi", "l’IA ?", "C’est quoi vraiment l’IA ?", 6, "Oublie les robots des films. En 6 minutes, tu comprends ce qu’est vraiment une IA comme ChatGPT, d’où elle vient et pourquoi tout le monde en parle depuis 2023."], ["assets/fm-pixels.jpg", "Dans la tête", "d’une IA", "Comment une IA « réfléchit »", 7, "Une IA ne pense pas comme toi : elle devine le mot le plus probable, encore et encore. On t’explique ce mécanisme avec un exemple simple, et pourquoi ça la rend parfois géniale, parfois complètement à côté."], ["assets/fm-chess.jpg", "Ce qu’elle", "ne sait pas faire", "Ses forces et ses limites", 6, "L’IA écrit, résume, traduit et crée des images en quelques secondes. Mais elle peut aussi inventer des faits avec aplomb. Tu apprends à repérer quand lui faire confiance, et quand vérifier."], ["assets/fm-woman.jpg", "Ton premier", "échange", "Ton premier échange avec une IA", 7, "On ouvre ChatGPT ensemble, pas à pas. Tu poses ta première vraie question, tu relances, tu corriges. À la fin de la vidéo, tu sais t’en servir pour de vrai."]]}, {"n": 2, "p": 0, "title": "Bien parler à l’IA", "lvl": "Débutant", "learn": ["Écrire un prompt clair du premier coup", "Obtenir le ton et la longueur que tu veux", "Corriger une mauvaise réponse sans tout recommencer"], "mission": "Écris ton prompt pour le post Instagram de Burger Nova. L’IA te note sur 100.", "eps": [["assets/fm-code2.jpg", "Le prompt", "parfait", "Le prompt parfait en 4 étapes", 9, "Pourquoi la même IA donne une réponse géniale à certains et une réponse nulle à d’autres ? Tout se joue dans la façon de demander. Tu découvres la méthode en 4 étapes : le rôle, le contexte, la tâche et le format. Exemple réel : un post Instagram pour un fast-food, d’un résultat banal à un texte prêt à publier."], ["assets/fm-chess2.jpg", "Donne-lui", "un rôle", "Donner un rôle à l’IA", 7, "« Tu es un chef cuisinier », « tu es un recruteur »… Donner un rôle change complètement la réponse. On compare la même demande avec et sans rôle, et la différence saute aux yeux."], ["assets/fm-cube.jpg", "Les 5", "erreurs", "Les 5 erreurs qui ruinent tes résultats", 8, "Trop vague, trop long, sans exemple, sans format… Ces 5 erreurs expliquent la plupart des réponses décevantes. Tu apprends à les éviter avec des exemples avant et après."], ["assets/fm-code.jpg", "Corriger", "sans tout refaire", "Corriger une réponse sans tout recommencer", 6, "La première réponse n’est pas la bonne ? Normal. Tu apprends à guider l’IA en deux ou trois messages pour arriver exactement au résultat voulu."]]}, {"n": 3, "p": 0, "title": "Choisir le bon outil", "lvl": "Débutant", "learn": ["Savoir quel outil ouvrir pour chaque tâche", "Connaître les points forts de ChatGPT, Claude et Gemini", "Chercher une info fiable avec l’IA"], "mission": "Pose la même question à ChatGPT, Claude et Gemini, puis choisis la meilleure réponse.", "eps": [["assets/fm-duel.jpg", "ChatGPT, Claude ou Gemini ?", "Le match", "Lequel choisir pour quoi faire ?", 12, "On met les trois géants face à face sur les mêmes tâches : écrire un mail, résumer un document, trouver une idée. Tu repars en sachant lequel ouvrir selon ce que tu veux faire."], ["assets/fm-robot2.jpg", "Chercher", "sans se tromper", "Chercher une info avec l’IA", 7, "Perplexity, Gemini, la recherche de ChatGPT : ces outils citent leurs sources. Tu apprends à t’en servir pour trouver une info fiable, et à la vérifier en un geste."], ["assets/fm-robot.jpg", "Quel outil", "pour quoi ?", "Le bon outil pour chaque tâche", 6, "Texte, image, vidéo, code, tableur : il existe un outil IA pour presque tout. Voici une carte simple pour t’y retrouver sans te perdre dans les noms."]]}, {"n": 4, "p": 1, "title": "Images avec l’IA", "lvl": "Intermédiaire", "learn": ["Créer une image réaliste à partir d’une phrase", "Garder le même style sur plusieurs images", "Éviter les défauts typiques (mains, texte)"], "mission": "Crée l’affiche d’un concert imaginaire et envoie-la pour être notée.", "eps": [["assets/fm-cube.jpg", "Ta première", "image IA", "Ta première image en 30 secondes", 8, "Une phrase suffit pour obtenir une image. On part de zéro : tu crées ta première image réaliste, puis tu l’améliores étape par étape."], ["assets/fm-pixels.jpg", "Décrire", "comme un pro", "Décrire une image comme un photographe", 9, "Lumière, cadrage, objectif, ambiance : les mots des photographes donnent des images bien plus belles. Tu apprends le vocabulaire qui change tout."], ["assets/fm-night.jpg", "Le même", "style partout", "Garder le même style sur toutes tes images", 7, "Pour une marque ou un compte Instagram, toutes les images doivent se ressembler. Tu apprends à fixer un style et à le réutiliser."]]}, {"n": 5, "p": 1, "title": "Flyers et visuels pro", "lvl": "Intermédiaire", "learn": ["Créer un flyer propre en 10 minutes", "Choisir les bonnes couleurs et les bonnes polices", "Adapter un visuel pour Instagram, TikTok et l’impression"], "mission": "Crée le flyer de Burger Nova pour sa soirée du vendredi.", "eps": [["assets/fm-campus.jpg", "Ton premier", "flyer pro", "Crée ton premier flyer pro en 10 min", 10, "Un flyer pour un resto, une soirée ou un service : on le crée de A à Z avec l’IA, du texte à l’image finale, prêt à imprimer."], ["assets/fm-city.jpg", "Les règles", "d’un bon visuel", "Les règles d’un visuel qui attire l’œil", 8, "Pourquoi certains visuels arrêtent le pouce et d’autres non ? Contraste, une seule idée, un texte court : les règles simples qu’utilisent les pros."], ["assets/fm-night.jpg", "Un visuel,", "3 formats", "Adapter un visuel à chaque réseau", 6, "Story, post carré, affiche A4 : l’IA t’aide à décliner le même visuel dans tous les formats sans tout refaire."]]}, {"n": 6, "p": 1, "title": "Vidéo avec l’IA", "lvl": "Intermédiaire", "learn": ["Créer une courte vidéo à partir d’un texte", "Ajouter une voix naturelle", "Monter une vidéo prête pour TikTok"], "mission": "Crée une vidéo de 15 secondes pour présenter un produit.", "eps": [["assets/fm-woman.jpg", "Ta première", "vidéo IA", "Ta première vidéo IA de 15 secondes", 9, "Du texte à la vidéo : tu découvres les outils qui génèrent des plans réalistes, et tu crées ta première vidéo courte."], ["assets/fm-chess2.jpg", "Une voix", "qui sonne vrai", "Ajouter une voix naturelle", 7, "Les voix d’IA sont devenues bluffantes. Tu apprends à choisir la bonne voix, le bon rythme, et à éviter l’effet robot."], ["assets/fm-duel.jpg", "Monter", "en 5 minutes", "Monter ta vidéo avec l’IA", 8, "Sous-titres automatiques, coupes, musique : l’IA fait le plus long du montage. Tu finis avec une vidéo prête à publier."]]}, {"n": 7, "p": 2, "title": "Ton site sans coder", "lvl": "Intermédiaire", "learn": ["Créer une page web sans écrire de code", "Écrire un texte qui donne envie", "Mettre ton site en ligne"], "mission": "Mets en ligne une page pour un commerce de ton quartier et envoie le lien.", "eps": [["assets/fm-city.jpg", "Ton premier site", "sans coder", "En ligne en 20 minutes", 14, "Tu décris le site que tu veux, l’IA le construit. On crée ensemble une vraie page pour un commerce, et on la met en ligne avant la fin de la vidéo."], ["assets/fm-campus.jpg", "Une page", "qui vend", "Écrire une page qui donne envie", 9, "Un titre clair, une promesse, une preuve, un bouton : la structure des pages qui marchent, rédigée avec l’IA."], ["assets/fm-code.jpg", "Le mettre", "en ligne", "Mettre ton site en ligne", 8, "Nom de domaine, hébergement, partage du lien : toutes les étapes, une par une, sans jargon."]]}, {"n": 8, "p": 2, "title": "L’IA au travail", "lvl": "Débutant", "learn": ["Écrire tes mails deux fois plus vite", "Résumer un long document en quelques points", "Préparer une réunion en 5 minutes"], "mission": "Résume un long document de ton travail en 5 points avec l’IA.", "eps": [["assets/fm-code2.jpg", "Tes mails", "en 2 minutes", "Écrire tes mails deux fois plus vite", 7, "Relance, réclamation, candidature : tu apprends à faire écrire tes mails par l’IA avec ton ton à toi, puis à les relire en 30 secondes."], ["assets/fm-cube.jpg", "Résumer", "n’importe quoi", "Résumer un document de 50 pages", 6, "Rapport, contrat, cours : l’IA en sort l’essentiel en quelques secondes. Tu apprends à lui demander le bon format de résumé, et à vérifier les points clés."], ["assets/fm-chess.jpg", "Préparer", "une réunion", "Préparer une réunion avec l’IA", 7, "Ordre du jour, questions à poser, compte rendu automatique : l’IA devient ton assistant de réunion."]]}, {"n": 9, "p": 3, "title": "Ton premier agent IA", "lvl": "Avancé", "learn": ["Comprendre la différence entre une appli IA et un agent", "Créer un agent qui travaille pour toi", "Garder le contrôle sur ce qu’il fait"], "mission": "Crée un agent qui répond aux questions des clients d’un resto.", "eps": [["assets/fm-robot.jpg", "Ton premier", "agent IA", "C’est quoi un agent IA ?", 8, "Une appli IA répond à tes questions. Un agent, lui, agit : il envoie des mails, remplit des tableaux, prend des décisions. Tu comprends ce qui change, et pourquoi c’est la prochaine grande étape."], ["assets/fm-robot2.jpg", "Lui donner", "une mission", "Créer ton premier agent, pas à pas", 12, "Instructions, outils, limites : on construit ensemble un agent simple qui accomplit une vraie tâche à ta place."], ["assets/fm-pixels.jpg", "Garder", "le contrôle", "Garder le contrôle sur ton agent", 9, "Un agent mal réglé peut faire n’importe quoi en ton nom. Tu apprends à fixer des limites, à vérifier ses actions et à tout arrêter en un geste."]]}, {"n": 10, "p": 3, "title": "Automatiser avec Make et Zapier", "lvl": "Avancé", "learn": ["Créer ta première automatisation sans coder", "Relier tes applis entre elles", "Ajouter l’IA au milieu d’une automatisation"], "mission": "Automatise l’envoi d’un mail de bienvenue à chaque nouveau client.", "eps": [["assets/fm-island.jpg", "Automatiser", "sans coder", "Ta première automatisation", 10, "Un formulaire rempli, un mail envoyé, une ligne ajoutée dans un tableau : tu crées ta première automatisation qui tourne toute seule, jour et nuit."], ["assets/fm-night.jpg", "Relier", "tes applis", "Relier tes applis entre elles", 9, "Gmail, Google Sheets, Instagram, ton agenda : tu apprends à les faire travailler ensemble sans rien copier-coller."], ["assets/fm-code.jpg", "L’IA dans", "tes automatisations", "Ajouter l’IA dans une automatisation", 11, "Trier des mails, rédiger des réponses, résumer des avis clients : l’IA au milieu de tes automatisations, c’est là que tout s’accélère."]]}], "hero": [[3, 0, "NOUVEAU"], [7, 0, "TOP 1"], [9, 0, "TENDANCE"]], "progress": {}}; }
   fmCat() {
     const C = this.fmCat0(); const A = this.admLoad();
     (A.mods || []).forEach(m => C.mods.push({ n: m.n, p: m.p, title: m.title, lvl: m.lvl || 'Débutant', learn: m.learn && m.learn.length ? m.learn : ['Une nouvelle compétence pas à pas'], mission: m.mission || 'Mets en pratique ce que tu as appris.', eps: [] }));
     C.mods.forEach(m => { const x = (A.eps || {})[m.n] || []; m.eps = m.eps.concat(x.map(e => [e.img, e.t1, e.t2 || '', e.title, e.dur || 5, e.desc || ''])); });
+    C.progress = Object.assign({}, C.progress, this.pcVidsDone());
     return C;
   }
   fmPrice(m, i) { const A = this.admLoad(); const k = m.n + '-' + i; if (A.price && A.price[k] != null) return Number(A.price[k]) || 0; return (!m.free && i > 0 && m.n < 100) ? ({ 'Débutant': 4.99, 'Intermédiaire': 6.99, 'Avancé': 9.99 }[m.lvl] || 4.99) : 0; }
@@ -1896,7 +2231,11 @@ window.Component = class Component extends DCLogic {
           play: () => { this.buzz([8, 30, 12]); if (lk) { this.openPanel({ kind: 'buyVid', any: true, n: n, i: i }); return; } this.say('La vidéo arrive bientôt : on tourne les épisodes.'); this.setState({}); } };
       }
     }
-    return { fm: { chips, hero, mods }, fv, showFv: !!s.fv && s.screen === 'form' };
+    const pst = this.pcStats(), R = 86, L = 2 * Math.PI * R, arc = pst.pct > 0 ? Math.max(6, L * pst.pct / 100) : 0;
+    const pf = { pct: pst.pct + ' %', dash: arc ? (arc.toFixed(1) + ' ' + (L + 20).toFixed(1)) : '0 600', aria: 'Avancement du parcours : ' + pst.pct + ' %', units: String(pst.units), stars: String(pst.stars), streak: pst.streak + (pst.streak > 1 ? ' jours' : ' jour'),
+      title: pst.units ? (pst.units + ' unité' + (pst.units > 1 ? 's' : '') + ' terminée' + (pst.units > 1 ? 's' : '') + ' sur ' + pst.total) : 'Aucun apprentissage commencé',
+      sub: pst.units ? (pst.units >= pst.total ? 'Parcours « Les bases de l’IA » terminé. Bravo.' : 'Continue ton parcours « Les bases de l’IA » dans Apprendre.') : 'Commence ton parcours dans Apprendre pour faire avancer ton cercle.', btn: pst.units ? 'Continuer' : 'Commencer' };
+    return { fm: { chips, hero, mods }, fv, showFv: !!s.fv && s.screen === 'form', fmVids: this.pcLoad().tab === 'videos', pf, quizBtn: s.level === null ? 'Faire le quiz' : 'Refaire le quiz', quizMenu: s.level === null ? 'Faire le quiz de niveau' : 'Refaire le quiz de niveau' };
   }
 
   go(s) {
@@ -2101,7 +2440,7 @@ window.Component = class Component extends DCLogic {
       goProfil: () => this.go('profil'),
       openMenu: () => { this.buzz(); this.setState({ menu: true }); },
       closeMenu: () => { this.buzz(); this.setState({ menu: false }); },
-      buzzOnly: () => this.buzz(),
+      buzzOnly: () => this.buzz(), soonSearch: () => { this.buzz(); this.say('Recherche dans les vidéos : elle arrive avec la vraie appli.'); this.refresh(); }, soonDl: () => { this.buzz(); this.say('Téléchargements hors ligne : ils arrivent avec la vraie appli.'); this.refresh(); }, soonList: () => { this.buzz(); this.say('Ajout de vidéos à tes listes : il arrive avec la vraie appli.'); this.refresh(); }, openHelp: () => { this.setState({ menu: false }); this.openPanel({ kind: 'help', any: true }); },
       toggleHapt: () => { const on = !s.hapt; this.setState({ hapt: on }); if (on) { try { if (navigator.vibrate) navigator.vibrate(20); } catch (e) {} } }
     };
   }
@@ -2339,7 +2678,7 @@ window.Component = class Component extends DCLogic {
     this.pops = []; this.fx = []; this.sheet = null; this.panel = null; this.toast = null; this.combo = 0; this.lastTap = 0; this.boost = null;
     this.orderNext = Date.now() + 45000; this.lastTick = Date.now(); this.saveNext = Date.now() + 5000; this.incNext = Date.now() + 90000;
     const gain = this.offlineGain();
-    if (gain >= 1) this.toast = { text: 'Pendant ton absence, tes agents ont rapporté ' + this.fmt(gain) + ' € (ils tournent au ralenti sans toi).', until: Date.now() + 5500 };
+    if (false && gain >= 1) this.toast = { text: 'Pendant ton absence, tes agents ont rapporté ' + this.fmt(gain) + ' € (ils tournent au ralenti sans toi).', until: Date.now() + 5500 };
   }
   dayCheck() {
     const gs = this.gs; const today = new Date().toISOString().slice(0, 10);
@@ -2537,6 +2876,7 @@ window.Component = class Component extends DCLogic {
   // ----- temps réel -----
   tick() {
     this.quizAskCheck();
+    return; // l'ancien jeu est remplacé par jeu/index.html
     if (this.state.world) this.ncSend(false);
     if (!this.gs) return;
     const now = Date.now(); const gap = (now - this.lastTick) / 1000; const dt = Math.min(5, gap); this.lastTick = now;
@@ -3159,7 +3499,23 @@ window.Component = class Component extends DCLogic {
     const B = this.pb(); const gs = this.gs; const D = this.v3d(); const IMG = this.IMG; const bl = []; let kicker = '', title = '';
     const e = this.econ(); const f = (n) => this.fmt(n);
     const qOpts = (q, picked, pick) => q.o.forEach((t, i) => bl.push(B.Opt(i, t, () => pick(i), picked === null ? 'idle' : i === q.a ? 'good' : i === picked ? 'bad' : 'dim')));
-    if (p.kind === 'store') {
+    if (p.kind === 'help') {
+      kicker = 'Aide'; title = 'Comment marche Inovia';
+      [['L’Actu', 'Les vraies actus de l’IA, publiées par les médias, mises à jour toutes les minutes. Chaque article renvoie vers sa source.'],
+       ['Apprendre', 'Ton parcours mélange vidéos, leçons et jeux. Chaque jour, un défi rapide garde ta série en vie. Les unités se débloquent une par une.'],
+       ['Les vidéos', 'Le module 1 est gratuit. Les autres vidéos se débloquent à l’unité, ou toutes d’un coup avec l’apprentissage complet, pour toujours.'],
+       ['Le jeu', 'Crée ta société, fais travailler des IA et construis ton patrimoine. L’argent du jeu est fictif.'],
+       ['Ton compte', 'Crée un compte pour garder ta progression sur tous tes appareils. Tu peux le supprimer à tout moment depuis ton profil.']].forEach(([h, t]) => { bl.push(B.H(h)); bl.push(B.P(t)); });
+      bl.push(B.Note('Une question ou un problème ? Écris-nous : [email de contact à compléter].'));
+      bl.push(B.Btn('Compris', () => this.closePanel()));
+    } else if (p.kind === 'admParcours') {
+      kicker = 'Mode admin'; title = 'Le parcours';
+      const D = this.pcData();
+      bl.push(B.Note('Maquette : la liste est affichée en lecture. Dans l’appli finale, tu ajoutes ou modifies les unités, les questions et les défis du jour depuis ici, et tout est enregistré dans Supabase.', 'gold'));
+      D.CH.forEach((c, ci) => { bl.push(B.H(c.n + ' · ' + c.t)); D.UNITS.forEach((u, i) => { if (u.ch !== ci) return; bl.push(B.Row({ t: (i + 1) + '. ' + u.name, sub: u.kind + ' · ' + u.ex.filter(k => k !== 'V').length + ' écrans' + (u.vid ? ' · vidéo du module ' + u.vid[0] : ''), tag: 'Voir', tagKind: 'light', act: () => { this.say(u.ex.filter(k => k !== 'V').map(k => D.Q[k].q || D.Q[k].title || 'Repère l’erreur').join(' · ')); this.refresh(); } })); }); });
+      bl.push(B.H('Défis du jour')); D.DAILY.forEach(d => bl.push(B.P((d.ok ? 'Vrai · ' : 'Faux · ') + d.q, true)));
+      bl.push(B.Btn('Retour', () => { this.panel = { kind: 'admin', any: true }; this.refresh(); }, 'light'));
+    } else if (p.kind === 'store') {
       kicker = 'Applis IA'; title = gs.apps.length ? 'Ajoute une appli' : 'Choisis ta première IA';
       if (!gs.apps.length) bl.push(B.P('Une IA est une appli à qui tu parles en écrivant. Elle t’aide à travailler plus vite : tes clics valent × 2. Toutes sont de vraies applis que tu peux installer gratuitement sur ton téléphone.'));
       if (p.need != null) bl.push(B.Note('Pour créer un ' + this.U(p.need).n.toLowerCase() + ', il te faut : ' + this.U(p.need).apps.map(id => this.appName(id)).join(', ') + '.', 'gold'));
@@ -3389,6 +3745,7 @@ window.Component = class Component extends DCLogic {
       bl.push(B.Row({ t: 'Le jeu', sub: 'Niveau, argent, déblocages, objectifs, remise à zéro', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admGame', any: true }; this.refresh(); } }));
       bl.push(B.Row({ t: 'Apprendre', sub: 'Modules, vidéos, gratuites ou payantes', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admFm', any: true }; this.refresh(); } }));
       bl.push(B.Row({ t: 'L’Actu', sub: 'Catégories et articles ajoutés à la main', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admActu', any: true }; this.refresh(); } }));
+      bl.push(B.Row({ t: 'Le parcours', sub: 'Unités, questions, défis du jour', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admParcours', any: true }; this.refresh(); } }));
     } else if (p.kind === 'admGame') {
       const L = this.gLevels(); const lv = this.lvlIdx(); kicker = 'Mode admin · Jeu'; title = 'Joue chaque étape';
       bl.push(B.Kv('Niveau actuel', (lv + 1) + ' / 8 · ' + L[lv].n, '#7046DC', true)); bl.push(B.Kv('Argent', f(gs.credits) + ' €'));
@@ -3812,6 +4169,7 @@ window.Component = class Component extends DCLogic {
     morphdom(document.getElementById('root'), frag, {
       getNodeKey: function (n) { return n && n.getAttribute ? (n.getAttribute('data-k') || n.id || undefined) : undefined; },
       onBeforeElUpdated: function (from, to) {
+        if (from.hasAttribute && from.hasAttribute('data-ext')) return false;
         if (from.tagName === 'CANVAS') { var keep = ['width', 'height']; for (var i = 0; i < to.attributes.length; i++) { var t = to.attributes[i]; if (keep.indexOf(t.name) < 0 && from.getAttribute(t.name) !== t.value) from.setAttribute(t.name, t.value); } return false; }
         if (from.tagName === 'INPUT' && from.type === 'file') { return false; }
         return true;

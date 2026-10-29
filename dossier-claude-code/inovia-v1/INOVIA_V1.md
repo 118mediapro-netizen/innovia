@@ -1,3 +1,5 @@
+> **Remplacé** le 29 oct. 2026 au soir par `../inovia/INOVIA_APPLI.md` (appli complète).
+
 # Inovia, version 1 : l'Actu seule (à coder maintenant)
 
 Décision de Yannis (29 oct. 2026) : on code l'appli Inovia **maintenant**, mais seulement avec l'Actu. Le jeu (bouton du milieu) et Apprendre (bouton de droite) sont encore en conception : ils affichent « Bientôt disponible ». Tout le reste de l'enveloppe de l'appli (chargement, en-tête, barre du bas, menu, mode nuit, sons, vibrations) est fait dès maintenant, à l'identique de la maquette.

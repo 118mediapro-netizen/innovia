@@ -1492,7 +1492,8 @@ function frame(){
 if(new URLSearchParams(location.search).get('debug')==='1')window.__nc={get iCam(){return iCam},get iCtl(){return iCtl},camera,controls,get interior(){return interior},walkers};
 function boot(){if(started)return;started=true;level=unlocked;
   setTowerH(towerH);showWorld(WID[level]);renderChips();updateStats();updateHud();
-  frame();setTimeout(()=>loader.classList.add('gone'),250);}
+  frame();setTimeout(()=>loader.classList.add('gone'),250);
+  if(QS.get('mode')==='in')setTimeout(()=>setMode('in'),120);}
 if(EMB){setTimeout(boot,900);try{parent.postMessage({type:'neocorp-ready'},'*');}catch(e){}}else boot();
 })();
 </script>

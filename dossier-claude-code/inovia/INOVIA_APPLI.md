@@ -39,16 +39,25 @@ Ne pas toucher à `monde/` ni à `neocorp/` : ils servent à Neo Corp, l'autre a
 
 ## 3. Le jeu (résumé, le code fait foi)
 - On clique sur la planète « Clic ». L'anneau doré autour se remplit en continu ; plein = commande livrée, le client paie.
-- **1 doigt = un demi-pas, 2 doigts en même temps = un pas entier.** Au plus 6 touches comptées par seconde.
+- **1 doigt = un demi-pas.** À partir du **mois 4** seulement (message « Nouveau : 2 doigts »), **2 doigts en même temps = un pas entier**. Pendant les mois 1 à 3, le 2e doigt ne compte pas. Au plus 6 touches comptées par seconde.
+- Sur la planète est écrit ce que tu fais (« Faire le flyer », « Créer le logo »…) et le prix de la commande.
 - 1 mois de jeu = 60 secondes. Bilan à chaque fin de mois (ventes, charges, cotisations ou impôt, bénéfice), avec les mois d'avant (flèches ‹ ›).
 - Un seul objectif affiché à la fois, cliquable quand il y a une action. Une ligne « Prochaine étape » sous le bouton.
 - Étapes : déclarer son activité (micro-entreprise), abonnements IA, prix réglable (trop cher = le client part), site, agents IA, stagiaire, **société (SASU)**, dividendes, salariés, bureaux, autres villes, international, rachats.
 - Ce que la boîte vend évolue (flyers, logos, posts, sites, vidéos, campagnes, contrats…).
 - Plus tard, petit à petit : **Patrimoine** (argent perso, bourse avec cours simulés, immobilier qui rapporte des loyers, valeur de chaque société), **plusieurs sociétés** (agence, restauration rapide, boutique en ligne, start-up d'IA), jusqu'aux milliards.
 - **Pas de fin, pas de mort, pas de faillite définitive.** Bouton pause à droite.
+- **Mon monde** s'ouvre par une **bulle ronde avec une maison**, que le joueur peut déplacer n'importe où sur l'écran (position mémorisée, clé `inoviaBulle`) ; un simple toucher l'ouvre. À l'étape de la chambre, Mon monde s'ouvre directement **en vue intérieure** (`&mode=in`), ensuite en vue extérieure.
+- **Recommencer la partie** n'est plus en bas de l'écran : petit lien discret en bas de la fenêtre des sociétés, et « Recommencer le jeu » dans le menu de l'appli (message `{ type: 'inovia-app', reset: true }`).
+- **Mode admin** : « Le jeu » liste les 14 étapes (du tout début à l'empire) ; toucher une étape envoie `{ type: 'inovia-app', stage: k }` au jeu, qui remplace la partie par une partie déjà arrivée à cette étape (`adminJump` dans `jeu/index.html`).
 - Mon monde : chambre, local, un étage, bureaux, bureaux agrandis, immeuble, tour, siège, empire, avec l'enseigne au nom de la société.
 - Mis de côté pour plus tard : les duels 1 contre 1 entre amis (rivalités d'entreprises).
 - Chiffres réels utilisés (simplifiés, à revérifier avant la sortie) : cotisations micro-entreprise d'environ 22 % pour un service, plafond d'environ 77 000 € par an, impôt sur les sociétés de 15 % puis 25 %, environ 30 % sur les dividendes. Mettre ces taux dans une config facile à mettre à jour.
+
+## 3 bis. Le test de niveau en IA
+- Ce n'est **pas un QCM** : 12 questions sur soi (« À quelle fréquence utilises-tu une IA ? », « Sais-tu ce qu'est une clé API ? », « As-tu déjà automatisé une tâche ? »…), sans bonne ni mauvaise réponse, deux questions à choix multiples. Non obligatoire.
+- Résultat en pourcentage et en niveau (Découverte, Débutant, Intermédiaire, Avancé, Expert), plafonné si la personne n'utilise presque jamais l'IA (cohérence). Mémorisé (`inoviaLevelPct`).
+- Accès : grande carte en haut d'Apprendre tant que le test n'est pas fait (puis pastille « Niveau IA X % » pour le refaire), bouton jauge en haut à droite, et le menu. Le code est dans les méthodes `lv*` du code source (`lvData()` pour les questions).
 
 ## 4. Ordre de travail
 Chaque étape se termine par un test sur l'iPhone de Yannis, expliqué pas à pas, et sa validation.

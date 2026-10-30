@@ -337,6 +337,20 @@ div:nth-child(even) > span > span > .floaty{animation-delay:-1.7s}
 .pcs-stats span{font-size:11.5px;color:var(--pc-mute)}
 .pcs-gain{background:var(--pc-card);border:1.5px solid var(--pc-line);border-radius:16px;padding:10px 14px;font-weight:700;font-size:14px;width:100%;box-sizing:border-box;line-height:1.4}
 @media (prefers-reduced-motion:reduce){.pc-bot,.pc-cur .pc-badge,.pcs-big svg{animation:none}}
+.pc-lv{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-radius:18px;padding:13px 14px;background:linear-gradient(135deg,#7046DC,#8A63F0);color:#FFFFFF;font-family:inherit;cursor:pointer;box-shadow:0 8px 20px rgba(112,70,220,.3)}
+.pc-lv span{flex:1;min-width:0}.pc-lv b{display:block;font-size:15.5px;font-weight:800}.pc-lv small{display:block;font-size:12.5px;opacity:.85;margin-top:2px}
+.pc-lv i{font-style:normal;flex:0 0 auto;background:#FFFFFF;color:#7046DC;font-weight:800;font-size:13px;padding:8px 11px;border-radius:12px}
+.pc-lvchip{font-family:inherit;cursor:pointer;color:var(--pc-acc)}
+.lvq-k{margin:0 0 6px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--pc-mute)}
+.lvq-q{margin:0 0 18px;font-size:23px;font-weight:800;line-height:1.25}
+.lvq-o{display:flex;flex-direction:column;gap:9px}
+.lvq-b{display:flex;align-items:center;gap:10px;text-align:left;width:100%;min-height:50px;padding:11px 14px;border-radius:16px;border:2px solid var(--pc-line);background:var(--pc-card);color:var(--pc-ink);font-family:inherit;font-size:15.5px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
+.lvq-b.lvon{border-color:#7046DC;background:var(--pc-card2)}
+.lvq-c{width:22px;height:22px;flex:0 0 22px;border-radius:7px;border:2px solid var(--pc-line);background:var(--pc-card)}
+.lvq-b.lvon .lvq-c{background:#7046DC;border-color:#7046DC;box-shadow:inset 0 0 0 3px var(--pc-card)}
+.lvq-back{display:block;margin:10px auto 0;border:0;background:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--pc-mute);cursor:pointer}
+.lvq .pcs-end h2{margin:0}
+.lvq .pcs-foot:empty{display:none}
 .fm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px}
 .fm-title{margin:0;font-size:31px;font-weight:800;letter-spacing:-.02em;color:var(--fm-ink)}
 .fm-icons{display:flex;gap:10px}
@@ -964,6 +978,7 @@ Apprends à le faire
 <button class="tap" type="button" onClick="{{goProfil}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Mon profil et avancement</button>
 <button class="tap" type="button" onClick="{{openMyLists}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit;font-size: 16px; font-weight: 700; cursor: pointer">Mes listes</button>
 <button class="tap" type="button" onClick="{{startQuiz}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #260E4F; font-family: inherit;font-size: 16px; font-weight: 700; cursor: pointer">{{quizMenu}}</button>
+<button class="tap" type="button" onClick="{{resetJeu}}" style="height: 52px; padding: 0 16px; border: none; border-radius: 18px; background: none; text-align: left; color: #6C5A8C; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Recommencer le jeu</button>
 <div style="height: 52px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
 <label for="nuit" style="font-size: 16px; font-weight: 700">Mode nuit</label>
 <button id="nuit" class="tap" type="button" onClick="{{toggleNight}}" aria-pressed="{{nightOn}}" style="{{nightStyle}}"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(38,14,79,0.25)"></span></button>
@@ -1683,13 +1698,15 @@ window.Component = class Component extends DCLogic {
     let daily;
     if (P.daily === today) daily = '<div class="pc-daily pc-ok"><div class="pc-dt"><div class="pc-dl">Défi du jour réussi</div><div class="pc-dq">Reviens demain pour garder ta série.</div></div></div>';
     else daily = '<div class="pc-daily" id="pcDaily"><div class="pc-dt"><div class="pc-dl">Défi du jour · Vrai ou faux</div><div class="pc-dq">' + E(dq.q) + '</div></div><div class="pc-db"><button type="button" class="tap" data-v="1">Vrai</button><button type="button" class="tap" data-v="0">Faux</button></div></div>';
-    const top = '<div class="pc-chips"><span class="pc-chip" title="Jours de suite">' + I('fire') + P.streak + ' j</span><span class="pc-chip" title="Énergie">' + I('bolt') + P.energy + '</span><span class="pc-chip" title="Étoiles">' + I('sGold') + P.stars + '</span></div>';
+    const top = '<div class="pc-chips"><span class="pc-chip" title="Jours de suite">' + I('fire') + P.streak + ' j</span><span class="pc-chip" title="Énergie">' + I('bolt') + P.energy + '</span><span class="pc-chip" title="Étoiles">' + I('sGold') + P.stars + '</span>' + (this.lvPct() != null ? '<button type="button" class="tap pc-chip pc-lvchip" id="pcLv2">Niveau IA ' + this.lvPct() + ' %</button>' : '') + '</div>';
+    const lvCard = this.lvPct() == null ? '<button type="button" class="tap pc-lv" id="pcLv"><span><b>Évalue ton niveau en IA</b><small>12 questions sur toi · 2 min · ton parcours s’adapte</small></span><i>Commencer ›</i></button>' : '';
     const tabs = '<div class="pc-tabs" role="tablist"><button type="button" role="tab" class="tap' + (P.tab !== 'videos' ? ' pc-on' : '') + '" data-tab="parcours">Mon parcours</button><button type="button" role="tab" class="tap' + (P.tab === 'videos' ? ' pc-on' : '') + '" data-tab="videos">Toutes les vidéos</button></div>';
     let body = '';
     if (P.tab !== 'videos') {
       body = '<div class="pc-course"><div class="pc-grow"><div class="pc-ct">Les bases de l’IA</div><div class="pc-cs">' + st.units + ' sur ' + st.total + ' unités · Module 1 gratuit</div><div class="pc-bar"><i style="width:' + st.pct + '%"></i></div></div><button type="button" class="tap pc-explore" id="pcExplore">Parcours</button></div><div class="pc-map" id="pcMap"></div>';
     }
-    host.innerHTML = '<div class="pcw">' + top + daily + tabs + body + '</div>';
+    host.innerHTML = '<div class="pcw">' + lvCard + top + daily + tabs + body + '</div>';
+    ['#pcLv', '#pcLv2'].forEach(id => { const b = host.querySelector(id); if (b) b.onclick = () => { this.sfx('pop', 1.2); this.buzz(); this.lvOpen(); }; });
     const dl = host.querySelector('#pcDaily');
     if (dl) dl.querySelectorAll('button').forEach(b => b.onclick = () => {
       const good = (b.dataset.v === '1') === dq.ok;
@@ -1854,6 +1871,7 @@ window.Component = class Component extends DCLogic {
     document.getElementById('pcFoot').innerHTML = '<button class="tap pcs-cta" type="button" id="pcFin">Continuer</button>';
     document.getElementById('pcFin').onclick = () => { this.sfx('pop', 1.2); this.pcClose(); };
   }
+  jeuPost(o) { const h = document.getElementById('jeuHost'); if (h && h.__f) try { h.__f.contentWindow.postMessage(Object.assign({ type: 'inovia-app' }, o), '*'); } catch (e) {} }
   jeuSync() {
     const host = document.getElementById('jeuHost'); if (!host) return; const s = this.state;
     if (!host.__f) {
@@ -1870,6 +1888,79 @@ window.Component = class Component extends DCLogic {
     host.style.display = show ? 'block' : 'none';
     const msg = JSON.stringify({ type: 'inovia-app', night: !!s.night, sound: s.sound !== false, hapt: s.hapt !== false });
     if (msg !== this._jeuSent) { this._jeuSent = msg; try { host.__f.contentWindow.postMessage(JSON.parse(msg), '*'); } catch (e) {} }
+  }
+  // ===================== QUESTIONNAIRE DE NIVEAU (questions sur soi, pas de bonnes réponses) =====================
+  lvData() {
+    return [
+      { q: 'À quelle fréquence utilises-tu une IA comme ChatGPT, Claude ou Gemini ?', o: [['Jamais', 0], ['Je l’ai essayée une ou deux fois', 1], ['Quelques fois par mois', 2], ['Chaque semaine', 3], ['Tous les jours', 4]] },
+      { q: 'Quelles IA as-tu déjà utilisées toi-même ?', multi: true, max: 4, o: [['ChatGPT', 1], ['Claude', 1], ['Gemini', 1], ['Copilot', 1], ['Perplexity', 1], ['Le Chat (Mistral)', 1], ['Midjourney', 1], ['ElevenLabs', 1], ['Aucune', 0, 'none']] },
+      { q: 'Pour quoi l’as-tu déjà utilisée ?', multi: true, max: 4, o: [['Poser des questions', .5], ['Écrire des textes ou des messages', 1], ['Résumer ou traduire', 1], ['Créer des images', 1], ['Créer des vidéos ou des voix', 1], ['Coder', 1.5], ['Automatiser des tâches', 1.5], ['Je ne l’utilise pas', 0, 'none']] },
+      { q: 'Quand la réponse de l’IA ne te convient pas, que fais-tu ?', o: [['J’abandonne', 0], ['Je repose la même question', 1], ['Je reformule ma demande', 2], ['Je donne plus de contexte, un exemple ou un format', 4]] },
+      { q: 'Le mot « prompt », ça te parle ?', o: [['Non, jamais entendu', 0], ['J’en ai entendu parler', 1], ['Oui, j’en écris', 3], ['Oui, j’ai mes prompts tout prêts que je réutilise', 4]] },
+      { q: 'As-tu déjà vérifié une information donnée par une IA ?', o: [['Je ne savais pas qu’elle pouvait se tromper', 0], ['Non, jamais', 1], ['Parfois', 2], ['Oui, souvent', 4]] },
+      { q: 'Sais-tu ce qu’est une clé API ?', o: [['Non', 0], ['J’en ai entendu parler', 1], ['Oui, je sais à quoi ça sert', 2], ['Oui, j’en ai déjà utilisé une', 4]] },
+      { q: 'As-tu déjà créé ton propre assistant IA (un GPT personnalisé, un projet Claude…) ?', o: [['Non', 0], ['Je sais que ça existe', 1], ['Oui, une fois', 3], ['Oui, j’en utilise plusieurs', 4]] },
+      { q: 'As-tu déjà automatisé une tâche avec l’IA (Make, Zapier, un agent…) ?', o: [['Non', 0], ['Je sais que c’est possible', 1], ['Oui, une fois', 3], ['Oui, régulièrement', 4]] },
+      { q: 'As-tu un abonnement payant à une IA ?', o: [['Non', 0], ['Je l’ai déjà essayé', 1], ['Oui, un', 2], ['Oui, plusieurs', 3]] },
+      { q: 'Dans ton travail ou tes études, l’IA te fait gagner du temps ?', o: [['Je ne l’utilise pas pour ça', 0], ['Un peu', 1], ['Beaucoup', 3], ['Je ne pourrais plus m’en passer', 4]] },
+      { q: 'Comment te sens-tu avec l’IA aujourd’hui ?', o: [['Perdu', 0], ['Curieux, mais débutant', 1], ['À l’aise sur les bases', 2], ['Très à l’aise', 3], ['Je pourrais l’apprendre à d’autres', 4]] }
+    ];
+  }
+  lvPct() { try { const v = window.localStorage.getItem('inoviaLevelPct'); return v == null ? null : Math.max(0, Math.min(100, Number(v) || 0)); } catch (e) { return null; } }
+  lvName(p) { return p == null ? 'pas encore évalué' : p < 21 ? 'Découverte' : p < 46 ? 'Débutant' : p < 66 ? 'Intermédiaire' : p < 86 ? 'Avancé' : 'Expert'; }
+  lvOpen() {
+    const layer = document.getElementById('pcLayer'); if (!layer) return;
+    this.setState({ menu: false, quiz: null });
+    const Q = this.lvData(), E = (s) => this.pcEsc(s); const ans = []; let k = -1;
+    const el = document.createElement('div'); el.className = 'pcs lvq'; el.id = 'lvSess'; layer.appendChild(el);
+    const close = () => { el.remove(); if (this.state.screen === 'onb') { this.onbDone(); this.setState({ screen: 'actu' }); } this.pcRender(); this.refresh(); };
+    const intro = () => {
+      el.innerHTML = '<div class="pcs-bar"><button class="tap pc-x" type="button" id="lvX" aria-label="Fermer">' + this.pcIcon('x') + '</button><div class="pc-bar pcs-prog"><i style="width:0%"></i></div></div>' +
+        '<div class="pcs-stage"><h2 class="pcs-kind">Ton niveau en IA</h2><div class="pcs-mentor"><div class="pcs-bot">' + this.pcBot('happy') + '</div><div class="pcs-bubble">Ce n’est pas un examen : il n’y a ni bonne ni mauvaise réponse. Réponds simplement la vérité, ça sert à adapter ton parcours à toi.</div></div>' +
+        '<div class="pcs-learn">12 questions sur ce que tu fais vraiment avec l’IA. Environ 2 minutes. Tu obtiens ton niveau en pourcentage, et Apprendre s’adapte.</div></div><div class="pcs-foot"><button class="tap pcs-cta" type="button" id="lvGo">Commencer</button></div>';
+      el.querySelector('#lvX').onclick = () => { this.sfx('pop', 1); close(); };
+      el.querySelector('#lvGo').onclick = () => { this.sfx('pop', 1.2); this.buzz(8); k = 0; step(); };
+    };
+    const step = () => {
+      if (k >= Q.length) return result();
+      const q = Q[k]; let sel = [];
+      el.innerHTML = '<div class="pcs-bar"><button class="tap pc-x" type="button" id="lvX" aria-label="Fermer">' + this.pcIcon('x') + '</button><div class="pc-bar pcs-prog"><i style="width:' + (k / Q.length * 100) + '%"></i></div><span class="pc-chip">' + (k + 1) + ' / ' + Q.length + '</span></div>' +
+        '<div class="pcs-stage"><p class="lvq-k">Question ' + (k + 1) + ' sur ' + Q.length + (q.multi ? ' · plusieurs réponses possibles' : '') + '</p><h2 class="lvq-q">' + E(q.q) + '</h2><div class="lvq-o">' +
+        q.o.map((o, j) => '<button class="tap lvq-b" type="button" data-j="' + j + '">' + (q.multi ? '<span class="lvq-c"></span>' : '') + E(o[0]) + '</button>').join('') + '</div></div>' +
+        '<div class="pcs-foot">' + (q.multi ? '<button class="tap pcs-cta" type="button" id="lvNext" disabled>Continuer</button>' : '') + (k > 0 ? '<button class="tap lvq-back" type="button" id="lvBack">‹ Question précédente</button>' : '') + '</div>';
+      el.querySelector('#lvX').onclick = () => { this.sfx('pop', 1); close(); };
+      const bk = el.querySelector('#lvBack'); if (bk) bk.onclick = () => { k--; ans.pop(); this.sfx('pop', 1); step(); };
+      el.querySelectorAll('.lvq-b').forEach(b => b.onclick = () => {
+        const j = +b.dataset.j; this.sfx('tap', 1); this.buzz(6);
+        if (!q.multi) { b.classList.add('lvon'); ans.push([j]); setTimeout(() => { k++; step(); }, 220); return; }
+        const none = q.o[j][2] === 'none';
+        if (none) sel = sel.indexOf(j) >= 0 ? [] : [j];
+        else { sel = sel.filter(x => q.o[x][2] !== 'none'); sel = sel.indexOf(j) >= 0 ? sel.filter(x => x !== j) : sel.concat([j]); }
+        el.querySelectorAll('.lvq-b').forEach(x => x.classList.toggle('lvon', sel.indexOf(+x.dataset.j) >= 0));
+        el.querySelector('#lvNext').disabled = !sel.length;
+      });
+      const nx = el.querySelector('#lvNext'); if (nx) nx.onclick = () => { if (!sel.length) return; this.sfx('pop', 1.2); ans.push(sel.slice()); k++; step(); };
+    };
+    const result = () => {
+      let got = 0, max = 0;
+      Q.forEach((q, i) => { const a = ans[i] || []; if (q.multi) { got += Math.min(q.max, a.reduce((t, j) => t + q.o[j][1], 0)); max += q.max; } else { got += q.o[a[0]] ? q.o[a[0]][1] : 0; max += Math.max(...q.o.map(o => o[1])); } });
+      // cohérence : on ne peut pas être expert sans jamais utiliser l'IA
+      let pct = Math.round(got / max * 100); const freq = (ans[0] || [0])[0];
+      if (freq <= 1) pct = Math.min(pct, 30); else if (freq === 2) pct = Math.min(pct, 65);
+      try { window.localStorage.setItem('inoviaLevelPct', String(pct)); window.localStorage.setItem('inoviaLevel', String(pct < 46 ? 0 : pct < 76 ? 1 : 2)); } catch (e) {}
+      this.setState({ level: pct < 46 ? 0 : pct < 76 ? 1 : 2 });
+      const nm = this.lvName(pct);
+      const txt = { 'Découverte': 'Tu découvres l’IA : c’est le meilleur moment pour commencer. Ton parcours démarre tout en douceur, avec les bases.', 'Débutant': 'Tu as déjà essayé l’IA. On va t’apprendre à bien lui parler et à choisir le bon outil.', 'Intermédiaire': 'Tu utilises déjà l’IA. On va t’aider à aller plus vite et plus loin : prompts, images, automatisations.', 'Avancé': 'Tu maîtrises bien l’IA. On te propose des contenus plus poussés : agents, automatisations, IA au travail.', 'Expert': 'Tu fais partie des personnes les plus à l’aise avec l’IA. Les parcours avancés sont faits pour toi.' }[nm];
+      const C = 2 * Math.PI * 70, arc = Math.max(4, C * pct / 100);
+      el.innerHTML = '<div class="pcs-bar"><button class="tap pc-x" type="button" id="lvX" aria-label="Fermer">' + this.pcIcon('x') + '</button><div class="pc-bar pcs-prog"><i style="width:100%"></i></div></div>' +
+        '<div class="pcs-stage"><div class="pcs-end"><svg width="170" height="170" viewBox="0 0 170 170" aria-label="Ton niveau : ' + pct + ' %"><circle cx="85" cy="85" r="70" fill="none" stroke="var(--pc-card2)" stroke-width="14"/><circle cx="85" cy="85" r="70" fill="none" stroke="#7046DC" stroke-width="14" stroke-linecap="round" stroke-dasharray="' + arc.toFixed(1) + ' ' + (C + 10).toFixed(1) + '" transform="rotate(-90 85 85)"/><text x="85" y="94" text-anchor="middle" font-size="34" font-weight="800" fill="currentColor">' + pct + ' %</text></svg>' +
+        '<p class="lvq-k">Ton niveau en IA</p><h2>' + E(nm) + '</h2><div class="pcs-gain" style="text-align:left">' + E(txt) + '</div><p class="pcs-sub" style="margin-top:8px">Tu pourras refaire ce questionnaire quand tu veux, depuis Apprendre ou le menu.</p></div></div>' +
+        '<div class="pcs-foot"><button class="tap pcs-cta" type="button" id="lvEnd">Voir mon parcours</button></div>';
+      this.sfx('level', 1); this.buzz([20, 40, 30, 40, 60]);
+      el.querySelector('#lvX').onclick = () => close();
+      el.querySelector('#lvEnd').onclick = () => { this.sfx('pop', 1.2); el.remove(); if (this.state.screen === 'onb') this.onbDone(); this.go('form'); setTimeout(() => this.pcRender(), 60); };
+    };
+    intro();
   }
   componentDidUpdate(pp, ps) { this.planetSync(); try { this.jeuSync(); } catch (e) { console.error(e); } try { this.pcSync(); } catch (e) { console.error(e); } if (this.state.screen === 'intro' && ps.screen !== 'intro') this.startIntro(); const wOn = !!this.state.world && this.state.screen === 'jeu'; if (wOn && !this.worldEng && !this.worldT) this.worldT = setTimeout(() => this.startWorld(0), 30); if (!wOn && (this.worldEng || this.worldT)) this.stopWorld(); }
   inoWorld(T, cv, st0) {
@@ -2235,7 +2326,7 @@ window.Component = class Component extends DCLogic {
     const pf = { pct: pst.pct + ' %', dash: arc ? (arc.toFixed(1) + ' ' + (L + 20).toFixed(1)) : '0 600', aria: 'Avancement du parcours : ' + pst.pct + ' %', units: String(pst.units), stars: String(pst.stars), streak: pst.streak + (pst.streak > 1 ? ' jours' : ' jour'),
       title: pst.units ? (pst.units + ' unité' + (pst.units > 1 ? 's' : '') + ' terminée' + (pst.units > 1 ? 's' : '') + ' sur ' + pst.total) : 'Aucun apprentissage commencé',
       sub: pst.units ? (pst.units >= pst.total ? 'Parcours « Les bases de l’IA » terminé. Bravo.' : 'Continue ton parcours « Les bases de l’IA » dans Apprendre.') : 'Commence ton parcours dans Apprendre pour faire avancer ton cercle.', btn: pst.units ? 'Continuer' : 'Commencer' };
-    return { fm: { chips, hero, mods }, fv, showFv: !!s.fv && s.screen === 'form', fmVids: this.pcLoad().tab === 'videos', pf, quizBtn: s.level === null ? 'Faire le quiz' : 'Refaire le quiz', quizMenu: s.level === null ? 'Faire le quiz de niveau' : 'Refaire le quiz de niveau' };
+    return { fm: { chips, hero, mods }, fv, showFv: !!s.fv && s.screen === 'form', fmVids: this.pcLoad().tab === 'videos', pf, quizBtn: this.lvPct() == null ? 'Faire le test' : 'Refaire le test', quizMenu: this.lvPct() == null ? 'Évaluer mon niveau en IA' : 'Refaire mon test de niveau', resetJeu: () => { this.setState({ menu: false }); this.go('jeu'); setTimeout(() => this.jeuPost({ reset: true }), 300); } };
   }
 
   go(s) {
@@ -2250,6 +2341,7 @@ window.Component = class Component extends DCLogic {
     return { lvl: 1, i: 0, id: '1-0' };
   }
   startQuiz(len) {
+    return this.lvOpen();
     this.buzz(); const n = len || 4;
     const cur = this.pickQ(1, []);
     this.setState({ menu: false, open: null, levelCard: false, quiz: { step: 0, len: n, lvl: 1, score: 0, asked: [cur.id], cur: cur, picked: null, done: false } });
@@ -2279,7 +2371,7 @@ window.Component = class Component extends DCLogic {
     const s = this.state;
     const FONT = "font-family:inherit;";
     const fontNames = ['Plus Jakarta Sans', 'Manrope', 'Sora', 'Outfit', 'Urbanist', 'DM Sans', 'Space Grotesk', 'Poppins', 'Lexend', 'Nunito', 'Figtree', 'Bricolage Grotesque', 'Unbounded', 'Syne'];
-    const levelName = s.level === null ? 'pas encore évalué' : this.levels[s.level].name;
+    const levelName = this.lvPct() != null ? this.lvName(this.lvPct()) + ' · ' + this.lvPct() + ' %' : (s.level === null ? 'pas encore évalué' : this.levels[s.level].name);
     const cats = this.actuCats(); const themeNames = cats.map(c => c.name);
     const liveN = this.allNews().filter(n => n.ts); const ordered = this.admArts().concat((this.remote || []).slice());
     const TAGP = { 'Société': 'assets/photo-societe.jpg', 'Création': 'assets/photo-creation.jpg', 'Emploi': 'assets/photo-emploi.jpg', 'Business': 'assets/photo-business.jpg', 'Code': 'assets/photo-code.jpg', 'Image et vidéo': 'assets/photo-image.jpg' };
@@ -3499,7 +3591,12 @@ window.Component = class Component extends DCLogic {
     const B = this.pb(); const gs = this.gs; const D = this.v3d(); const IMG = this.IMG; const bl = []; let kicker = '', title = '';
     const e = this.econ(); const f = (n) => this.fmt(n);
     const qOpts = (q, picked, pick) => q.o.forEach((t, i) => bl.push(B.Opt(i, t, () => pick(i), picked === null ? 'idle' : i === q.a ? 'good' : i === picked ? 'bad' : 'dim')));
-    if (p.kind === 'help') {
+    if (p.kind === 'admJeu') {
+      kicker = 'Mode admin'; title = 'Aller à une étape du jeu';
+      bl.push(B.Note('Touche une étape : ta partie est remplacée par une partie déjà arrivée à cette étape, pour voir le jeu sans tout refaire.', 'gold'));
+      ['Le tout début', 'Micro-entreprise, ChatGPT, mois 4', 'Logos (Canva Pro)', 'Posts réseaux sociaux (site web)', 'Sites web, agent IA, stagiaire (ton local)', 'Société créée (un étage à toi)', 'Premier salarié (tes bureaux)', 'De vrais bureaux (bureaux agrandis)', 'Autre ville + patrimoine, bourse, immobilier', 'Deuxième société (1 M€ de patrimoine)', 'International (ton immeuble, 10 M€)', 'Rachat d’un concurrent (ta tour, 100 M€)', 'Milliardaire (ton siège, 1 Md€)', 'Ton empire (10 Md€ et plus)'].forEach((t, k) => bl.push(B.Row({ t: (k + 1) + '. ' + t, sub: '', tag: 'Y aller', act: () => { this.closePanel(); this.go('jeu'); setTimeout(() => this.jeuPost({ stage: k }), 250); } })));
+      bl.push(B.Btn('Retour', () => { this.panel = { kind: 'admin', any: true }; this.refresh(); }, 'light'));
+    } else if (p.kind === 'help') {
       kicker = 'Aide'; title = 'Comment marche Inovia';
       [['L’Actu', 'Les vraies actus de l’IA, publiées par les médias, mises à jour toutes les minutes. Chaque article renvoie vers sa source.'],
        ['Apprendre', 'Ton parcours mélange vidéos, leçons et jeux. Chaque jour, un défi rapide garde ta série en vie. Les unités se débloquent une par une.'],
@@ -3742,7 +3839,7 @@ window.Component = class Component extends DCLogic {
     } else if (p.kind === 'admin') {
       kicker = 'Mode admin'; title = 'Espace administrateur';
       bl.push(B.Note('Maquette : tout le monde voit ce menu. Dans l’appli finale, il sera réservé à ton compte admin et tes changements passeront par Supabase, sans mise à jour Apple.', 'gold'));
-      bl.push(B.Row({ t: 'Le jeu', sub: 'Niveau, argent, déblocages, objectifs, remise à zéro', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admGame', any: true }; this.refresh(); } }));
+      bl.push(B.Row({ t: 'Le jeu', sub: 'Aller directement à n’importe quelle étape', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admJeu', any: true }; this.refresh(); } }));
       bl.push(B.Row({ t: 'Apprendre', sub: 'Modules, vidéos, gratuites ou payantes', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admFm', any: true }; this.refresh(); } }));
       bl.push(B.Row({ t: 'L’Actu', sub: 'Catégories et articles ajoutés à la main', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admActu', any: true }; this.refresh(); } }));
       bl.push(B.Row({ t: 'Le parcours', sub: 'Unités, questions, défis du jour', tag: 'Ouvrir', act: () => { this.panel = { kind: 'admParcours', any: true }; this.refresh(); } }));

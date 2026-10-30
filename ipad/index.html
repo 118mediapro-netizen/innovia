@@ -376,6 +376,13 @@ div:nth-child(even) > span > span > .floaty{animation-delay:-1.7s}
 @keyframes pcarrow{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
 @keyframes pcwig{0%,70%,100%{transform:rotate(0)}76%{transform:rotate(-9deg) scale(1.06)}84%{transform:rotate(8deg) scale(1.06)}90%{transform:rotate(0)}}
 .pc-dwrap{margin-top:20px}
+@property --pcg{syntax:'<angle>';inherits:false;initial-value:0deg}
+.pc-pk[data-tab="parcours"]:not(.pc-pk-on){border-color:transparent;background:linear-gradient(var(--pc-card),var(--pc-card)) padding-box,conic-gradient(from var(--pcg),#FFE38A,#F5B400 18%,rgba(245,180,0,.15) 38%,rgba(245,180,0,.15) 62%,#F5B400 82%,#FFE38A) border-box;animation:pcgold 2.4s linear infinite;box-shadow:0 4px 14px rgba(245,180,0,.22)}
+.pc-pk[data-tab="parcours"]:not(.pc-pk-on) em{color:#D89A00}
+.pc-pk[data-tab="parcours"].pc-pk-on{box-shadow:0 0 0 2px #F5B400,0 8px 18px rgba(112,70,220,.32)}
+.pc-cur::before{content:'';position:absolute;inset:1px;border-radius:50%;background:conic-gradient(from var(--pcg),#FFE38A,#F5B400 20%,transparent 42%,transparent 58%,#F5B400 80%,#FFE38A);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));animation:pcgold 2.2s linear infinite;pointer-events:none}
+@keyframes pcgold{to{--pcg:360deg}}
+@media (prefers-reduced-motion:reduce){.pc-pk,.pc-cur::before{animation:none}}
 .fm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px}
 .fm-title{margin:0;font-size:31px;font-weight:800;letter-spacing:-.02em;color:var(--fm-ink)}
 .fm-icons{display:flex;gap:10px}
@@ -513,7 +520,7 @@ html, body, #stage, #app { overscroll-behavior: none }
 <template id="tpl">
 <div class="{{themeCls}}" style="width: 100%; height: 100%; position: relative; overflow: hidden; background: #F4F2F8; font-family: {{fontFamily}}; color: #260E4F">
 <div id="pcLayer" data-ext="1"></div>
-<div id="jeuHost" data-ext="1" style="position: absolute; left: 0; right: 0; top: 96px; bottom: 0; z-index: 0; display: none"></div>
+<div id="jeuHost" data-ext="1" style="position: absolute; left: 0; right: 0; top: 96px; bottom: 130px; z-index: 0; display: none"></div>
 
 <sc-if value="{{showIntro}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; inset: 0; background: #000000; overflow: hidden">
@@ -1932,7 +1939,7 @@ window.Component = class Component extends DCLogic {
       window.addEventListener('message', (e) => { const d = e.data; if (!d || e.source !== host.__f.contentWindow) return;
         if (d.type === 'inovia-buzz') this.buzz(d.p);
         if (d.type === 'inovia-jeu-ready') { this._jeuSent = ''; this.jeuSync(); }
-        if (d.type === 'inovia-full') { host.style.top = d.on ? '0' : '96px'; host.style.zIndex = d.on ? '200' : '0'; } });
+        if (d.type === 'inovia-full') { host.style.top = d.on ? '0' : '96px'; host.style.bottom = d.on ? '0' : '130px'; host.style.zIndex = d.on ? '200' : '0'; } });
     }
     const show = s.screen === 'jeu' && !s.boot;
     host.style.display = show ? 'block' : 'none';

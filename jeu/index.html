@@ -22,8 +22,12 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 input{font:inherit}
 .app{max-width:430px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px;display:flex;flex-direction:column;gap:11px}
-.embed .app{padding-top:4px;padding-bottom:150px}
+.embed .app{padding-top:4px;padding-bottom:24px}
+.embed .ov{padding:0 8px 8px}
+.embed .sheet{border-radius:26px;max-height:calc(100% - 12px);padding-bottom:20px}
 .embed .toast{top:8px}
+.nudge{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));z-index:59;transform:translateX(-50%);pointer-events:none;background:rgba(112,70,220,.92);color:#FFFFFF;font-weight:800;font-size:13px;padding:8px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px rgba(74,35,184,.3);animation:nud 3.6s ease forwards}
+@keyframes nud{0%{opacity:0;transform:translate(-50%,-14px)}10%,82%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-10px)}}
 .head{display:flex;align-items:center;gap:8px}
 .co{flex:1;min-width:0;display:flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;font-weight:800;font-size:13.5px;text-align:left}
 .co .dot{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#FFFFFF;display:grid;place-items:center;font-size:12px;flex:0 0 26px}
@@ -154,6 +158,8 @@ h2{margin:8px 0 0;font-size:18px;font-weight:800}
 .choice.rec{border-color:var(--acc)}
 .choice.on{border-color:var(--acc);background:var(--soft)}
 .choice .tag{display:inline-block;font-size:10.5px;font-weight:800;color:#FFFFFF;background:#7046DC;padding:2px 7px;border-radius:999px;margin-left:6px;vertical-align:2px}
+.corow{display:flex;gap:8px;align-items:stretch}.corow .choice{flex:1;min-width:0}
+.ren{flex:0 0 48px;border-radius:16px;background:var(--soft);color:var(--acc);display:grid;place-items:center}.ren svg{width:20px;height:20px}
 .mini{display:inline-flex;gap:6px;flex-wrap:wrap}
 .mini button{font-size:12.5px;font-weight:800;padding:7px 10px;border-radius:10px;background:var(--soft);color:var(--acc)}
 .mini button.pri{background:#7046DC;color:#FFFFFF}
@@ -164,9 +170,10 @@ h2{margin:8px 0 0;font-size:18px;font-weight:800}
 .hnav button:disabled{opacity:.3}
 .hnav span{font-weight:800;font-size:14px;color:var(--mute)}
 .spark{display:flex;align-items:flex-end;gap:4px;height:54px;margin:0 0 12px;padding:0 2px}
-.spark i{flex:1;min-width:4px;border-radius:4px 4px 0 0;background:var(--soft)}
+.spark{justify-content:center}
+.spark i{flex:1;min-width:4px;max-width:26px;border-radius:4px 4px 0 0;background:var(--soft)}
 .spark i.p{background:var(--acc2)}.spark i.n{background:var(--bad)}
-.spark i.cur{outline:2px solid var(--gold);outline-offset:1px}
+.spark i.cur{outline:2px solid var(--acc);outline-offset:1px}
 .big3{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .big3 div{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:10px 12px}
 .big3 small{display:block;font-size:11.5px;font-weight:800;color:var(--mute)}
@@ -178,6 +185,7 @@ h2{margin:8px 0 0;font-size:18px;font-weight:800}
 .bulle .bl{position:absolute;top:100%;margin-top:4px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;font-weight:800;color:var(--acc);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px 7px}
 .bulle.new{animation:bnew 1.1s 4}
 @keyframes bnew{50%{box-shadow:0 0 0 10px rgba(138,99,240,.35),0 10px 24px rgba(74,35,184,.45)}}
+.bulle{transition:opacity .25s}.bulle.ghost{opacity:.32}.bulle.ghost.drag{opacity:1}
 .bulle.drag{cursor:grabbing;transform:scale(1.08)}
 .world{position:fixed;inset:0;z-index:40;background:#05070d;display:flex;flex-direction:column}
 .world iframe{flex:1;border:0;width:100%}
@@ -327,6 +335,7 @@ const buzz=p=>{if(!HAPT)return;try{if(window.parent!==window)parent.postMessage(
 /* ================= Ino, ton associé IA ================= */
 const BOT='<svg viewBox="0 0 60 70" aria-hidden="true"><line x1="30" y1="4" x2="30" y2="13" stroke="#B9AEE0" stroke-width="3"/><circle cx="30" cy="5" r="4" fill="#F5B400"/><rect x="8" y="13" width="44" height="34" rx="14" fill="#EDE7FF"/><rect x="13" y="19" width="34" height="22" rx="9" fill="#8A63F0"/><circle cx="22" cy="30" r="3.6" fill="#120A26"/><circle cx="38" cy="30" r="3.6" fill="#120A26"/><path d="M25 37q5 3 10 0" stroke="#120A26" stroke-width="2.4" fill="none" stroke-linecap="round"/><rect x="16" y="49" width="28" height="16" rx="8" fill="#7046DC"/><circle cx="30" cy="57" r="3" fill="#F5B400"/></svg>';
 function say(t){$('#ino').innerHTML=BOT+'<div class="bubble"><small>Ino, ton associé IA</small>'+esc(t)+'</div>';}
+function nudge(t){const o=document.querySelector('.nudge');if(o)o.remove();const d=document.createElement('div');d.className='nudge';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3600);}
 function toast(t){const o=document.querySelector('.toast');if(o)o.remove();const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2800);}
 
 /* ================= fenêtres ================= */
@@ -453,6 +462,7 @@ function hit(multi){
   const b=$('#bar');b.classList.add('pulse');setTimeout(()=>b.classList.remove('pulse'),110);
   sfx.click();buzz(6);
   addWork(S,add,true);
+  if(G.month===1&&!G.flags.motiv&&(G.flags.nclic=(G.flags.nclic||0)+1)>=3){G.flags.motiv=1;nudge('Fais le plus d’argent possible ce mois-ci !');}
   const [x,y]=headXY();sparks(x,y,lastN===2?8:4);
   if(lastN===2&&!G.flags.two){G.flags.two=1;toast('2 doigts : 2 fois plus vite !');}
   render();
@@ -548,7 +558,7 @@ function endMonth(){
 }
 function histHTML(i,learn){
   const H=S.hist,h=H[i];if(!h)return '<h3>Pas encore de bilan</h3><button class="cta" type="button">Fermer</button>';const mx=Math.max(1,...H.map(x=>Math.abs(x.p)));
-  const sp='<div class="spark">'+H.slice(-24).map((x,j,arr)=>{const idx=H.length-arr.length+j;return '<i class="'+(x.p>=0?'p':'n')+(idx===i?' cur':'')+'" style="height:'+Math.max(6,Math.abs(x.p)/mx*100)+'%"></i>';}).join('')+'</div>';
+  const sp=H.length<2?'':'<div class="spark">'+H.slice(-24).map((x,j,arr)=>{const idx=H.length-arr.length+j;return '<i class="'+(x.p>=0?'p':'n')+(idx===i?' cur':'')+'" style="height:'+Math.max(6,Math.abs(x.p)/mx*100)+'%"></i>';}).join('')+'</div>';
   return '<div class="kick">'+esc(S.name)+' · fin du mois '+h.m+'</div><h3>Ton bilan du mois</h3><div class="hnav"><button type="button" id="hp" aria-label="Mois précédent"'+(i<=0?' disabled':'')+'>‹</button><span>Mois '+h.m+'</span><button type="button" id="hn" aria-label="Mois suivant"'+(i>=H.length-1?' disabled':'')+'>›</button></div>'+sp+'<div class="tbl">'+(h.rows||[]).map(r=>'<div class="r"><span>'+esc(r[0])+'</span><b class="'+r[2]+'">'+fmt(r[1])+'</b></div>').join('')+'<div class="r tot"><span>Bénéfice</span><b class="'+(h.p>=0?'pos':'neg')+'">'+fmt(h.p)+'</b></div></div>'+(i===H.length-1&&learn?learn:'')+'<button class="cta" type="button">'+(learn!=null&&i===H.length-1?'Mois suivant':'Fermer')+'</button>';
 }
 function showHist(i,learn,after){
@@ -606,11 +616,17 @@ function openPat(){
 }
 function switchCo(i){if(i===G.act||!G.cos[i])return;G.act=i;S=G.cos[i];shown=0;sfx.pop();toast('Tu gères maintenant : '+S.name);say('Tu es dans '+S.name+'. Tes autres sociétés continuent de tourner sans toi grâce à leurs équipes.');render(true);save();}
 function openCos(){
-  sheet('<button class="x" type="button" data-x="1" aria-label="Fermer">✕</button><div class="kick">Tes sociétés</div><h3>Choisis ta société</h3><div class="choices">'+G.cos.map((C,i)=>'<button type="button" class="choice'+(i===G.act?' on':'')+'" data-i="'+i+'"><b>'+esc(C.name)+'</b><span>'+esc(SECTORS[C.sector].n)+' · trésorerie '+fmt(C.cash)+' · valeur '+fmt(valo(C))+'</span></button>').join('')+'</div>'+(G.flags.u_newco?'<button class="cta" type="button" id="nc">Créer une nouvelle société</button>':'<p style="font-size:12.5px;color:var(--mute)">À 500 000 € de patrimoine, tu pourras créer d’autres sociétés.</p>')+'<p style="text-align:center;margin:18px 0 0"><button type="button" id="rs" style="font-size:12px;font-weight:700;color:var(--mute);text-decoration:underline">Recommencer la partie</button></p>',(ov,close)=>{ov.dataset.soft=1;ov.querySelector('#rs').onclick=()=>{close();askReset();};
+  sheet('<button class="x" type="button" data-x="1" aria-label="Fermer">✕</button><div class="kick">Tes sociétés</div><h3>Choisis ta société</h3><div class="choices">'+G.cos.map((C,i)=>'<div class="corow"><button type="button" class="choice'+(i===G.act?' on':'')+'" data-i="'+i+'"><b>'+esc(C.name)+'</b><span>'+esc(SECTORS[C.sector].n)+' · trésorerie '+fmt(C.cash)+' · valeur '+fmt(valo(C))+'</span></button><button type="button" class="ren" data-r="'+i+'" aria-label="Renommer '+esc(C.name)+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button></div>').join('')+'</div>'+(G.flags.u_newco?'<button class="cta" type="button" id="nc">Créer une nouvelle société</button>':'<p style="font-size:12.5px;color:var(--mute)">À 500 000 € de patrimoine, tu pourras créer d’autres sociétés.</p>')+'<p style="text-align:center;margin:18px 0 0"><button type="button" id="rs" style="font-size:12px;font-weight:700;color:var(--mute);text-decoration:underline">Recommencer la partie</button></p>',(ov,close)=>{ov.dataset.soft=1;ov.querySelector('#rs').onclick=()=>{close();askReset();};
     ov.querySelector('[data-x]').onclick=()=>close();
     ov.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{close();switchCo(+b.dataset.i);});
+    ov.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{sfx.pop();close();renameCo(+b.dataset.r);});
     const nc=ov.querySelector('#nc');if(nc)nc.onclick=()=>{close();newCompany();};});
 }
+function renameCo(i){const C=G.cos[i];
+  sheet('<div class="kick">Ta société</div><h3>Change son nom</h3><p>C’est le nom qui s’affiche partout, et sur l’enseigne de Mon monde.</p><input class="field" id="rname" maxlength="24" value="'+esc(C.name)+'" aria-label="Nom de la société"><button class="cta" type="button" id="rok">Valider</button><button class="cta sec" type="button" id="rno">Annuler</button>',(ov,close)=>{
+    const inp=ov.querySelector('#rname');setTimeout(()=>{try{inp.focus();inp.select();}catch(e){}},250);
+    const ok=()=>{const nm=(inp.value||'').trim().slice(0,24);if(!nm){inp.focus();return;}C.name=nm;sfx.win();buzz([10,30,14]);close();save();render(true);toast('Ta société s’appelle maintenant « '+nm+' »');};
+    ov.querySelector('#rok').onclick=ok;inp.addEventListener('keydown',e=>{if(e.key==='Enter')ok();});ov.querySelector('#rno').onclick=()=>{sfx.pop();close();};});}
 function newCompany(){
   const CAP=50000;let sec='snack';
   if(G.perso<CAP){sheet('<div class="kick">Nouvelle société</div><h3>Il te faut un capital de départ</h3><p>Pour lancer une nouvelle société, tu mets '+fmt(CAP)+' de ton argent perso. Tu as '+fmt(G.perso)+'. Verse-toi des dividendes depuis ta société actuelle.</p><button class="cta" type="button">Compris</button>',(ov,close)=>{ov.querySelector('.cta').onclick=close;});return;}
@@ -639,9 +655,9 @@ function openWorld(){
 }
 /* la bulle Mon monde : on la pose où on veut, on la touche pour entrer */
 (function(){const b=$('#bulle');let pos=null;try{pos=JSON.parse(localStorage.getItem('inoviaBulle')||'null');}catch(e){}
-  const lim=()=>({w:innerWidth-58-8,h:innerHeight-58-(EMBED?150:30)});
+  const lim=()=>({w:innerWidth-58-6,h:innerHeight-58-(EMBED?22:30)});
   const place=(x,y)=>{const L=lim();x=Math.max(8,Math.min(L.w,x));y=Math.max(8,Math.min(L.h,y));b.style.left=x+'px';b.style.top=y+'px';return [x,y];};
-  let saved=!!pos;const def=()=>[Math.min(innerWidth-58-14,Math.round(innerWidth/2+190)),Math.round(innerHeight*.42)];
+  let saved=!!pos;const def=()=>[Math.min(innerWidth-58-6,Math.round(innerWidth/2+190)),Math.round(innerHeight*.42)];
   if(!pos)pos=def();pos=place(pos[0],pos[1]);
   addEventListener('resize',()=>{if(!saved)pos=def();pos=place(pos[0],pos[1]);});
   let st=null;
@@ -669,7 +685,14 @@ function event(){
 
 /* ================= affichage ================= */
 let lastGoal='',lastList='',lastCh='',lastNext='';const seenItems={};
+function bulleGhost(){const b=$('#bulle');if(!b)return;const r=b.getBoundingClientRect();if(!r.width)return;let hit=false;
+  const cx=r.left+r.width/2,cy=r.top+r.height/2;
+  const rw=$('#ringwrap').getBoundingClientRect();if(Math.hypot(cx-(rw.left+rw.width/2),cy-(rw.top+rw.height/2))<rw.width/2+r.width/2-4)hit=true;
+  if(!hit)for(const q of ['.head','#cash','.side','.month','#goal','#client','#clicpill','#pricebar','#ino .bubble','#tools','#auto','.nx']){const e=$(q);if(!e||!e.offsetParent)continue;const k=e.getBoundingClientRect();if(!k.width||!k.height)continue;
+    if(r.left<k.right-3&&r.right>k.left+3&&r.top<k.bottom-3&&r.bottom>k.top+3){hit=true;break;}}
+  b.classList.toggle('ghost',hit);}
 function render(force){
+  bulleGhost();
   const doc=document.documentElement;document.body.classList.toggle('paused',!!G.paused);
   $('#pause').classList.toggle('on',!!G.paused);
   const pz=G.paused?'<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4v16l13-8z"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--acc)"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';

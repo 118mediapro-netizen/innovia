@@ -35,6 +35,7 @@ Ne pas toucher à `monde/` ni à `neocorp/` : ils servent à Neo Corp, l'autre a
   - `{ type: 'inovia-buzz', p }` : vibration à jouer (nombre ou liste, en millisecondes) ;
   - `{ type: 'inovia-full', on }` : « Mon monde » s'ouvre (`on: true`, le jeu doit passer en plein écran par-dessus l'en-tête et la barre du bas) ou se ferme.
 - Dans la maquette web, ces messages passent par `postMessage`. Dans l'appli, utiliser `window.ReactNativeWebView.postMessage` côté jeu et `injectJavaScript` côté appli (adapter les 3 petites fonctions du jeu, sans rien changer d'autre).
+- **La WebView du jeu s'arrête au-dessus de la barre du bas** (dans la maquette : de 96 px sous le haut jusqu'à 130 px du bas). Rien du jeu (fenêtres, bilan, boutons, bulle d'Ino) ne doit jamais passer derrière la barre du bas ; les fenêtres du jeu sont des cartes arrondies posées juste au-dessus. Quand Mon monde est ouvert (`inovia-full`), la WebView prend tout l'écran.
 - La sauvegarde du jeu est dans le `localStorage` de la WebView (clé `inoviaJeu2`). Vérifier qu'elle survit à la fermeture de l'appli et aux mises à jour ; sinon la recopier dans `AsyncStorage`.
 
 ## 3. Le jeu (résumé, le code fait foi)
@@ -49,6 +50,10 @@ Ne pas toucher à `monde/` ni à `neocorp/` : ils servent à Neo Corp, l'autre a
 - Plus tard, petit à petit : **Patrimoine** (argent perso, bourse avec cours simulés, immobilier qui rapporte des loyers, valeur de chaque société), **plusieurs sociétés** (agence, restauration rapide, boutique en ligne, start-up d'IA), jusqu'aux milliards.
 - **Pas de fin, pas de mort, pas de faillite définitive.** Bouton pause à droite.
 - **Mon monde** s'ouvre par une **bulle ronde avec une maison**, que le joueur peut déplacer n'importe où sur l'écran (position mémorisée, clé `inoviaBulle`) ; un simple toucher l'ouvre. À l'étape de la chambre, Mon monde s'ouvre directement **en vue intérieure** (`&mode=in`), ensuite en vue extérieure.
+- **Renommer une société** : dans la fenêtre des sociétés (touche le nom en haut), un bouton crayon à côté de chaque société. Le nom s'affiche partout et sur l'enseigne de Mon monde.
+- **La bulle Mon monde devient transparente** quand elle passe au-dessus de quelque chose (trésorerie, objectif, anneau, prix, message d'Ino…), et redevient violette quand elle ne gêne rien.
+- **Petite notif qui motive** : au tout début (mois 1, après 3 clics), une pilule discrète glisse en haut, « Fais le plus d'argent possible ce mois-ci ! », sans bloquer les clics, puis disparaît.
+- Le graphique du bilan n'apparaît qu'à partir de 2 mois (barres fines, sans jaune).
 - **Recommencer la partie** n'est plus en bas de l'écran : petit lien discret en bas de la fenêtre des sociétés, et « Recommencer le jeu » dans le menu de l'appli (message `{ type: 'inovia-app', reset: true }`).
 - **Mode admin** : « Le jeu » liste les 14 étapes (du tout début à l'empire) ; toucher une étape envoie `{ type: 'inovia-app', stage: k }` au jeu, qui remplace la partie par une partie déjà arrivée à cette étape (`adminJump` dans `jeu/index.html`).
 - Mon monde : chambre, local, un étage, bureaux, bureaux agrandis, immeuble, tour, siège, empire, avec l'enseigne au nom de la société.
@@ -58,7 +63,7 @@ Ne pas toucher à `monde/` ni à `neocorp/` : ils servent à Neo Corp, l'autre a
 ## 3 bis. Le test de niveau en IA
 - Ce n'est **pas un QCM** : 12 questions sur soi (« À quelle fréquence utilises-tu une IA ? », « Sais-tu ce qu'est une clé API ? », « As-tu déjà automatisé une tâche ? »…), sans bonne ni mauvaise réponse, deux questions à choix multiples. Non obligatoire.
 - Résultat en pourcentage et en niveau (Découverte, Débutant, Intermédiaire, Avancé, Expert), plafonné si la personne n'utilise presque jamais l'IA (cohérence). Mémorisé (`inoviaLevelPct`).
-- **Page Apprendre** : juste sous le titre, deux cartes compactes côte à côte, **Mon parcours** (icône manette, « C'est un jeu ») et **Les vidéos** (icône lecture, « 32 vidéos »). La carte choisie est pleine (violet) ; l'autre bouge un peu (halo, icône qui s'agite, flèche) pour donner envie de changer. À chaque arrivée sur Apprendre, ce sont **les vidéos** (« À ne pas rater » bien visible). Le **défi du jour** est tout en bas.
+- **Page Apprendre** : juste sous le titre, deux cartes compactes côte à côte, **Mon parcours** (icône manette, « C'est un jeu ») et **Les vidéos** (icône lecture, « 32 vidéos »). La carte choisie est pleine (violet) ; l'autre bouge un peu. **Mon parcours a un contour doré qui tourne** (et l'unité en cours du parcours aussi) pour donner envie de cliquer (halo, icône qui s'agite, flèche) pour donner envie de changer. À chaque arrivée sur Apprendre, ce sont **les vidéos** (« À ne pas rater » bien visible). Le **défi du jour** est tout en bas.
 - **Test de niveau** : plus de carte dans Apprendre. Tant qu'il n'est pas fait, le bouton jauge en haut à droite est violet, avec un halo qui pulse, l'aiguille qui bouge et une pastille ; le toucher ouvre directement le test. Aucun message à l'écran.
 - Accès : le bouton jauge en haut à droite (il appelle tant que le test n'est pas fait), le menu, et la pastille « Niveau IA X % » dans Mon parcours pour le refaire. Le code est dans les méthodes `lv*` du code source (`lvData()` pour les questions).
 

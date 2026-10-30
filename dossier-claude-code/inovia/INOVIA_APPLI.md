@@ -39,8 +39,8 @@ Ne pas toucher à `monde/` ni à `neocorp/` : ils servent à Neo Corp, l'autre a
 
 ## 3. Le jeu (résumé, le code fait foi)
 - On clique sur la planète « Clic ». L'anneau doré autour se remplit en continu ; plein = commande livrée, le client paie.
-- **1 doigt = un demi-pas.** À partir du **mois 4** seulement (message « Nouveau : 2 doigts »), **2 doigts en même temps = un pas entier**. Pendant les mois 1 à 3, le 2e doigt ne compte pas. Au plus 6 touches comptées par seconde.
-- Sur la planète est écrit ce que tu fais (« Faire le flyer », « Créer le logo »…) et le prix de la commande.
+- **1 doigt = un demi-pas.** À partir du **mois 4** seulement (message « Nouveau : 2 doigts »), **2 doigts en même temps = un pas entier**. Pendant les mois 1 à 3, le 2e doigt ne compte pas. **Chaque toucher compte, sans limite de vitesse** : si le joueur tape très vite, le jeu suit.
+- Sur la planète est écrit ce que tu fais (« Faire le flyer », « Créer le logo »…) et, en dessous, ce que la commande rapporte en blanc (« +16 € »). L'anneau qui tourne autour est **violet** (plus de jaune).
 - 1 mois de jeu = 60 secondes. Bilan à chaque fin de mois (ventes, charges, cotisations ou impôt, bénéfice), avec les mois d'avant (flèches ‹ ›).
 - Un seul objectif affiché à la fois, cliquable quand il y a une action. Une ligne « Prochaine étape » sous le bouton.
 - Étapes : déclarer son activité (micro-entreprise), abonnements IA, prix réglable (trop cher = le client part), site, agents IA, stagiaire, **société (SASU)**, dividendes, salariés, bureaux, autres villes, international, rachats.
@@ -57,6 +57,7 @@ Ne pas toucher à `monde/` ni à `neocorp/` : ils servent à Neo Corp, l'autre a
 ## 3 bis. Le test de niveau en IA
 - Ce n'est **pas un QCM** : 12 questions sur soi (« À quelle fréquence utilises-tu une IA ? », « Sais-tu ce qu'est une clé API ? », « As-tu déjà automatisé une tâche ? »…), sans bonne ni mauvaise réponse, deux questions à choix multiples. Non obligatoire.
 - Résultat en pourcentage et en niveau (Découverte, Débutant, Intermédiaire, Avancé, Expert), plafonné si la personne n'utilise presque jamais l'IA (cohérence). Mémorisé (`inoviaLevelPct`).
+- **Page Apprendre** : juste sous l'en-tête (et la carte du test), deux grandes cartes côte à côte, **Mon parcours** et **Toutes les vidéos** : c'est le choix principal de la page. La carte choisie est pleine (violet), l'autre donne envie de cliquer (« Essaie, c'est gratuit › », « Voir les 32 vidéos › », léger halo qui pulse). À chaque arrivée sur Apprendre, c'est **Toutes les vidéos** qui est ouvert (sauf après le test de niveau, qui mène à Mon parcours). Le **défi du jour** est tout en bas de la page.
 - Accès : grande carte en haut d'Apprendre tant que le test n'est pas fait (puis pastille « Niveau IA X % » pour le refaire), bouton jauge en haut à droite, et le menu. Le code est dans les méthodes `lv*` du code source (`lvData()` pour les questions).
 
 ## 4. Ordre de travail

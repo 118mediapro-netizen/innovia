@@ -89,6 +89,14 @@ a{color:#260E4F}a:hover{color:#260E4F}
 .bob3{animation:bob 3s ease-in-out .8s infinite}
 .on{animation:pop .35s cubic-bezier(.2,.8,.2,1) both, glow 2s ease-out .35s infinite}
 .pulse{animation:glow 2s ease-out infinite}
+.lvcall{position:relative;background:linear-gradient(140deg,#8A63F0,#5B2FD6) !important;border-color:#7046DC !important;animation:lvhalo 1.8s ease-out infinite}
+.lvcall svg path,.lvcall svg circle{stroke:#FFFFFF}
+.lvcall svg circle{fill:#FFFFFF}
+.lvcall svg path:nth-child(2){transform-origin:12px 16px;animation:lvneedle 1.8s ease-in-out infinite}
+.lvcall::after{content:'';position:absolute;top:-3px;right:-3px;width:13px;height:13px;border-radius:50%;background:#FF5C7A;border:2.5px solid #F4F2F8}
+.night .lvcall::after{border-color:#0A070F}
+@keyframes lvhalo{0%{box-shadow:0 0 0 0 rgba(112,70,220,.55),0 6px 16px rgba(112,70,220,.35)}70%{box-shadow:0 0 0 14px rgba(112,70,220,0),0 6px 16px rgba(112,70,220,.35)}100%{box-shadow:0 0 0 0 rgba(112,70,220,0),0 6px 16px rgba(112,70,220,.35)}}
+@keyframes lvneedle{0%,100%{transform:rotate(-55deg)}50%{transform:rotate(18deg)}}
 .noscroll::-webkit-scrollbar{display:none}
 @keyframes popUpB{0%{opacity:0;transform:translate(-50%,6px) scale(.9)}15%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-44px) scale(1)}}
 .popup.pB{animation-name:popUpB}
@@ -351,18 +359,22 @@ div:nth-child(even) > span > span > .floaty{animation-delay:-1.7s}
 .lvq-back{display:block;margin:10px auto 0;border:0;background:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--pc-mute);cursor:pointer}
 .lvq .pcs-end h2{margin:0}
 .lvq .pcs-foot:empty{display:none}
-.pc-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
-.pc-pk{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-height:124px;padding:14px 13px 13px;border:2px solid var(--pc-line);border-radius:22px;background:var(--pc-card);color:var(--pc-ink);font-family:inherit;text-align:left;cursor:pointer;box-sizing:border-box;animation:pcnudge 2.8s ease-in-out infinite}
-.pc-pk b{font-size:16.5px;font-weight:800;line-height:1.15;margin-top:6px}
-.pc-pk small{font-size:12px;font-weight:700;line-height:1.3;color:var(--pc-mute)}
-.pc-pki{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--pc-card2);color:var(--pc-acc)}
+.pc-pick{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:4px}
+.pc-pk{position:relative;display:flex;align-items:center;gap:8px;height:58px;padding:0 10px 0 8px;border:2px solid var(--pc-line);border-radius:18px;background:var(--pc-card);color:var(--pc-ink);font-family:inherit;text-align:left;cursor:pointer;box-sizing:border-box;animation:pcnudge 2.6s ease-in-out infinite}
+.pc-pki{width:36px;height:36px;flex:0 0 36px;border-radius:12px;display:grid;place-items:center;background:var(--pc-card2);color:var(--pc-acc)}
 .pc-pki svg{width:22px;height:22px}
-.pc-pk em{margin-top:auto;padding-top:8px;font-style:normal;font-size:12.5px;font-weight:800;color:var(--pc-acc)}
-.pc-pk-on{border-color:transparent;background:linear-gradient(140deg,#8A63F0 0%,#7046DC 55%,#5B2FD6 100%);color:#FFFFFF;box-shadow:0 10px 24px rgba(112,70,220,.35);animation:none}
+.pc-pkt{flex:1;min-width:0;display:flex;flex-direction:column}
+.pc-pk b{font-size:14.5px;font-weight:800;line-height:1.15;white-space:nowrap}
+.pc-pk small{font-size:11px;font-weight:700;line-height:1.25;color:var(--pc-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-pk em{flex:0 0 auto;font-style:normal;font-size:20px;font-weight:800;color:var(--pc-acc);animation:pcarrow 1.3s ease-in-out infinite}
+.pc-pk-on{border-color:transparent;background:linear-gradient(140deg,#8A63F0 0%,#7046DC 55%,#5B2FD6 100%);color:#FFFFFF;box-shadow:0 8px 18px rgba(112,70,220,.32);animation:none}
 .pc-pk-on small{color:rgba(255,255,255,.85)}
 .pc-pk-on .pc-pki{background:rgba(255,255,255,.2);color:#FFFFFF}
-.pc-pkar{position:absolute;left:50%;bottom:-9px;width:18px;height:18px;margin-left:-9px;background:#6A3FDA;transform:rotate(45deg);border-radius:3px}
-@keyframes pcnudge{0%,70%,100%{box-shadow:0 0 0 0 rgba(112,70,220,0)}82%{box-shadow:0 0 0 6px rgba(112,70,220,.16)}}
+.pc-pk:not(.pc-pk-on) .pc-pki{animation:pcwig 2.6s ease-in-out infinite}
+.pc-pkar{position:absolute;left:50%;bottom:-7px;width:14px;height:14px;margin-left:-7px;background:#6A3FDA;transform:rotate(45deg);border-radius:3px}
+@keyframes pcnudge{0%,65%,100%{box-shadow:0 0 0 0 rgba(112,70,220,0);border-color:var(--pc-line)}80%{box-shadow:0 0 0 5px rgba(112,70,220,.16);border-color:#A88BFF}}
+@keyframes pcarrow{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+@keyframes pcwig{0%,70%,100%{transform:rotate(0)}76%{transform:rotate(-9deg) scale(1.06)}84%{transform:rotate(8deg) scale(1.06)}90%{transform:rotate(0)}}
 .pc-dwrap{margin-top:20px}
 .fm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px}
 .fm-title{margin:0;font-size:31px;font-weight:800;letter-spacing:-.02em;color:var(--fm-ink)}
@@ -1730,20 +1742,19 @@ window.Component = class Component extends DCLogic {
     if (P.daily === today) daily = '<div class="pc-daily pc-ok"><div class="pc-dt"><div class="pc-dl">Défi du jour réussi</div><div class="pc-dq">Reviens demain pour garder ta série.</div></div></div>';
     else daily = '<div class="pc-daily" id="pcDaily"><div class="pc-dt"><div class="pc-dl">Défi du jour · Vrai ou faux</div><div class="pc-dq">' + E(dq.q) + '</div></div><div class="pc-db"><button type="button" class="tap" data-v="1">Vrai</button><button type="button" class="tap" data-v="0">Faux</button></div></div>';
     const top = '<div class="pc-chips"><span class="pc-chip" title="Jours de suite">' + I('fire') + P.streak + ' j</span><span class="pc-chip" title="Énergie">' + I('bolt') + P.energy + '</span><span class="pc-chip" title="Étoiles">' + I('sGold') + P.stars + '</span>' + (this.lvPct() != null ? '<button type="button" class="tap pc-chip pc-lvchip" id="pcLv2">Niveau IA ' + this.lvPct() + ' %</button>' : '') + '</div>';
-    const lvCard = this.lvPct() == null ? '<button type="button" class="tap pc-lv" id="pcLv"><span><b>Évalue ton niveau en IA</b><small>12 questions sur toi · 2 min · ton parcours s’adapte</small></span><i>Commencer ›</i></button>' : '';
     let nv = 0; try { nv = this.fmCat0().mods.reduce((t, m) => t + m.eps.length, 0); } catch (e) {}
     const onV = P.tab === 'videos';
-    const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="6" r="2.4"/><path d="M8.2 16.6c3-1.6 1.2-5.4 4-6.8 1.6-.8 2.4-1.2 3.6-2.2"/></svg>';
-    const icV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg>';
-    const card = (id, on, ic, t, sub, nudge) => '<button type="button" role="tab" aria-selected="' + on + '" class="tap pc-pk' + (on ? ' pc-pk-on' : '') + '" data-tab="' + id + '"><span class="pc-pki">' + ic + '</span><b>' + t + '</b><small>' + sub + '</small>' + (on ? '<i class="pc-pkar"></i>' : '<em>' + nudge + '</em>') + '</button>';
+    const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8h9a4.5 4.5 0 0 1 4.3 5.8l-1 3.4a2.3 2.3 0 0 1-3.9.9L14 16h-4l-1.9 2.1a2.3 2.3 0 0 1-3.9-.9l-1-3.4A4.5 4.5 0 0 1 7.5 8z"/><path d="M8 11v3M6.5 12.5h3"/><circle cx="15.5" cy="11.5" r=".9" fill="currentColor"/><circle cx="17" cy="13.5" r=".9" fill="currentColor"/></svg>';
+    const icV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg>';
+    const card = (id, on, ic, t, sub) => '<button type="button" role="tab" aria-selected="' + on + '" class="tap pc-pk' + (on ? ' pc-pk-on' : '') + '" data-tab="' + id + '"><span class="pc-pki">' + ic + '</span><span class="pc-pkt"><b>' + t + '</b><small>' + sub + '</small></span>' + (on ? '<i class="pc-pkar"></i>' : '<em>›</em>') + '</button>';
     const tabs = '<div class="pc-pick" role="tablist">' +
-      card('parcours', !onV, icP, 'Mon parcours', st.units ? st.units + ' sur ' + st.total + ' unités · en jouant' : 'Apprends en jouant, pas à pas', st.units ? 'Continuer ›' : 'Essaie, c’est gratuit ›') +
-      card('videos', onV, icV, 'Toutes les vidéos', nv + ' vidéos · regarde ce que tu veux', 'Voir les ' + nv + ' vidéos ›') + '</div>';
+      card('parcours', !onV, icP, 'Mon parcours', onV ? 'C’est un jeu' : 'Apprends en jouant') +
+      card('videos', onV, icV, 'Les vidéos', nv + ' vidéos') + '</div>';
     let body = '';
     if (!onV) {
       body = top + '<div class="pc-course"><div class="pc-grow"><div class="pc-ct">Les bases de l’IA</div><div class="pc-cs">' + st.units + ' sur ' + st.total + ' unités · Module 1 gratuit</div><div class="pc-bar"><i style="width:' + st.pct + '%"></i></div></div><button type="button" class="tap pc-explore" id="pcExplore">Parcours</button></div><div class="pc-map" id="pcMap"></div>';
     }
-    host.innerHTML = '<div class="pcw">' + lvCard + tabs + body + '</div>';
+    host.innerHTML = '<div class="pcw">' + tabs + body + '</div>';
     const dh = document.getElementById('pcDailyHost'); if (dh) { dh.__pc = true; dh.innerHTML = '<div class="pcw pc-dwrap">' + daily + '</div>'; }
     ['#pcLv', '#pcLv2'].forEach(id => { const b = host.querySelector(id); if (b) b.onclick = () => { this.sfx('pop', 1.2); this.buzz(); this.lvOpen(); }; });
     const dl = document.getElementById('pcDaily');
@@ -2506,7 +2517,7 @@ window.Component = class Component extends DCLogic {
       qLen: String((z && z.len) || 4),
       quizDone: !!z && z.done,
       levelName: levelName,
-      levelCls: s.level === null ? 'pulse' : '',
+      levelCls: this.lvPct() == null ? 'lvcall' : '',
       levelAria: 'Mon niveau : ' + levelName,
       themes: themeNames.map(n => ({
         name: n,
@@ -2556,7 +2567,7 @@ window.Component = class Component extends DCLogic {
       toggleStyle: 'width:56px;height:32px;padding:3px;border:none;border-radius:16px;cursor:pointer;display:flex;transition:background .2s ease;background:' + (s.hapt ? '#7046DC' : '#E4DCF2') + ';justify-content:' + (s.hapt ? 'flex-end' : 'flex-start'),
       startQuiz: () => this.startQuiz(12),
       startQuiz4: () => this.startQuiz(4),
-      openLevel: () => { this.buzz(); this.setState({ levelCard: true, menu: false }); },
+      openLevel: () => { this.buzz(); if (this.lvPct() == null) { this.sfx('pop', 1.2); this.lvOpen(); return; } this.setState({ levelCard: true, menu: false }); },
       closeLevel: () => { this.buzz(); this.setState({ levelCard: false }); },
       showLevel: !!s.levelCard && s.screen !== 'intro',
       lvName: s.level === null ? 'Pas encore évalué' : this.levels[s.level].name,

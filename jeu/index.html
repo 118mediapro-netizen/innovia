@@ -80,6 +80,11 @@ svg.ring{position:absolute;inset:0;overflow:visible;pointer-events:none}
 .planet.press{transform:scale(.93)}
 .planet.wait{filter:grayscale(.6) brightness(.9)}
 .planet.boom{animation:boom .35s ease-out}
+.planet.beat{animation:beat .5s ease-out}
+@keyframes beat{40%{transform:scale(1.05);box-shadow:0 0 0 14px rgba(138,99,240,.14),0 0 60px 14px rgba(138,99,240,.45)}}
+body.flow .bar{filter:drop-shadow(0 0 10px rgba(160,128,255,.85))}
+body.flow .track{stroke:rgba(138,99,240,.18)}
+body.flow .planet .pt b{font-size:15px}
 @keyframes boom{35%{transform:scale(1.08)}}
 .paused .planet{filter:grayscale(.7);opacity:.75}
 #fx{position:absolute;left:-60px;top:-60px;width:380px;height:380px;pointer-events:none;z-index:2}
@@ -382,25 +387,48 @@ function addWork(C,n,fromClick){
 }
 function finishJob(C,fromClick){
   if(Math.random()<=acceptP(C)){
-    C.jobs++;earn(C,C.price);
+    C.jobs++;
+    if(C===S&&FLOW.on){earn(C,C.price,true);FLOW.acc+=C.price;FLOW.n++;nextClient(C);return;}
+    earn(C,C.price);
     if(C===S){if(fromClick){floatTxt('+ '+fmt(C.price));sfx.coin();buzz([10,30,14]);}ringDone(fromClick);
       if(C.jobs===1)say('Ton premier client est content ! Chaque clic fait avancer le travail. Quand l’anneau est plein, la commande est livrée et tu es payé. Plus tu cliques, plus tu gagnes.');}
     nextClient(C);
   } else {
+    if(C===S&&FLOW.on){if(!C.flags.toocher){C.flags.toocher=1;lesson('Ton prix est trop haut','Une partie de tes clients part voir ailleurs. Un prix trop haut fait fuir les clients. Un prix trop bas te fait travailler pour rien.');}return;}
     if(C===S&&fromClick){floatTxt('Trop cher pour lui',true);sfx.bad();buzz([20,50,20]);}
     if(C===S&&!C.flags.toocher){C.flags.toocher=1;lesson('Ton prix est trop haut','Le client est parti voir ailleurs. Un prix trop haut fait fuir les clients. Un prix trop bas te fait travailler pour rien. Le bon prix dépend de la qualité de ton travail : améliore-la et tu pourras monter ton prix.');}
     C.wait=.7;nextClient(C);
   }
 }
-function earn(C,v){C.cash+=v;C.total+=v;C.ca+=v;if(C===S){const cv=$('#cash');cv.classList.remove('bump');void cv.offsetWidth;cv.classList.add('bump');}}
+function earn(C,v,quiet){C.cash+=v;C.total+=v;C.ca+=v;if(C===S&&!quiet){const cv=$('#cash');cv.classList.remove('bump');void cv.offsetWidth;cv.classList.add('bump');}}
 function floatTxt(t,small){const d=document.createElement('div');d.className='float'+(small?' small':'');d.textContent=t;d.style.left=(40+Math.random()*20)+'%';$('#work').appendChild(d);setTimeout(()=>d.remove(),900);}
 
 /* ---------- l'anneau : une barre continue qui glisse ---------- */
 const RR=118,LL=2*Math.PI*RR;let shown=0,drain=0;
 function ringTarget(){if(S.special)return Math.min(1,S.special.p/S.special.need);return Math.min(1,S.job/offerOf(S).c);}
-function ringDone(big){drain=1;wave=1;const p=$('#planet');p.classList.remove('boom');void p.offsetWidth;p.classList.add('boom');
+function ringDone(big){if(FLOW.on)return;drain=1;wave=1;const p=$('#planet');p.classList.remove('boom');void p.offsetWidth;p.classList.add('boom');
   for(let k=0;k<(big?24:12);k++){const a=-Math.PI/2+k/(big?24:12)*2*Math.PI;sparks(190+RR*Math.cos(a),190+RR*Math.sin(a),big?2:1,true);}}
+/* quand tes équipes livrent plus d'une commande par seconde, l'anneau tourne tout seul, les gains arrivent groupés */
+const FLOW={on:false,acc:0,n:0,t:0,ph:0,last:0,jps:0,mon:-1,mj:0};
+function flowCheck(dt){
+  const o=offerOf(S),jps=S.special?0:autoRateC(S)*.5/o.c;FLOW.jps=jps;
+  const was=FLOW.on;if(!FLOW.on&&jps>.8)FLOW.on=true;else if(FLOW.on&&jps<.55)FLOW.on=false;
+  if(FLOW.on!==was){document.body.classList.toggle('flow',FLOW.on);FLOW.acc=0;FLOW.n=0;FLOW.t=0;shown=0;drain=0;if(FLOW.on){S.wait=0;$('#bar').setAttribute('transform','rotate(-90 130 130)');}else $('#bar').setAttribute('transform','rotate(-90 130 130)');render(true);}
+  if(FLOW.mon!==G.month){FLOW.mon=G.month;FLOW.mj=0;}
+  if(!FLOW.on)return;
+  FLOW.t+=dt;
+  if(FLOW.t>=1){FLOW.t=0;FLOW.mj+=FLOW.n;
+    if(FLOW.acc>0&&!document.hidden){floatTxt('+ '+fmt(FLOW.acc));const p=$('#planet');p.classList.remove('beat');void p.offsetWidth;p.classList.add('beat');
+      const cv=$('#cash');cv.classList.remove('bump');void cv.offsetWidth;cv.classList.add('bump');const [x,y]=headXY();sparks(x,y,6);}
+    FLOW.acc=0;FLOW.n=0;}
+}
 function ringFrame(){
+  if(FLOW.on){const now=performance.now(),dt=Math.min(.1,(now-(FLOW.last||now))/1000);FLOW.last=now;
+    if(!G.paused&&!modal)FLOW.ph=(FLOW.ph+dt*Math.min(1.1,.45+FLOW.jps*.04))%1;shown=.32;
+    $('#bar').setAttribute('stroke-dasharray',(.32*LL).toFixed(1)+' '+LL.toFixed(1));
+    $('#bar').setAttribute('transform','rotate('+(-90+FLOW.ph*360).toFixed(1)+' 130 130)');
+    const a=-Math.PI/2+(FLOW.ph+.32)*2*Math.PI,h=$('#headDot');h.setAttribute('cx',(130+RR*Math.cos(a)).toFixed(1));h.setAttribute('cy',(130+RR*Math.sin(a)).toFixed(1));h.style.opacity=1;return;}
+  FLOW.last=0;
   let t=ringTarget();if(drain>0){drain-=.08;t=Math.max(t,drain);}
   shown+=(t-shown)*(t<shown?.3:.42);if(Math.abs(t-shown)<.0005)shown=t;
   $('#bar').setAttribute('stroke-dasharray',(shown*LL).toFixed(1)+' '+LL.toFixed(1));
@@ -408,7 +436,7 @@ function ringFrame(){
 }
 /* ---------- étincelles ---------- */
 const fxc=$('#fx'),fx=fxc.getContext('2d');fx.scale(2,2);const P=[];let wave=0;
-function headXY(){const a=-Math.PI/2+shown*2*Math.PI;return [190+RR*Math.cos(a),190+RR*Math.sin(a)];}
+function headXY(){const a=-Math.PI/2+(FLOW.on?FLOW.ph+.32:shown)*2*Math.PI;return [190+RR*Math.cos(a),190+RR*Math.sin(a)];}
 function sparks(x,y,n,big){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=(big?3:1.5)+Math.random()*(big?5:2.5);P.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:1,r:big?3+Math.random()*3:1.5+Math.random()*2,c:Math.random()<.6?'#B79CFF':'#FFFFFF'});}}
 function fxFrame(){fx.clearRect(0,0,380,380);
   if(wave>0){fx.strokeStyle='rgba(160,128,255,'+wave+')';fx.lineWidth=Math.max(.1,6*wave);fx.beginPath();fx.arc(190,190,RR+(1-wave)*60,0,7);fx.stroke();wave-=.04;}
@@ -656,8 +684,11 @@ function render(force){
   const g=goalText();if(g!==lastGoal){if(lastGoal){const ge=$('#goal');ge.classList.remove('flash');void ge.offsetWidth;ge.classList.add('flash');}lastGoal=g;$('#goalt').textContent=g;}
   const ga=goalAct(),go=$('#goalgo'),gl=ga?ga.l:'';if(go.textContent!==gl)go.textContent=gl;go.classList.toggle('off',!!ga&&!ga.ok);
   const wait=S.wait>0,o=offerOf(S);
-  if(S.special){$('#client').innerHTML='Commande spéciale : <b>'+esc(S.special.who)+'</b>';$('#bt1').textContent='Livre la commande';$('#bt2').textContent='+'+fmt(S.special.reward);}
-  else{$('#client').innerHTML=wait?'Le client est parti…':'Client : <b>'+esc(S.client||'…')+'</b>';$('#bt1').textContent=wait?'Client suivant':o.v;$('#bt2').textContent=wait?'…':'+'+fmt(S.price);}
+  if(FLOW.on&&!S.special){const pm=FLOW.jps*MONTH*acceptP(S);if($('#client').dataset.f!=='1'){$('#client').dataset.f='1';}
+    $('#client').innerHTML=(()=>{const n=Math.round(FLOW.mj);return 'Tes équipes travaillent pour toi · <b>'+n.toLocaleString('fr-FR')+(n>1?' commandes livrées':' commande livrée')+'</b>';})();
+    $('#bt1').textContent='Ça tourne tout seul';$('#bt2').textContent='+'+fmt(pm*S.price)+' / mois';}
+  else if(S.special){$('#client').dataset.f='';$('#client').innerHTML='Commande spéciale : <b>'+esc(S.special.who)+'</b>';$('#bt1').textContent='Livre la commande';$('#bt2').textContent='+'+fmt(S.special.reward);}
+  else{$('#client').dataset.f='';$('#client').innerHTML=wait?'Le client est parti…':'Client : <b>'+esc(S.client||'…')+'</b>';$('#bt1').textContent=wait?'Client suivant':o.v;$('#bt2').textContent=wait?'…':'+'+fmt(S.price);}
   $('#planet').classList.toggle('wait',wait);
   $('#pricebar').hidden=!(G.month>=2);$('#price').textContent=fmt(S.price);$('#plab').textContent='Prix : '+o.n.toLowerCase();
   const a=autoRateC(S);
@@ -695,7 +726,7 @@ function renderNext(teaser){
 /* ================= boucle ================= */
 let last=performance.now(),saveT=0,stockT=0,rT=0;
 function step(dt){
-  G.mt+=dt;
+  G.mt+=dt;flowCheck(dt);
   G.cos.forEach(C=>{
     if(C.boostT>0)C.boostT-=dt;if(C.panneT>0)C.panneT-=dt;if(C.wait>0)C.wait-=dt;
     C._acc=(C._acc||0)+autoRateC(C)*dt*.5;   // les équipes avancent d'un demi-pas par « clic »
